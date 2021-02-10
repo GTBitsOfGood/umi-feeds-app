@@ -15,7 +15,8 @@ React Native app for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food r
 - Create a new branch in the format `[NAME]/[ISSUE-NUMBER]-[SHORT-DESCRIPTION]` (issue number is optional) by running `git checkout -b [BRANCH NAME]`.
   - example branch name: `daniel/48-setup-ci`
 - Be sure to lint, format, and type-check your code occasionally to catch errors by running `npm run lint`. eslint can try to automatically fix some of the linting errors with `npm run lint:fix`. Reach out to an EM if you are having problems with the type-checker or are blocked by anything else in general.
-- Before a push can succeed, it must pass linting.
+  - If you're using Visual Studio Code, install the ESLint extensions so you can see ESLint errors right in your editor.
+  - Before a push can succeed, it must pass linting.
 - Commit changes and then push your branch by running `git push -u origin [BRANCH NAME]`.
 - Create a pull request (PR) on GitHub to merge your branch into `develop`.
 - In your PR, briefly describe the changes, link the PR to its corresponding issue, and request a Senior Developer or EM as a reviewer.
