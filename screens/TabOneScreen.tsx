@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function TabOneScreen() {
-  const [location, setLocation] :any = useState(null);
+  let [location, setLocation] :any = useState(null);
   const [errorMsg, setErrorMsg] :any = useState(null);
 
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestPermissionsAsync();
+      const { status } = await Location.requestPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg("Permission to access location was denied");
+        setErrorMsg('Permission to access location was denied');
         return;
       }
-
-      let location = await Location.getCurrentPositionAsync({});
+      location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
   }, []);
