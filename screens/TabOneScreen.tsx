@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import * as Location from 'expo-location';
 
+import { LocationObject } from 'expo-location';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
 export default function TabOneScreen() {
-  let location :any = useState(null);
-  const setLocation : any = useState(null);
-  const [errorMsg, setErrorMsg] :any = useState(null);
+  const [location, setLocation] = useState<LocationObject | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -17,8 +17,7 @@ export default function TabOneScreen() {
         setErrorMsg('Permission to access location was denied');
         return;
       }
-      location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLocation(await Location.getCurrentPositionAsync({}));
     })();
   }, []);
 
@@ -26,7 +25,7 @@ export default function TabOneScreen() {
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
-    text = JSON.stringify(location);
+    text = `My latitude: ${location.coords.latitude} \n My longitude: ${location.coords.longitude} \n\n JSON Junk: ${JSON.stringify(location)}`;
   }
 
   return (
