@@ -8,6 +8,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -26,6 +27,7 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
+      
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
