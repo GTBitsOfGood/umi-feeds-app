@@ -1,18 +1,21 @@
-import React from 'react';
-import { Button } from 'react-native';
+import React, { useState } from 'react';
+import { Button, TextInput } from 'react-native';
 
 import { connect } from 'react-redux';
-import { increment, decrement } from './counterReducer';
+import { increment, decrement, incrementByAmount } from './counterReducer';
 
 import { View } from '../Themed';
 
-const mapDispatchToProps = { increment, decrement };
+const mapDispatchToProps = { increment, decrement, incrementByAmount };
 
 function Increment(props: {
     increment: () => void,
-    decrement: () => void
+    decrement: () => void,
+    incrementByAmount: (amount : number) => void,
 }) {
-  const { increment, decrement } = props;
+  const { increment, decrement, incrementByAmount } = props;
+
+  const [amountToIncrement, setAmountToIncrement] = useState(0);
 
   return (
     <View>
@@ -26,6 +29,14 @@ function Increment(props: {
       <Button
         title="Decrement Counter"
         onPress={() => decrement()}
+      />
+      <Button
+        title="Increment by"
+        onPress={() => incrementByAmount(amountToIncrement)}
+      />
+      <TextInput
+        value={amountToIncrement.toString()}
+        onChangeText={(text) => setAmountToIncrement(+text)}
       />
     </View>
   );

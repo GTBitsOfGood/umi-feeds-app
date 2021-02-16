@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import { RootState } from '../../rootReducer';
 
 import { Text, View } from '../Themed';
 
@@ -16,10 +17,8 @@ function Display(props: {
 }
 
 // For demonstration purposes - this is like a selector that gets a value from the store
-function mapStateToProps(state: { counter : { value : number }}) {
-  const { counter } = state;
-  const { value } = counter;
-  return { count: value };
+function mapStateToProps(state: RootState) {
+  return { count: state.counter.value };
 }
 
 export default connect(
