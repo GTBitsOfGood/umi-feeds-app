@@ -6,11 +6,18 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Text, View } from '../components/Themed';
 import EditScreenInfo from '../components/EditScreenInfo';
+import { useEffect, useState } from 'react';
 
 export default function TabOneScreen() {
+  const [cameraPermission, setCameraPermission] = useState(false);
+
+
+
   const checkPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
+    setCameraPermission(status === 'granted');
 
+    /*
     if (status === null) {
       return <View />;
     } else if (status === 'granted') {
@@ -22,6 +29,7 @@ export default function TabOneScreen() {
     } else {
       return <Text> Permission to camera is denied </Text>;
     }
+    */
   };
 
   return (
@@ -32,8 +40,13 @@ export default function TabOneScreen() {
         onPress={checkPermission}
       >
         <Text style={styles.title}> Camera </Text>
-
       </TouchableOpacity>
+
+      {cameraPermission && (
+        <View style={{ flex: 1 }}>
+          <Camera style={{ flex: 1 }} type={Camera.Constants.Type.back} />
+        </View>
+      )}
 
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
