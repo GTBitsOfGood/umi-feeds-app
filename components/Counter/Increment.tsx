@@ -9,10 +9,10 @@ import { View } from '../Themed';
 const mapDispatchToProps = { increment, decrement };
 
 function Increment(props: {
-    incrementCounter: () => void,
-    decrementCounter: () => void
+    increment: () => void,
+    decrement: () => void
 }) {
-  const { incrementCounter, decrementCounter } = props;
+  const { increment, decrement } = props;
 
   return (
     <View>
@@ -21,11 +21,11 @@ function Increment(props: {
         title="Increment Counter"
                 // Note that increment CANNOT be passed directly as a function, or Navigation breaks
                 // See: https://github.com/react-navigation/react-navigation/issues/8923
-        onPress={() => incrementCounter()}
+        onPress={() => increment()}
       />
       <Button
         title="Decrement Counter"
-        onPress={() => decrementCounter()}
+        onPress={() => decrement()}
       />
     </View>
   );
