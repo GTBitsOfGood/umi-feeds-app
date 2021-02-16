@@ -6,6 +6,8 @@ import { LocationObject } from 'expo-location';
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 
+import CounterIncrement from '../components/Counter/Increment';
+
 export default function TabOneScreen() {
   const [location, setLocation] = useState<LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -34,6 +36,7 @@ export default function TabOneScreen() {
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <Text>{text}</Text>
       <EditScreenInfo path="/screens/TabOneScreen.tsx" />
+      <CounterIncrement />
     </View>
   );
 }
