@@ -31,7 +31,8 @@ export default function App() {
                   ? Camera.Constants.Type.front
                   : Camera.Constants.Type.back
               );
-            }}>
+            }}
+          >
             <Text style={styles.text}> Flip </Text>
           </TouchableOpacity>
         </View>
