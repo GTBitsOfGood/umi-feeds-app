@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -6,30 +6,13 @@ import { Camera } from 'expo-camera';
 import * as Permissions from 'expo-permissions';
 import { Text, View } from '../components/Themed';
 import EditScreenInfo from '../components/EditScreenInfo';
-import { useEffect, useState } from 'react';
 
 export default function TabOneScreen() {
   const [cameraPermission, setCameraPermission] = useState(false);
 
-
-
   const checkPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     setCameraPermission(status === 'granted');
-
-    /*
-    if (status === null) {
-      return <View />;
-    } else if (status === 'granted') {
-      return (
-        <View style={{ flex: 1 }}>
-          <Camera style={{ flex: 1 }} type={Camera.Constants.Type.back} />
-        </View>
-      );
-    } else {
-      return <Text> Permission to camera is denied </Text>;
-    }
-    */
   };
 
   return (
