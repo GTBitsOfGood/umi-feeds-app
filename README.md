@@ -7,6 +7,8 @@ React Native app for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food r
 - Clone this repository to your computer.
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
 - Install dependencies: `npm install`
+- Run `npm run secrets` to sync development secrets from Bitwarden and save them to `.env.local` file locally. Contact a leadership member for the Bitwarden password.
+  - **Note**: If you are using the Windows command prompt, enter `npm run secrets:login` and then `npm run secrets:sync`.
 - Start project: `npm start`
 
 ## Code/PR Workflow
