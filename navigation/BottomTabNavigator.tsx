@@ -7,7 +7,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import DonationScreen from '../screens/DonationScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -29,6 +30,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationScreen"
+        component={DonationScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -70,5 +78,19 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const DonationScreenStack = createStackNavigator<DonationScreenParamList>();
+
+function DonationScreenNavigator() {
+  return (
+    <DonationScreenStack.Navigator>
+      <DonationScreenStack.Screen
+        name="DonationScreen"
+        component={DonationScreen}
+        options={{ headerTitle: 'Donation Screen' }}
+      />
+    </DonationScreenStack.Navigator>
   );
 }
