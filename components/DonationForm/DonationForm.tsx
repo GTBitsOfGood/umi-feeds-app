@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, TextInput } from 'react-native';
+import { Button } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Input } from 'react-native-elements';
 
 import { Text, View } from '../Themed';
 
@@ -66,7 +67,6 @@ function DonationForm() {
 
   return (
     <View style={{ width: '100%' }}>
-      <Text>{error}</Text>
       <View style={{ width: '100%' }}>
         <Text>Availability Start</Text>
         <DateTimePicker
@@ -82,8 +82,6 @@ function DonationForm() {
           minuteInterval={15}
           onChange={onStartDatetimeChange}
         />
-      </View>
-      <View style={{ width: '100%' }}>
         <Text>Availability End</Text>
         <DateTimePicker
           value={endDatetime}
@@ -100,29 +98,33 @@ function DonationForm() {
         />
       </View>
       {/*
-        Change to TextField at some point, or some other form of longer text input
-        Border styling is needed so the TextFields are visible on iOS
-      */}
-      <TextInput
+            Change to TextField at some point, or some other form of longer text input
+            Border styling is needed so the TextFields are visible on iOS
+        */}
+      <Input
+        label="Description"
         value={description}
         onChangeText={(desc: string) => setDescription(desc)}
-        style={{ borderColor: 'white', borderWidth: 5, width: '100%' }}
       />
-      <TextInput
+      <Input
+        label="Pickup Instructions"
         value={pickupInstructions}
         onChangeText={(instructions: string) => setPickupInstructions(instructions)}
-        style={{ borderColor: 'white', borderWidth: 5, width: '100%' }}
       />
-      <TextInput
+      <Input
+        label="Weight"
         value={weight.toString()}
         onChangeText={(weight: string) => setWeight(+weight)}
-        style={{ borderColor: 'white', borderWidth: 5, width: '100%' }}
+        keyboardType="numeric"
       />
-      <Button
-        title="Submit"
-        disabled={error !== ''}
-        onPress={() => handleSubmit()}
-      />
+      <View>
+        <Text>{error}</Text>
+        <Button
+          title="Submit"
+          disabled={error !== ''}
+          onPress={() => handleSubmit()}
+        />
+      </View>
     </View>
   );
 }
