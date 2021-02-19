@@ -22,11 +22,16 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "org.bitsofgood.umifeeds",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "org.bitsofgood.umifeeds"
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCzsET6HCV4T5y-xd8DEHabQETMvGp33hc"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
