@@ -34,20 +34,29 @@ To fully utilize the power of TypeScript, you will have to [learn its type syste
 While you are encouraged to use TypeScript, you **don't** have to. Our codebase can be a mix of both TypeScript and JavaScript.
 
 ## Expo Build
-- run `expo build:andriod` or `expo build:ios`
-### Andriod
-  - This will require an Expo sign in. Contact leadership if you need the Bitwarden password for Expo account.
-  - select APK
-### IOS
-  - if asked for bundle identifer, type `org.bitsofgood.umifeeds`
-  - select the `simulator` option
+This will require an Expo sign in. Contact leadership if you need the Bitwarden password for Expo account.
 
+### Android
+- Run `expo build:android`
+- Select the "APK" option when asked
+
+### iOS
+- Run `expo build:ios`
+- If asked for bundle identifer, type `org.bitsofgood.umifeeds`
+- Select the `simulator` option to be able to run this in Expo Go. (The other option requires an Apple Developer ID.)
+
+### Web
+Expo Web is in beta so not all the features of the app will necessarily work correctly in the web version. We use it just to provide a convenient preview of the app.
+- Optional: `npx expo-optimize` to optimize the assets for speed
+- `expo build:web`. This makes a web-build/ directory.
+- See more details at https://docs.expo.io/distribution/publishing-websites/.
+- We've set up Netlify with continuous deployment from our Git repository, with the build command `npm install -g expo-cli -y && expo build:web` and the publish directory `web-build`. https://umifeeds.netlify.app is automatically built from the `develop` branch.
 
 ## Google Maps API Key Setup 
 
-This application uses the Google Maps API for the standalone andriod app. Here are the steps to set up your own:
-- change `org.bitsofgood.umifeeds` to `com.youcompany.yourappname` in `android.package` in `app.json`
-- run `expo build:andriod` 
-- Follow [the these instructions](https://docs.expo.io/versions/v40.0.0/sdk/map-view/#deploying-to-a-standalone-app-on-android) for deploying to a standalone app on Andriod under "If you have not configured Google Sign In"
+This application uses the Google Maps API for the standalone Android app. Here are the steps to set up your own:
+- Change `org.bitsofgood.umifeeds` to `com.youcompany.yourappname` in `android.package` in `app.json`
+- Run `expo build:android` 
+- Follow the instructions at ["MapView - Expo Documentation"](https://docs.expo.io/versions/v40.0.0/sdk/map-view/#deploying-to-a-standalone-app-on-android) for deploying to a standalone app on Android under "If you have not configured Google Sign In"
 
 
