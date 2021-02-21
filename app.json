@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "org.bitsofgood.umifeeds"
     },
     "android": {
       "package": "org.bitsofgood.umifeeds",

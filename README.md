@@ -7,8 +7,8 @@ React Native app for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food r
 - Clone this repository to your computer.
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
 - Install dependencies: `npm install`
-- Run `npm run secrets` to sync development secrets from Bitwarden and save them to `.env.local` file locally. Contact a leadership member for the Bitwarden password.
-  - **Note**: If you are using the Windows command prompt, enter `npm run secrets:login` and then `npm run secrets:sync`.
+- On Linux, run `npm run secrets` to download development secrets from Bitwarden and save them to the `.env` file locally. Contact a leadership member for the Bitwarden password.
+  - **Note**: If you are using the Windows command prompt or a Mac, enter `npm run secrets:login` (logging in only needs to be done once) and then `npm run secrets:sync`. You may have to enter the Bitwarden password multiple times. You should re-run this whenever the secrets in Bitwarden changes.
 - Start project: `npm start`
 
 ## Code/PR Workflow
@@ -32,3 +32,22 @@ TypeScript will help you catch bugs early at compile-time and save you significa
 To fully utilize the power of TypeScript, you will have to [learn its type system](https://learnxinyminutes.com/docs/typescript/). Use [this](https://github.com/typescript-cheatsheets/react-typescript-cheatsheet/blob/master/README.md#section-2-getting-started) as a cheat sheet for using TypeScript with React.
 
 While you are encouraged to use TypeScript, you **don't** have to. Our codebase can be a mix of both TypeScript and JavaScript.
+
+## Expo Build
+- run `expo build:andriod` or `expo build:ios`
+### Andriod
+  - This will require an Expo sign in. Contact leadership if you need the Bitwarden password for Expo account.
+  - select APK
+### IOS
+  - if asked for bundle identifer, type `org.bitsofgood.umifeeds`
+  - select the `simulator` option
+
+
+## Google Maps API Key Setup 
+
+This application uses the Google Maps API for the standalone andriod app. Here are the steps to set up your own:
+- change `org.bitsofgood.umifeeds` to `com.youcompany.yourappname` in `android.package` in `app.json`
+- run `expo build:andriod` 
+- Follow [the these instructions](https://docs.expo.io/versions/v40.0.0/sdk/map-view/#deploying-to-a-standalone-app-on-android) for deploying to a standalone app on Andriod under "If you have not configured Google Sign In"
+
+

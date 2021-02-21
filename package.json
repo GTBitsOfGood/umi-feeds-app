@@ -53,10 +53,13 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@bitwarden/cli": "^1.14.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
     "@typescript-eslint/parser": "^4.15.0",
+    "cross-env": "^7.0.3",
+    "fx": "^20.0.2",
     "eslint": "^7.19.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
