@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env' });
 
 export default {
+  scheme: 'umifeeds',
   android: {
     package: 'org.bitsofgood.umifeeds'
   }
