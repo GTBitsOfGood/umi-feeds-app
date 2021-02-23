@@ -6,7 +6,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
+import FilePickerScreen from '../screens/TabThreeScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -35,8 +35,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabThree"
-        component={TabThreeNavigator}
+        name="FilePicker"
+        component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -80,16 +80,16 @@ function TabTwoNavigator() {
     </TabTwoStack.Navigator>
   );
 }
-const TabThreeStack = createStackNavigator<TabThreeParamList>();
+const FilePickerStack = createStackNavigator<FilePickerParamList>();
 
-function TabThreeNavigator() {
+function FilePickerNavigator() {
   return (
-    <TabThreeStack.Navigator>
+    <FilePickerStack.Navigator>
       <TabTwoStack.Screen
-        name="TabThreeScreen"
-        component={TabThreeScreen}
-        options={{ headerTitle: 'Tab Three Title' }}
+        name="FilePickerScreen"
+        component={FilePickerScreen}
+        options={{ headerTitle: 'File Picker' }}
       />
-    </TabThreeStack.Navigator>
+    </FilePickerStack.Navigator>
   );
 }
