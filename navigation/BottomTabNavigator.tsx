@@ -6,7 +6,7 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import FilePickerScreen from '../screens/TabThreeScreen';
+import FilePickerScreen from '../screens/FilePickerScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
