@@ -6,9 +6,8 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import FilePickerScreen from '../screens/FilePickerScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList } from '../types';
-import MapScreen from '../screens/MapScreen';
+import TabThreeScreen from '../screens/TabThreeScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -36,15 +35,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="FilePickerScreen"
-        component={FilePickerNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="MapScreen"
-        component={MapScreenNavigator}
+        name="TabThree"
+        component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -88,30 +80,16 @@ function TabTwoNavigator() {
     </TabTwoStack.Navigator>
   );
 }
-const FilePickerStack = createStackNavigator<FilePickerParamList>();
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
 
-function FilePickerNavigator() {
+function TabThreeNavigator() {
   return (
-    <FilePickerStack.Navigator>
-      <FilePickerStack.Screen
-        name="FilePickerScreen"
-        component={FilePickerScreen}
-        options={{ headerTitle: 'File Picker Screen' }}
+    <TabThreeStack.Navigator>
+      <TabTwoStack.Screen
+        name="TabThreeScreen"
+        component={TabThreeScreen}
+        options={{ headerTitle: 'Tab Three Title' }}
       />
-    </FilePickerStack.Navigator>
-  );
-}
-
-const MapScreenStack = createStackNavigator<MapScreenParamList>();
-
-function MapScreenNavigator() {
-  return (
-    <MapScreenStack.Navigator>
-      <MapScreenStack.Screen
-        name="MapScreen"
-        component={MapScreen}
-        options={{ headerTitle: 'Map Screen' }}
-      />
-    </MapScreenStack.Navigator>
+    </TabThreeStack.Navigator>
   );
 }

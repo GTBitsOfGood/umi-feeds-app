@@ -44,6 +44,3 @@ yarn.lock # include if you are using yarn - don't use both npm and yarn
 
 .expo/
 .expo-shared/
-
-# API keys and secrets
-.env

@@ -16,8 +16,6 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "no-param-reassign": [2, { "props": false }],
-    "no-shadow": "off",
     "jsx-a11y/href-no-hash": ["off"],
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
     "max-len": ["warn", {
