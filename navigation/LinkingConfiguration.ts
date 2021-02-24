@@ -16,6 +16,11 @@ export default {
               TabTwoScreen: 'two',
             },
           },
+          MapScreen: {
+            screens: {
+              MapScreen: 'map'
+            }
+          },
         },
       },
       NotFound: '*',

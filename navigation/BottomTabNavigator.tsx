@@ -7,7 +7,8 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import TabThreeScreen from '../screens/TabThreeScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import MapScreen from '../screens/MapScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -37,6 +38,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabThree"
         component={TabThreeNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="MapScreen"
+        component={MapScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -91,5 +99,19 @@ function TabThreeNavigator() {
         options={{ headerTitle: 'Tab Three Title' }}
       />
     </TabThreeStack.Navigator>
+  );
+}
+
+const MapScreenStack = createStackNavigator<MapScreenParamList>();
+
+function MapScreenNavigator() {
+  return (
+    <MapScreenStack.Navigator>
+      <MapScreenStack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{ headerTitle: 'Map Screen' }}
+      />
+    </MapScreenStack.Navigator>
   );
 }
