@@ -18,11 +18,13 @@ export default async function registerForPushNotificationsAsync() {
 
     // Permission Denied :(
     if (finalStatus !== 'granted') {
+      // eslint-disable-next-line no-alert
       alert('Failed to get push token for push notification!');
       return null;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
   } else {
+    // eslint-disable-next-line no-alert
     alert('Must use physical device for Push Notifications');
   }
 

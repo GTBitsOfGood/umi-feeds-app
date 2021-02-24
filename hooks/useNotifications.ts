@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
 import registerForPushNotificationsAsync from '../notifications/RegisterForPushNotifications';
 

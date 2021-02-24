@@ -10,8 +10,8 @@ import rootReducer from './rootReducer';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
 import useNotifications from './hooks/useNotifications';
+import Navigation from './navigation';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -28,7 +28,7 @@ Notifications.setNotificationHandler({
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const [expoPushToken, notification] = useNotifications();
+  const [expoPushToken] = useNotifications();
 
   console.log(`Expo Push Token : ${expoPushToken}`);
 
