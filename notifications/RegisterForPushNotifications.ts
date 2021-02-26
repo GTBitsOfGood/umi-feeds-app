@@ -2,8 +2,13 @@ import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 
+/**
+ * Request push notification permissions if permission is not already granted, and returns the Expo push token.
+ * (This code is derived from the Expo documentation at https://docs.expo.io/push-notifications/overview/#usage, which is licensed under the MIT license.)
+ * @returns {string | null} Expo push token if permission granted, else null
+ */
 export default async function registerForPushNotificationsAsync() {
-  let token;
+  let token: string;
   // Push notifications only work for physical devices
   if (Constants.isDevice) {
     // Check if the user has already given push notification permissions
@@ -38,5 +43,6 @@ export default async function registerForPushNotificationsAsync() {
       lightColor: '#FF231F7C',
     });
   }
+  // @ts-ignore token is assigned by this point; no need to worry about use before assignment
   return token;
 }

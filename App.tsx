@@ -30,6 +30,7 @@ export default function App() {
   const colorScheme = useColorScheme();
   const [expoPushToken] = useNotifications();
 
+  // eslint-disable-next-line no-console
   console.log(`Expo Push Token : ${expoPushToken}`);
 
   if (!isLoadingComplete) {
