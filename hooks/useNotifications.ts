@@ -9,7 +9,8 @@ type Subscription = {
 /**
  * Request permissions to send notifications if permission is not already granted, and then return the Expo push token
  * (push token for your installation of the app) and notification (either "false" or the notification).
- * (Portions of this code are derived from the Expo documentation at https://github.com/expo/expo/blob/master/docs/pages/push-notifications/overview.md, which is licensed under the MIT license.)
+ * Also adds listeners for when notifications are received.
+ * (Portions of this code are derived from the Expo documentation at https://github.com/expo/expo/blob/master/docs/pages/push-notifications/overview.md, which is under the MIT license.)
  * @returns expoPushToken, notification
  */
 export default function useCachedResources(): [string | undefined | null, boolean | Notifications.Notification] {
