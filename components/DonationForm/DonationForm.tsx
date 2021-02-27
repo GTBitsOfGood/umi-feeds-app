@@ -5,7 +5,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Input } from 'react-native-elements';
 
 import { Text, View } from '../Themed';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 function DonationForm() {
   const [error, setError] = useState('');
