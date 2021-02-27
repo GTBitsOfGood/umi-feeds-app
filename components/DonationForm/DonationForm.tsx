@@ -42,8 +42,8 @@ function DonationForm() {
     setShowStartDate(true);
   };
 
-  // const showTimePicker = () => {
-  //   setStartDatetime();
+  // const closeDatePicker = () => {
+  //   setShowStartDate(false);
   // };
 
   const onEndDatetimeChange = (event: any, selectedDatetime?: Date) => {
@@ -95,6 +95,7 @@ function DonationForm() {
         {showStartDate
             && (
             <View>
+              {/* The date has to be in the code first otherwise the button title wont update properly */}
               <DateTimePicker
                 value={startDatetime}
                 mode="date"
@@ -105,12 +106,16 @@ function DonationForm() {
                 value={startDatetime}
                 mode="time"
                 style={{ width: '100%' }}
-                minuteInterval={15}
+                minuteInterval={1}
                 onChange={onStartDatetimeChange}
               />
             </View>
             )}
         <Text>Availability End</Text>
+        <Button
+          onPress={showDatePicker}
+          title={endDatetime.toDateString()}
+        />
         {showEndDate
             && (
             <View>
@@ -124,7 +129,7 @@ function DonationForm() {
                 value={endDatetime}
                 mode="time"
                 style={{ width: '100%' }}
-                minuteInterval={15}
+                minuteInterval={1}
                 onChange={onEndDatetimeChange}
               />
             </View>
