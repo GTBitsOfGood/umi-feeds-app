@@ -5,6 +5,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Input } from 'react-native-elements';
 
 import { Text, View } from '../Themed';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 function DonationForm() {
   const [error, setError] = useState('');
@@ -12,8 +13,8 @@ function DonationForm() {
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
 
-  const [showStartDate, setShowStartDate] = useState(Platform.OS === 'ios');
-  const [showEndDate, setShowEndDate] = useState(Platform.OS === 'ios');
+  const [showStartDate, setShowStartDate] = useState(false);
+  const [showEndDate, setShowEndDate] = useState(false);
 
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
@@ -37,6 +38,14 @@ function DonationForm() {
 
     setStartDatetime(currentDatetime);
   };
+
+  const showDatePicker = () => {
+    setShowStartDate(true);
+  };
+
+  // const showTimePicker = () => {
+  //   setStartDatetime();
+  // };
 
   const onEndDatetimeChange = (event: any, selectedDatetime?: Date) => {
     const currentDatetime = selectedDatetime || endDatetime;
@@ -80,6 +89,10 @@ function DonationForm() {
     <View style={{ width: '100%' }}>
       <View style={{ width: '100%' }}>
         <Text>Availability Start</Text>
+        <Button
+          onPress={showDatePicker}
+          title={startDatetime.toDateString()}
+        />
         {showStartDate
             && (
             <View>
