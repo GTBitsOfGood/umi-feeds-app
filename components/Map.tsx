@@ -4,17 +4,24 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
-
+import axios from 'axios';
 import { Text } from '../components/Themed';
 
 export default function Map() {
   // get available pick up locations
-  // const [isLoading, setLoading] = useState<boolean>(true);
-  // const [availablePickup, setAvailablePickup] = useState([]);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [availablePickup, setAvailablePickup] = useState<Array<Donation>>([]);
 
   // useEffect(() => {
   //   fetch('http://localhost:3000/api/available-pickup')
   //     .then((response) => response.json())
+  //     .then((data) => setAvailablePickup(data.donation))
+  //     .catch((error) => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
+
+  // useEffect(() => {
+  //   axios.get<DonationsObject>('http://localhost:3000/api/available-pickup')
   //     .then((data) => setAvailablePickup(data.donation))
   //     .catch((error) => console.error(error))
   //     .finally(() => setLoading(false));
@@ -43,7 +50,7 @@ export default function Map() {
     text = `My latitude: ${location.coords.latitude} \n My longitude: ${location.coords.longitude} \n\n JSON Junk: ${JSON.stringify(location)}`;
   }
 
-  let userLocation;
+  let userLocation: LatLng;
   if (location != null) {
     userLocation = {
       latitude: location.coords.latitude,
@@ -56,22 +63,25 @@ export default function Map() {
     };
   }
 
-  // const pickUps = tempGET.map((marker) => {
-  //   const dontationLocation = {
-  //     latitude: marker.donor.latitude,
-  //     longitude: marker.donor.longitude,
-  //   };
-  //   const key = marker._id;
-  //   const myMarker = (
-  //     <Marker
-  //       key={key}
-  //       coordinate={dontationLocation}
-  //       title={marker.donor.name}
-  //       description={marker.description}
-  //     />
-  //   );
-  //   return myMarker;
-  // });
+  const pickUps = tempGET.map((marker) => {
+    // let dontationLocation = {
+    //   latitude: marker.donor.latitude,
+    //   longitude: marker.donor.longitude,
+    // };
+    // const key = marker._id;
+    const myMarker = (
+      <Marker
+        key={marker._id}
+        coordinate={{
+          latitude: marker.donor.latitude,
+          longitude: marker.donor.longitude,
+        }}
+      // title={marker.donor.name}
+      // description={marker.description}
+      />
+    );
+    return myMarker;
+  });
 
   return (
     <View style={styles.container}>
@@ -86,28 +96,11 @@ export default function Map() {
           longitudeDelta: 0.0421,
         }}
       >
-        <Marker
+        {/* <Marker
           coordinate={userLocation}
-        />
-        {tempGET.map((marker) => {
-          const dontationLocation = {
-            latitude: marker.donor.latitude,
-            longitude: marker.donor.longitude,
-          };
-
-          const key = marker._id;
-          const myMarker = (
-            <Marker
-              key={key}
-              coordinate={dontationLocation}
-              title={marker.donor.name}
-              description={marker.description}
-            />
-          );
-          return myMarker;
-        })}
-        <Text>{text}</Text>
-        <Text>{text}</Text>
+        /> */}
+        {/* <Text>{text}</Text> */}
+        {/* <Text>{text}</Text> */}
       </MapView>
     </View>
   );
@@ -126,6 +119,38 @@ const styles = StyleSheet.create({
   },
 });
 
+// Types needs for TypeScript
+type LatLng = {
+  latitude: number,
+  longitude: number,
+}
+
+type Donation = {
+  descriptionImages: Array<string>,
+  foodImages: Array<string>,
+  _id: string,
+  donor: {
+    _id: string,
+    name: string,
+    latitude: number,
+    longitude: number
+  },
+  availability: {
+    _id: string,
+    startTime: string,
+    endTime: string
+  },
+  description: string,
+  createdAt: string,
+  updatedAt: string,
+  __v: number
+}
+
+type DonationsObject = {
+  donation: Array<Donation>
+}
+
+// temporary json example
 const tempGET = [
   {
     descriptionImages: [],
