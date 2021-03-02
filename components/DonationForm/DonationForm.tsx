@@ -51,7 +51,6 @@ function DonationForm() {
       marginTop: Constants.statusBarHeight,
     },
     scrollView: {
-      backgroundColor: 'pink',
       marginHorizontal: 0,
     },
     text: {
@@ -60,44 +59,39 @@ function DonationForm() {
   });
 
   return (
-    // <View style={{ width: '100%' }}>
-    // <ScrollView style={styles.scrollView}>
     <View style={{ width: '100%' }}>
-      <View style={{ width: '100%' }}>
+      <ScrollView style={styles.scrollView}>
         <Text>Availability Start</Text>
         <HidableDatePicker datetime={startDatetime} setDatetime={setStartDatetime} />
         <Text>Availability End</Text>
         <HidableDatePicker datetime={endDatetime} setDatetime={setEndDatetime} />
-      </View>
-      {/*
+        {/*
         Change to TextField at some point, or some other form of longer text input
         Border styling is needed so the TextFields are visible on iOS
         */}
-      <Input
-        label="Description"
-        value={description}
-        onChangeText={(desc: string) => setDescription(desc)}
-      />
-      <Input
-        label="Pickup Instructions"
-        value={pickupInstructions}
-        onChangeText={(instructions: string) => setPickupInstructions(instructions)}
-      />
-      <Input
-        label="Weight"
-        value={weight.toString()}
-        onChangeText={(weight: string) => setWeight(+weight)}
-        keyboardType="numeric"
-      />
-      <View>
+        <Input
+          label="Description"
+          value={description}
+          onChangeText={(desc: string) => setDescription(desc)}
+        />
+        <Input
+          label="Pickup Instructions"
+          value={pickupInstructions}
+          onChangeText={(instructions: string) => setPickupInstructions(instructions)}
+        />
+        <Input
+          label="Weight"
+          value={weight.toString()}
+          onChangeText={(weight: string) => setWeight(+weight)}
+          keyboardType="numeric"
+        />
         <Text>{error}</Text>
         <Button
           title="Submit"
           disabled={error !== ''}
           onPress={() => handleSubmit()}
         />
-      </View>
-      {/* </ScrollView> */}
+      </ScrollView>
     </View>
   );
 }
