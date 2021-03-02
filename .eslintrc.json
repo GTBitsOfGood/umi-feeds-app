@@ -60,6 +60,7 @@
       {
         "ts-ignore": "allow-with-description"
       }
-    ]
+    ],
+    "no-underscore-dangle": "off"
   }
 }

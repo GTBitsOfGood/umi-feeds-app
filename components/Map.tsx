@@ -94,6 +94,7 @@ export default function Map() {
             latitude: marker.donor.latitude,
             longitude: marker.donor.longitude,
           };
+
           const key = marker._id;
           const myMarker = (
             <Marker
