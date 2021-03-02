@@ -27,18 +27,18 @@ function HidableDatePicker(props: {
       />
       {showPicker && (
         <View>
-          {/* The date has to be in the code first otherwise the button title wont update properly */}
-          <DateTimePicker
-            value={props.datetime}
-            mode="date"
-            style={{ width: '100%' }}
-            onChange={onDatetimeChange}
-          />
+          {/* The time has to be in the code first otherwise the button title wont update properly */}
           <DateTimePicker
             value={props.datetime}
             mode="time"
             style={{ width: '100%' }}
             minuteInterval={1}
+            onChange={onDatetimeChange}
+          />
+          <DateTimePicker
+            value={props.datetime}
+            mode="date"
+            style={{ width: '100%' }}
             onChange={onDatetimeChange}
           />
         </View>
