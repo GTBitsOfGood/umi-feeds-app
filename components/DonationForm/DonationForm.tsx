@@ -28,14 +28,14 @@ function DonationForm() {
   // Date.now() and currentDatetime.getTime() return milliseconds
   // We check if the date is within a valid range - in this case,
   // at least three hours in the future
-  const cutoff = Date.now() + 60 * 60 * 3 * 1000;
-  if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
-    setError('Date must be at least 3 hours from now!');
-  } else if (startDatetime > currentDatetime) {
-    setError('Start availability must be before end availability!');
-  } else setError('');
+  // const cutoff = Date.now() + 60 * 60 * 3 * 1000;
+  // if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
+  //   setError('Date must be at least 3 hours from now!');
+  // } else if (startDatetime > currentDatetime) {
+  //   setError('Start availability must be before end availability!');
+  // } else setError('');
 
-  setEndDatetime(currentDatetime);
+  // setEndDatetime(currentDatetime);
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/donations', {
