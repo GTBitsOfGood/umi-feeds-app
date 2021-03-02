@@ -1,6 +1,7 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
-import { Button, Platform } from 'react-native';
+import { Button, StyleSheet, ScrollView } from 'react-native';
 import { Input } from 'react-native-elements';
+import Constants from 'expo-constants';
 import HidableDatePicker from './HideableDatePicker';
 import { Text, View } from '../Themed';
 
@@ -9,33 +10,20 @@ function DonationForm() {
   const [pickupInstructions, setPickupInstructions] = useState('');
   const [weight, setWeight] = useState(0);
   const [error, setError] = useState('');
-  const [startDatetime, setStartDatetime] = useState(new Date());
-
-  // // Initially, the start datetime will be now, and the end will be a day from now
+  const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
+  // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
-  const currentDatetime = startDatetime;
 
-  // const [showStartDate, setShowStartDate] = useState(false);
-  // const [showEndDate, setShowEndDate] = useState(false);
-
-  // const [description, setDescription] = useState('');
-  // const [pickupInstructions, setPickupInstructions] = useState('');
-  // const [weight, setWeight] = useState(0);
-
-  // const onStartDatetimeChange = (event: any, selectedDatetime?: Date) => {
-  //   const currentDatetime = selectedDatetime || startDatetime;
-
+  // const currentDatetime = startDatetime;
   // Date.now() and currentDatetime.getTime() return milliseconds
   // We check if the date is within a valid range - in this case,
   // at least three hours in the future
-  const cutoff = Date.now() + 60 * 60 * 3 * 1000;
-  if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
-    setError('Date must be at least 3 hours from now!');
-  } else if (startDatetime > currentDatetime) {
-    setError('Start availability must be before end availability!');
-  } else setError('');
-
-  setEndDatetime(currentDatetime);
+  // const cutoff = Date.now() + 60 * 60 * 3 * 1000;
+  // if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
+  //   setError('Date must be at least 3 hours from now!');
+  // } else if (startDatetime > currentDatetime) {
+  //   setError('Start availability must be before end availability!');
+  // } else setError('');
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/donations', {
@@ -56,7 +44,24 @@ function DonationForm() {
     });
   };
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      width: '100%',
+      marginTop: Constants.statusBarHeight,
+    },
+    scrollView: {
+      backgroundColor: 'pink',
+      marginHorizontal: 0,
+    },
+    text: {
+      fontSize: 42,
+    },
+  });
+
   return (
+    // <View style={{ width: '100%' }}>
+    // <ScrollView style={styles.scrollView}>
     <View style={{ width: '100%' }}>
       <View style={{ width: '100%' }}>
         <Text>Availability Start</Text>
@@ -65,8 +70,8 @@ function DonationForm() {
         <HidableDatePicker datetime={endDatetime} setDatetime={setEndDatetime} />
       </View>
       {/*
-            Change to TextField at some point, or some other form of longer text input
-            Border styling is needed so the TextFields are visible on iOS
+        Change to TextField at some point, or some other form of longer text input
+        Border styling is needed so the TextFields are visible on iOS
         */}
       <Input
         label="Description"
@@ -92,6 +97,7 @@ function DonationForm() {
           onPress={() => handleSubmit()}
         />
       </View>
+      {/* </ScrollView> */}
     </View>
   );
 }

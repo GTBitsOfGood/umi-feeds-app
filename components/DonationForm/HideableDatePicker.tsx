@@ -1,6 +1,7 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTime } from 'luxon';
 import { Text, View } from '../Themed';
 
 function HidableDatePicker(props: {
@@ -9,14 +10,11 @@ function HidableDatePicker(props: {
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const onDatetimeChange = (event: any, selectedDatetime?: Date) => {
-    const currentDatetime = selectedDatetime || props.datetime;
-
     // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
     setShowPicker(Platform.OS === 'ios');
 
     props.setDatetime(selectedDatetime || props.datetime);
   };
-
   const toggleShowPicker = (event: any) => {
     setShowPicker((shown) => !shown);
   };
@@ -25,7 +23,7 @@ function HidableDatePicker(props: {
     <>
       <Button
         onPress={toggleShowPicker}
-        title={props.datetime.toString()}
+        title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.DATETIME_MED)}
       />
       {showPicker && (
         <View>
