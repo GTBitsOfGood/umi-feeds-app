@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Button, Platform } from 'react-native';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -6,64 +6,39 @@ import { Input } from 'react-native-elements';
 
 import { Text, View } from '../Themed';
 
-function DonationForm() {
-  const [error, setError] = useState('');
-  const [startDatetime, setStartDatetime] = useState(new Date());
-  // Initially, the start datetime will be now, and the end will be a day from now
-  const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
-
-  const [showStartDate, setShowStartDate] = useState(false);
-  const [showEndDate, setShowEndDate] = useState(false);
-
+function HidableDatePicker(props: {
+  datetime: Date,
+  setDatetime: Dispatch<SetStateAction<Date>>
+}) {
+  const [showPicker, setShowPicker] = useState(false);
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
   const [weight, setWeight] = useState(0);
+  const [error, setError] = useState('');
 
-  const onStartDatetimeChange = (event: any, selectedDatetime?: Date) => {
-    const currentDatetime = selectedDatetime || startDatetime;
-
-    // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
-    setShowStartDate(Platform.OS === 'ios');
-
-    // Date.now() and currentDatetime.getTime() return milliseconds
-    // We check if the date is within a valid range - in this case,
-    // at least three hours in the future
-    const cutoff = Date.now() + 60 * 60 * 3 * 1000;
-    if (cutoff > currentDatetime.getTime() || cutoff > endDatetime.getTime()) {
-      setError('Date must be at least 3 hours from now!');
-    } else if (currentDatetime > endDatetime) {
-      setError('Start availability must be before end availability!');
-    } else setError('');
-
-    setStartDatetime(currentDatetime);
-  };
-
-  const showDatePicker = () => {
-    setShowStartDate(true);
-  };
-
-  // const closeDatePicker = () => {
-  //   setShowStartDate(false);
-  // };
-
-  const onEndDatetimeChange = (event: any, selectedDatetime?: Date) => {
-    const currentDatetime = selectedDatetime || endDatetime;
+  const onDatetimeChange = (event: any, selectedDatetime?: Date) => {
+    const currentDatetime = selectedDatetime || props.datetime;
 
     // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
-    setShowEndDate(Platform.OS === 'ios');
+    setShowPicker(Platform.OS === 'ios');
 
-    // Date.now() and currentDatetime.getTime() return milliseconds
-    // We check if the date is within a valid range - in this case,
-    // at least three hours in the future
-    const cutoff = Date.now() + 60 * 60 * 3 * 1000;
-    if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
-      setError('Date must be at least 3 hours from now!');
-    } else if (startDatetime > currentDatetime) {
-      setError('Start availability must be before end availability!');
-    } else setError('');
+    props.setDatetime(selectedDatetime || props.datetime);
+  }
 
-    setEndDatetime(currentDatetime);
+  const toggleShowPicker = (event: any) => {
+    setShowPicker(shown => !shown)
   };
+
+  // Date.now() and currentDatetime.getTime() return milliseconds
+  // We check if the date is within a valid range - in this case,
+  // at least three hours in the future
+  const cutoff = Date.now() + 60 * 60 * 3 * 1000;
+  if (cutoff > currentDatetime.getTime() || cutoff > endDatetime.getTime()) {
+    setError('Date must be at least 3 hours from now!');
+  } else if (currentDatetime > endDatetime) {
+    setError('Start availability must be before end availability!');
+  } else setError('');
+
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/donations', {
@@ -82,6 +57,7 @@ function DonationForm() {
         weight,
       }),
     });
+
   };
 
   return (
@@ -89,51 +65,50 @@ function DonationForm() {
       <View style={{ width: '100%' }}>
         <Text>Availability Start</Text>
         <Button
-          onPress={showDatePicker}
-          title={startDatetime.toDateString()}
+          onPress={toggleShowPicker}
+          title={props.datetime.toString()}
         />
-        {showStartDate
-            && (
-            <View>
-              {/* The date has to be in the code first otherwise the button title wont update properly */}
-              <DateTimePicker
-                value={startDatetime}
-                mode="date"
-                style={{ width: '100%' }}
-                onChange={onStartDatetimeChange}
-              />
-              <DateTimePicker
-                value={startDatetime}
-                mode="time"
-                style={{ width: '100%' }}
-                minuteInterval={1}
-                onChange={onStartDatetimeChange}
-              />
-            </View>
-            )}
+        {showPicker && (
+          <View>
+            {/* The date has to be in the code first otherwise the button title wont update properly */}
+            <DateTimePicker
+              value={props.datetime}
+              mode="date"
+              style={{ width: '100%' }}
+              onChange={onDatetimeChange}
+            />
+            <DateTimePicker
+              value={props.datetime}
+              mode="time"
+              style={{ width: '100%' }}
+              minuteInterval={1}
+              onChange={onDatetimeChange}
+            />
+          </View>
+        )}
         <Text>Availability End</Text>
         <Button
-          onPress={showDatePicker}
-          title={endDatetime.toDateString()}
+          onPress={toggleShowPicker}
+          title={props.datetime.toString()}
         />
-        {showEndDate
-            && (
-            <View>
-              <DateTimePicker
-                value={endDatetime}
-                mode="date"
-                style={{ width: '100%' }}
-                onChange={onEndDatetimeChange}
-              />
-              <DateTimePicker
-                value={endDatetime}
-                mode="time"
-                style={{ width: '100%' }}
-                minuteInterval={1}
-                onChange={onEndDatetimeChange}
-              />
-            </View>
-            )}
+        {showPicker && (
+          <View>
+            {/* The date has to be in the code first otherwise the button title wont update properly */}
+            <DateTimePicker
+              value={props.datetime}
+              mode="date"
+              style={{ width: '100%' }}
+              onChange={onDatetimeChange}
+            />
+            <DateTimePicker
+              value={props.datetime}
+              mode="time"
+              style={{ width: '100%' }}
+              minuteInterval={1}
+              onChange={onDatetimeChange}
+            />
+          </View>
+        )}
       </View>
       {/*
             Change to TextField at some point, or some other form of longer text input
@@ -165,6 +140,7 @@ function DonationForm() {
       </View>
     </View>
   );
-}
 
-export default DonationForm;
+};
+
+export default HidableDatePicker;
