@@ -23,10 +23,10 @@ function HidableDatePicker(props: {
     setShowPicker(Platform.OS === 'ios');
 
     props.setDatetime(selectedDatetime || props.datetime);
-  }
+  };
 
   const toggleShowPicker = (event: any) => {
-    setShowPicker(shown => !shown)
+    setShowPicker((shown) => !shown);
   };
 
   // Date.now() and currentDatetime.getTime() return milliseconds
@@ -38,7 +38,6 @@ function HidableDatePicker(props: {
   } else if (currentDatetime > endDatetime) {
     setError('Start availability must be before end availability!');
   } else setError('');
-
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/donations', {
@@ -57,7 +56,6 @@ function HidableDatePicker(props: {
         weight,
       }),
     });
-
   };
 
   return (
@@ -140,7 +138,6 @@ function HidableDatePicker(props: {
       </View>
     </View>
   );
-
-};
+}
 
 export default HidableDatePicker;
