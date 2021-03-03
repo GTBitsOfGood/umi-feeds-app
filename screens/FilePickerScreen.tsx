@@ -22,12 +22,13 @@ export default function FilePickerScreen() {
       quality: 1,
       cropping: false,
     });
-
+    let file;
     if (!result.cancelled) {
+      file = { uri: result.uri, name: 'image.jpg' };
       setImage(result.uri);
     }
     const formData = new FormData();
-    formData.append('image', result.uri);
+    formData.append('image', file as any);
     axios({
       method: 'post',
       url: 'http://localhost:3000/upload',
