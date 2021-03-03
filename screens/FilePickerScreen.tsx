@@ -20,19 +20,19 @@ export default function FilePickerScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       quality: 1,
+      cropping: false,
     });
-
-    // console.log(result);
 
     if (!result.cancelled) {
       setImage(result.uri);
     }
     const formData = new FormData();
-    formData.append('uploadFile', JSON.parse(JSON.stringify({ result })));
-    axios.post('http://localhost:3000/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+    formData.append('image', result.uri);
+    axios({
+      method: 'post',
+      url: 'http://localhost:3000/upload',
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   };
 
