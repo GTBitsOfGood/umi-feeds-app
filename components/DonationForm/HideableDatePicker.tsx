@@ -13,9 +13,9 @@ function HidableDatePicker(props: {
   const onDateChange = useCallback((event: any, selectedDate?: Date) => {
     // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
     setShowPicker(Platform.OS === 'ios');
-    const year = selectedDate?.getFullYear() || props.datetime.getFullYear();
-    const month = selectedDate?.getMonth() || props.datetime.getMonth();
-    const day = selectedDate?.getDate() || props.datetime.getDate();
+    const year = selectedDate?.getFullYear() ?? props.datetime.getFullYear();
+    const month = selectedDate?.getMonth() ?? props.datetime.getMonth();
+    const day = selectedDate?.getDate() ?? props.datetime.getDate();
 
     props.setDatetime(new Date(year, month, day, props.datetime.getHours(), props.datetime.getMinutes()));
     console.log(`from on date: ${props.datetime}`);
@@ -25,8 +25,8 @@ function HidableDatePicker(props: {
     // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
     setShowPicker(Platform.OS === 'ios');
 
-    const hours = selectedTime?.getHours() || props.datetime.getHours();
-    const minutes = selectedTime?.getMinutes() || props.datetime.getMinutes();
+    const hours = selectedTime?.getHours() ?? props.datetime.getHours();
+    const minutes = selectedTime?.getMinutes() ?? props.datetime.getMinutes();
 
     props.setDatetime(new Date(props.datetime.getFullYear(), props.datetime.getMonth(), props.datetime.getDate(), hours, minutes));
     console.log(`from on time: ${props.datetime}\n`);
