@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useCallback } from 'react';
 import { Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DateTime } from 'luxon';
@@ -9,12 +9,29 @@ function HidableDatePicker(props: {
   setDatetime: Dispatch<SetStateAction<Date>>
 }) {
   const [showPicker, setShowPicker] = useState(false);
-  const onDatetimeChange = (event: any, selectedDatetime?: Date) => {
+
+  const onDateChange = useCallback((event: any, selectedDate?: Date) => {
+    // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
+    setShowPicker(Platform.OS === 'ios');
+    const year = selectedDate?.getFullYear() || props.datetime.getFullYear();
+    const month = selectedDate?.getMonth() || props.datetime.getMonth();
+    const day = selectedDate?.getDate() || props.datetime.getDate();
+
+    props.setDatetime(new Date(year, month, day, props.datetime.getHours(), props.datetime.getMinutes()));
+    console.log(`from on date: ${props.datetime}`);
+  }, [props.datetime]);
+
+  const onTimeChange = useCallback((event: any, selectedTime?: Date) => {
     // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
     setShowPicker(Platform.OS === 'ios');
 
-    props.setDatetime(selectedDatetime || props.datetime);
-  };
+    const hours = selectedTime?.getHours() || props.datetime.getHours();
+    const minutes = selectedTime?.getMinutes() || props.datetime.getMinutes();
+
+    props.setDatetime(new Date(props.datetime.getFullYear(), props.datetime.getMonth(), props.datetime.getDate(), hours, minutes));
+    console.log(`from on time: ${props.datetime}\n`);
+  }, [props.datetime]);
+
   const toggleShowPicker = (event: any) => {
     setShowPicker((shown) => !shown);
   };
@@ -27,19 +44,18 @@ function HidableDatePicker(props: {
       />
       {showPicker && (
         <View>
-          {/* The time has to be in the code first otherwise the button title wont update properly */}
           <DateTimePicker
             value={props.datetime}
             mode="time"
             style={{ width: '100%' }}
             minuteInterval={1}
-            onChange={onDatetimeChange}
+            onChange={onTimeChange}
           />
           <DateTimePicker
             value={props.datetime}
             mode="date"
             style={{ width: '100%' }}
-            onChange={onDatetimeChange}
+            onChange={onDateChange}
           />
         </View>
       )}
