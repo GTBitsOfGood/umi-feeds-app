@@ -8,7 +8,9 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import DonationScreen from '../screens/DonationScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList } from '../types';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList} from '../types';
+import MapScreen from '../screens/MapScreen';
+
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -37,6 +39,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="MapScreen"
+        component={MapScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -92,5 +101,19 @@ function DonationScreenNavigator() {
         options={{ headerTitle: 'Donation Screen' }}
       />
     </DonationScreenStack.Navigator>
+  );
+}
+
+const MapScreenStack = createStackNavigator<MapScreenParamList>();
+
+function MapScreenNavigator() {
+  return (
+    <MapScreenStack.Navigator>
+      <MapScreenStack.Screen
+        name="MapScreen"
+        component={MapScreen}
+        options={{ headerTitle: 'Map Screen' }}
+      />
+    </MapScreenStack.Navigator>
   );
 }

@@ -7,6 +7,7 @@ export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
   DonationScreen: undefined;
+  MapScreen: undefined;
 };
 
 export type TabOneParamList = {
@@ -19,4 +20,8 @@ export type TabTwoParamList = {
 
 export type DonationScreenParamList = {
   DonationScreen: undefined;
+};
+
+export type MapScreenParamList = {
+  MapScreen: undefined;
 };

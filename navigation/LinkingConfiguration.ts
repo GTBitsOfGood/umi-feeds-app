@@ -19,6 +19,11 @@ export default {
           DonationScreen: {
             screens: {
               DonationScreen: 'donation'
+            },
+          },
+          MapScreen: {
+            screens: {
+              MapScreen: 'map'
             }
           },
         },
