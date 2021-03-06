@@ -8,9 +8,8 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import DonationScreen from '../screens/DonationScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList} from '../types';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList } from '../types';
 import MapScreen from '../screens/MapScreen';
-
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
