@@ -2,11 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import FilePickerScreen from '../screens/FilePickerScreen';
 import MapScreen from '../screens/MapScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList } from '../types';
 
@@ -27,9 +27,17 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
+
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="FilePicker"
+        component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -78,6 +86,19 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+const FilePickerStack = createStackNavigator<FilePickerParamList>();
+
+function FilePickerNavigator() {
+  return (
+    <FilePickerStack.Navigator>
+      <TabTwoStack.Screen
+        name="FilePickerScreen"
+        component={FilePickerScreen}
+        options={{ headerTitle: 'File Picker' }}
+      />
+    </FilePickerStack.Navigator>
   );
 }
 
