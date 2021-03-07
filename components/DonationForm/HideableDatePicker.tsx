@@ -4,7 +4,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { DateTime } from 'luxon';
 import { View } from '../Themed';
 
-function HidableDatePicker(props: {
+function HideableDatePicker(props: {
   datetime: Date,
   setDatetime: Dispatch<SetStateAction<Date>>
 }) {
@@ -60,4 +60,4 @@ function HidableDatePicker(props: {
   );
 }
 
-export default HidableDatePicker;
+export default HideableDatePicker;
