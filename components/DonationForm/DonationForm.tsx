@@ -8,7 +8,7 @@ import { Text, View } from '../Themed';
 function DonationForm() {
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
-  const [weight, setWeight] = useState(0);
+  const [weight, setWeight] = useState<number | ''>('');
   const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
@@ -25,9 +25,9 @@ function DonationForm() {
           startTime: startDatetime,
           endTime: endDatetime,
         },
-        description,
-        pickupInstructions,
-        weight,
+        description: description !== '' ? description : undefined,
+        pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
+        weight: weight !== '' ? weight : undefined,
       }),
     });
   };
@@ -53,8 +53,9 @@ function DonationForm() {
         <HidableDatePicker datetime={startDatetime} setDatetime={setStartDatetime} />
         <Text>Availability End</Text>
         <HidableDatePicker datetime={endDatetime} setDatetime={setEndDatetime} />
-        <Text>{(Date.now() + 60 * 60 * 2 * 1000) > endDatetime.getTime() && <Text style={{ color: 'red' }}>End time is preferred to be at least two hours from now</Text>}</Text>
-
+        {(Date.now() + 60 * 60 * 2 * 1000) > endDatetime.getTime()
+          && <Text style={{ color: 'red' }}>End time is preferred to be at least two hours from now</Text>
+        }
         {/*
         Change to TextField at some point, or some other form of longer text input
         Border styling is needed so the TextFields are visible on iOS
@@ -65,14 +66,14 @@ function DonationForm() {
           onChangeText={(desc: string) => setDescription(desc)}
         />
         <Input
-          label="Pickup Instructions"
+          label="Pickup Instructions (optional)"
           value={pickupInstructions}
           onChangeText={(instructions: string) => setPickupInstructions(instructions)}
         />
         <Input
-          label="Weight"
+          label="Weight of Food (pounds, optional)"
           value={weight.toString()}
-          onChangeText={(weight: string) => setWeight(+weight)}
+          onChangeText={(weight: string) => setWeight(Number.isFinite(+weight) && weight !== '' ? +weight : '')}
           keyboardType="numeric"
         />
         <Button
