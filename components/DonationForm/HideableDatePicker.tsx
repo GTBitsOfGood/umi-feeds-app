@@ -1,61 +1,55 @@
-import React, { useState, Dispatch, SetStateAction, useCallback } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DateTime } from 'luxon';
-import { Text, View } from '../Themed';
+import { View } from '../Themed';
 
 function HidableDatePicker(props: {
   datetime: Date,
   setDatetime: Dispatch<SetStateAction<Date>>
 }) {
-  const [showPicker, setShowPicker] = useState(false);
+  const [mode, setMode] = useState<'date' | 'time'>('date');
+  const [show, setShow] = useState(false);
 
-  const onDateChange = useCallback((event: any, selectedDate?: Date) => {
-    // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
-    setShowPicker(Platform.OS === 'ios');
-    const year = selectedDate?.getFullYear() ?? props.datetime.getFullYear();
-    const month = selectedDate?.getMonth() ?? props.datetime.getMonth();
-    const day = selectedDate?.getDate() ?? props.datetime.getDate();
-
-    props.setDatetime(new Date(year, month, day, props.datetime.getHours(), props.datetime.getMinutes()));
-    console.log(`from on date: ${props.datetime}`);
-  }, [props.datetime]);
-
-  const onTimeChange = useCallback((event: any, selectedTime?: Date) => {
-    // Workaround for Android issue: https://github.com/react-native-datetimepicker/datetimepicker/issues/54
-    setShowPicker(Platform.OS === 'ios');
-
-    const hours = selectedTime?.getHours() ?? props.datetime.getHours();
-    const minutes = selectedTime?.getMinutes() ?? props.datetime.getMinutes();
-
-    props.setDatetime(new Date(props.datetime.getFullYear(), props.datetime.getMonth(), props.datetime.getDate(), hours, minutes));
-    console.log(`from on time: ${props.datetime}\n`);
-  }, [props.datetime]);
-
-  const toggleShowPicker = (event: any) => {
-    setShowPicker((shown) => !shown);
+  const onChange = (event: any, selectedDate?: Date) => {
+    const currentDate = selectedDate || props.datetime;
+    setShow(Platform.OS === 'ios');
+    props.setDatetime(currentDate);
   };
 
+  const showMode = (currentMode: any) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
   return (
     <>
-      <Button
-        onPress={toggleShowPicker}
-        title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.DATETIME_MED)}
-      />
-      {showPicker && (
+      <View>
+        <Button
+          onPress={showDatepicker}
+          title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.DATE_MED)}
+        />
+      </View>
+      <View>
+        <Button onPress={showTimepicker} title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.TIME_SIMPLE)} />
+      </View>
+
+      {show && (
         <View>
           <DateTimePicker
             value={props.datetime}
-            mode="time"
+            mode={mode}
             style={{ width: '100%' }}
             minuteInterval={1}
-            onChange={onTimeChange}
-          />
-          <DateTimePicker
-            value={props.datetime}
-            mode="date"
-            style={{ width: '100%' }}
-            onChange={onDateChange}
+            display="default"
+            onChange={onChange}
           />
         </View>
       )}
