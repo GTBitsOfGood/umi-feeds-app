@@ -51,13 +51,7 @@ export default function DonationsList() {
         <Text>Pull down to see RefreshControl indicator</Text>
         <Button
           title="refresh"
-          onPress={() => {
-            fetch('http://localhost:3000/api/donations')
-              .then((response) => response.json())
-              .then((data) => setDonations(data))
-              .catch((error) => console.error(error))
-              .finally(() => setLoading(false));
-          }}
+          onPress={onRefresh}
         />
         <Text>{text}</Text>
       </ScrollView>
