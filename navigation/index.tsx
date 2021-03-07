@@ -1,10 +1,12 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import axios from 'axios';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from '../types';
+// import { BASE_URL } from '../util/secrets';
 import BottomTabNavigator from './BottomTabNavigator';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -33,3 +35,5 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
+
+// axios.defaults.baseURL = BASE_URL;

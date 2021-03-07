@@ -5,6 +5,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
 import { Text } from '../components/Themed';
+import { Donation } from '../types';
 
 export default function Map() {
   // get available pick up locations
@@ -90,6 +91,7 @@ export default function Map() {
         {userLocation}
         {pickUps}
         <Text>{text}</Text>
+        <Text>{text}</Text>
       </MapView>
     </View>
   );
@@ -107,28 +109,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
 });
-
-// Types needs for TypeScript
-type Donation = {
-  descriptionImages: Array<string>,
-  foodImages: Array<string>,
-  _id: string,
-  donor: {
-    _id: string,
-    name: string,
-    latitude: number,
-    longitude: number
-  },
-  availability: {
-    _id: string,
-    startTime: string,
-    endTime: string
-  },
-  description: string,
-  createdAt: string,
-  updatedAt: string,
-  __v: number
-}
 
 // temporary json example
 // const tempGET = [

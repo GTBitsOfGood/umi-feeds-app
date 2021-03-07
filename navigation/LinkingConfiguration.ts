@@ -21,6 +21,11 @@ export default {
               MapScreen: 'map'
             }
           },
+          DonationsListScreen: {
+            screens: {
+              DonationsListScreen: 'donations list'
+            }
+          },
         },
       },
       NotFound: '*',
