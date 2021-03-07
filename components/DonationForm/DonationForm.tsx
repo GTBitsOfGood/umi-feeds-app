@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, ScrollView } from 'react-native';
 import { Input } from 'react-native-elements';
 import Constants from 'expo-constants';
@@ -9,24 +9,9 @@ function DonationForm() {
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
   const [weight, setWeight] = useState(0);
-  const [errors, setError] = useState('');
   const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
-  const currentDatetime = startDatetime;
-
-  //   We check if the date is within a valid range - in this case,
-  //   at least three hours in the future
-  //   let prevEndTime = null || endDatetime;
-  //   const cutoff = Date.now() + 60 * 60 * 3 * 1000;
-  //   let error = '';
-  //   if (prevEndTime != endDatetime) {
-  //   if (cutoff > currentDatetime.getTime() || cutoff > startDatetime.getTime()) {
-  //     setError('Date must be at least 3 hours from now!');
-  //   } else if (startDatetime > currentDatetime) {
-  //     setError('Start availability must be before end availability!');
-  //   }
-  // }
 
   const handleSubmit = () => {
     fetch('http://localhost:3000/api/donations', {
@@ -68,8 +53,7 @@ function DonationForm() {
         <HidableDatePicker datetime={startDatetime} setDatetime={setStartDatetime} />
         <Text>Availability End</Text>
         <HidableDatePicker datetime={endDatetime} setDatetime={setEndDatetime} />
-
-        {/* <Text style={{ color: 'red' }}>{(Date.now() + 60 * 60 * 2 * 1000) > endDatetime.getTime() && <Text>End time is preferred to be at least two hours from now</Text>}</Text> */}
+        <Text>{(Date.now() + 60 * 60 * 2 * 1000) > endDatetime.getTime() && <Text style={{ color: 'red' }}>End time is preferred to be at least two hours from now</Text>}</Text>
 
         {/*
         Change to TextField at some point, or some other form of longer text input

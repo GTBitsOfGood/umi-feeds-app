@@ -17,7 +17,7 @@ function HidableDatePicker(props: {
     props.setDatetime(currentDate);
   };
 
-  const showMode = (currentMode: any) => {
+  const showMode = (currentMode: 'date' | 'time') => {
     setShow(true);
     setMode(currentMode);
   };
@@ -38,7 +38,10 @@ function HidableDatePicker(props: {
         />
       </View>
       <View>
-        <Button onPress={showTimepicker} title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.TIME_SIMPLE)} />
+        <Button
+          onPress={showTimepicker}
+          title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.TIME_SIMPLE)}
+        />
       </View>
 
       {show && (
