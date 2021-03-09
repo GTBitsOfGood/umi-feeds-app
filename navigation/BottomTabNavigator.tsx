@@ -7,8 +7,9 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import FilePickerScreen from '../screens/FilePickerScreen';
+import DonationScreen from '../screens/DonationScreen';
 import MapScreen from '../screens/MapScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList } from '../types';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -31,6 +32,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationScreen"
+        component={DonationScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -99,6 +107,20 @@ function FilePickerNavigator() {
         options={{ headerTitle: 'File Picker' }}
       />
     </FilePickerStack.Navigator>
+  );
+}
+
+const DonationScreenStack = createStackNavigator<DonationScreenParamList>();
+
+function DonationScreenNavigator() {
+  return (
+    <DonationScreenStack.Navigator>
+      <DonationScreenStack.Screen
+        name="DonationScreen"
+        component={DonationScreen}
+        options={{ headerTitle: 'Donation Screen' }}
+      />
+    </DonationScreenStack.Navigator>
   );
 }
 

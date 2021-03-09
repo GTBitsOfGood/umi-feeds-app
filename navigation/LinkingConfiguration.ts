@@ -16,6 +16,11 @@ export default {
               TabTwoScreen: 'two',
             },
           },
+          DonationScreen: {
+            screens: {
+              DonationScreen: 'donation'
+            },
+          },
           MapScreen: {
             screens: {
               MapScreen: 'map'
