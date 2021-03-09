@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import 'dotenv/config'; // merge environment variables from .env file with process.env
 
 export default {
   expo: {
@@ -38,6 +38,9 @@ export default {
     },
     web: {
       favicon: './assets/images/favicon.png'
+    },
+    extra: {
+      AXIOS_BASEURL: process.env.AXIOS_BASEURL
     }
   }
 };

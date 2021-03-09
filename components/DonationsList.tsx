@@ -7,12 +7,12 @@ import { Donation } from '../types';
 
 export default function DonationsList() {
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [donations, setDonations] = useState<Array<Donation>>([]);
+  const [donations, setDonations] = useState<Donation[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get<Donation[]>('/api/donations')
-      .then((data) => setDonations(data))
+      .then((res) => setDonations(res.data))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
@@ -37,7 +37,7 @@ export default function DonationsList() {
     //   .catch((error) => console.error(error))
     //   .finally(() => setLoading(false));
     axios.get('/api/donations')
-      .then((data) => setDonations(data))
+      .then((res) => setDonations(res.data))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
     wait(2000).then(() => setRefreshing(false));
