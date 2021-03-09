@@ -5,6 +5,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 
+import axios from 'axios';
 import rootReducer from './rootReducer';
 
 import useCachedResources from './hooks/useCachedResources';
@@ -32,3 +33,7 @@ export default function App() {
     );
   }
 }
+
+axios.defaults.baseURL = process.env.AXIOS_BASEURL;
+// axios.defaults.baseURL = 'http://localhost:3000';
+// axios.defaults.baseURL = 'https://spring21-umifeeds-backend.azurewebsites.net';

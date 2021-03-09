@@ -10,20 +10,20 @@ export default function DonationsList() {
   const [donations, setDonations] = useState<Array<Donation>>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  //   useEffect(() => {
-  //     axios.get('http://localhost:3000/api/donations')
-  //       .then((data) => setDonations(data.donations))
-  //       .catch((error) => console.error(error))
-  //       .finally(() => setLoading(false));
-  //   }, []);
-
   useEffect(() => {
-    fetch('http://localhost:3000/api/donations')
-      .then((response) => response.json())
+    axios.get<Donation[]>('/api/donations')
       .then((data) => setDonations(data))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
+
+  // useEffect(() => {
+  //   fetch('http://localhost:3000/api/donations')
+  //     .then((response) => response.json())
+  //     .then((data) => setDonations(data))
+  //     .catch((error) => console.error(error))
+  //     .finally(() => setLoading(false));
+  // }, []);
 
   const wait = (timeout:number) => new Promise((resolve) => {
     setTimeout(resolve, timeout);
@@ -31,8 +31,12 @@ export default function DonationsList() {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    fetch('http://localhost:3000/api/donations')
-      .then((response) => response.json())
+    // fetch('http://localhost:3000/api/donations')
+    //   .then((response) => response.json())
+    //   .then((data) => setDonations(data))
+    //   .catch((error) => console.error(error))
+    //   .finally(() => setLoading(false));
+    axios.get('/api/donations')
       .then((data) => setDonations(data))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));

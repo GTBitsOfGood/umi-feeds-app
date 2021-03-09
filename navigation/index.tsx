@@ -1,6 +1,5 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import axios from 'axios';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
 
@@ -35,5 +34,3 @@ function RootNavigator() {
     </Stack.Navigator>
   );
 }
-
-// axios.defaults.baseURL = BASE_URL;
