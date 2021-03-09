@@ -4,6 +4,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 
 import * as Location from 'expo-location';
 import { LocationObject } from 'expo-location';
+import axios from 'axios';
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
 
@@ -13,9 +14,8 @@ export default function Map() {
   const [availablePickup, setAvailablePickup] = useState<Array<Donation>>([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/available-pickup')
-      .then((response) => response.json())
-      .then((data) => setAvailablePickup(data.donation))
+    axios.get('/api/available-pickup')
+      .then((res) => setAvailablePickup(res.data.donation))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
@@ -109,67 +109,3 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
 });
-
-// temporary json example
-// const tempGET = [
-//   {
-//     descriptionImages: [],
-//     foodImages: [],
-//     _id: '6032bd3592899332cc7b25d4',
-//     donor: {
-//       _id: '602bf82713e73d625cc0d522',
-//       name: 'Slutty Vegan',
-//       latitude: 33.7433,
-//       longitude: -84.4380
-//     },
-//     availability: {
-//       _id: '6032bd3592899332cc7b25d5',
-//       startTime: '2017-04-21T23:25:43.000Z',
-//       endTime: '2022-04-21T23:25:43.000Z'
-//     },
-//     description: 'Plenty of delicious Impossible Burgers 2.0',
-//     createdAt: '2021-02-21T20:06:13.164Z',
-//     updatedAt: '2021-02-21T20:06:13.164Z',
-//     __v: 0
-//   },
-//   {
-//     descriptionImages: [],
-//     foodImages: [],
-//     _id: '603916d94808d4576cfad301',
-//     donor: {
-//       _id: '603916bb4808d4576cfad300',
-//       name: 'BareBurger',
-//       latitude: 33.7741,
-//       longitude: -84.3844
-//     },
-//     availability: {
-//       _id: '603916d94808d4576cfad302',
-//       startTime: '2017-04-21T23:25:43.000Z',
-//       endTime: '2022-04-21T23:25:43.000Z'
-//     },
-//     description: 'BareBurger Impossible Burgers 2.0',
-//     createdAt: '2021-02-26T15:42:17.557Z',
-//     updatedAt: '2021-02-26T15:42:17.557Z',
-//     __v: 0
-//   },
-//   {
-//     descriptionImages: [],
-//     foodImages: [],
-//     _id: '603917eb580586365c208958',
-//     donor: {
-//       _id: '603916bb4808d4576cfad300',
-//       name: 'BareBurger',
-//       latitude: 33.7741,
-//       longitude: -84.3844
-//     },
-//     availability: {
-//       _id: '603917eb580586365c208959',
-//       startTime: '2017-04-21T23:25:43.000Z',
-//       endTime: '2022-04-21T23:25:43.000Z'
-//     },
-//     description: 'BareBurger Impossible Burgers 2.0',
-//     createdAt: '2021-02-26T15:46:51.993Z',
-//     updatedAt: '2021-02-26T15:46:51.993Z',
-//     __v: 0
-//   }
-// ];
