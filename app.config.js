@@ -34,7 +34,8 @@ export default {
         googleMaps: {
           apiKey: 'AIzaSyCzsET6HCV4T5y-xd8DEHabQETMvGp33hc'
         }
-      }
+      },
+      useNextNotificationsApi: true
     },
     web: {
       favicon: './assets/images/favicon.png'

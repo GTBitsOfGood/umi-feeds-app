@@ -6,8 +6,10 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
+  DonationScreen: undefined;
   MapScreen: undefined;
   DonationsListScreen: undefined;
+  FilePickerScreen: undefined;
 };
 
 export type TabOneParamList = {
@@ -18,12 +20,20 @@ export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
+export type DonationScreenParamList = {
+  DonationScreen: undefined;
+};
+
 export type MapScreenParamList = {
   MapScreen: undefined;
 };
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
+};
+
+export type FilePickerParamList = {
+  FilePickerScreen: undefined;
 };
 
 export type Donor = {

@@ -2,14 +2,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import FilePickerScreen from '../screens/FilePickerScreen';
+import DonationScreen from '../screens/DonationScreen';
 import MapScreen from '../screens/MapScreen';
-import DonationsListScreen from '../screens/donationsListScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList, DonationsListScreenParamList } from '../types';
+import DonationsListScreen from '../screens/DonationsListScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList, DonationsListScreenParamList, FilePickerParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -28,9 +29,24 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
+
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationScreen"
+        component={DonationScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="FilePickerScreen"
+        component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -86,6 +102,33 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+const FilePickerStack = createStackNavigator<FilePickerParamList>();
+
+function FilePickerNavigator() {
+  return (
+    <FilePickerStack.Navigator>
+      <FilePickerStack.Screen
+        name="FilePickerScreen"
+        component={FilePickerScreen}
+        options={{ headerTitle: 'File Picker' }}
+      />
+    </FilePickerStack.Navigator>
+  );
+}
+
+const DonationScreenStack = createStackNavigator<DonationScreenParamList>();
+
+function DonationScreenNavigator() {
+  return (
+    <DonationScreenStack.Navigator>
+      <DonationScreenStack.Screen
+        name="DonationScreen"
+        component={DonationScreen}
+        options={{ headerTitle: 'Donation Screen' }}
+      />
+    </DonationScreenStack.Navigator>
   );
 }
 
