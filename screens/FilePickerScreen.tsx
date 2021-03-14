@@ -61,12 +61,10 @@ export default function FilePickerScreen() {
     });
   };
 
-
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Button title="Take a picture" onPress={takeImage} />
       {takenImage && <Image source={{ uri: takenImage }} style={{ width: 200, height: 200 }} />}
-
 
       <Button title="Pick an image from camera roll" onPress={pickImage} />
       {rollImage && <Image source={{ uri: rollImage }} style={{ width: 200, height: 200 }} />}
