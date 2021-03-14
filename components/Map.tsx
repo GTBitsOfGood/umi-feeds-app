@@ -42,22 +42,23 @@ export default function Map() {
     text = `My latitude: ${location.coords.latitude} \n My longitude: ${location.coords.longitude} \n\n JSON Junk: ${JSON.stringify(location)}`;
   }
 
-  let userLocation: JSX.Element | [];
-  if (location != null) {
-    userLocation = (
-      <Marker
-        coordinate={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude
-        }}
-        pinColor="blue"
-        title="My Location"
-        description="current"
-      />
-    );
-  } else {
-    userLocation = [];
-  }
+  // let userLocation: JSX.Element | [];
+  // if (location != null) {
+  //   userLocation = (
+  //     <Marker
+  //       coordinate={{
+  //         latitude: location.coords.latitude,
+  //         longitude: location.coords.longitude
+  //       }}
+  //       // pinColor="blue"
+  //       title="My Location"
+  //       description="current"
+  //     >
+  //     </Marker>
+  //   );
+  // } else {
+  //   userLocation = [];
+  // }
 
   let pickUps: Array<JSX.Element> | [];
   if (isLoading === true) {
@@ -90,8 +91,10 @@ export default function Map() {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        showsUserLocation
+        showsMyLocationButton
       >
-        {userLocation}
+        {/* {userLocation} */}
         {pickUps}
         <Text>{text}</Text>
         <Text>{text}</Text>
