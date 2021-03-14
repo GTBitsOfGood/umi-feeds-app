@@ -50,6 +50,9 @@ export default function Map() {
           latitude: location.coords.latitude,
           longitude: location.coords.longitude
         }}
+        pinColor="blue"
+        title="My Location"
+        description="current"
       />
     );
   } else {
