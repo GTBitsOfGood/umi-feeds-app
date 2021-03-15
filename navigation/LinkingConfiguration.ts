@@ -21,6 +21,11 @@ export default {
               MapScreen: 'map'
             }
           },
+          LoginScreen: {
+            screens: {
+              LoginScreen: 'login'
+            }
+          },
         },
       },
       NotFound: '*',

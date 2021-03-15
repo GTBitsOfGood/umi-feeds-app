@@ -8,7 +8,14 @@ import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import MapScreen from '../screens/MapScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, MapScreenParamList } from '../types';
+import LoginScreen from '../screens/LoginScreen';
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  TabTwoParamList,
+  MapScreenParamList,
+  LoginScreenParamList
+} from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -37,6 +44,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="MapScreen"
         component={MapScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="LoginScreen"
+        component={LoginScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -92,5 +106,19 @@ function MapScreenNavigator() {
         options={{ headerTitle: 'Map Screen' }}
       />
     </MapScreenStack.Navigator>
+  );
+}
+
+const LoginScreenStack = createStackNavigator<LoginScreenParamList>();
+
+function LoginScreenNavigator() {
+  return (
+    <LoginScreenStack.Navigator>
+      <LoginScreenStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ headerTitle: 'Login Screen' }}
+      />
+    </LoginScreenStack.Navigator>
   );
 }
