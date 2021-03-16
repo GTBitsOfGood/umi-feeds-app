@@ -47,7 +47,6 @@ export default function DonationsList() {
         <Text>{text}</Text>
       </ScrollView>
     </View>
-
   );
 }
 
