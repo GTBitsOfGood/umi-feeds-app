@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, StyleSheet, ScrollView } from 'react-native';
 import { Input } from 'react-native-elements';
 import Constants from 'expo-constants';
+import axios from 'axios';
 import HidableDatePicker from './HideableDatePicker';
 import { Text, View } from '../Themed';
 
@@ -14,21 +15,15 @@ function DonationForm() {
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
 
   const handleSubmit = () => {
-    fetch('http://localhost:3000/api/donations', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+    axios.post('/api/donations', {
+      donorID: '602bf82713e73d625cc0d522',
+      availability: {
+        startTime: startDatetime,
+        endTime: endDatetime,
       },
-      body: JSON.stringify({
-        donorID: '602bf82713e73d625cc0d522',
-        availability: {
-          startTime: startDatetime,
-          endTime: endDatetime,
-        },
-        description: description !== '' ? description : undefined,
-        pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
-        weight: weight !== '' ? weight : undefined,
-      }),
+      description: description !== '' ? description : undefined,
+      pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
+      weight: weight !== '' ? weight : undefined,
     });
   };
 

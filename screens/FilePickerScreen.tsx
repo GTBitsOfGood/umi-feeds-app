@@ -31,7 +31,7 @@ export default function FilePickerScreen() {
     formData.append('image', file as any);
     axios({
       method: 'post',
-      url: 'http://localhost:3000/upload',
+      url: '/upload',
       data: formData,
       headers: { 'Content-Type': 'multipart/form-data' },
     });

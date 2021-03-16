@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import Constants from 'expo-constants';
 
+import axios from 'axios';
 import * as Notifications from 'expo-notifications';
 import rootReducer from './rootReducer';
 
@@ -46,3 +47,5 @@ export default function App() {
     );
   }
 }
+
+axios.defaults.baseURL = Constants.manifest.extra.AXIOS_BASEURL;
