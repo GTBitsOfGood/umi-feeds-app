@@ -15,22 +15,6 @@ function DonationForm() {
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
 
   const handleSubmit = () => {
-    // fetch('http://localhost:3000/api/donations', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     donorID: '602bf82713e73d625cc0d522',
-    //     availability: {
-    //       startTime: startDatetime,
-    //       endTime: endDatetime,
-    //     },
-    //     description: description !== '' ? description : undefined,
-    //     pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
-    //     weight: weight !== '' ? weight : undefined,
-    //   }),
-    // });
     axios.post('/api/donations', {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
