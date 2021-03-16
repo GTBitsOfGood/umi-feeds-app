@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import { logAxiosError } from '../utils';
 
 export default function FilePickerScreen() {
   useEffect(() => {
@@ -27,17 +28,14 @@ export default function FilePickerScreen() {
     });
     let file;
     if (!result.cancelled) {
-      file = { uri: result.uri, name: 'image.jpg' };
+      file = { uri: result.uri, name: 'image.jpg', type: 'image/jpeg' };
       setRollImage(result.uri);
     }
     const pickRollFormData = new FormData();
     pickRollFormData.append('image', file as any);
-    axios({
-      method: 'post',
-      url: '/upload',
-      data: pickRollFormData,
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    axios.post('/upload', pickRollFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      .then((res) => console.log(res.data))
+      .catch((err) => logAxiosError(err));
   };
 
   const takeImage = async () => {
@@ -48,17 +46,19 @@ export default function FilePickerScreen() {
     });
     let file;
     if (!result.cancelled) {
-      file = { uri: result.uri, name: 'image.jpg' };
+      file = { uri: result.uri, name: 'image.jpg', type: 'image/jpeg' };
       setTakeImage(result.uri);
     }
     const takeCameraFormData = new FormData();
     takeCameraFormData.append('image', file as any);
     axios({
       method: 'post',
-      url: 'http://localhost:3000/upload',
+      url: '/upload',
       data: takeCameraFormData,
       headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    })
+      .then((res) => console.log(res.data))
+      .catch((err) => handleAxiosError(err));
   };
 
   return (
