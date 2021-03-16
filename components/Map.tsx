@@ -35,53 +35,39 @@ export default function Map() {
     })();
   }, []);
 
-  let text = 'Waiting..';
+  let text = 'Waiting...';
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = `My latitude: ${location.coords.latitude} \n My longitude: ${location.coords.longitude} \n\n JSON Junk: ${JSON.stringify(location)}`;
   }
 
-  let userLocation: JSX.Element | [];
-  if (location != null) {
-    userLocation = (
-      <Marker
-        coordinate={{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude
-        }}
-      />
-    );
-  } else {
-    userLocation = [];
-  }
+  const userLocation = (location == null) ? [] : (
+    <Marker
+      coordinate={{
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }}
+    />
+  );
 
-  let pickUps: Array<JSX.Element> | [];
-  if (isLoading === true) {
-    pickUps = [];
-  } else {
-    pickUps = availablePickup.map((marker) => {
-      const myMarker = (
-        <Marker
-          key={marker._id}
-          coordinate={{
-            latitude: marker.donor.latitude,
-            longitude: marker.donor.longitude,
-          }}
-          title={marker.donor.name}
-          description={marker.description}
-        />
-      );
-      return myMarker;
-    });
-  }
+  const pickUps = isLoading ? [] : availablePickup.map((donation) => (
+    <Marker
+      key={donation._id}
+      coordinate={{
+        latitude: donation.donor.latitude,
+        longitude: donation.donor.longitude,
+      }}
+      title={donation.donor.name}
+      description={donation.description}
+    />
+  ));
+
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          // latitude: userLocation.latitude,
-          // longitude: userLocation.longitude,
           latitude: 33.7490,
           longitude: -84.3880,
           latitudeDelta: 0.0922,
