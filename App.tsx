@@ -49,4 +49,3 @@ export default function App() {
 }
 
 axios.defaults.baseURL = Constants.manifest.extra.AXIOS_BASEURL;
-console.log(axios.defaults.baseURL);

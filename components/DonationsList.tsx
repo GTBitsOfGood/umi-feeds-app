@@ -6,9 +6,9 @@ import { Text } from '../components/Themed';
 import { Donation } from '../types';
 
 export default function DonationsList() {
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isLoading, setLoading] = useState(true);
   const [donations, setDonations] = useState<Donation[]>([]);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     axios.get('/api/donations')
@@ -54,7 +54,6 @@ export default function DonationsList() {
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: '10%'
