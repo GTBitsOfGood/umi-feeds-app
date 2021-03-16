@@ -26,6 +26,16 @@ export default {
               MapScreen: 'map'
             }
           },
+          DonationsListScreen: {
+            screens: {
+              DonationsListScreen: 'donations list'
+            }
+          },
+          FilePickerScreen: {
+            screens: {
+              FilePickerScreen: 'file picker'
+            }
+          },
         },
       },
       NotFound: '*',

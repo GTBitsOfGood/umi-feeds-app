@@ -34,7 +34,7 @@ export default function FilePickerScreen() {
     pickRollFormData.append('image', file as any);
     axios({
       method: 'post',
-      url: 'http://localhost:3000/upload',
+      url: '/upload',
       data: pickRollFormData,
       headers: { 'Content-Type': 'multipart/form-data' },
     });

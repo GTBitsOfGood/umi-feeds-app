@@ -9,7 +9,8 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import MapScreen from '../screens/MapScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList } from '../types';
+import DonationsListScreen from '../screens/DonationsListScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList, DonationsListScreenParamList, FilePickerParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -44,7 +45,7 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="FilePicker"
+        name="FilePickerScreen"
         component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
@@ -53,6 +54,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="MapScreen"
         component={MapScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationsListScreen"
+        component={DonationsListNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -101,7 +109,7 @@ const FilePickerStack = createStackNavigator<FilePickerParamList>();
 function FilePickerNavigator() {
   return (
     <FilePickerStack.Navigator>
-      <TabTwoStack.Screen
+      <FilePickerStack.Screen
         name="FilePickerScreen"
         component={FilePickerScreen}
         options={{ headerTitle: 'File Picker' }}
@@ -135,5 +143,19 @@ function MapScreenNavigator() {
         options={{ headerTitle: 'Map Screen' }}
       />
     </MapScreenStack.Navigator>
+  );
+}
+
+const DonationsListStack = createStackNavigator<DonationsListScreenParamList>();
+
+function DonationsListNavigator() {
+  return (
+    <DonationsListStack.Navigator>
+      <DonationsListStack.Screen
+        name="DonationsListScreen"
+        component={DonationsListScreen}
+        options={{ headerTitle: 'Donations List Screen' }}
+      />
+    </DonationsListStack.Navigator>
   );
 }
