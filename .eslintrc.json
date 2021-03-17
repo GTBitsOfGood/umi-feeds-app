@@ -62,6 +62,7 @@
         "ts-ignore": "allow-with-description"
       }
     ],
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-alert": "off"
   }
 }
