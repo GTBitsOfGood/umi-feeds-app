@@ -35,13 +35,14 @@ export default function Map() {
     })();
   }, []);
 
-  let text = 'Waiting..';
+
+  let text = 'Waiting...';
   if (errorMsg) {
     text = errorMsg;
   } else if (location) {
     text = `My latitude: ${location.coords.latitude} \n My longitude: ${location.coords.longitude} \n\n JSON Junk: ${JSON.stringify(location)}`;
   }
-
+  
   // let userLocation: JSX.Element | [];
   // if (location != null) {
   //   userLocation = (
@@ -79,6 +80,7 @@ export default function Map() {
       return myMarker;
     });
   }
+    
   return (
     <View style={styles.container}>
       <MapView
@@ -94,7 +96,6 @@ export default function Map() {
         showsUserLocation
         showsMyLocationButton
       >
-        {/* {userLocation} */}
         {pickUps}
         <Text>{text}</Text>
         <Text>{text}</Text>

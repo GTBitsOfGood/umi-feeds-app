@@ -1,4 +1,6 @@
-import 'dotenv/config'; // merge environment variables from .env file with process.env
+
+import 'dotenv/config'; // this import automatically merges environment variables from .env file with process.env
+
 
 export default {
   expo: {
