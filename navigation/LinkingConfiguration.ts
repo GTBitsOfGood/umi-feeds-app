@@ -16,6 +16,11 @@ export default {
               TabTwoScreen: 'two',
             },
           },
+          DonationScreen: {
+            screens: {
+              DonationScreen: 'donation'
+            },
+          },
           MapScreen: {
             screens: {
               MapScreen: 'map'
@@ -24,6 +29,16 @@ export default {
           LoginScreen: {
             screens: {
               LoginScreen: 'login'
+            }
+          },
+          DonationsListScreen: {
+            screens: {
+              DonationsListScreen: 'donations list'
+            }
+          },
+          FilePickerScreen: {
+            screens: {
+              FilePickerScreen: 'file picker'
             }
           },
         },

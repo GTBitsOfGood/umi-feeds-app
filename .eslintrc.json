@@ -42,6 +42,7 @@
     "object-curly-newline": "off",
     "react/prop-types": "off",
     "react/display-name": "off",
+    "react/jsx-curly-newline": "off",
     "linebreak-style": "off",
     "react/jsx-props-no-spreading": "off",
     "react/destructuring-assignment": "off",
@@ -60,6 +61,8 @@
       {
         "ts-ignore": "allow-with-description"
       }
-    ]
+    ],
+    "no-underscore-dangle": "off",
+    "no-alert": "off"
   }
 }
