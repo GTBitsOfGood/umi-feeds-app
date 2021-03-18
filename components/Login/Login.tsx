@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Text, View } from '../Themed';
 
 import * as Auth0 from '../../constants/Auth0';
+import { jwtToken } from '../../types';
 
 import { login, logout } from './authReducer';
 import { RootState } from '../../rootReducer';
@@ -17,7 +18,7 @@ const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 function Login(props: {
-  login: (token: Auth0.jwtToken) => void,
+  login: (token: jwtToken) => void,
   logout: () => void,
   authenticated: boolean,
   email: string,
@@ -48,8 +49,8 @@ function Login(props: {
     if (result) {
       if (result.type === 'success') {
         // Retrieve the JWT token and decode it
-        const jwtToken = result.params.id_token;
-        const decoded : Auth0.jwtToken = jwtDecode(jwtToken);
+        const receivedToken = result.params.id_token;
+        const decoded : jwtToken = jwtDecode(receivedToken);
 
         login(decoded);
       } else {

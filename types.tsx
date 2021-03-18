@@ -25,3 +25,12 @@ export type MapScreenParamList = {
 export type LoginScreenParamList = {
   LoginScreen: undefined;
 };
+
+/* eslint-disable camelcase */
+export type jwtToken = {
+  given_name: string,
+  family_name: string,
+  nickname: string,
+  name: string,
+}
+/* eslint-enable camelcase */
