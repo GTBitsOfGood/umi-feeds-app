@@ -27,6 +27,7 @@ export type DonationScreenParamList = {
 
 export type MapScreenParamList = {
   MapScreen: undefined;
+  DonationDetails: undefined;
 };
 
 export type LoginScreenParamList = {
