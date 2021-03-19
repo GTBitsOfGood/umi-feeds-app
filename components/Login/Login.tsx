@@ -103,7 +103,7 @@ function mapStateToProps(state: RootState) {
   } else {
     return {
       authenticated: false,
-      email: '',
+      email: state.auth.email,
     };
   }
 }
