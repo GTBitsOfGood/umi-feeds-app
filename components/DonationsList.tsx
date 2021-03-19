@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Button , Dimensions } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View, Button, Dimensions } from 'react-native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
@@ -63,7 +63,7 @@ function DonationListBox(donation:Donation) {
   return (
     <View style={styles.donationContainer}>
       <Text style={styles.title}>{donation.donor.name}</Text>
-      <Text>{donation.description}</Text>
+      {/* <Text>{donation.description}</Text> */}
     </View>
   );
 }
