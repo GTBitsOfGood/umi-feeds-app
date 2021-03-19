@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
+import jwtDecode from 'jwt-decode';
 import { RootState } from '../../rootReducer';
 
 import { Text, View } from '../Themed';
+import { decodedJwtToken } from '../../types';
 
 function LoginState(props: {
     authenticated: boolean,
@@ -22,13 +24,23 @@ function LoginState(props: {
 }
 
 function mapStateToProps(state: RootState) {
-  return {
-    authenticated: state.auth.authenticated,
-    firstName: state.auth.firstName,
-    lastName: state.auth.lastName,
-    username: state.auth.username,
-    email: state.auth.email,
-  };
+  if (state.auth.jwt !== '') {
+    return {
+      authenticated: true,
+      firstName: state.auth.firstName,
+      lastName: state.auth.lastName,
+      username: state.auth.username,
+      email: state.auth.email,
+    };
+  } else {
+    return {
+      authenticated: false,
+      firstName: '',
+      lastName: '',
+      username: '',
+      email: '',
+    };
+  }
 }
 
 export default connect(

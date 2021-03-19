@@ -13,7 +13,7 @@ type Subscription = {
  * (Portions of this code are derived from the Expo documentation at https://github.com/expo/expo/blob/master/docs/pages/push-notifications/overview.md, which is under the MIT license.)
  * @returns expoPushToken, notification
  */
-export default function useCachedResources(): [string | undefined | null, boolean | Notifications.Notification] {
+export default function useNotifications(): [string | undefined | null, boolean | Notifications.Notification] {
   const [expoPushToken, setExpoPushToken] = useState<string | undefined | null>('');
   const [notification, setNotification] = useState<boolean | Notifications.Notification>(false);
   const notificationListener = useRef<Subscription>();
