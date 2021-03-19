@@ -1,5 +1,4 @@
 import * as AuthSession from 'expo-auth-session';
-import jwtDecode from 'jwt-decode';
 import React, { useEffect } from 'react';
 import { Button, Platform } from 'react-native';
 
@@ -36,7 +35,7 @@ function LogoutButton(props: {
 
   return (
     <Button
-      title="Log out"
+      title="Log Out"
       onPress={() => {
         promptAsyncLogout({ useProxy });
       }}

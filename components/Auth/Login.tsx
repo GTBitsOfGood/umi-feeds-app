@@ -96,7 +96,7 @@ function Login(props: {
 
 function mapStateToProps(state: RootState) {
   return {
-    authenticated: true,
+    authenticated: state.auth.authenticated,
     username: state.auth.username,
   };
 }

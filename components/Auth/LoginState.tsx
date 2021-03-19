@@ -21,21 +21,12 @@ function LoginState(props: {
 }
 
 function mapStateToProps(state: RootState) {
-  if (state.auth.jwt !== '') {
-    return {
-      authenticated: true,
-      firstName: state.auth.firstName,
-      lastName: state.auth.lastName,
-      username: state.auth.username,
-    };
-  } else {
-    return {
-      authenticated: false,
-      firstName: '',
-      lastName: '',
-      username: '',
-    };
-  }
+  return {
+    authenticated: state.auth.authenticated,
+    firstName: state.auth.firstName,
+    lastName: state.auth.lastName,
+    username: state.auth.username,
+  };
 }
 
 export default connect(

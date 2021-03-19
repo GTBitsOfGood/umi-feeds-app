@@ -47,7 +47,7 @@ function LoginButton(props: {
 
   return (
     <Button
-      title="Log in with Auth0"
+      title="Log In"
       onPress={() => promptAsync({ useProxy })}
     />
   );
