@@ -10,6 +10,7 @@ import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
+import DonationDetails from '../components/DonationDetails';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
@@ -158,6 +159,11 @@ function MapScreenNavigator() {
         name="MapScreen"
         component={MapScreen}
         options={{ headerTitle: 'Map Screen' }}
+      />
+      <MapScreenStack.Screen
+        name="DonationDetails"
+        component={DonationDetails}
+        options={{ headerTitle: 'Donation Details' }}
       />
     </MapScreenStack.Navigator>
   );

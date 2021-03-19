@@ -23,7 +23,8 @@ export default {
           },
           MapScreen: {
             screens: {
-              MapScreen: 'map'
+              MapScreen: 'map',
+              DonationDetails: 'donation details'
             }
           },
           LoginScreen: {
