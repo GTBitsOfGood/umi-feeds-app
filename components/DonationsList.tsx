@@ -32,6 +32,13 @@ export default function DonationsList() {
 
   const text = `Donations: \n ${JSON.stringify(donations)}`;
 
+  const donationList = isLoading ? [] : donations.map((donation) => (
+    <DonationListBox
+      // donationId={donation._id}
+      donation={donation}
+    />
+  ));
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -44,8 +51,18 @@ export default function DonationsList() {
           title="refresh"
           onPress={onRefresh}
         />
-        <Text>{text}</Text>
+        {/* <Text>{text}</Text> */}
+        {donationList}
       </ScrollView>
+    </View>
+  );
+}
+
+function DonationListBox(donation:Donation) {
+  return (
+    <View style={styles.donationContainer}>
+      <Text style={styles.title}>{donation.donor.name}</Text>
+      <Text>{donation.description}</Text>
     </View>
   );
 }
@@ -66,4 +83,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  donationContainer: {
+    flex: 0.3,
+    borderWidth: 2,
+    borderRadius: 20,
+  }
 });
