@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
+import axios from 'axios';
 import registerForPushNotificationsAsync from '../notifications/registerForPushNotifications';
+import { RootState } from '../rootReducer';
+import { store } from '../redux/store';
 
 type Subscription = {
   remove: () => void;
@@ -21,7 +24,11 @@ export default function useNotifications(): [string | undefined | null, boolean 
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
-      // TODO: HERE IS WHERE WE WILL WANT TO SEND SOME SORT OF UPDATE TO THE BACKEND UPDATING IT ON THIS PUSH TOKEN
+      axios.post(
+        '/api/token',
+        { token: expoPushToken },
+        { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } }
+      ).catch((error) => console.error(error));
       setExpoPushToken(token);
     });
 
@@ -44,4 +51,8 @@ export default function useNotifications(): [string | undefined | null, boolean 
   }, []);
 
   return [expoPushToken, notification];
+}
+
+function mapStateToProps(state: RootState) {
+  return { jwt: state.auth.jwt };
 }
