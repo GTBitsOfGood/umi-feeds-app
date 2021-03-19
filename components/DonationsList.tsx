@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, RefreshControl, StyleSheet, View, Button, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
@@ -31,7 +32,6 @@ export default function DonationsList() {
   }, []);
 
   const text = `Donations: \n ${JSON.stringify(donations)}`;
-
   // need to fix refresh
   const donationList = isLoading ? [] : donations.map((donation) => (
     <DonationListBox
@@ -60,10 +60,18 @@ export default function DonationsList() {
 }
 
 function DonationListBox(donation:Donation) {
+  const navigation = useNavigation();
   return (
     <View style={styles.donationContainer}>
-      <Text style={styles.title}>{donation.donor.name}</Text>
-      {/* <Text>{donation.description}</Text> */}
+      <Text
+        onPress={() => navigation.navigate('EditDonationDetails', {
+          donationId: donation._id,
+          otherParam: 'anything you want here',
+        })
+      }
+      >
+        {donation.description}
+      </Text>
     </View>
   );
 }

@@ -33,7 +33,8 @@ export default {
           },
           DonationsListScreen: {
             screens: {
-              DonationsListScreen: 'donations list'
+              DonationsListScreen: 'donations list',
+              EditDonationDetails: 'edit donation details'
             }
           },
           FilePickerScreen: {

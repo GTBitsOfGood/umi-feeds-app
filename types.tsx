@@ -44,6 +44,7 @@ export type decodedJwtToken = {
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
+  EditDonationDetails: undefined;
 };
 
 export type FilePickerParamList = {
