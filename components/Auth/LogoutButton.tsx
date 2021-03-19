@@ -1,4 +1,5 @@
 import * as AuthSession from 'expo-auth-session';
+import jwtDecode from 'jwt-decode';
 import React, { useEffect } from 'react';
 import { Button, Platform } from 'react-native';
 
@@ -24,19 +25,19 @@ function LogoutButton(props: {
   },
   { authorizationEndpoint: Auth0.logoutEndpoint });
 
-  /* Can be used to do something on logout
   useEffect(() => {
-    console.warn('LOGOUT RESULT');
-    console.warn(logout);
-    console.warn(logoutResult);
+    if (logoutResult) {
+      // Although logout functionality works, it receives an error from Auth0, so we only check for canceling logout rather than successful logout
+      if (logoutResult.type !== 'cancel') {
+        logout();
+      }
+    }
   }, [logoutResult]);
-  */
 
   return (
     <Button
       title="Log out"
       onPress={() => {
-        logout();
         promptAsyncLogout({ useProxy });
       }}
     />
