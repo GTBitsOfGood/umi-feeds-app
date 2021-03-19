@@ -45,24 +45,40 @@ export type decodedJwtToken = {
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
+  EditDonationDetails: undefined;
 };
 
 export type FilePickerParamList = {
   FilePickerScreen: undefined;
 };
 
-export type Donor = {
+export type User = {
   _id: string,
   name: string,
-  latitude: number,
-  longitude: number
+  email: string,
+  pushTokens: string,
+  recipient: boolean,
+  admin: boolean,
+  createdAt: string,
+  updatedAt: string,
+  __v: number,
+  sub: string
 };
 
 export type Donation = {
   descriptionImages: Array<string>,
   foodImages: Array<string>,
   _id: string,
-  donor: Donor,
+  donor: {
+    _id: string,
+    donorInfo: {
+      name: string,
+      phone: string,
+      address: string,
+      longitude: number,
+      latitude: number
+    }
+  },
   availability: {
     _id: string,
     startTime: string,

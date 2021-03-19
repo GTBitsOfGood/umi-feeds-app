@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Button } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View, Button, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
@@ -11,7 +12,7 @@ export default function DonationsList() {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    axios.get('/api/donations')
+    axios.get<{ donations: Donation[] }>('/api/donations')
       .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -23,14 +24,20 @@ export default function DonationsList() {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    axios.get('/api/donations')
-      .then((res) => setDonations(res.data))
+    axios.get<{ donations: Donation[] }>('/api/donations')
+      .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const text = `Donations: \n ${JSON.stringify(donations)}`;
+  // need to fix refresh
+  const donationList = isLoading ? [] : donations.map((donation) => (
+    <DonationListBox
+      key={donation._id}
+      {...donation}
+    />
+  ));
 
   return (
     <View style={styles.container}>
@@ -44,8 +51,25 @@ export default function DonationsList() {
           title="refresh"
           onPress={onRefresh}
         />
-        <Text>{text}</Text>
+        {donationList}
       </ScrollView>
+    </View>
+  );
+}
+
+function DonationListBox(donation:Donation) {
+  const navigation = useNavigation();
+  return (
+    <View style={styles.donationContainer}>
+      <Text
+        onPress={() => navigation.navigate('EditDonationDetails', {
+          donationId: donation._id,
+          otherParam: 'anything you want here',
+        })
+      }
+      >
+        {donation.description}
+      </Text>
     </View>
   );
 }
@@ -66,4 +90,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  donationContainer: {
+    flex: 1,
+    fontSize: 20,
+    width: Dimensions.get('window').width,
+    height: 20,
+    alignContent: 'space-around',
+    alignSelf: 'center',
+  }
 });

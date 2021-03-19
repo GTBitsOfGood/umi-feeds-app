@@ -22,6 +22,7 @@ import {
   LoginScreenParamList,
   FilePickerParamList,
 } from '../types';
+import EditDonationDetails from '../components/EditDonationDetails';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -192,6 +193,11 @@ function DonationsListNavigator() {
         name="DonationsListScreen"
         component={DonationsListScreen}
         options={{ headerTitle: 'Donations List Screen' }}
+      />
+      <DonationsListStack.Screen
+        name="EditDonationDetails"
+        component={EditDonationDetails}
+        options={{ headerTitle: 'Edit Donation Details' }}
       />
     </DonationsListStack.Navigator>
   );
