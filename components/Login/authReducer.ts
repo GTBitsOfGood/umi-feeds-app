@@ -1,33 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { jwtToken } from '../../types';
+import { decodedJwtToken } from '../../types';
 
 const authReducer = createSlice({
   name: 'authInfo',
   initialState: {
-    authenticated: false,
-    firstName: '',
-    lastName: '',
-    username: '',
-    email: '',
+    jwt: ''
   },
   reducers: {
-    login(state, action: PayloadAction<jwtToken>) {
-      const { given_name, family_name, nickname, name } = action.payload; // eslint-disable-line camelcase
-
-      state.authenticated = true;
-
-      state.firstName = given_name; // eslint-disable-line camelcase
-      state.lastName = family_name; // eslint-disable-line camelcase
-      state.username = nickname;
-      state.email = name;
+    login(state, action: PayloadAction<string>) {
+      state.jwt = action.payload;
     },
     logout(state) {
-      state.authenticated = false;
-
-      state.firstName = '';
-      state.lastName = '';
-      state.username = '';
-      state.email = '';
+      state.jwt = '';
     },
   }
 });

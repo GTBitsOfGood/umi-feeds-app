@@ -34,7 +34,7 @@ export type LoginScreenParamList = {
 };
 
 /* eslint-disable camelcase */
-export type jwtToken = {
+export type decodedJwtToken = {
   given_name: string,
   family_name: string,
   nickname: string,
