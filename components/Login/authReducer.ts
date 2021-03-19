@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { decodedJwtToken } from '../../types';
 
 const authReducer = createSlice({
   name: 'authInfo',
