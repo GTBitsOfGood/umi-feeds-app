@@ -12,7 +12,7 @@ export default function DonationsList() {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    axios.get('/api/donations')
+    axios.get<{ donations: Donation[] }>('/api/donations')
       .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -24,14 +24,13 @@ export default function DonationsList() {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    axios.get('/api/donations')
-      .then((res) => setDonations(res.data))
+    axios.get<{ donations: Donation[] }>('/api/donations')
+      .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const text = `Donations: \n ${JSON.stringify(donations)}`;
   // need to fix refresh
   const donationList = isLoading ? [] : donations.map((donation) => (
     <DonationListBox
@@ -52,7 +51,6 @@ export default function DonationsList() {
           title="refresh"
           onPress={onRefresh}
         />
-        {/* <Text>{text}</Text> */}
         {donationList}
       </ScrollView>
     </View>

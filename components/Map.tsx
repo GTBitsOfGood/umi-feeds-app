@@ -11,10 +11,10 @@ import { Donation } from '../types';
 export default function Map() {
   // get available pick up locations
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [availablePickup, setAvailablePickup] = useState<Array<Donation>>([]);
+  const [availablePickup, setAvailablePickup] = useState<Donation[]>([]);
 
   useEffect(() => {
-    axios.get('/api/available-pickup')
+    axios.get<{ donation: Donation[] }>('/api/available-pickup')
       .then((res) => setAvailablePickup(res.data.donation))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -55,10 +55,10 @@ export default function Map() {
     <Marker
       key={donation._id}
       coordinate={{
-        latitude: donation.donor.latitude,
-        longitude: donation.donor.longitude,
+        latitude: donation.donor.donorInfo.latitude,
+        longitude: donation.donor.donorInfo.longitude,
       }}
-      title={donation.donor.name}
+      title={donation.donor.donorInfo.name}
       description={donation.description}
     />
   ));
