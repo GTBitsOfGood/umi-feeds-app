@@ -9,22 +9,12 @@ import axios from 'axios';
 import * as Notifications from 'expo-notifications';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
-import { FLUSH, PAUSE, PERSIST, PURGE, REGISTER, REHYDRATE } from 'redux-persist/es/constants';
-import rootReducer from './rootReducer';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import useNotifications from './hooks/useNotifications';
 import Navigation from './navigation';
-
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware({
-    serializableCheck: {
-      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-    },
-  }),
-});
+import { store } from './redux/store';
 
 const persistor = persistStore(store);
 
