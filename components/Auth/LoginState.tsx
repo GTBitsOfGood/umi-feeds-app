@@ -12,7 +12,6 @@ function LoginState(props: {
     firstName: string,
     lastName: string,
     username: string,
-    email: string,
 }) {
   const { authenticated, firstName, lastName, username, email } = props;
   return (
@@ -30,7 +29,6 @@ function mapStateToProps(state: RootState) {
       firstName: state.auth.firstName,
       lastName: state.auth.lastName,
       username: state.auth.username,
-      email: state.auth.email,
     };
   } else {
     return {
@@ -38,7 +36,6 @@ function mapStateToProps(state: RootState) {
       firstName: '',
       lastName: '',
       username: '',
-      email: '',
     };
   }
 }

@@ -14,7 +14,6 @@ function LoginScreen(props: {
   firstName: string,
   lastName: string,
   username: string,
-  email: string,
 }) {
   const { authenticated, firstName, lastName, username, email } = props;
 
@@ -40,7 +39,6 @@ function mapStateToProps(state: RootState) {
     firstName: state.auth.firstName,
     lastName: state.auth.lastName,
     username: state.auth.username,
-    email: state.auth.email,
   };
 }
 

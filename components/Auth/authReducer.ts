@@ -10,7 +10,6 @@ const authReducer = createSlice({
     firstName: '',
     lastName: '',
     username: '',
-    email: ''
   },
   reducers: {
     login(state, action: PayloadAction<string>) {
@@ -21,7 +20,6 @@ const authReducer = createSlice({
       state.firstName = userInfo.given_name;
       state.lastName = userInfo.family_name;
       state.username = userInfo.nickname;
-      state.email = userInfo.name;
     },
     logout(state) {
       state.authenticated = false;
@@ -30,7 +28,6 @@ const authReducer = createSlice({
       state.firstName = '';
       state.lastName = '';
       state.username = '';
-      state.email = '';
     },
   }
 });

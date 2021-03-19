@@ -95,17 +95,10 @@ function Login(props: {
 }
 
 function mapStateToProps(state: RootState) {
-  if (state.auth.jwt !== '') {
-    return {
-      authenticated: true,
-      email: state.auth.email,
-    };
-  } else {
-    return {
-      authenticated: false,
-      email: state.auth.email,
-    };
-  }
+  return {
+    authenticated: true,
+    username: state.auth.username,
+  };
 }
 
 export default connect(
