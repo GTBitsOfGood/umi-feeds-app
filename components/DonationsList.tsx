@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Button } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View, Button , Dimensions } from 'react-native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
@@ -32,6 +32,7 @@ export default function DonationsList() {
 
   const text = `Donations: \n ${JSON.stringify(donations)}`;
 
+  // need to fix refresh
   const donationList = isLoading ? [] : donations.map((donation) => (
     <DonationListBox
       key={donation._id}
@@ -84,8 +85,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   donationContainer: {
-    flex: 0.3,
-    borderWidth: 2,
-    borderRadius: 20,
+    flex: 1,
+    fontSize: 20,
+    width: Dimensions.get('window').width,
+    height: 20,
+    alignContent: 'space-around',
+    alignSelf: 'center',
   }
 });
