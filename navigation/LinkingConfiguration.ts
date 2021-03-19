@@ -26,6 +26,11 @@ export default {
               MapScreen: 'map'
             }
           },
+          LoginScreen: {
+            screens: {
+              LoginScreen: 'login'
+            }
+          },
           DonationsListScreen: {
             screens: {
               DonationsListScreen: 'donations list'

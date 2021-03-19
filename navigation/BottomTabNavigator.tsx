@@ -8,9 +8,19 @@ import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
-import MapScreen from '../screens/MapScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, DonationScreenParamList, MapScreenParamList, DonationsListScreenParamList, FilePickerParamList } from '../types';
+import MapScreen from '../screens/MapScreen';
+import LoginScreen from '../screens/LoginScreen';
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  TabTwoParamList,
+  DonationScreenParamList,
+  MapScreenParamList,
+  DonationsListScreenParamList,
+  LoginScreenParamList,
+  FilePickerParamList,
+} from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -54,6 +64,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="MapScreen"
         component={MapScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="LoginScreen"
+        component={LoginScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -143,6 +160,20 @@ function MapScreenNavigator() {
         options={{ headerTitle: 'Map Screen' }}
       />
     </MapScreenStack.Navigator>
+  );
+}
+
+const LoginScreenStack = createStackNavigator<LoginScreenParamList>();
+
+function LoginScreenNavigator() {
+  return (
+    <LoginScreenStack.Navigator>
+      <LoginScreenStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        options={{ headerTitle: 'Login Screen' }}
+      />
+    </LoginScreenStack.Navigator>
   );
 }
 

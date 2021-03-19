@@ -8,6 +8,7 @@ export type BottomTabParamList = {
   TabTwo: undefined;
   DonationScreen: undefined;
   MapScreen: undefined;
+  LoginScreen: undefined;
   DonationsListScreen: undefined;
   FilePickerScreen: undefined;
 };
@@ -27,6 +28,19 @@ export type DonationScreenParamList = {
 export type MapScreenParamList = {
   MapScreen: undefined;
 };
+
+export type LoginScreenParamList = {
+  LoginScreen: undefined;
+};
+
+/* eslint-disable camelcase */
+export type jwtToken = {
+  given_name: string,
+  family_name: string,
+  nickname: string,
+  name: string,
+}
+/* eslint-enable camelcase */
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
