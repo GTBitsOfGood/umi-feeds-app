@@ -1,11 +1,9 @@
 import React from 'react';
 
 import { connect } from 'react-redux';
-import jwtDecode from 'jwt-decode';
 import { RootState } from '../../rootReducer';
 
 import { Text, View } from '../Themed';
-import { decodedJwtToken } from '../../types';
 
 function LoginState(props: {
     authenticated: boolean,
@@ -13,10 +11,10 @@ function LoginState(props: {
     lastName: string,
     username: string,
 }) {
-  const { authenticated, firstName, lastName, username, email } = props;
+  const { authenticated, firstName, lastName, username } = props;
   return (
     <View>
-      <Text>{`Authenticated is ${authenticated}, email is ${email}`}</Text>
+      <Text>{`Authenticated is ${authenticated}`}</Text>
       <Text>{`Your first name is ${firstName}, last name is ${lastName}, and username is ${username}`}</Text>
     </View>
   );

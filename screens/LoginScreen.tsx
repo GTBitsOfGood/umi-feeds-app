@@ -15,7 +15,7 @@ function LoginScreen(props: {
   lastName: string,
   username: string,
 }) {
-  const { authenticated, firstName, lastName, username, email } = props;
+  const { authenticated, firstName, lastName, username } = props;
 
   return (
     <View style={styles.container}>
