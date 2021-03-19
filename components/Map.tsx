@@ -46,6 +46,8 @@ export default function Map() {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        showsUserLocation
+        showsMyLocationButton
       >
         {pickUps}
       </MapView>
