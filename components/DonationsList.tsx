@@ -34,8 +34,8 @@ export default function DonationsList() {
 
   const donationList = isLoading ? [] : donations.map((donation) => (
     <DonationListBox
-      // donationId={donation._id}
-      donation={donation}
+      key={donation._id}
+      {...donation}
     />
   ));
 
