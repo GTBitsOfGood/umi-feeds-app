@@ -25,13 +25,12 @@ function LoginState(props: {
 
 function mapStateToProps(state: RootState) {
   if (state.auth.jwt !== '') {
-    const userInfo : decodedJwtToken = jwtDecode(state.auth.jwt);
     return {
       authenticated: true,
-      firstName: userInfo.given_name,
-      lastName: userInfo.family_name,
-      username: userInfo.nickname,
-      email: userInfo.name,
+      firstName: state.auth.firstName,
+      lastName: state.auth.lastName,
+      username: state.auth.username,
+      email: state.auth.email,
     };
   } else {
     return {

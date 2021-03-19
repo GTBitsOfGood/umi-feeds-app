@@ -9,7 +9,7 @@ import authReducer from './components/Login/authReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['jwt']
+  whitelist: ['jwt', 'authenticated', 'firstName', 'lastName', 'username', 'email']
 };
 
 const rootReducer = combineReducers({

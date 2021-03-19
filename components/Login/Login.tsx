@@ -96,15 +96,14 @@ function Login(props: {
 
 function mapStateToProps(state: RootState) {
   if (state.auth.jwt !== '') {
-    const decodedToken: decodedJwtToken = jwtDecode(state.auth.jwt);
     return {
       authenticated: true,
-      email: decodedToken.name,
+      email: state.auth.email,
     };
   } else {
     return {
       authenticated: false,
-      email: '',
+      email: state.auth.email,
     };
   }
 }
