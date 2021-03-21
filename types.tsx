@@ -52,6 +52,10 @@ export type FilePickerParamList = {
   FilePickerScreen: undefined;
 };
 
+export type DonationDetailsParamList = {
+  DonationDetailsScreen: undefined;
+};
+
 export type User = {
   _id: string,
   name: string,

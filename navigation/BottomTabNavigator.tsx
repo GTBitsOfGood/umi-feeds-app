@@ -10,8 +10,10 @@ import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
-import DonationDetails from '../components/DonationDetails';
+//import DonationDetails from '../components/DonationDetails';
 import LoginScreen from '../screens/LoginScreen';
+import DonationDetailsScreen from '../screens/DonationDetailsScreen';
+
 import {
   BottomTabParamList,
   TabOneParamList,
@@ -21,6 +23,8 @@ import {
   DonationsListScreenParamList,
   LoginScreenParamList,
   FilePickerParamList,
+  DonationDetailsParamList,
+
 } from '../types';
 import EditDonationDetails from '../components/EditDonationDetails';
 
@@ -80,6 +84,13 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="DonationsListScreen"
         component={DonationsListNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationsDetailsScreen"
+        component={DonationDetailsNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -163,7 +174,7 @@ function MapScreenNavigator() {
       />
       <MapScreenStack.Screen
         name="DonationDetails"
-        component={DonationDetails}
+        component={DonationDetailsScreen}
         options={{ headerTitle: 'Donation Details' }}
       />
     </MapScreenStack.Navigator>
@@ -200,5 +211,19 @@ function DonationsListNavigator() {
         options={{ headerTitle: 'Edit Donation Details' }}
       />
     </DonationsListStack.Navigator>
+  );
+}
+
+const DonationDetailsStack = createStackNavigator<DonationDetailsParamList>();
+
+function DonationDetailsNavigator() {
+  return (
+    <DonationDetailsStack.Navigator>
+      <DonationDetailsStack.Screen
+        name="DonationDetailsScreen"
+        component={DonationDetailsScreen}
+        options={{ headerTitle: 'Donation Details Screen' }}
+      />
+    </DonationDetailsStack.Navigator>
   );
 }
