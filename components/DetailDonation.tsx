@@ -15,7 +15,7 @@ export default function DonationDetails({ route, navigation }) {
       </Text>
       <Text>
         otherParam:
-        {JSON.stringify(otherParam)}
+        teehee
       </Text>
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>

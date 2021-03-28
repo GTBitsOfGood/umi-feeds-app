@@ -62,7 +62,7 @@ function DonationListBox(donation:Donation) {
   return (
     <View style={styles.donationContainer}>
       <Text
-        onPress={() => navigation.navigate('EditDonationDetails', {
+        onPress={() => navigation.navigate('DetailDonation', {
           donationId: donation._id,
           otherParam: 'anything you want here',
         })

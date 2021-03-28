@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import { Text } from '../components/Themed';
+import { Text } from './Themed';
 
-export default function EditDonationDetails({ route, navigation }) {
+export default function EditDonation({ route, navigation }) {
   /* 2. Get the param */
   const { donationId } = route.params;
   const { otherParam } = route.params;

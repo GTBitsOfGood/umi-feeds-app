@@ -10,7 +10,8 @@ import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
-import DonationDetails from '../components/DonationDetails';
+import EditDonation from '../components/EditDonation';
+import DetailDonation from '../components/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
@@ -22,7 +23,6 @@ import {
   LoginScreenParamList,
   FilePickerParamList,
 } from '../types';
-import EditDonationDetails from '../components/EditDonationDetails';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -195,9 +195,14 @@ function DonationsListNavigator() {
         options={{ headerTitle: 'Donations List Screen' }}
       />
       <DonationsListStack.Screen
-        name="EditDonationDetails"
-        component={EditDonationDetails}
-        options={{ headerTitle: 'Edit Donation Details' }}
+        name="DetailDonation"
+        component={DetailDonation}
+        options={{ headerTitle: 'Detail Donation' }}
+      />
+      <DonationsListStack.Screen
+        name="EditDonation"
+        component={EditDonation}
+        options={{ headerTitle: 'Edit Donation' }}
       />
     </DonationsListStack.Navigator>
   );
