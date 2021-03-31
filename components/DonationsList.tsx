@@ -68,7 +68,7 @@ function DonationListBox(donation:Donation) {
           endTime: donation.availability.endTime,
           description: donation.description,
           images: donation.descriptionImages,
-          //weight
+          weight: donation.weight,
           pickup: donation.donor.donorInfo
         })
       }

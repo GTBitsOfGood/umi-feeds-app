@@ -67,7 +67,6 @@ export type User = {
 };
 
 export type Donation = {
-  descriptionImages: Array<string>,
   foodImages: Array<string>,
   _id: string,
   donor: {
@@ -86,6 +85,7 @@ export type Donation = {
     endTime: string
   },
   description: string,
+  weight?: string,
   createdAt: string,
   updatedAt: string,
   __v: number
