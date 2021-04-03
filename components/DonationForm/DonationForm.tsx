@@ -45,10 +45,7 @@ function DonationForm(props: {donationId?: string}) {
     axios.delete(`/api/donations/${props.donationId}`);
   };
 
-
-  const donationInfo = axios.get(`/api/donations/${props.donationId}`);
-  //
-
+  //const donationInfo = axios.get(`/api/donations/${props.donationId}`);
 
   const styles = StyleSheet.create({
     container: {
