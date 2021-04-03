@@ -27,7 +27,7 @@ function DonationForm(props: {donationId?: string}) {
     });
   };
 
-  //Edit donation functions
+  // Edit donation functions
   const editSubmit = () => {
     axios.put(`/api/donations/${props.donationId}`, {
       donorID: '602bf82713e73d625cc0d522',
@@ -45,7 +45,7 @@ function DonationForm(props: {donationId?: string}) {
     axios.delete(`/api/donations/${props.donationId}`);
   };
 
-  //const donationInfo = axios.get(`/api/donations/${props.donationId}`);
+  // const donationInfo = axios.get(`/api/donations/${props.donationId}`);
 
   const styles = StyleSheet.create({
     container: {
@@ -142,8 +142,6 @@ function DonationForm(props: {donationId?: string}) {
       </View>
     );
   }
-
-  
 }
 
 export default DonationForm;
