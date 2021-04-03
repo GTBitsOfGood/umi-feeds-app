@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, ScrollView } from 'react-native';
 import { Input } from 'react-native-elements';
 import Constants from 'expo-constants';
 import axios from 'axios';
 import HidableDatePicker from './HideableDatePicker';
 import { Text, View } from '../Themed';
+import { Donation } from '../../types';
 
 function DonationForm(props: {donationId?: string}) {
   const [description, setDescription] = useState('');
@@ -13,6 +14,7 @@ function DonationForm(props: {donationId?: string}) {
   const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
+  const [loading, setLoading] = useState(!!props.donationId); // !! converts to boolean
 
   const handleSubmit = () => {
     axios.post('/api/donations', {
@@ -26,6 +28,21 @@ function DonationForm(props: {donationId?: string}) {
       weight: weight !== '' ? weight : undefined,
     });
   };
+
+  useEffect(() => {
+    if (props.donationId) {
+      axios
+        .get<{ donation: Donation }>(`/api/donations/${props.donationId}`)
+        .then((res) => {
+          const { donation } = res.data;
+          setDescription(donation.description);
+          setPickupInstructions(donation.pickupInstructions ?? '');
+          setWeight(donation.weight ?? '');
+          setStartDatetime(new Date(donation.availability.startTime)); // TODO: test if this conversion works properly
+          setEndDatetime(new Date(donation.availability.endTime));
+        });
+    }
+  }, [props.donationId]);
 
   // Edit donation functions
   const editSubmit = () => {

@@ -69,6 +69,8 @@ export type Donation = {
     endTime: string
   },
   description: string,
+  pickupInstructions?: string,
+  weight?: number,
   createdAt: string,
   updatedAt: string,
   __v: number
