@@ -42,7 +42,7 @@ function DonationForm(props: {donationId?: string}) {
   };
 
   const deleteSubmit = () => {
-    axios.delete(`/api/donations/${props.donationId}`)
+    axios.delete(`/api/donations/${props.donationId}`);
   };
 
 
