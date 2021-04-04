@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
-
+import { connect } from 'react-redux';
+import { RootState } from '../../rootReducer';
 import { View, Text } from '../Themed';
+import { setAddress } from './donorReducer';
 
-export default function NewDonerLocation({ navigation }) {
+const mapDispatchToProps = { setAddress };
+
+function NewDonorLocation({ navigation, setAddress, authenticated, jwt }: {
+  navigation: any,
+  setAddress: any,
+}) {
   const [streetAddress, onStreetAddressChange] = useState<string>('');
   const [suiteAptBuildingNumber, onSuiteAptBuildingNumberChange] = useState<string>('');
-  const [city, onCityChange] = useState<string>('');
+  const [city, onCityChange] = useState('');
   const [state, onStateChange] = useState<string>('');
   const [zipCode, onZipCodeChange] = useState<string>('');
 
@@ -60,12 +67,28 @@ export default function NewDonerLocation({ navigation }) {
         <Button title="<" onPress={() => navigation.goBack()} />
         <Button
           title="NEXT"
-          onPress={() => onNextChange('Would you like to use this address for doncation pickup?')}
+          onPress={() => {
+            setAddress({
+              streetAddress, suiteAptBuildingNumber, city, state, zipCode
+            });
+            onNextChange('Would you like to use this address for doncation pickup?');
+            // TODO: make a request to create a new user
+          }}
         />
       </View>
     </View>
   );
 }
+
+const mapStateToProps = (state: RootState) => ({
+  authenticated: state.auth.authenticated,
+  jwt: state.auth.jwt
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewDonorLocation);
 
 const styles = StyleSheet.create({
   inputs: {

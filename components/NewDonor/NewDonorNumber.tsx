@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
+import { connect } from 'react-redux';
 import { View, Text } from '../Themed';
+import { setPhoneNumber } from './donorReducer';
 
-export default function NewDonerNumber({ navigation }) {
+const mapDispatchToProps = { setPhoneNumber };
+
+function NewDonorNumber({ navigation, setPhoneNumber }) {
   const [phoneNumber, onPhoneNumberChange] = useState<string>('');
   return (
     <View>
       <View style={styles.inputs}>
-        <Text style={styles.title}>Whats is your number?</Text>
+        <Text style={styles.title}>What is your number?</Text>
         <View style={styles.form}>
           <Text>Phone Number</Text>
           <TextInput
@@ -22,11 +26,22 @@ export default function NewDonerNumber({ navigation }) {
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />
-        <Button title="NEXT" onPress={() => navigation.navigate('NewDonorLocation')} />
+        <Button
+          title="NEXT"
+          onPress={() => {
+            setPhoneNumber(phoneNumber);
+            navigation.navigate('NewDonorLocation');
+          }}
+        />
       </View>
     </View>
   );
 }
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(NewDonorNumber);
 
 const styles = StyleSheet.create({
   inputs: {
