@@ -11,7 +11,6 @@ export default function NewDonerLocation({ navigation }) {
 
   const [next, onNextChange] = useState<string>('');
 
-  const text = 'not done';
   return (
     <View>
       <Text>Donor</Text>
