@@ -32,6 +32,9 @@ export type MapScreenParamList = {
 
 export type LoginScreenParamList = {
   LoginScreen: undefined;
+  NewDonorName: undefined;
+  NewDonorNumber: undefined;
+  NewDonorLocation: undefined;
 };
 
 /* eslint-disable camelcase */

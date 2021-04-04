@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 
 import { connect } from 'react-redux';
 import LoginButton from '../components/Auth/LoginButton';
@@ -16,16 +17,22 @@ function LoginScreen(props: {
   username: string,
 }) {
   const { authenticated, firstName, lastName, username } = props;
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
 
       {!authenticated
-        ? <LoginButton />
+        ? (
+          <View>
+            <LoginButton />
+            <Button title="New Donor" onPress={() => navigation.navigate('NewDonorName')} />
+          </View>
+        )
         : (
           <View>
             <LogoutButton />
             <Text>{`Your first name is ${firstName}, last name is ${lastName}, and username is ${username}`}</Text>
+            {/* <Button title="New Donor" onPress={() => navigation.navigate('NewDonorScreen')} /> */}
           </View>
         )
       }

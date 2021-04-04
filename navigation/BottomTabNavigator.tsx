@@ -23,6 +23,10 @@ import {
   FilePickerParamList,
 } from '../types';
 import EditDonationDetails from '../components/EditDonationDetails';
+import NewDoner from '../components/NewDonor';
+import NewDonerName from '../components/NewDonor/NewDonerName';
+import NewDonerNumber from '../components/NewDonor/NewDonorNumber';
+import NewDonerLocation from '../components/NewDonor/NewDonorLocation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -179,6 +183,21 @@ function LoginScreenNavigator() {
         name="LoginScreen"
         component={LoginScreen}
         options={{ headerTitle: 'Login Screen' }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorName"
+        component={NewDonerName}
+        options={{ headerTitle: 'New Donor Name' }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorNumber"
+        component={NewDonerNumber}
+        options={{ headerTitle: 'New Donor Number' }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorLocation"
+        component={NewDonerLocation}
+        options={{ headerTitle: 'New Donor Location' }}
       />
     </LoginScreenStack.Navigator>
   );
