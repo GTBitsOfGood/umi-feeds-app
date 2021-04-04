@@ -23,7 +23,6 @@ import {
   FilePickerParamList,
 } from '../types';
 import EditDonationDetails from '../components/EditDonationDetails';
-import NewDoner from '../components/NewDonor';
 import NewDonerName from '../components/NewDonor/NewDonerName';
 import NewDonerNumber from '../components/NewDonor/NewDonorNumber';
 import NewDonerLocation from '../components/NewDonor/NewDonorLocation';
