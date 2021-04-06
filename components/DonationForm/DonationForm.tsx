@@ -21,12 +21,12 @@ function DonationForm(props: {donationId?: string}) {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
         startTime: startDatetime,
-        endTime: endDatetime,
+        endTime: endDatetime
       },
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
-      weight: weight !== '' ? weight : undefined,
-    }
+      weight: weight !== '' ? weight : undefined
+    };
     const formData = new FormData();
     formData.append('data', JSON.stringify(data));
     axios.post('/api/donations', formData);
@@ -54,12 +54,12 @@ function DonationForm(props: {donationId?: string}) {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
         startTime: startDatetime,
-        endTime: endDatetime,
+        endTime: endDatetime
       },
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
-      weight: weight !== '' ? weight : undefined,
-    }
+      weight: weight !== '' ? weight : undefined
+    };
     formData.append('data', JSON.stringify(data));
     axios.put(`/api/donations/${props.donationId}`, formData);
   };
