@@ -1,17 +1,25 @@
 import { DateTime } from 'luxon';
 import React from 'react';
 import { Button, StyleSheet, View, Image } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { Text } from '../components/Themed';
 
-export default function DonationDetails({ route, navigation }) {
+export default function DonationDetails({ route, navigation }: {
+  route: RouteProp<{ params: {
+    donationId: string,
+    startTime: string,
+    endTime: string,
+    description: string,
+    foodImages: string[],
+    weight?: number,
+    pickup: any
+  }}, 'params'>,
+  // TODO: add a more specific generic type, following https://reactnavigation.org/docs/typescript
+  navigation: StackNavigationProp<any>
+}) {
   /* 2. Get the param */
-  const { donationId } = route.params;
-  const { startTime } = route.params;
-  const { endTime } = route.params;
-  const { description } = route.params;
-  const { foodImages } = route.params;
-  const { weight } = route.params;
-  const { pickup } = route.params;
+  const { donationId, startTime, endTime, description, foodImages, weight, pickup } = route.params;
 
   return (
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>

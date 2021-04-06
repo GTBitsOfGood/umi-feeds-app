@@ -23,6 +23,7 @@ import {
   LoginScreenParamList,
   FilePickerParamList,
 } from '../types';
+import DonationDetails from '../components/DetailDonation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
