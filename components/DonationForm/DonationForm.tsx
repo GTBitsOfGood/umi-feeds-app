@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import axios from 'axios';
 import HidableDatePicker from './HideableDatePicker';
 import { Text, View } from '../Themed';
+import { store } from '../../redux/store';
 
 function DonationForm() {
   const [description, setDescription] = useState('');
@@ -24,7 +25,7 @@ function DonationForm() {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-    });
+    }, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
   };
 
   const styles = StyleSheet.create({

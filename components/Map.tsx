@@ -4,6 +4,7 @@ import { StyleSheet, View, Dimensions } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Donation } from '../types';
+import { store } from '../redux/store';
 
 export default function Map() {
   const navigation = useNavigation();
@@ -12,7 +13,7 @@ export default function Map() {
   const [availablePickup, setAvailablePickup] = useState<Donation[]>([]);
 
   useEffect(() => {
-    axios.get<{ donation: Donation[] }>('/api/available-pickup')
+    axios.get<{ donation: Donation[] }>('/api/available-pickup', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setAvailablePickup(res.data.donation))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));

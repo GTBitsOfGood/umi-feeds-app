@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
+import { store } from '../redux/store';
 
 export default function DonationsList() {
   const [isLoading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ export default function DonationsList() {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    axios.get<{ donations: Donation[] }>('/api/donations')
+    axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
@@ -24,7 +25,7 @@ export default function DonationsList() {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    axios.get<{ donations: Donation[] }>('/api/donations')
+    axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setDonations(res.data.donations))
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
