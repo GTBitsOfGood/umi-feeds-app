@@ -29,7 +29,7 @@ function DonationForm(props: {donationId?: string}) {
     };
     const formData = new FormData();
     formData.append('data', JSON.stringify(data));
-    axios.post("/api/donations", formData);
+    axios.post('/api/donations', formData);
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ function DonationForm(props: {donationId?: string}) {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
         startTime: startDatetime,
-        endTime: endDatetime 
+        endTime: endDatetime
       },
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
