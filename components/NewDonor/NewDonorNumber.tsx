@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginBottom: 12,
     borderWidth: 0.5,
-    color: 'white',
-    borderColor: 'white',
+    color: 'black',
+    borderColor: 'black',
     borderRadius: 10,
     width: 330,
   },
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
+    marginTop: '73%',
     flexDirection: 'row',
     justifyContent: 'space-between',
   }
