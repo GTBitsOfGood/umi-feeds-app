@@ -17,7 +17,7 @@ function DonationForm(props: {donationId?: string}) {
   const [loading, setLoading] = useState(!!props.donationId); // !! converts to boolean
 
   const handleSubmit = () => {
-    axios.post('/api/donations', {
+    const data = {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
         startTime: startDatetime,
@@ -26,7 +26,10 @@ function DonationForm(props: {donationId?: string}) {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-    });
+    }
+    const formData = new FormData();
+    formData.append('data', JSON.stringify(data));
+    axios.post('/api/donations', formData);
   };
 
   useEffect(() => {
@@ -46,7 +49,8 @@ function DonationForm(props: {donationId?: string}) {
 
   // Edit donation functions
   const editSubmit = () => {
-    axios.put(`/api/donations/${props.donationId}`, {
+    const formData = new FormData();
+    const data = {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
         startTime: startDatetime,
@@ -55,7 +59,9 @@ function DonationForm(props: {donationId?: string}) {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-    });
+    }
+    formData.append('data', JSON.stringify(data));
+    axios.put(`/api/donations/${props.donationId}`, formData);
   };
 
   const deleteSubmit = () => {

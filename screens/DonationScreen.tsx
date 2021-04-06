@@ -10,7 +10,7 @@ export default function DonationScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Donation Form</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <DonationForm />
+      <DonationForm donationId='6032bd3592899332cc7b25d4'/>
     </View>
   );
 }
