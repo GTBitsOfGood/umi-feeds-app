@@ -34,6 +34,6 @@ const donorReducer = createSlice({
   }
 });
 
-export const { setAddress, setPhoneNumber } = donorReducer.actions;
+export const { setAddress, setPhoneNumber, setUseThisAddressForPickup } = donorReducer.actions;
 
 export default donorReducer.reducer;

@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { RootState } from '../../rootReducer';
 import { View, Text } from '../Themed';
-import { setAddress } from './donorReducer';
+import { setAddress, setUseThisAddressForPickup } from './donorReducer';
 
-const mapDispatchToProps = { setAddress };
+const mapDispatchToProps = { setAddress, setUseThisAddressForPickup };
 
-function NewDonorLocation({ navigation, setAddress, authenticated, jwt }: {
+function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, authenticated, jwt }: {
   navigation: any,
   setAddress: any,
+  setUseThisAddressForPickup: any,
 }) {
   const [streetAddress, onStreetAddressChange] = useState<string>('');
   const [suiteAptBuildingNumber, onSuiteAptBuildingNumberChange] = useState<string>('');
   const [city, onCityChange] = useState('');
   const [state, onStateChange] = useState<string>('');
   const [zipCode, onZipCodeChange] = useState<string>('');
+  const [useThisAddress, onUseThisAddressChange] = useState(true);
 
-  const [next, onNextChange] = useState<string>('');
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View>
@@ -26,42 +28,48 @@ function NewDonorLocation({ navigation, setAddress, authenticated, jwt }: {
         <View style={styles.form}>
           <Text>Where are you located?</Text>
           <TextInput
+            textContentType="streetAddressLine1"
             style={styles.input}
             onChangeText={onStreetAddressChange}
-              // value={number}
-            placeholder="  Street Address"
+            // value={number}
+            placeholder="Street Address"
           />
           <TextInput
             style={styles.input}
             onChangeText={onSuiteAptBuildingNumberChange}
-              // value={number}
-            placeholder="  Suite, Apt, Building Number"
+            // value={number}
+            placeholder="Suite, Apt, Building Number"
           />
           <TextInput
             style={styles.input}
             onChangeText={onCityChange}
-              // value={number}
-            placeholder="  City"
+            // value={number}
+            placeholder="City"
+            textContentType="addressCity"
           />
-          <TextInput
-            style={styles.input}
-            onChangeText={onStateChange}
-              // value={number}
-            placeholder="  State"
-          />
-          <TextInput
-            style={styles.input}
-            onChangeText={onZipCodeChange}
-              // value={number}
-            placeholder="  Zip Code"
-          />
+          <View style={styles.inputBottom}>
+            <TextInput
+              style={[styles.input, { width: 165 }]}
+              onChangeText={onStateChange}
+            // value={number}
+              placeholder="State"
+              textContentType="addressState"
+            />
+            <TextInput
+              style={[styles.input, { width: 165 }]}
+              onChangeText={onZipCodeChange}
+            // value={number}
+              placeholder="Zip Code"
+              textContentType="postalCode"
+            />
+
+          </View>
         </View>
-        <Text>{`address: ${streetAddress}`}</Text>
+        {/* <Text>{`address: ${streetAddress}`}</Text>
         <Text>{`Suite, Apt, Building Number: ${suiteAptBuildingNumber}`}</Text>
         <Text>{`City: ${city}`}</Text>
         <Text>{`State: ${state}`}</Text>
-        <Text>{`Zip Code: ${zipCode}`}</Text>
-        <Text>{next}</Text>
+        <Text>{`Zip Code: ${zipCode}`}</Text> */}
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />
@@ -71,11 +79,56 @@ function NewDonorLocation({ navigation, setAddress, authenticated, jwt }: {
             setAddress({
               streetAddress, suiteAptBuildingNumber, city, state, zipCode
             });
-            onNextChange('Would you like to use this address for doncation pickup?');
+            setModalVisible(true);
             // TODO: make a request to create a new user
           }}
         />
       </View>
+      {/* Pop up */}
+      <Modal
+        animationType="slide"
+        transparent
+        visible={modalVisible}
+        onRequestClose={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Pressable
+              style={styles.exitOut}
+              onPress={() => setModalVisible(!modalVisible)}
+            >
+              <Image source={require('../../assets/images/x.png')} />
+            </Pressable>
+            <Text style={styles.modalText}>Would you like to use this address for donation pickup?</Text>
+            <View style={styles.buttonsView}>
+              <Pressable
+                style={[styles.buttonNo]}
+                onPress={() => {
+                  onUseThisAddressChange(false);
+                  setModalVisible(!modalVisible);
+                  setUseThisAddressForPickup(useThisAddress);
+                }}
+              >
+                <Text style={styles.textStyleNO}>NO</Text>
+                <Text style={styles.textStyleNO2}>use different address</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.buttonYes]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text style={styles.textStyleYes}>YES</Text>
+                <Text style={styles.textStyleYes2}>use this address</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
     </View>
   );
 }
@@ -107,6 +160,11 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
     width: 330,
+    padding: 10,
+  },
+  inputBottom: {
+    flexDirection: 'row',
+    // justifyContent: 'space-between'
   },
   title: {
     color: 'rgba(252,136,52,1)',
@@ -115,8 +173,93 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: '4%',
+    marginTop: Dimensions.get('window').height / 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  centeredView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: Dimensions.get('window').height / 11,
+    // backgroundColor: 'transparent',
+    top: Dimensions.get('window').height - 400,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'rgba(75,120,203,1)',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: Dimensions.get('window').width + 10,
+    height: Dimensions.get('window').height / 3,
+  },
+  buttonsView: {
+    flexDirection: 'row',
+    backgroundColor: 'rgba(75,120,203,1)',
+  },
+  buttonNo: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 5,
+    margin: 15,
+    elevation: 2,
+    width: 139,
+    height: 56,
+    color: 'rgba(62,62,62,1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonYes: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
+    margin: 15,
+    elevation: 2,
+    width: 139,
+    height: 56,
+    color: 'rgba(252,136,52,1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  textStyleNO: {
+    color: 'rgba(62,62,62,1)',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 15,
+  },
+  textStyleYes: {
+    color: 'rgba(252,136,52,1)',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 15,
+  },
+  textStyleNO2: {
+    color: 'rgba(62,62,62,1)',
+    textAlign: 'center',
+    fontSize: 12,
+  },
+  textStyleYes2: {
+    color: 'rgba(252,136,52,1)',
+    textAlign: 'center',
+    fontSize: 12,
+  },
+  modalText: {
+    marginBottom: 15,
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 20,
+  },
+  exitOut: {
+    alignSelf: 'baseline',
+    paddingBottom: 20,
   }
 });

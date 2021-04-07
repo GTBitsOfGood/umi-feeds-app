@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
+import { StyleSheet, Button, TextInput, Dimensions, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
 import { View, Text } from '../Themed';
 import { setPhoneNumber } from './donorReducer';
+import DismissKeyboard from './DismissKeyboard';
 
 const mapDispatchToProps = { setPhoneNumber };
 
@@ -17,12 +18,14 @@ function NewDonorNumber({ navigation, setPhoneNumber }) {
           <TextInput
             style={styles.input}
             onChangeText={onPhoneNumberChange}
-              // value={number}
-            placeholder="  +1 XXX-XXX-XXXX"
-            keyboardType="phone-pad"
+            placeholder="+1 XXX-XXX-XXXX"
+            // keyboardType="numeric"
+            textContentType="telephoneNumber"
+            // onPressOut={() => Keyboard.dismiss()}
+            // maxLength={10}
           />
         </View>
-        <Text>{`phone number: ${phoneNumber}`}</Text>
+        {/* <Text>{`phone number: ${phoneNumber}`}</Text> */}
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />
@@ -60,6 +63,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
     width: 330,
+    padding: 10,
   },
   title: {
     color: 'rgba(252,136,52,1)',
@@ -68,7 +72,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: '73%',
+    marginTop: Dimensions.get('window').height / 2.8,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }

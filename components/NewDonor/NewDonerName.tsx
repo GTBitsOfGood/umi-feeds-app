@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Dimensions } from 'react-native';
 import { StyleSheet, Button, TextInput } from 'react-native';
 import { View, Text } from '../Themed';
 
@@ -15,10 +16,11 @@ export default function NewDonerName({ navigation }) {
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
-            placeholder="  John Doe"
+            placeholder="John Doe"
+            enablesReturnKeyAutomatically
           />
         </View>
-        <Text>{`Name: ${text}`}</Text>
+        {/* <Text>{`Name: ${text}`}</Text> */}
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />
@@ -45,6 +47,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
     width: 330,
+    padding: 10,
   },
   title: {
     color: 'rgba(252,136,52,1)',
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: '73%',
+    marginTop: Dimensions.get('window').height / 2.8,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }
