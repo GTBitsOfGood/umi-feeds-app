@@ -186,17 +186,17 @@ function LoginScreenNavigator() {
       <LoginScreenStack.Screen
         name="NewDonorName"
         component={NewDonerName}
-        options={{ headerTitle: 'New Donor Name' }}
+        options={{ headerShown: false }}
       />
       <LoginScreenStack.Screen
         name="NewDonorNumber"
         component={NewDonerNumber}
-        options={{ headerTitle: 'New Donor Number' }}
+        options={{ headerShown: false }}
       />
       <LoginScreenStack.Screen
         name="NewDonorLocation"
         component={NewDonerLocation}
-        options={{ headerTitle: 'New Donor Location' }}
+        options={{ headerShown: false }}
       />
     </LoginScreenStack.Navigator>
   );

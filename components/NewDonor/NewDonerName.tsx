@@ -32,7 +32,7 @@ export default function NewDonerName({ navigation }) {
 const styles = StyleSheet.create({
   inputs: {
     paddingLeft: 45,
-    paddingTop: 44
+    paddingTop: 75
   },
   form: {
     paddingTop: 136
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height / 2.8,
+    marginTop: Dimensions.get('window').height - 510,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }
