@@ -14,7 +14,7 @@ function NewDonorNumber({ navigation, setPhoneNumber }) {
       <View style={styles.inputs}>
         <Text style={styles.title}>What is your number?</Text>
         <View style={styles.form}>
-          <Text>Phone Number</Text>
+          <Text style={{ fontWeight: 'bold' }}>Phone Number</Text>
           <TextInput
             style={styles.input}
             onChangeText={onPhoneNumberChange}
@@ -49,7 +49,7 @@ export default connect(
 const styles = StyleSheet.create({
   inputs: {
     paddingLeft: 45,
-    paddingTop: 75
+    paddingTop: 115
   },
   form: {
     paddingTop: 136
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 510,
+    marginTop: Dimensions.get('window').height - 553,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }

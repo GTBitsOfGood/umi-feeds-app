@@ -11,7 +11,7 @@ export default function NewDonerName({ navigation }) {
       <View style={styles.inputs}>
         <Text style={styles.title}>Whats is your name?</Text>
         <View style={styles.form}>
-          <Text>Name</Text>
+          <Text style={{ fontWeight: 'bold' }}>Name</Text>
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
@@ -32,7 +32,7 @@ export default function NewDonerName({ navigation }) {
 const styles = StyleSheet.create({
   inputs: {
     paddingLeft: 45,
-    paddingTop: 75
+    paddingTop: 115
   },
   form: {
     paddingTop: 136
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 510,
+    marginTop: Dimensions.get('window').height - 553,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }

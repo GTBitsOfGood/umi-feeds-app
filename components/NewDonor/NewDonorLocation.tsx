@@ -26,7 +26,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
       <View style={styles.inputs}>
         <Text style={styles.title}>Donor</Text>
         <View style={styles.form}>
-          <Text>Where are you located?</Text>
+          <Text style={{ fontWeight: 'bold' }}>Where are you located?</Text>
           <TextInput
             textContentType="streetAddressLine1"
             style={styles.input}
@@ -49,14 +49,14 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
           />
           <View style={styles.inputBottom}>
             <TextInput
-              style={[styles.input, { width: 165 }]}
+              style={[styles.input, { marginRight: 22, width: 179 }]}
               onChangeText={onStateChange}
             // value={number}
               placeholder="State"
               textContentType="addressState"
             />
             <TextInput
-              style={[styles.input, { width: 165 }]}
+              style={[styles.input, { width: 129 }]}
               onChangeText={onZipCodeChange}
             // value={number}
               placeholder="Zip Code"
@@ -146,7 +146,7 @@ export default connect(
 const styles = StyleSheet.create({
   inputs: {
     paddingLeft: 45,
-    paddingTop: 75
+    paddingTop: 115
   },
   form: {
     paddingTop: 136
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 648,
+    marginTop: Dimensions.get('window').height - 694,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
