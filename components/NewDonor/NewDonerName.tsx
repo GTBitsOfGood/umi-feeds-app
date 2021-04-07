@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Dimensions } from 'react-native';
-import { StyleSheet, Button, TextInput } from 'react-native';
+import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
 import { View, Text } from '../Themed';
 
 export default function NewDonerName({ navigation }) {
