@@ -31,57 +31,56 @@ function PlatformDateTimePicker(props: {
   };
 
   if (Platform.OS === 'ios') {
-      return (
-        <View>
-            <DateTimePicker
-            value={props.datetime}
-            mode={'date'}
-            style={{ width: '100%' }}
-            minuteInterval={1}
-            display="default"
-            onChange={onChange}
-            />
-            <DateTimePicker
-            value={props.datetime}
-            mode={'time'}
-            style={{ width: '100%' }}
-            minuteInterval={1}
-            display="default"
-            onChange={onChange}
-            />
-        </View>
-      );
-  }
-  else {
     return (
-        <>
-          <View>
-            <Button
-              onPress={showDatepicker}
-              title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.DATE_MED)}
-            />
-          </View>
-          <View>
-            <Button
-              onPress={showTimepicker}
-              title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.TIME_SIMPLE)}
-            />
-          </View>
-    
-          {show && (
-            <View>
-              <DateTimePicker
-                value={props.datetime}
-                mode={mode}
-                style={{ width: '100%' }}
-                minuteInterval={1}
-                display="default"
-                onChange={onChange}
-              />
-            </View>
-          )}
-        </>
-      );
+      <View>
+        <DateTimePicker
+          value={props.datetime}
+          mode="date"
+          style={{ width: '100%' }}
+          minuteInterval={1}
+          display="default"
+          onChange={onChange}
+        />
+        <DateTimePicker
+          value={props.datetime}
+          mode="time"
+          style={{ width: '100%' }}
+          minuteInterval={1}
+          display="default"
+          onChange={onChange}
+        />
+      </View>
+    );
+  } else {
+    return (
+      <>
+        <View>
+          <Button
+            onPress={showDatepicker}
+            title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.DATE_MED)}
+          />
+        </View>
+        <View>
+          <Button
+            onPress={showTimepicker}
+            title={DateTime.fromJSDate(props.datetime).toLocaleString(DateTime.TIME_SIMPLE)}
+          />
+        </View>
+
+        {show && (
+        <View>
+          <DateTimePicker
+            value={props.datetime}
+            mode={mode}
+            style={{ width: '100%' }}
+            minuteInterval={1}
+            display="default"
+            onChange={onChange}
+          />
+        </View>
+        )}
+      </>
+    );
   }
 }
 

@@ -7,7 +7,6 @@ import PlatformDateTimePicker from './PlatformDateTimePicker';
 import { Text, View } from '../Themed';
 import { logAxiosError } from '../../utils';
 
-
 function DonationForm() {
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
@@ -18,9 +17,7 @@ function DonationForm() {
 
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
 
-  
   const handleSubmit = () => {
-
     const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
     const imageFormData = new FormData();
     imageFormData.append('image', file as any);
@@ -36,8 +33,8 @@ function DonationForm() {
       weight: weight !== '' ? weight : undefined,
       foodImage: imageFormData,
     })
-    .then((res) => console.log(res.data))
-    .catch((err) => logAxiosError(err));
+      .then((res) => console.log(res.data))
+      .catch((err) => logAxiosError(err));
   };
 
   // Choose an image from the user's photo library and upload it to POST /upload
