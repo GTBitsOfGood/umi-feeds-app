@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Input, Button } from 'react-native-elements';
-import Constants from 'expo-constants';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
-import HidableDatePicker from './HideableDatePicker';
+import PlatformDateTimePicker from './PlatformDateTimePicker';
 import { Text, View } from '../Themed';
 import { logAxiosError } from '../../utils';
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTime } from 'luxon';
 
 function DonationForm() {
   const [description, setDescription] = useState('');
@@ -20,6 +22,11 @@ function DonationForm() {
   const [cameraImage, setCameraImage] = useState<string | null>(null); // uri of image taken by camera
 
   const handleSubmit = () => {
+
+    const file = { uri: cameraImage, name: 'image.jpg', type: 'image/jpeg' };
+    const imageFormData = new FormData();
+    imageFormData.append('image', file as any);
+
     axios.post('/api/donations', {
       donorID: '602bf82713e73d625cc0d522',
       availability: {
@@ -29,6 +36,7 @@ function DonationForm() {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
+      foodImages
     });
   };
 
@@ -95,7 +103,7 @@ function DonationForm() {
           <View style={styles.boxInput}>
             <Input
               value={description}
-              placeholder="Please list the food you wish to donate in this box. "
+              placeholder="Please list the food you wish to donate in this box"
               onChangeText={(desc: string) => setDescription(desc)}
               inputContainerStyle={{ borderBottomWidth: 0 }}
               style={{ fontSize: 16 }}
@@ -140,18 +148,14 @@ function DonationForm() {
 
           <Text style={styles.sectionTitle}>Availability start time (required)</Text>
           <Text style={styles.description}>The earliest time the donation can be picked up</Text>
-          <HidableDatePicker datetime={startDatetime} setDatetime={setStartDatetime} />
+          <PlatformDateTimePicker datetime={startDatetime} setDatetime={setStartDatetime} />
 
           <Text style={styles.sectionTitle}>Availability end time (required)</Text>
           <Text style={styles.description}>The latest time the donation can be picked up by</Text>
-          <HidableDatePicker datetime={endDatetime} setDatetime={setEndDatetime} />
+          <PlatformDateTimePicker datetime={endDatetime} setDatetime={setEndDatetime} />
           {(Date.now() + 60 * 60 * 2 * 1000) > endDatetime.getTime()
             && <Text style={{ color: 'red' }}>End time is preferred to be at least two hours from now</Text>
           }
-          {/*
-          Change to TextField at some point, or some other form of longer text input
-          Border styling is needed so the TextFields are visible on iOS
-          */}
 
           <Text style={styles.sectionTitle}>Pickup instructions (optional)</Text>
           <View style={styles.boxInput}>
@@ -213,7 +217,7 @@ const styles = StyleSheet.create({
   },
   boxInput: {
     borderWidth: 2,
-    borderColor: 'gray',
+    borderColor: 'lightgray',
     borderRadius: 6,
     marginVertical: 10,
     fontFamily: 'Roboto',
