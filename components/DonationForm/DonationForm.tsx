@@ -7,8 +7,6 @@ import PlatformDateTimePicker from './PlatformDateTimePicker';
 import { Text, View } from '../Themed';
 import { logAxiosError } from '../../utils';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { DateTime } from 'luxon';
 
 function DonationForm() {
   const [description, setDescription] = useState('');
@@ -18,12 +16,12 @@ function DonationForm() {
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
 
-  const [rollImage, setRollImage] = useState<string | null>(null); // uri of image chosen from user's photo library
-  const [cameraImage, setCameraImage] = useState<string | null>(null); // uri of image taken by camera
+  const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
 
+  
   const handleSubmit = () => {
 
-    const file = { uri: cameraImage, name: 'image.jpg', type: 'image/jpeg' };
+    const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
     const imageFormData = new FormData();
     imageFormData.append('image', file as any);
 
@@ -36,8 +34,10 @@ function DonationForm() {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-      foodImages
-    });
+      foodImage: imageFormData,
+    })
+    .then((res) => console.log(res.data))
+    .catch((err) => logAxiosError(err));
   };
 
   // Choose an image from the user's photo library and upload it to POST /upload
@@ -56,12 +56,7 @@ function DonationForm() {
     });
     if (!result.cancelled) {
       const file = { uri: result.uri, name: 'image.jpg', type: 'image/jpeg' };
-      setRollImage(result.uri);
-      const rollImageFormData = new FormData();
-      rollImageFormData.append('image', file as any);
-      axios.post('/upload', rollImageFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
-        .then((res) => console.log(res.data))
-        .catch((err) => logAxiosError(err));
+      setUploadImage(result.uri);
     }
   };
 
@@ -81,14 +76,7 @@ function DonationForm() {
     });
     if (!result.cancelled) {
       const file = { uri: result.uri, name: 'image.jpg', type: 'image/jpeg' };
-      setCameraImage(result.uri);
-      const cameraImageFormData = new FormData();
-      cameraImageFormData.append('image', file as any);
-      /*
-      axios.post('/upload', cameraImageFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
-        .then((res) => console.log(res.data))
-        .catch((err) => logAxiosError(err));
-        */
+      setUploadImage(result.uri);
     }
   };
 
@@ -142,8 +130,7 @@ function DonationForm() {
             />
           </View>
           <View style={{ alignItems: 'center', padding: 20 }}>
-            {cameraImage && <Image source={{ uri: cameraImage }} style={{ width: 200, height: 200 }} />}
-            {rollImage && <Image source={{ uri: rollImage }} style={{ width: 200, height: 200 }} />}
+            {uploadImage && <Image source={{ uri: uploadImage }} style={{ width: 200, height: 200 }} />}
           </View>
 
           <Text style={styles.sectionTitle}>Availability start time (required)</Text>
