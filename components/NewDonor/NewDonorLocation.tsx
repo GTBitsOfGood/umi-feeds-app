@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
@@ -7,10 +8,16 @@ import { setAddress, setUseThisAddressForPickup } from './donorReducer';
 
 const mapDispatchToProps = { setAddress, setUseThisAddressForPickup };
 
-function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, authenticated, jwt }: {
+function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
+  authenticated, jwt, firstName, lastName, phoneNumber }: {
+  authenticated: boolean,
   navigation: any,
   setAddress: any,
   setUseThisAddressForPickup: any,
+  jwt: string,
+  firstName: string,
+  lastName: string,
+  phoneNumber: string
 }) {
   const [streetAddress, onStreetAddressChange] = useState<string>('');
   const [suiteAptBuildingNumber, onSuiteAptBuildingNumberChange] = useState<string>('');
@@ -20,6 +27,26 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
   const [useThisAddress, onUseThisAddressChange] = useState(true);
 
   const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSubmitNewDonor = () => {
+    axios.post('/api/users', {
+      name: firstName + lastName,
+      email: 'example@gmail.com',
+      pushTokens: ['ExponentPushToken[EXAMPLE]'],
+      donorInfo: {
+        name: firstName + lastName,
+        phone: phoneNumber,
+        address: streetAddress,
+        longitude: 0,
+        latitude: 0
+      },
+      volunteerInfo: {
+        phone: phoneNumber
+      },
+      recipient: false,
+      admin: false
+    });
+  };
 
   return (
     <View>
@@ -110,6 +137,8 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
                   onUseThisAddressChange(false);
                   setModalVisible(!modalVisible);
                   setUseThisAddressForPickup(useThisAddress);
+                  // handleSubmitNewDonor();
+                  // need to redirect to home screen
                 }}
               >
                 <Text style={styles.textStyleNO}>NO</Text>
@@ -119,6 +148,8 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
                 style={[styles.buttonYes]}
                 onPress={() => {
                   setModalVisible(!modalVisible);
+                  // handleSubmitNewDonor();
+                  // need to redirect to home screen
                 }}
               >
                 <Text style={styles.textStyleYes}>YES</Text>
@@ -135,7 +166,11 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup, 
 
 const mapStateToProps = (state: RootState) => ({
   authenticated: state.auth.authenticated,
-  jwt: state.auth.jwt
+  jwt: state.auth.jwt,
+  firstName: state.auth.firstName,
+  lastName: state.auth.lastName,
+  address: state.donor.address,
+  phoneNumber: state.donor.phoneNumber,
 });
 
 export default connect(

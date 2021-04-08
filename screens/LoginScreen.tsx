@@ -32,7 +32,7 @@ function LoginScreen(props: {
           <View>
             <LogoutButton />
             <Text>{`Your first name is ${firstName}, last name is ${lastName}, and username is ${username}`}</Text>
-            {/* <Button title="New Donor" onPress={() => navigation.navigate('NewDonorScreen')} /> */}
+            <Button title="New Donor" onPress={() => navigation.navigate('NewDonorName')} />
           </View>
         )
       }
