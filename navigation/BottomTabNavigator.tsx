@@ -6,7 +6,6 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
@@ -20,7 +19,6 @@ import {
   MapScreenParamList,
   DonationsListScreenParamList,
   LoginScreenParamList,
-  FilePickerParamList,
 } from '../types';
 import EditDonationDetails from '../components/EditDonationDetails';
 
@@ -52,13 +50,6 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="FilePickerScreen"
-        component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -121,19 +112,6 @@ function TabTwoNavigator() {
         options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
-  );
-}
-const FilePickerStack = createStackNavigator<FilePickerParamList>();
-
-function FilePickerNavigator() {
-  return (
-    <FilePickerStack.Navigator>
-      <FilePickerStack.Screen
-        name="FilePickerScreen"
-        component={FilePickerScreen}
-        options={{ headerTitle: 'File Picker' }}
-      />
-    </FilePickerStack.Navigator>
   );
 }
 
