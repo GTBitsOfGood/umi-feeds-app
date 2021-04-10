@@ -9,7 +9,8 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
-import DonationDetails from '../components/DonationDetails';
+import EditDonation from '../components/EditDonation';
+import DonationDetails from '../components/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
@@ -20,7 +21,6 @@ import {
   DonationsListScreenParamList,
   LoginScreenParamList,
 } from '../types';
-import EditDonationDetails from '../components/EditDonationDetails';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -32,21 +32,6 @@ export default function BottomTabNavigator() {
       initialRouteName="TabOne"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
       <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
@@ -87,34 +72,6 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
-
-function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
-      />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
-    </TabTwoStack.Navigator>
-  );
-}
-
 const DonationScreenStack = createStackNavigator<DonationScreenParamList>();
 
 function DonationScreenNavigator() {
@@ -173,9 +130,14 @@ function DonationsListNavigator() {
         options={{ headerTitle: 'Donations List Screen' }}
       />
       <DonationsListStack.Screen
-        name="EditDonationDetails"
-        component={EditDonationDetails}
-        options={{ headerTitle: 'Edit Donation Details' }}
+        name="DetailDonation"
+        component={DonationDetails}
+        options={{ headerTitle: 'Donation Details' }}
+      />
+      <DonationsListStack.Screen
+        name="EditDonation"
+        component={EditDonation}
+        options={{ headerTitle: 'Edit Donation' }}
       />
     </DonationsListStack.Navigator>
   );
