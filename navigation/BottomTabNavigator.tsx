@@ -28,32 +28,32 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Login"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="LoginScreen"
+        name="Login"
         component={LoginScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="DonationScreen"
+        name="Donate"
         component={DonationScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="MapScreen"
+        name="Map"
         component={MapScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="DonationsListScreen"
+        name="DonationsList"
         component={DonationsListNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
@@ -93,7 +93,7 @@ function MapScreenNavigator() {
       <MapScreenStack.Screen
         name="MapScreen"
         component={MapScreen}
-        options={{ headerTitle: 'Map Screen' }}
+        options={{ headerTitle: 'Donations Map' }}
       />
       <MapScreenStack.Screen
         name="DonationDetails"
@@ -112,7 +112,7 @@ function LoginScreenNavigator() {
       <LoginScreenStack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ headerTitle: 'Login Screen' }}
+        options={{ headerTitle: 'Login' }}
       />
       <LoginScreenStack.Screen
         name="NewDonorName"
@@ -141,7 +141,7 @@ function DonationsListNavigator() {
       <DonationsListStack.Screen
         name="DonationsListScreen"
         component={DonationsListScreen}
-        options={{ headerTitle: 'Donations List Screen' }}
+        options={{ headerTitle: 'Donations List' }}
       />
       <DonationsListStack.Screen
         name="DetailDonation"
