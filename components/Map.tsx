@@ -30,8 +30,7 @@ export default function Map() {
       description={donation.description}
       onCalloutPress={() => {
         navigation.navigate('DonationDetails', {
-          donationId: donation._id,
-          otherParam: 'anything you want here',
+          donation
         });
       }}
     />

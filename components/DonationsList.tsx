@@ -64,13 +64,7 @@ function DonationListBox(donation:Donation) {
     <View style={styles.donationContainer}>
       <Text
         onPress={() => navigation.navigate('DetailDonation', {
-          donationId: donation._id,
-          startTime: donation.availability.startTime,
-          endTime: donation.availability.endTime,
-          description: donation.description,
-          images: donation.descriptionImages,
-          weight: donation.weight,
-          pickup: donation.donor.donorInfo
+          donation
         })
       }
       >

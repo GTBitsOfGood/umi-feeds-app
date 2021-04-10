@@ -79,12 +79,24 @@ export type Donation = {
       latitude: number
     }
   },
+  volunteer?: {
+    _id: string,
+    name: string,
+    volunteerInfo: {
+      phone: string
+    },
+  },
   availability: {
     _id: string,
     startTime: string,
     endTime: string
   },
+  pickup?: {
+    pickupTime: string,
+    dropoffTime: string
+  }
   description: string,
+  pickupInstructions?: string,
   weight?: string,
   createdAt: string,
   updatedAt: string,
