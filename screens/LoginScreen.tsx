@@ -20,7 +20,9 @@ function LoginScreen(props: {
     <View style={styles.container}>
       <Logo />
       <View style={{ margin: '5%' }}>
-        <Text style={{ fontSize: 16 }}>The Umi Feeds app lets restaurants, caterers, supermarkets, and others donate excess food to people in need!</Text>
+        <Text style={{ fontSize: 20, textAlign: 'center' }}>
+          The Umi Feeds app lets restaurants, caterers, supermarkets, and others donate excess food to people in need!
+        </Text>
       </View>
       {!authenticated
         ? (

@@ -28,6 +28,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
 
   const [modalVisible, setModalVisible] = useState(false);
 
+  // TODO
   const handleSubmitNewDonor = () => {
     axios.post('/api/users', {
       name: firstName + lastName,
@@ -150,6 +151,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
                   setModalVisible(!modalVisible);
                   // handleSubmitNewDonor();
                   // need to redirect to home screen
+                  navigation.navigate('Donate');
                 }}
               >
                 <Text style={styles.textStyleYes}>YES</Text>
