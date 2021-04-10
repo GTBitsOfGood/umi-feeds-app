@@ -31,10 +31,12 @@ export default function DonationDetails({ route, navigation }: {
         <Text>{donation.weight}</Text>
       </Text>
       )}
-      {!isEmpty(donation.foodImages) && <>
-        <Text style={styles.title}>Images:</Text>
-        {donation.foodImages.map((image) => <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />)}
-      </>}
+      {!isEmpty(donation.foodImages) && (
+        <>
+          <Text style={styles.title}>Images:</Text>
+          {donation.foodImages.map((image) => <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />)}
+        </>
+      )}
       <Text style={styles.title}>Pick Up Information:</Text>
       <Text>
         {donation.pickup && `
