@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { View, Text } from '../Themed';
+import { View, Text } from '../../components/Themed';
 import { setPhoneNumber } from './donorReducer';
-import DismissKeyboard from './DismissKeyboard';
 
 const mapDispatchToProps = { setPhoneNumber };
 

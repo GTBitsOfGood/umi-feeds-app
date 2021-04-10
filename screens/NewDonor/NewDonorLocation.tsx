@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { View, Text } from '../Themed';
+import { View, Text } from '../../components/Themed';
 import { setAddress, setUseThisAddressForPickup } from './donorReducer';
 
 const mapDispatchToProps = { setAddress, setUseThisAddressForPickup };
