@@ -8,23 +8,24 @@ import { Text, View } from '../Themed';
 import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
 
-function DonationForm() {
+function DonationForm(props: { donationId?: string }) {
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
   const [weight, setWeight] = useState<number | ''>('');
   const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
+  const [loading, setLoading] = useState(!!props.donationId); // !! converts to boolean
 
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
 
   const handleSubmit = () => {
-    const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
-    const imageFormData = new FormData();
-    imageFormData.append('image', file as any);
-
-    axios.post('/api/donations', {
-      donorID: '602bf82713e73d625cc0d522',
+    const formData = new FormData();
+    if (uploadImage) {
+      const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
+      formData.append('foodImages', file as any);
+    }
+    formData.append('json', JSON.stringify({
       availability: {
         startTime: startDatetime,
         endTime: endDatetime,
@@ -32,8 +33,15 @@ function DonationForm() {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-      foodImage: imageFormData,
-    }, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
+    }));
+
+    axios
+      .post('/api/donations', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${store.getState().auth.jwt}`
+        }
+      })
       .then((res) => console.log(res.data))
       .catch((err) => logAxiosError(err));
   };

@@ -20,6 +20,7 @@ const authReducer = createSlice({
       state.firstName = userInfo.given_name;
       state.lastName = userInfo.family_name;
       state.username = userInfo.nickname;
+      console.log(userInfo.sub)
     },
     logout(state) {
       state.authenticated = false;
