@@ -11,7 +11,7 @@ import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
 import EditDonation from '../components/EditDonation';
-import DetailDonation from '../components/DetailDonation';
+import DonationDetails from '../components/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
@@ -23,7 +23,6 @@ import {
   LoginScreenParamList,
   FilePickerParamList,
 } from '../types';
-import DonationDetails from '../components/DetailDonation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -35,21 +34,6 @@ export default function BottomTabNavigator() {
       initialRouteName="TabOne"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-
-      <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
       <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
@@ -97,33 +81,6 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
-
-function TabOneNavigator() {
-  return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
-      />
-    </TabOneStack.Navigator>
-  );
-}
-
-const TabTwoStack = createStackNavigator<TabTwoParamList>();
-
-function TabTwoNavigator() {
-  return (
-    <TabTwoStack.Navigator>
-      <TabTwoStack.Screen
-        name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
-      />
-    </TabTwoStack.Navigator>
-  );
-}
 const FilePickerStack = createStackNavigator<FilePickerParamList>();
 
 function FilePickerNavigator() {
@@ -197,8 +154,8 @@ function DonationsListNavigator() {
       />
       <DonationsListStack.Screen
         name="DetailDonation"
-        component={DetailDonation}
-        options={{ headerTitle: 'Detail Donation' }}
+        component={DonationDetails}
+        options={{ headerTitle: 'Donation Details' }}
       />
       <DonationsListStack.Screen
         name="EditDonation"
