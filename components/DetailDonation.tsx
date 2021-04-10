@@ -18,7 +18,7 @@ export default function DonationDetails({ route, navigation }: {
   const { donation } = route.params;
 
   return (
-    <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', margin: '5%' }}>
       <Text style={styles.title}>Start Time:</Text>
       <Text>{DateTime.fromJSDate(new Date(donation.availability.startTime)).toLocaleString(DateTime.DATE_MED)}</Text>
       <Text style={styles.title}>End Time: </Text>
