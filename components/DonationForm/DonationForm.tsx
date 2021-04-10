@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
@@ -7,7 +7,14 @@ import PlatformDateTimePicker from './PlatformDateTimePicker';
 import { Text, View } from '../Themed';
 import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
+import { Donation } from '../../types';
 
+/**
+ * Form for creating a new donation. If the donationId prop is provided, then this is a form to edit the donation with
+ * that donationId.
+ * @param {string?} props.donationId If provided, this component fetches data for the donation on mount and preloads
+ * the form fields with that data.
+ */
 function DonationForm(props: { donationId?: string }) {
   const [description, setDescription] = useState('');
   const [pickupInstructions, setPickupInstructions] = useState('');
@@ -15,9 +22,25 @@ function DonationForm(props: { donationId?: string }) {
   const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
   const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
-  const [loading, setLoading] = useState(!!props.donationId); // !! converts to boolean
+  const [loading, setLoading] = useState(!!props.donationId); // true if props.donationId is provided and the component is currently fetching the data of the donation with the given donationId. by the way, !! converts to boolean.
 
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
+
+  useEffect(() => {
+    if (props.donationId) {
+      axios
+        .get<{ donation: Donation }>(`/api/donations/${props.donationId}`)
+        .then((res) => {
+          const { donation } = res.data;
+          setDescription(donation.description);
+          setPickupInstructions(donation.pickupInstructions ?? '');
+          setWeight(donation.weight ?? '');
+          setStartDatetime(new Date(donation.availability.startTime)); // TODO: test if this conversion works properly
+          setEndDatetime(new Date(donation.availability.endTime));
+          setLoading(false);
+        });
+    }
+  }, [props.donationId]);
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -25,7 +48,7 @@ function DonationForm(props: { donationId?: string }) {
       const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
       formData.append('foodImages', file as any);
     }
-    formData.append('json', JSON.stringify({
+    const json = {
       availability: {
         startTime: startDatetime,
         endTime: endDatetime,
@@ -33,20 +56,38 @@ function DonationForm(props: { donationId?: string }) {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-    }));
+    };
+    formData.append('json', JSON.stringify(json));
 
-    axios
-      .post('/api/donations', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${store.getState().auth.jwt}`
-        }
-      })
+    if (props.donationId) {
+      axios
+        .post('/api/donations', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${store.getState().auth.jwt}`
+          }
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => logAxiosError(err));
+    } else {
+      axios
+        .put(`/api/donations?donation_id=${props.donationId}`, json, {
+          headers: {
+            Authorization: `Bearer ${store.getState().auth.jwt}`
+          }
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => logAxiosError(err));
+    }
+  };
+
+  const handleDelete = () => {
+    axios.delete(`/api/donations/${props.donationId}`)
       .then((res) => console.log(res.data))
       .catch((err) => logAxiosError(err));
   };
 
-  // Choose an image from the user's photo library and upload it to POST /upload
+  // Choose an image from the user's photo library
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -66,7 +107,7 @@ function DonationForm(props: { donationId?: string }) {
     }
   };
 
-  // Take a photo using the user's camera and upload it to POST /upload
+  // Take a photo using the user's camera
   const takeImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -167,6 +208,13 @@ function DonationForm(props: { donationId?: string }) {
             onPress={() => handleSubmit()}
             buttonStyle={{ backgroundColor: 'orange' }}
           />
+          {props.donationId && (
+            <Button
+              title="Delete"
+              onPress={() => handleDelete()}
+              // buttonStyle={{ backgroundColor: 'gray' }}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

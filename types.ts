@@ -32,6 +32,7 @@ export type decodedJwtToken = {
   family_name: string,
   nickname: string,
   name: string,
+  sub: string,
 }
 /* eslint-enable camelcase */
 
@@ -85,7 +86,7 @@ export type Donation = {
   }
   description: string,
   pickupInstructions?: string,
-  weight?: string,
+  weight?: number,
   createdAt: string,
   updatedAt: string,
   __v: number
