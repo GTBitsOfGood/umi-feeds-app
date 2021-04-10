@@ -4,6 +4,7 @@ import axios from 'axios';
 import registerForPushNotificationsAsync from '../notifications/registerForPushNotifications';
 import { RootState } from '../rootReducer';
 import { store } from '../redux/store';
+import { logAxiosError } from '../utils';
 
 type Subscription = {
   remove: () => void;
@@ -28,7 +29,7 @@ export default function useNotifications(): [string | undefined | null, boolean 
         '/api/token',
         { token: expoPushToken },
         { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } }
-      ).catch((error) => console.error(error));
+      ).catch((error) => logAxiosError(error));
       setExpoPushToken(token);
     });
 

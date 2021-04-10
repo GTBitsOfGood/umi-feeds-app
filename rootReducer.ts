@@ -3,7 +3,6 @@ import { combineReducers } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer } from 'redux-persist';
 
-import counterReducer from './components/Counter/counterReducer';
 import authReducer from './components/Auth/authReducer';
 import donorReducer from './components/NewDonor/donorReducer';
 
@@ -14,7 +13,6 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  counter: counterReducer,
   auth: persistReducer(persistConfig, authReducer),
   donor: persistReducer(persistConfig, donorReducer)
 });

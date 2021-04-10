@@ -53,6 +53,7 @@
     "expo-web-browser": "~8.6.0",
     "husky-run": "^0.0.0",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "luxon": "^1.26.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -71,6 +72,7 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@bitwarden/cli": "^1.14.0",
+    "@types/lodash": "^4.14.168",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@typescript-eslint/eslint-plugin": "^4.15.0",

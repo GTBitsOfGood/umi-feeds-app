@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
+import { logAxiosError } from '../utils';
 
 export default function DonationsList() {
   const [isLoading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ export default function DonationsList() {
   useEffect(() => {
     axios.get<{ donations: Donation[] }>('/api/donations')
       .then((res) => setDonations(res.data.donations))
-      .catch((error) => console.error(error))
+      .catch((error) => logAxiosError(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -26,7 +27,7 @@ export default function DonationsList() {
     setRefreshing(true);
     axios.get<{ donations: Donation[] }>('/api/donations')
       .then((res) => setDonations(res.data.donations))
-      .catch((error) => console.error(error))
+      .catch((error) => logAxiosError(error))
       .finally(() => setLoading(false));
     wait(2000).then(() => setRefreshing(false));
   }, []);
@@ -62,9 +63,8 @@ function DonationListBox(donation:Donation) {
   return (
     <View style={styles.donationContainer}>
       <Text
-        onPress={() => navigation.navigate('EditDonationDetails', {
-          donationId: donation._id,
-          otherParam: 'anything you want here',
+        onPress={() => navigation.navigate('DetailDonation', {
+          donation
         })
       }
       >
