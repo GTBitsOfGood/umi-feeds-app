@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Donation } from '../types';
 import { store } from '../redux/store';
+import { logAxiosError } from '../utils';
 
 export default function Map() {
   const navigation = useNavigation();
@@ -15,7 +16,7 @@ export default function Map() {
   useEffect(() => {
     axios.get<{ donation: Donation[] }>('/api/available-pickup', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setAvailablePickup(res.data.donation))
-      .catch((error) => console.error(error))
+      .catch((error) => logAxiosError(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -30,8 +31,7 @@ export default function Map() {
       description={donation.description}
       onCalloutPress={() => {
         navigation.navigate('DonationDetails', {
-          donationId: donation._id,
-          otherParam: 'anything you want here',
+          donation
         });
       }}
     />

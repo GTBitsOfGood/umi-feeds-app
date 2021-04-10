@@ -4,21 +4,10 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  DonationScreen: undefined;
-  MapScreen: undefined;
-  LoginScreen: undefined;
-  DonationsListScreen: undefined;
-  FilePickerScreen: undefined;
-};
-
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
-
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+  Login: undefined;
+  Donate: undefined;
+  Map: undefined;
+  DonationsList: undefined;
 };
 
 export type DonationScreenParamList = {
@@ -32,6 +21,9 @@ export type MapScreenParamList = {
 
 export type LoginScreenParamList = {
   LoginScreen: undefined;
+  NewDonorName: undefined;
+  NewDonorNumber: undefined;
+  NewDonorLocation: undefined;
 };
 
 /* eslint-disable camelcase */
@@ -45,11 +37,8 @@ export type decodedJwtToken = {
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
-  EditDonationDetails: undefined;
-};
-
-export type FilePickerParamList = {
-  FilePickerScreen: undefined;
+  DetailDonation: undefined;
+  EditDonation: undefined;
 };
 
 export type User = {
@@ -66,7 +55,6 @@ export type User = {
 };
 
 export type Donation = {
-  descriptionImages: Array<string>,
   foodImages: Array<string>,
   _id: string,
   donor: {
@@ -79,12 +67,25 @@ export type Donation = {
       latitude: number
     }
   },
+  volunteer?: {
+    _id: string,
+    name: string,
+    volunteerInfo: {
+      phone: string
+    },
+  },
   availability: {
     _id: string,
     startTime: string,
     endTime: string
   },
+  pickup?: {
+    pickupTime: string,
+    dropoffTime: string
+  }
   description: string,
+  pickupInstructions?: string,
+  weight?: string,
   createdAt: string,
   updatedAt: string,
   __v: number

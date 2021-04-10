@@ -15,6 +15,7 @@ import useColorScheme from './hooks/useColorScheme';
 import useNotifications from './hooks/useNotifications';
 import Navigation from './navigation';
 import { store } from './redux/store';
+import { logAxiosError } from './utils';
 
 const persistor = persistStore(store);
 
@@ -51,3 +52,10 @@ export default function App() {
 }
 
 axios.defaults.baseURL = Constants.manifest.extra.AXIOS_BASEURL;
+// Add a request interceptor
+axios.interceptors.request.use((config) => config,
+  (error) => {
+  // Do something with request error
+    logAxiosError(error);
+    return Promise.reject(error);
+  });

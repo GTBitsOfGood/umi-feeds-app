@@ -23,6 +23,7 @@
     }
   },
   "dependencies": {
+    "@expo/metro-config": "^0.1.61",
     "@expo/vector-icons": "^12.0.0",
     "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/datetimepicker": "3.0.4",
@@ -53,6 +54,7 @@
     "expo-web-browser": "~8.6.0",
     "husky-run": "^0.0.0",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "luxon": "^1.26.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -63,6 +65,7 @@
     "react-native-maps": "0.27.1",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
+    "react-native-svg": "12.1.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
@@ -71,6 +74,7 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@bitwarden/cli": "^1.14.0",
+    "@types/lodash": "^4.14.168",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "@typescript-eslint/eslint-plugin": "^4.15.0",
@@ -86,6 +90,7 @@
     "fx": "^20.0.2",
     "husky": "^4.3.8",
     "jest-expo": "~40.0.0",
+    "react-native-svg-transformer": "^0.14.3",
     "react-test-renderer": "^17.0.1",
     "typescript": "^4.0.6"
   },
