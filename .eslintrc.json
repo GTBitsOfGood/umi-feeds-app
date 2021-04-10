@@ -64,6 +64,7 @@
     ],
     "no-underscore-dangle": "off",
     "no-alert": "off",
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "react/jsx-one-expression-per-line": "off"
   }
 }

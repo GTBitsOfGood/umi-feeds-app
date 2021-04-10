@@ -15,21 +15,23 @@ import { Donation } from '../../types';
  * @param {string?} props.donationId If provided, this component fetches data for the donation on mount and preloads
  * the form fields with that data.
  */
-function DonationForm(props: { donationId?: string }) {
-  const [description, setDescription] = useState('');
-  const [pickupInstructions, setPickupInstructions] = useState('');
-  const [weight, setWeight] = useState<number | ''>('');
-  const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
+function DonationForm(props: { donation?: Donation }) {
+  const [description, setDescription] = useState(props.donation?.description ?? '');
+  const [pickupInstructions, setPickupInstructions] = useState(props.donation?.pickupInstructions ?? '');
+  const [weight, setWeight] = useState<number | ''>(props.donation?.weight ?? '');
+  const [startDatetime, setStartDatetime] = useState(new Date(props.donation?.availability.startTime ?? Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
-  const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
-  const [loading, setLoading] = useState(!!props.donationId); // true if props.donationId is provided and the component is currently fetching the data of the donation with the given donationId. by the way, !! converts to boolean.
+  const [endDatetime, setEndDatetime] = useState(new Date(props.donation?.availability.endTime ?? Date.now() + 60 * 60 * 24 * 1000));
+  const [refreshing, setRefreshing] = useState(false);
 
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
 
-  useEffect(() => {
-    if (props.donationId) {
+  // Not presently used
+  const handleRefresh = () => {
+    if (props.donation) {
+      setRefreshing(true);
       axios
-        .get<{ donation: Donation }>(`/api/donations/${props.donationId}`)
+        .get<{ donation: Donation }>(`/api/donations/${props.donation._id}`)
         .then((res) => {
           const { donation } = res.data;
           setDescription(donation.description);
@@ -37,10 +39,10 @@ function DonationForm(props: { donationId?: string }) {
           setWeight(donation.weight ?? '');
           setStartDatetime(new Date(donation.availability.startTime)); // TODO: test if this conversion works properly
           setEndDatetime(new Date(donation.availability.endTime));
-          setLoading(false);
+          setRefreshing(false);
         });
     }
-  }, [props.donationId]);
+  };
 
   const handleSubmit = () => {
     const formData = new FormData();
@@ -59,7 +61,7 @@ function DonationForm(props: { donationId?: string }) {
     };
     formData.append('json', JSON.stringify(json));
 
-    if (props.donationId) {
+    if (!props.donation?._id) {
       axios
         .post('/api/donations', formData, {
           headers: {
@@ -70,8 +72,9 @@ function DonationForm(props: { donationId?: string }) {
         .then((res) => console.log(res.data))
         .catch((err) => logAxiosError(err));
     } else {
+      // TODO: Change this and the PUT /donations backend endpoint so that we can upload an image
       axios
-        .put(`/api/donations?donation_id=${props.donationId}`, json, {
+        .put(`/api/donations?donation_id=${props.donation._id}`, json, {
           headers: {
             Authorization: `Bearer ${store.getState().auth.jwt}`
           }
@@ -82,7 +85,7 @@ function DonationForm(props: { donationId?: string }) {
   };
 
   const handleDelete = () => {
-    axios.delete(`/api/donations/${props.donationId}`)
+    axios.delete(`/api/donations/${props.donation._id}`)
       .then((res) => console.log(res.data))
       .catch((err) => logAxiosError(err));
   };
