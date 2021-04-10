@@ -19,7 +19,7 @@ export default function DonationsList() {
       .finally(() => setLoading(false));
   }, []);
 
-  const wait = (timeout:number) => new Promise((resolve) => {
+  const wait = (timeout: number) => new Promise((resolve) => {
     setTimeout(resolve, timeout);
   });
 

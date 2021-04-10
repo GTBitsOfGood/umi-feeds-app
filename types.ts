@@ -4,20 +4,10 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  DonationScreen: undefined;
-  MapScreen: undefined;
-  LoginScreen: undefined;
-  DonationsListScreen: undefined;
-};
-
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
-
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+  Login: undefined;
+  Donate: undefined;
+  Map: undefined;
+  DonationsList: undefined;
 };
 
 export type DonationScreenParamList = {
@@ -31,6 +21,9 @@ export type MapScreenParamList = {
 
 export type LoginScreenParamList = {
   LoginScreen: undefined;
+  NewDonorName: undefined;
+  NewDonorNumber: undefined;
+  NewDonorLocation: undefined;
 };
 
 /* eslint-disable camelcase */
