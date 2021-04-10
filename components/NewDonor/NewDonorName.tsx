@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
 import { View, Text } from '../Themed';
 
-export default function NewDonerName({ navigation }) {
+export default function NewDonorName({ navigation }) {
   // const navigation = useNavigation();
   const [text, onChangeText] = useState<string>('');
 
   return (
     <View>
       <View style={styles.inputs}>
-        <Text style={styles.title}>Whats is your name?</Text>
+        <Text style={styles.title}>What is your name?</Text>
         <View style={styles.form}>
           <Text style={{ fontWeight: 'bold' }}>Name</Text>
           <TextInput

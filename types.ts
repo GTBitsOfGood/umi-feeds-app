@@ -12,14 +12,6 @@ export type BottomTabParamList = {
   DonationsListScreen: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: undefined;
-};
-
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
-};
-
 export type DonationScreenParamList = {
   DonationScreen: undefined;
 };

@@ -4,8 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
@@ -14,17 +12,14 @@ import DonationDetails from '../components/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
-  TabOneParamList,
-  TabTwoParamList,
   DonationScreenParamList,
   MapScreenParamList,
   DonationsListScreenParamList,
   LoginScreenParamList,
 } from '../types';
-import EditDonationDetails from '../components/EditDonationDetails';
-import NewDonerName from '../components/NewDonor/NewDonerName';
-import NewDonerNumber from '../components/NewDonor/NewDonorNumber';
-import NewDonerLocation from '../components/NewDonor/NewDonorLocation';
+import NewDonorName from '../components/NewDonor/NewDonorName';
+import NewDonorNumber from '../components/NewDonor/NewDonorNumber';
+import NewDonorLocation from '../components/NewDonor/NewDonorLocation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -37,6 +32,13 @@ export default function BottomTabNavigator() {
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
+        name="LoginScreen"
+        component={LoginScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
         options={{
@@ -46,13 +48,6 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="MapScreen"
         component={MapScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="LoginScreen"
-        component={LoginScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -121,17 +116,17 @@ function LoginScreenNavigator() {
       />
       <LoginScreenStack.Screen
         name="NewDonorName"
-        component={NewDonerName}
+        component={NewDonorName}
         options={{ headerShown: false }}
       />
       <LoginScreenStack.Screen
         name="NewDonorNumber"
-        component={NewDonerNumber}
+        component={NewDonorNumber}
         options={{ headerShown: false }}
       />
       <LoginScreenStack.Screen
         name="NewDonorLocation"
-        component={NewDonerLocation}
+        component={NewDonorLocation}
         options={{ headerShown: false }}
       />
     </LoginScreenStack.Navigator>
