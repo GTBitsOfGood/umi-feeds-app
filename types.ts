@@ -10,7 +10,6 @@ export type BottomTabParamList = {
   MapScreen: undefined;
   LoginScreen: undefined;
   DonationsListScreen: undefined;
-  FilePickerScreen: undefined;
 };
 
 export type TabOneParamList = {
@@ -47,10 +46,6 @@ export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
   DetailDonation: undefined;
   EditDonation: undefined;
-};
-
-export type FilePickerParamList = {
-  FilePickerScreen: undefined;
 };
 
 export type User = {

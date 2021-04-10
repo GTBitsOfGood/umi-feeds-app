@@ -6,7 +6,6 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import FilePickerScreen from '../screens/FilePickerScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
@@ -21,7 +20,6 @@ import {
   MapScreenParamList,
   DonationsListScreenParamList,
   LoginScreenParamList,
-  FilePickerParamList,
 } from '../types';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
@@ -37,13 +35,6 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="DonationScreen"
         component={DonationScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="FilePickerScreen"
-        component={FilePickerNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
@@ -81,20 +72,6 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const FilePickerStack = createStackNavigator<FilePickerParamList>();
-
-function FilePickerNavigator() {
-  return (
-    <FilePickerStack.Navigator>
-      <FilePickerStack.Screen
-        name="FilePickerScreen"
-        component={FilePickerScreen}
-        options={{ headerTitle: 'File Picker' }}
-      />
-    </FilePickerStack.Navigator>
-  );
-}
-
 const DonationScreenStack = createStackNavigator<DonationScreenParamList>();
 
 function DonationScreenNavigator() {
