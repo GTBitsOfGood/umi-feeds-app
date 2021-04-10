@@ -1,14 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Button, StyleSheet } from 'react-native';
-
 import { connect } from 'react-redux';
 import LoginButton from '../components/Auth/LoginButton';
 import LogoutButton from '../components/Auth/LogoutButton';
-
 import { View, Text } from '../components/Themed';
-
 import { RootState } from '../rootReducer';
+import Logo from '../assets/images/umi-feeds-logo.svg';
 
 function LoginScreen(props: {
   authenticated: boolean,
@@ -20,7 +18,10 @@ function LoginScreen(props: {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-
+      <Logo />
+      <View style={{ margin: '5%' }}>
+        <Text style={{ fontSize: 16 }}>The Umi Feeds app lets restaurants, caterers, supermarkets, and others donate excess food to people in need!</Text>
+      </View>
       {!authenticated
         ? (
           <View>
