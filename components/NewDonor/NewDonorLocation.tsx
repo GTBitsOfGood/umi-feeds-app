@@ -28,7 +28,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  // TODO
+  // TODO: actually make a request to the backend
   const handleSubmitNewDonor = () => {
     axios.post('/api/users', {
       name: firstName + lastName,
@@ -139,7 +139,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
                   setModalVisible(!modalVisible);
                   setUseThisAddressForPickup(useThisAddress);
                   // handleSubmitNewDonor();
-                  // need to redirect to home screen
+                  navigation.navigate('Donate');
                 }}
               >
                 <Text style={styles.textStyleNO}>NO</Text>
@@ -150,7 +150,6 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
                 onPress={() => {
                   setModalVisible(!modalVisible);
                   // handleSubmitNewDonor();
-                  // need to redirect to home screen
                   navigation.navigate('Donate');
                 }}
               >
