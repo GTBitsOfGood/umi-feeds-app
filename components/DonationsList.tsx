@@ -87,14 +87,18 @@ function DonationListBox(donation:Donation) {
         padding: 10,
         borderColor: color,
       }}
-    //   onTouchEnd={() => navigation.navigate('DetailDonation', {
-    //     donation
-    //   })
-    // }
     >
       <View style={{ flex: 1, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color, fontSize: 18, fontWeight: 'bold' }}>{endTime.toLocaleDateString()}</Text>
-        <Text style={{ color: '#4B78CB', fontSize: 16, fontWeight: 'bold' }}> View &gt; </Text>
+        <Text
+          style={{ color: '#4B78CB', fontSize: 16, fontWeight: 'bold' }}
+          onPress={() => navigation.navigate('DetailDonation', {
+            donation
+          })
+              }
+        >
+          View &gt;
+        </Text>
       </View>
       <View style={{ flex: 1, marginBottom: 10 }}>
         <Text style={{ color, fontSize: 14 }}>{donation.description}</Text>
