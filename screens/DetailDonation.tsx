@@ -28,9 +28,9 @@ export default function DonationDetails({ route, navigation }: {
 
   async function handlePickup() {
     try {
-      await axios.post(`/api/donations/${donation._id}/reserve`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
-      // await axios.post(`/api/donations/${donation._id}/pick-up`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
-      // handleRefresh();
+      await axios.post(`/api/donations/${donation._id}/reserve`, undefined, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
+      await axios.post(`/api/donations/${donation._id}/pick-up`, undefined, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
+      handleRefresh();
     } catch (err) {
       logAxiosError(err);
     }
