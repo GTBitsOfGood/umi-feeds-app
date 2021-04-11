@@ -50,7 +50,12 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
   };
 
   return (
-    <View>
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}
+    >
       <View style={styles.inputs}>
         <Text style={styles.title}>Donor</Text>
         <View style={styles.form}>
@@ -100,7 +105,7 @@ function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
         <Text>{`Zip Code: ${zipCode}`}</Text> */}
       </View>
       <View style={styles.buttons}>
-        <Button title="<" onPress={() => navigation.goBack()} />
+        <Button title="←" onPress={() => navigation.goBack()} />
         <Button
           title="NEXT"
           onPress={() => {
@@ -209,7 +214,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 694,
+    paddingLeft: 45,
+    paddingRight: 45,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

@@ -9,7 +9,12 @@ const mapDispatchToProps = { setPhoneNumber };
 function NewDonorNumber({ navigation, setPhoneNumber }) {
   const [phoneNumber, onPhoneNumberChange] = useState<string>('');
   return (
-    <View>
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}
+    >
       <View style={styles.inputs}>
         <Text style={styles.title}>What is your number?</Text>
         <View style={styles.form}>
@@ -26,7 +31,7 @@ function NewDonorNumber({ navigation, setPhoneNumber }) {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button title="<" onPress={() => navigation.goBack()} />
+        <Button title="←" onPress={() => navigation.goBack()} />
         <Button
           title="NEXT"
           onPress={() => {
@@ -70,7 +75,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 553,
+    paddingLeft: 45,
+    paddingRight: 45,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }

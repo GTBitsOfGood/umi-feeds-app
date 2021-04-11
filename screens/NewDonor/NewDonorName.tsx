@@ -7,7 +7,12 @@ export default function NewDonorName({ navigation }) {
   const [text, onChangeText] = useState<string>('');
 
   return (
-    <View style={{ height: Dimensions.get('window').height }}>
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}
+    >
       <View style={styles.inputs}>
         <Text style={styles.title}>What is your business’s name?</Text>
         <View style={styles.form}>
@@ -20,11 +25,9 @@ export default function NewDonorName({ navigation }) {
           />
         </View>
       </View>
-      <View style={{ alignSelf: 'flex-end', position: 'absolute', bottom: 100 }}>
-        <View style={styles.buttons}>
-          <Button title="<" onPress={() => navigation.goBack()} />
-          <Button title="NEXT" onPress={() => navigation.navigate('NewDonorNumber')} />
-        </View>
+      <View style={styles.buttons}>
+        <Button title="←" onPress={() => navigation.goBack()} />
+        <Button title="NEXT" onPress={() => navigation.navigate('NewDonorNumber')} />
       </View>
     </View>
   );
@@ -56,8 +59,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    // marginTop: Dimensions.get('window').height - 700,
-    flex: 1,
+    paddingLeft: 45,
+    paddingRight: 45,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }
