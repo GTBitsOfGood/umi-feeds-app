@@ -100,6 +100,11 @@ function MapScreenNavigator() {
         component={DonationDetails}
         options={{ headerTitle: 'Donation Details' }}
       />
+      <DonationsListStack.Screen
+        name="EditDonation"
+        component={EditDonation}
+        options={{ headerTitle: 'Edit Donation' }}
+      />
     </MapScreenStack.Navigator>
   );
 }
