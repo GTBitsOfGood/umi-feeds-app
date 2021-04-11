@@ -7,7 +7,12 @@ export default function NewDonorName({ navigation }) {
   const [text, onChangeText] = useState<string>('');
 
   return (
-    <View>
+    <View style={{
+      flex: 1,
+      flexDirection: 'column',
+      justifyContent: 'space-between'
+    }}
+    >
       <View style={styles.inputs}>
         <Text style={styles.title}>What is your business’s name?</Text>
         <View style={styles.form}>
@@ -21,7 +26,7 @@ export default function NewDonorName({ navigation }) {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button title="<" onPress={() => navigation.goBack()} />
+        <Button title="←" onPress={() => navigation.goBack()} />
         <Button title="NEXT" onPress={() => navigation.navigate('NewDonorNumber')} />
       </View>
     </View>
@@ -54,7 +59,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttons: {
-    marginTop: Dimensions.get('window').height - 553,
+    paddingLeft: 45,
+    paddingRight: 45,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
   }

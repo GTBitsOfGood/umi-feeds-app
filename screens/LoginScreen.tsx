@@ -21,7 +21,7 @@ function LoginScreen(props: {
       <Logo />
       <View style={{ margin: '5%' }}>
         <Text style={{ fontSize: 20, textAlign: 'center' }}>
-          The Umi Feeds app helps restaurants, caterers, supermarkets, and others avoid seeing good food go to waste by by donating it to people in need!
+          The Umi Feeds app helps restaurants, caterers, supermarkets, and others avoid seeing good food go to waste, by donating it to people in need!
         </Text>
       </View>
       {!authenticated
@@ -32,8 +32,8 @@ function LoginScreen(props: {
         )
         : (
           <View>
-            <Text style={{ fontSize: 16 }}>{`Hello, ${firstName} ${lastName} (${username})!`}</Text>
-            <Button title="Register as new donor" onPress={() => navigation.navigate('NewDonorName')} />
+            <Text style={{ fontSize: 20 }}>{`Hello, ${firstName} ${lastName} (${username})!`}</Text>
+            <Button title="Register as New Donor" onPress={() => navigation.navigate('NewDonorName')} />
             <LogoutButton />
           </View>
         )
