@@ -32,8 +32,8 @@ function LoginScreen(props: {
         )
         : (
           <View>
-            <Text style={{ fontSize: 16 }}>{`Hello, ${firstName} ${lastName} (${username})!`}</Text>
-            <Button title="Register as new donor" onPress={() => navigation.navigate('NewDonorName')} />
+            <Text style={{ fontSize: 20 }}>{`Hello, ${firstName} ${lastName} (${username})!`}</Text>
+            <Button title="Register as New Donor" onPress={() => navigation.navigate('NewDonorName')} />
             <LogoutButton />
           </View>
         )

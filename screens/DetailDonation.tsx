@@ -81,7 +81,7 @@ export default function DonationDetails({ route, navigation }: {
         title="Mark as picked up"
         onPress={handlePickup}
       />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 }

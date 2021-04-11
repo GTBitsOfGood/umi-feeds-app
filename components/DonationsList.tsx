@@ -67,7 +67,7 @@ export default function DonationsList() {
 
 function DonationListBox(donation: Donation) {
   const navigation = useNavigation();
-  const endTime = DateTime.fromISO(donation.availability.endTime).toLocaleString(DateTime.DATETIME_FULL);
+  const endTime = DateTime.fromISO(donation.availability.endTime).toLocaleString(DateTime.DATETIME_MED);
   let pickupTime = 'TBA';
   let color = '#FC8834';
   if (donation.pickup !== undefined && 'pickupTime' in donation.pickup) {
