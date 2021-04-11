@@ -9,17 +9,16 @@ export default function NewDonorName({ navigation }) {
   return (
     <View>
       <View style={styles.inputs}>
-        <Text style={styles.title}>What is your name?</Text>
+        <Text style={styles.title}>What is your business’s name?</Text>
         <View style={styles.form}>
-          <Text style={{ fontWeight: 'bold' }}>Name</Text>
+          <Text style={{ fontWeight: 'bold' }}>Business Name</Text>
           <TextInput
             style={styles.input}
             onChangeText={onChangeText}
-            placeholder="John Doe"
+            placeholder="Trattoria"
             enablesReturnKeyAutomatically
           />
         </View>
-        {/* <Text>{`Name: ${text}`}</Text> */}
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />

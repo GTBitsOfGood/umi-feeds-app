@@ -24,7 +24,6 @@ function NewDonorNumber({ navigation, setPhoneNumber }) {
             // maxLength={10}
           />
         </View>
-        {/* <Text>{`phone number: ${phoneNumber}`}</Text> */}
       </View>
       <View style={styles.buttons}>
         <Button title="<" onPress={() => navigation.goBack()} />
