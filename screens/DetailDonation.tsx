@@ -1,11 +1,14 @@
 import { DateTime } from 'luxon';
 import { isEmpty } from 'lodash';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 import { View, Text } from '../components/Themed';
 import { Donation } from '../types';
+import { logAxiosError } from '../utils';
+import { store } from '../redux/store';
 
 export default function DonationDetails({ route, navigation }: {
   route: RouteProp<{ params: {
@@ -15,7 +18,23 @@ export default function DonationDetails({ route, navigation }: {
   navigation: StackNavigationProp<any>
 }) {
   /* 2. Get the param */
-  const { donation } = route.params;
+  const [donation, setDonation] = useState(route.params.donation);
+
+  function handleRefresh() {
+    axios.get<{ donation: Donation }>(`/api/donations/${donation._id}`)
+      .then((res) => setDonation(res.data.donation))
+      .catch((err) => logAxiosError(err));
+  }
+
+  async function handlePickup() {
+    try {
+      await axios.post(`/api/donations/${donation._id}/reserve`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
+      // await axios.post(`/api/donations/${donation._id}/pick-up`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } });
+      // handleRefresh();
+    } catch (err) {
+      logAxiosError(err);
+    }
+  }
 
   return (
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', padding: '5%' }}>
@@ -57,6 +76,10 @@ export default function DonationDetails({ route, navigation }: {
         onPress={() => navigation.navigate('EditDonation', {
           donation,
         })}
+      />
+      <Button
+        title="Mark as picked up"
+        onPress={handlePickup}
       />
       <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
