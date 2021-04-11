@@ -29,7 +29,10 @@ export default {
           },
           LoginScreen: {
             screens: {
-              LoginScreen: 'login'
+              LoginScreen: 'login',
+              NewDonorName: 'New Donor Name',
+              NewDonorNumber: 'New Donor Number',
+              NewDonorLocation: 'New Donor Location',
             }
           },
           DonationsListScreen: {

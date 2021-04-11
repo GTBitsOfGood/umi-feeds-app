@@ -3,6 +3,7 @@ import { Button, Image, View, Text, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { logAxiosError } from '../utils';
+import { store } from '../redux/store';
 
 export default function FilePickerScreen() {
   const [rollImage, setRollImage] = useState<string | null>(null); // uri of image chosen from user's photo library
@@ -27,12 +28,13 @@ export default function FilePickerScreen() {
       setRollImage(result.uri);
       const rollImageFormData = new FormData();
       rollImageFormData.append('image', file as any);
-      axios.post('/upload', rollImageFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      axios.post('/upload', rollImageFormData, {
+        headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${store.getState().auth.jwt}` }
+      })
         .then((res) => console.log(res.data))
         .catch((err) => logAxiosError(err));
     }
   };
-
   // Take a photo using the user's camera and upload it to POST /upload
   const takeImage = async () => {
     if (Platform.OS !== 'web') {
@@ -52,7 +54,9 @@ export default function FilePickerScreen() {
       setCameraImage(result.uri);
       const cameraImageFormData = new FormData();
       cameraImageFormData.append('image', file as any);
-      axios.post('/upload', cameraImageFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
+      axios.post('/upload', cameraImageFormData, {
+        headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${store.getState().auth.jwt}` }
+      })
         .then((res) => console.log(res.data))
         .catch((err) => logAxiosError(err));
     }

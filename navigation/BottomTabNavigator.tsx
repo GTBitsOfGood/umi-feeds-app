@@ -4,23 +4,22 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
-import EditDonation from '../components/EditDonation';
-import DonationDetails from '../components/DetailDonation';
+import EditDonation from '../screens/EditDonation';
+import DonationDetails from '../screens/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
-  TabOneParamList,
-  TabTwoParamList,
   DonationScreenParamList,
   MapScreenParamList,
   DonationsListScreenParamList,
   LoginScreenParamList,
 } from '../types';
+import NewDonorName from '../screens/NewDonor/NewDonorName';
+import NewDonorNumber from '../screens/NewDonor/NewDonorNumber';
+import NewDonorLocation from '../screens/NewDonor/NewDonorLocation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -29,35 +28,35 @@ export default function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Login"
       tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
-        name="DonationScreen"
-        component={DonationScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="MapScreen"
-        component={MapScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="LoginScreen"
+        name="Login"
         component={LoginScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="log-in" color={color} />,
         }}
       />
       <BottomTab.Screen
-        name="DonationsListScreen"
+        name="Donate"
+        component={DonationScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="fast-food" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Map"
+        component={MapScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="DonationsList"
         component={DonationsListNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -94,7 +93,7 @@ function MapScreenNavigator() {
       <MapScreenStack.Screen
         name="MapScreen"
         component={MapScreen}
-        options={{ headerTitle: 'Map Screen' }}
+        options={{ headerTitle: 'Donations Map' }}
       />
       <MapScreenStack.Screen
         name="DonationDetails"
@@ -113,7 +112,22 @@ function LoginScreenNavigator() {
       <LoginScreenStack.Screen
         name="LoginScreen"
         component={LoginScreen}
-        options={{ headerTitle: 'Login Screen' }}
+        options={{ headerTitle: 'Login' }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorName"
+        component={NewDonorName}
+        options={{ headerShown: false }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorNumber"
+        component={NewDonorNumber}
+        options={{ headerShown: false }}
+      />
+      <LoginScreenStack.Screen
+        name="NewDonorLocation"
+        component={NewDonorLocation}
+        options={{ headerShown: false }}
       />
     </LoginScreenStack.Navigator>
   );
@@ -127,7 +141,7 @@ function DonationsListNavigator() {
       <DonationsListStack.Screen
         name="DonationsListScreen"
         component={DonationsListScreen}
-        options={{ headerTitle: 'Donations List Screen' }}
+        options={{ headerTitle: 'Donations List' }}
       />
       <DonationsListStack.Screen
         name="DetailDonation"
