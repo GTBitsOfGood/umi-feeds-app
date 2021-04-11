@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, RefreshControl, StyleSheet, View, Button, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { DateTime } from 'luxon';
 import { Text } from '../components/Themed';
 import { Donation } from '../types';
 import { store } from '../redux/store';
@@ -20,21 +20,19 @@ export default function DonationsList() {
       .finally(() => setLoading(false));
   }, []);
 
-  const wait = (timeout: number) => new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
-      .then((res) => setDonations(res.data.donations))
+      .then((res) => {
+        setDonations(res.data.donations);
+        setRefreshing(false);
+      })
       .catch((error) => logAxiosError(error))
       .finally(() => setLoading(false));
-    wait(2000).then(() => setRefreshing(false));
   }, []);
 
-  const ongoingDonations:JSX.Element[] = [];
-  const pastDonations:JSX.Element[] = [];
+  const ongoingDonations: JSX.Element[] = [];
+  const pastDonations: JSX.Element[] = [];
   if (!isLoading) {
     donations.forEach((donation) => {
       if (donation.pickup !== undefined && 'pickupTime' in donation.pickup) {
@@ -60,20 +58,20 @@ export default function DonationsList() {
         <Text style={styles.title}>All Donations</Text>
         <Text style={styles.subtitle}>Ongoing Donations</Text>
         {ongoingDonations}
-        <Text style={styles.subtitle}>Past Donations</Text>
+        <Text style={styles.subtitle}>Completed Donations</Text>
         {pastDonations}
       </ScrollView>
     </View>
   );
 }
 
-function DonationListBox(donation:Donation) {
+function DonationListBox(donation: Donation) {
   const navigation = useNavigation();
-  const endTime = new Date(Date.parse(donation.availability.endTime));
+  const endTime = DateTime.fromISO(donation.availability.endTime).toLocaleString(DateTime.TIME_SIMPLE);
   let pickupTime = 'TBA';
   let color = '#FC8834';
   if (donation.pickup !== undefined && 'pickupTime' in donation.pickup) {
-    pickupTime = new Date(Date.parse(donation.pickup.pickupTime)).toLocaleTimeString();
+    pickupTime = DateTime.fromISO(donation.pickup.pickupTime).toLocaleString(DateTime.TIME_SIMPLE);
     color = '#3E3E3E';
   }
   return (
@@ -88,15 +86,14 @@ function DonationListBox(donation:Donation) {
       }}
     >
       <View style={{ flex: 1, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ color, fontSize: 18, fontWeight: 'bold' }}>{endTime.toLocaleDateString()}</Text>
+        <Text style={{ color, fontSize: 18, fontWeight: 'bold' }}>{endTime}</Text>
         <Text
           style={{ color: '#4B78CB', fontSize: 16, fontWeight: 'bold' }}
           onPress={() => navigation.navigate('DetailDonation', {
             donation
-          })
-              }
+          })}
         >
-          View &gt;
+          View ⟩
         </Text>
       </View>
       <View style={{ flex: 1, marginBottom: 10 }}>

@@ -23,3 +23,7 @@ export function logAxiosError(error: any) {
   console.log(error.config);
   console.log('');
 }
+
+export const wait = (timeout: number) => new Promise((resolve) => {
+  setTimeout(resolve, timeout);
+});
