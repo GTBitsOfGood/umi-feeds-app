@@ -1,29 +1,56 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import PlatformDateTimePicker from './PlatformDateTimePicker';
 import { Text, View } from '../Themed';
+import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
+import { Donation } from '../../types';
 
-function DonationForm() {
-  const [description, setDescription] = useState('');
-  const [pickupInstructions, setPickupInstructions] = useState('');
-  const [weight, setWeight] = useState<number | ''>('');
-  const [startDatetime, setStartDatetime] = useState(new Date(Date.now()));
+/**
+ * Form for creating a new donation. If the donationId prop is provided, then this is a form to edit the donation with
+ * that donationId.
+ * @param {string?} props.donationId If provided, this component fetches data for the donation on mount and preloads
+ * the form fields with that data.
+ */
+function DonationForm(props: { donation?: Donation }) {
+  const [description, setDescription] = useState(props.donation?.description ?? '');
+  const [pickupInstructions, setPickupInstructions] = useState(props.donation?.pickupInstructions ?? '');
+  const [weight, setWeight] = useState<number | ''>(props.donation?.weight ?? '');
+  const [startDatetime, setStartDatetime] = useState(new Date(props.donation?.availability.startTime ?? Date.now()));
   // Initially, the start datetime will be now, and the end will be a day from now
-  const [endDatetime, setEndDatetime] = useState(new Date(Date.now() + 60 * 60 * 24 * 1000));
+  const [endDatetime, setEndDatetime] = useState(new Date(props.donation?.availability.endTime ?? Date.now() + 60 * 60 * 24 * 1000));
+  const [refreshing, setRefreshing] = useState(false);
 
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
 
-  const handleSubmit = () => {
-    const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
-    const imageFormData = new FormData();
-    imageFormData.append('image', file as any);
+  // Not presently used
+  const handleRefresh = () => {
+    if (props.donation) {
+      setRefreshing(true);
+      axios
+        .get<{ donation: Donation }>(`/api/donations/${props.donation._id}`)
+        .then((res) => {
+          const { donation } = res.data;
+          setDescription(donation.description);
+          setPickupInstructions(donation.pickupInstructions ?? '');
+          setWeight(donation.weight ?? '');
+          setStartDatetime(new Date(donation.availability.startTime)); // TODO: test if this conversion works properly
+          setEndDatetime(new Date(donation.availability.endTime));
+          setRefreshing(false);
+        });
+    }
+  };
 
-    axios.post('/api/donations', {
-      donorID: '602bf82713e73d625cc0d522',
+  const handleSubmit = () => {
+    const formData = new FormData();
+    if (uploadImage) {
+      const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
+      formData.append('foodImages', file as any);
+    }
+    const json = {
       availability: {
         startTime: startDatetime,
         endTime: endDatetime,
@@ -31,13 +58,39 @@ function DonationForm() {
       description: description !== '' ? description : undefined,
       pickupInstructions: pickupInstructions !== '' ? pickupInstructions : undefined,
       weight: weight !== '' ? weight : undefined,
-      foodImage: imageFormData,
-    })
+    };
+    formData.append('json', JSON.stringify(json));
+
+    if (!props.donation?._id) {
+      axios
+        .post('/api/donations', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${store.getState().auth.jwt}`
+          }
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => logAxiosError(err));
+    } else {
+      // TODO: Change this and the PUT /donations backend endpoint so that we can upload an image
+      axios
+        .put(`/api/donations?donation_id=${props.donation._id}`, json, {
+          headers: {
+            Authorization: `Bearer ${store.getState().auth.jwt}`
+          }
+        })
+        .then((res) => console.log(res.data))
+        .catch((err) => logAxiosError(err));
+    }
+  };
+
+  const handleDelete = () => {
+    axios.delete(`/api/donations/${props.donation._id}`)
       .then((res) => console.log(res.data))
       .catch((err) => logAxiosError(err));
   };
 
-  // Choose an image from the user's photo library and upload it to POST /upload
+  // Choose an image from the user's photo library
   const pickImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -57,7 +110,7 @@ function DonationForm() {
     }
   };
 
-  // Take a photo using the user's camera and upload it to POST /upload
+  // Take a photo using the user's camera
   const takeImage = async () => {
     if (Platform.OS !== 'web') {
       const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -158,6 +211,13 @@ function DonationForm() {
             onPress={() => handleSubmit()}
             buttonStyle={{ backgroundColor: 'orange' }}
           />
+          {props.donationId && (
+            <Button
+              title="Delete"
+              onPress={() => handleDelete()}
+              // buttonStyle={{ backgroundColor: 'gray' }}
+            />
+          )}
         </View>
       </ScrollView>
     </View>

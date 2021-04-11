@@ -7,8 +7,8 @@ import useColorScheme from '../hooks/useColorScheme';
 import DonationScreen from '../screens/DonationScreen';
 import DonationsListScreen from '../screens/DonationsListScreen';
 import MapScreen from '../screens/MapScreen';
-import EditDonation from '../components/EditDonation';
-import DonationDetails from '../components/DetailDonation';
+import EditDonation from '../screens/EditDonation';
+import DonationDetails from '../screens/DetailDonation';
 import LoginScreen from '../screens/LoginScreen';
 import {
   BottomTabParamList,
@@ -17,9 +17,9 @@ import {
   DonationsListScreenParamList,
   LoginScreenParamList,
 } from '../types';
-import NewDonorName from '../components/NewDonor/NewDonorName';
-import NewDonorNumber from '../components/NewDonor/NewDonorNumber';
-import NewDonorLocation from '../components/NewDonor/NewDonorLocation';
+import NewDonorName from '../screens/NewDonor/NewDonorName';
+import NewDonorNumber from '../screens/NewDonor/NewDonorNumber';
+import NewDonorLocation from '../screens/NewDonor/NewDonorLocation';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 

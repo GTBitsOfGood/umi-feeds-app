@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer } from 'redux-persist';
 
 import authReducer from './components/Auth/authReducer';
-import donorReducer from './components/NewDonor/donorReducer';
+import donorReducer from './screens/NewDonor/donorReducer';
 
 const persistConfig = {
   key: 'root',

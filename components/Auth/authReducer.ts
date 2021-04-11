@@ -16,10 +16,11 @@ const authReducer = createSlice({
       state.authenticated = true;
       state.jwt = action.payload;
 
-      const userInfo : decodedJwtToken = jwtDecode(action.payload);
+      const userInfo: decodedJwtToken = jwtDecode(action.payload);
       state.firstName = userInfo.given_name;
       state.lastName = userInfo.family_name;
       state.username = userInfo.nickname;
+      console.log(userInfo.sub);
     },
     logout(state) {
       state.authenticated = false;
