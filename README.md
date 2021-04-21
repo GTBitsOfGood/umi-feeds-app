@@ -2,6 +2,11 @@
 
 React Native app for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food rescue organization. Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
 
+Video demo from April 2021: https://www.youtube.com/watch?v=8e0UJiaCidI.  
+And the same demo but presented by the entire team (though the app looks a bit choppy in this BlueJeans recording for some reason): https://www.youtube.com/watch?v=NXKwIf-QI3s.
+
+The Umi Feeds app allows for local businesses to fill out a form to post a food donation. Volunteers (as well as admins) can view any active donations through a map or list view, and mark a donation as picked up and delivered to Umi Feeds for later redistribution to the food-insecure. Admins are notified whenever a food donation is made.
+
 ## Setup
 
 - Clone this repository to your computer.
