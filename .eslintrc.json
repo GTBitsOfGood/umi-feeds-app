@@ -1,0 +1,70 @@
+{
+  "extends": [
+    "airbnb",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "plugins": [
+    "react-native",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-param-reassign": [2, { "props": false }],
+    "no-shadow": "off",
+    "jsx-a11y/href-no-hash": ["off"],
+    "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "max-len": ["warn", {
+      "code": 120,
+      "tabWidth": 2,
+      "comments": 120,
+      "ignoreComments": false,
+      "ignoreTrailingComments": true,
+      "ignoreUrls": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+      "ignoreRegExpLiterals": true
+    }],
+    "comma-dangle": ["error", {
+      "arrays": "only-multiline",
+      "objects": "only-multiline",
+      "imports": "only-multiline",
+      "exports": "only-multiline",
+      "functions": "never"
+    }],
+    "no-return-await": "error",
+    "object-curly-newline": "off",
+    "react/prop-types": "off",
+    "react/display-name": "off",
+    "react/jsx-curly-newline": "off",
+    "linebreak-style": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/destructuring-assignment": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-use-before-define": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "no-else-return": "off",
+    "global-require": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/ban-ts-comment": [
+      "warn",
+      {
+        "ts-ignore": "allow-with-description"
+      }
+    ],
+    "no-underscore-dangle": "off",
+    "no-alert": "off",
+    "react/require-default-props": "off",
+    "react/jsx-one-expression-per-line": "off"
+  }
+}
