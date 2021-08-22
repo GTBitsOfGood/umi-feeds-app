@@ -1,12 +1,22 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View } from 'react-native';
+import { RouteProp, useRoute } from '@react-navigation/native';
 import DonationForm from '../components/DonationForm';
 
-export default function EditDonation({ route, navigation }) {
-  const { donation } = route.params;
+import { Donation } from '../types';
+
+type ParamList ={
+  EditDonation: {
+    donation: Donation
+  }
+}
+
+export default function EditDonation() {
+  const route = useRoute<RouteProp<ParamList, 'EditDonation'>>();
+  // const { donation } = route.params;
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <DonationForm donation={donation} />
+      <DonationForm donation={route.params.donation} />
     </View>
 
   );

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Button, Dimensions } from 'react-native';
+import { ScrollView, RefreshControl, StyleSheet, View, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { DateTime } from 'luxon';
 import { Text } from '../components/Themed';

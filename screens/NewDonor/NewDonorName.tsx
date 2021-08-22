@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Button, TextInput, Dimensions } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { StyleSheet, Button, TextInput } from 'react-native';
 import { View, Text } from '../../components/Themed';
 
-export default function NewDonorName({ navigation }) {
-  // const navigation = useNavigation();
+import { LoginScreenParamList } from '../../types';
+
+type newDonorNameProp = StackNavigationProp<LoginScreenParamList, 'NewDonorName'>
+
+export default function NewDonorName() {
+  const navigation = useNavigation<newDonorNameProp>();
   const [text, onChangeText] = useState<string>('');
 
   return (

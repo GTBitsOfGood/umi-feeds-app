@@ -1,24 +1,26 @@
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { RootState } from '../../rootReducer';
 import { View, Text } from '../../components/Themed';
 import { setAddress, setUseThisAddressForPickup } from './donorReducer';
+import { BottomTabParamList } from '../../types';
+
+type newDonorLocationProps = StackNavigationProp<BottomTabParamList>;
 
 const mapDispatchToProps = { setAddress, setUseThisAddressForPickup };
 
-function NewDonorLocation({ navigation, setAddress, setUseThisAddressForPickup,
-  authenticated, jwt, firstName, lastName, phoneNumber }: {
+function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber }: {
   authenticated: boolean,
-  navigation: any,
-  setAddress: any,
-  setUseThisAddressForPickup: any,
   jwt: string,
   firstName: string,
   lastName: string,
   phoneNumber: string
 }) {
+  const navigation = useNavigation<newDonorLocationProps>();
   const [streetAddress, onStreetAddressChange] = useState<string>('');
   const [suiteAptBuildingNumber, onSuiteAptBuildingNumberChange] = useState<string>('');
   const [city, onCityChange] = useState('');

@@ -60,7 +60,7 @@ function DonationForm(props: { donation?: Donation }) {
       weight: weight !== '' ? weight : undefined,
     };
     formData.append('json', JSON.stringify(json));
-
+    console.log('Submitting form');
     if (!props.donation?._id) {
       axios
         .post('/api/donations', formData, {

@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 import DonationForm from '../components/DonationForm';
 
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 
 export default function DonationScreen() {
   return (

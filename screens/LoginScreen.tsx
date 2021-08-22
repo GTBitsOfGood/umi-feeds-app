@@ -1,4 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
+// Navigation
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+
 import React from 'react';
 import { Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
@@ -8,6 +12,16 @@ import { View, Text } from '../components/Themed';
 import { RootState } from '../rootReducer';
 import Logo from '../assets/images/umi-feeds-logo.svg';
 
+import {
+  BottomTabParamList,
+  LoginScreenParamList,
+} from '../types';
+
+type LoginScreenProp = CompositeNavigationProp<
+  StackNavigationProp<LoginScreenParamList, 'LoginScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Login'>
+>;
+
 function LoginScreen(props: {
   authenticated: boolean,
   firstName: string,
@@ -15,7 +29,9 @@ function LoginScreen(props: {
   username: string,
 }) {
   const { authenticated, firstName, lastName, username } = props;
-  const navigation = useNavigation();
+
+  const navigation = useNavigation<LoginScreenProp>();
+
   return (
     <View style={styles.container}>
       <Logo />
