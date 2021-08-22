@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput, Dimensions, Keyboard } from 'react-native';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { View, Text } from '../../components/Themed';
 import { setPhoneNumber } from './donorReducer';
 
@@ -11,6 +11,7 @@ import { LoginScreenParamList } from '../../types';
 type newDonorNumberProp = StackNavigationProp<LoginScreenParamList, 'NewDonorNumber'>
 
 function NewDonorNumber() {
+  const dispatch = useDispatch();
   const navigation = useNavigation<newDonorNumberProp>();
   const [phoneNumber, onPhoneNumberChange] = useState<string>('');
   return (
@@ -40,7 +41,7 @@ function NewDonorNumber() {
         <Button
           title="NEXT"
           onPress={() => {
-            setPhoneNumber(phoneNumber);
+            dispatch(setPhoneNumber(phoneNumber));
             navigation.navigate('NewDonorLocation');
           }}
         />
@@ -48,11 +49,8 @@ function NewDonorNumber() {
     </View>
   );
 }
-const mapDispatchToProps = { setPhoneNumber };
-export default connect(
-  null,
-  mapDispatchToProps
-)(NewDonorNumber);
+
+export default NewDonorNumber;
 
 const styles = StyleSheet.create({
   inputs: {

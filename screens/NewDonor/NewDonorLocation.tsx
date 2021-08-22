@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../rootReducer';
 import { View, Text } from '../../components/Themed';
 import { setAddress, setUseThisAddressForPickup } from './donorReducer';
@@ -11,15 +11,11 @@ import { BottomTabParamList } from '../../types';
 
 type newDonorLocationProps = StackNavigationProp<BottomTabParamList>;
 
-const mapDispatchToProps = { setAddress, setUseThisAddressForPickup };
+function NewDonorLocation() {
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootState) => state.auth);
+  const donorState = useSelector((state: RootState) => state.donor);
 
-function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber }: {
-  authenticated: boolean,
-  jwt: string,
-  firstName: string,
-  lastName: string,
-  phoneNumber: string
-}) {
   const navigation = useNavigation<newDonorLocationProps>();
   const [streetAddress, onStreetAddressChange] = useState<string>('');
   const [suiteAptBuildingNumber, onSuiteAptBuildingNumberChange] = useState<string>('');
@@ -33,18 +29,18 @@ function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber
   // TODO: actually make a request to the backend
   const handleSubmitNewDonor = () => {
     axios.post('/api/users', {
-      name: firstName + lastName,
+      name: authState.firstName + authState.lastName,
       email: 'example@gmail.com',
       pushTokens: ['ExponentPushToken[EXAMPLE]'],
       donorInfo: {
-        name: firstName + lastName,
-        phone: phoneNumber,
+        name: authState.firstName + authState.lastName,
+        phone: donorState.phoneNumber,
         address: streetAddress,
         longitude: 0,
         latitude: 0
       },
       volunteerInfo: {
-        phone: phoneNumber
+        phone: donorState.phoneNumber
       },
       recipient: false,
       admin: false
@@ -111,9 +107,9 @@ function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber
         <Button
           title="NEXT"
           onPress={() => {
-            setAddress({
+            dispatch(setAddress({
               streetAddress, suiteAptBuildingNumber, city, state, zipCode
-            });
+            }));
             setModalVisible(true);
             // TODO: make a request to create a new user
           }}
@@ -144,7 +140,7 @@ function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber
                 onPress={() => {
                   onUseThisAddressChange(false);
                   setModalVisible(!modalVisible);
-                  setUseThisAddressForPickup(useThisAddress);
+                  dispatch(setUseThisAddressForPickup(useThisAddress));
                   // handleSubmitNewDonor();
                   navigation.navigate('Donate');
                 }}
@@ -172,19 +168,7 @@ function NewDonorLocation({ authenticated, jwt, firstName, lastName, phoneNumber
   );
 }
 
-const mapStateToProps = (state: RootState) => ({
-  authenticated: state.auth.authenticated,
-  jwt: state.auth.jwt,
-  firstName: state.auth.firstName,
-  lastName: state.auth.lastName,
-  address: state.donor.address,
-  phoneNumber: state.donor.phoneNumber,
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewDonorLocation);
+export default NewDonorLocation;
 
 const styles = StyleSheet.create({
   inputs: {
