@@ -2,21 +2,17 @@ import * as AuthSession from 'expo-auth-session';
 import React, { useEffect } from 'react';
 import { Button, Platform } from 'react-native';
 
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import * as Auth0 from '../../constants/Auth0';
 
 import { logout } from './authReducer';
 
-const mapDispatchToProps = { logout };
-
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
-function LogoutButton(props: {
-  logout: () => void,
-}) {
-  const { logout } = props;
+function LogoutButton() {
+  const dispatch = useDispatch();
 
   const [logoutRequest, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
     redirectUri,
@@ -28,7 +24,7 @@ function LogoutButton(props: {
     if (logoutResult) {
       // Although logout functionality works, it receives an error from Auth0, so we only check for canceling logout rather than successful logout
       if (logoutResult.type !== 'cancel') {
-        logout();
+        dispatch(logout());
       }
     }
   }, [logoutResult]);
@@ -43,7 +39,4 @@ function LogoutButton(props: {
   );
 }
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(LogoutButton);
+export default LogoutButton;

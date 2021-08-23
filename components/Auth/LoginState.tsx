@@ -1,3 +1,4 @@
+// DELETE NO LONGER NEEDED
 import React from 'react';
 
 import { connect } from 'react-redux';

@@ -1,9 +1,10 @@
+// MIGHT NEED TO BE DELETED SINCE NO LONGER IN USE
 import * as AuthSession from 'expo-auth-session';
 import jwtDecode from 'jwt-decode';
 import React, { useEffect } from 'react';
 import { Alert, Button, Platform } from 'react-native';
 
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Text, View } from '../Themed';
 
 import * as Auth0 from '../../constants/Auth0';
@@ -12,18 +13,15 @@ import { decodedJwtToken } from '../../types';
 import { login, logout } from './authReducer';
 import { RootState } from '../../rootReducer';
 
-const mapDispatchToProps = { login, logout };
-
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 function Login(props: {
-  login: (token: string) => void,
-  logout: () => void,
-  authenticated: boolean,
   email: string,
 }) {
-  const { login, logout, authenticated, email } = props;
+  const { email } = props;
+  const dispatch = useDispatch();
+  const authState = useSelector((state: RootState) => state.auth);
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest({
     redirectUri,
@@ -51,7 +49,7 @@ function Login(props: {
         // Retrieve the JWT token and decode it
         const receivedToken = result.params.id_token;
 
-        login(receivedToken);
+        dispatch(login(receivedToken));
       } else {
         Alert.alert('Authentication error!');
       }
@@ -68,7 +66,7 @@ function Login(props: {
 
   return (
     <View>
-      {authenticated ? (
+      {authState.authenticated ? (
         <>
           <Text>
             You are logged in,
@@ -78,7 +76,7 @@ function Login(props: {
           <Button
             title="Log out"
             onPress={() => {
-              logout();
+              dispatch(logout());
               promptAsyncLogout({ useProxy });
             }}
           />
@@ -94,14 +92,4 @@ function Login(props: {
   );
 }
 
-function mapStateToProps(state: RootState) {
-  return {
-    authenticated: state.auth.authenticated,
-    username: state.auth.username,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Login);
+export default Login;

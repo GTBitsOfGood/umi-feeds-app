@@ -2,21 +2,17 @@ import * as AuthSession from 'expo-auth-session';
 import React, { useEffect } from 'react';
 import { Alert, Button, Platform } from 'react-native';
 
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import * as Auth0 from '../../constants/Auth0';
 
 import { login } from './authReducer';
 
-const mapDispatchToProps = { login };
-
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
-function LoginButton(props: {
-  login: (token: string) => void,
-}) {
-  const { login } = props;
+function LoginButton() {
+  const dispatch = useDispatch();
 
   const [request, result, promptAsync] = AuthSession.useAuthRequest({
     redirectUri,
@@ -38,7 +34,7 @@ function LoginButton(props: {
         // Retrieve the JWT token and decode it
         const receivedToken = result.params.id_token;
 
-        login(receivedToken);
+        dispatch(login(receivedToken));
       } else {
         Alert.alert('Authentication error!');
       }
@@ -52,8 +48,4 @@ function LoginButton(props: {
     />
   );
 }
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(LoginButton);
+export default LoginButton;
