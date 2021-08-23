@@ -6,16 +6,16 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { Button, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
-import LoginButton from '../components/Auth/LoginButton';
-import LogoutButton from '../components/Auth/LogoutButton';
-import { View, Text } from '../components/Themed';
-import { RootState } from '../rootReducer';
-import Logo from '../assets/images/umi-feeds-logo.svg';
+import LoginButton from '../../components/Auth/LoginButton';
+import LogoutButton from '../../components/Auth/LogoutButton';
+import { View, Text } from '../../style/Themed';
+import { RootState } from '../../rootReducer';
+import Logo from '../../assets/images/umi-feeds-logo.svg';
 
 import {
   BottomTabParamList,
   LoginScreenParamList,
-} from '../types';
+} from '../../types';
 
 type LoginScreenProp = CompositeNavigationProp<
   StackNavigationProp<LoginScreenParamList, 'LoginScreen'>,

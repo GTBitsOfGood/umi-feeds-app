@@ -2,21 +2,26 @@ import { DateTime } from 'luxon';
 import { isEmpty } from 'lodash';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Image } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
-import { View, Text } from '../components/Themed';
-import { Donation } from '../types';
+import { View, Text } from '../style/Themed';
+import { Donation, DonationsListScreenParamList } from '../types';
 import { logAxiosError } from '../utils';
 import { store } from '../redux/store';
 
-export default function DonationDetails({ route, navigation }: {
-  route: RouteProp<{ params: {
+type ParamList = {
+  DetailDonation: {
     donation: Donation
-  }}, 'params'>,
-  // TODO: add a more specific generic type, following https://reactnavigation.org/docs/typescript
-  navigation: StackNavigationProp<any>
-}) {
+  }
+}
+
+type DonationDetailProps = StackNavigationProp<DonationsListScreenParamList, 'DetailDonation'>
+
+export default function DonationDetails() {
+  const navigation = useNavigation<DonationDetailProps>();
+  const route = useRoute<RouteProp<ParamList, 'DetailDonation'>>();
+
   /* 2. Get the param */
   const [donation, setDonation] = useState(route.params.donation);
 

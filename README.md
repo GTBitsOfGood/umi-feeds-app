@@ -18,11 +18,12 @@ The Umi Feeds app allows for local businesses to fill out a form to post a food 
 
 ### Expo Go
 
-Install Expo Go on your Android or iPhone/iPad. Expo Go allows you to preview your app on your Android or iPhone/iPad.
+Install Expo Go on your Android or iPhone/iPad. Expo Go allows you to preview your app on your Android or iPhone/iPad. Please make sure you're on the same wifi network as your development computer that launched `npm start`
 - Google Play: https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US&gl=US
 - Apple App Store: https://apps.apple.com/us/app/expo-go/id982107779
 
-Log into Expo Go using the credentials found in [Bitwarden](https://bitwarden.com/). Log into Expo CLI on your computer using `expo login`.
+Log into Expo Go using the credentials found in [Bitwarden](https://bitwarden.com/). Log into Expo CLI on your computer
+> `expo login`
 
 Now, after you start your development server with `npm start`, your Expo Go app should show something like "umi-feeds-app on DESKTOP-sdfjij" under the section Recently in Development. So you can test out the app now!
 
@@ -77,6 +78,18 @@ This application uses the Google Maps API for the standalone Android app. Here a
 - Change `org.bitsofgood.umifeeds` to `com.youcompany.yourappname` in `android.package` in `app.json`
 - Run `expo build:android` 
 - Follow the instructions at ["MapView - Expo Documentation"](https://docs.expo.io/versions/v40.0.0/sdk/map-view/#deploying-to-a-standalone-app-on-android) for deploying to a standalone app on Android under "If you have not configured Google Sign In"
+
+## Inspiration and Resources
+
+#### Redux
+* ["Redux Toolkit"](https://redux-toolkit.js.org/)
+
+#### Code Structure 
+* ["Code Structure Inspiration"](https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/)
+
+#### React Navigation
+* ["React Navigation"](https://reactnavigation.org/docs/)
+* ["React Navigation with Type Checking Guide"](https://reactnavigation.org/docs/typescript/)
 
 ## License
 

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions } from 'react-native';
+import { View } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { Donation } from '../types';
-import { store } from '../redux/store';
-import { logAxiosError } from '../utils';
+import { Donation } from '../../types';
+import { store } from '../../redux/store';
+import { logAxiosError } from '../../utils';
+import styles from './styles';
 
 export default function Map() {
   const navigation = useNavigation();
@@ -55,16 +56,3 @@ export default function Map() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-});

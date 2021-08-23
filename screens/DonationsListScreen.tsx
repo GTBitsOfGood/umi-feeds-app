@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import DonationsList from '../components/DonationsList';
-import { View } from '../components/Themed';
+import { View } from '../style/Themed';
 
 export default function MapScreen() {
   return (

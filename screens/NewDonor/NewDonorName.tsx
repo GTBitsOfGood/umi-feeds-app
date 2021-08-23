@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput } from 'react-native';
-import { View, Text } from '../../components/Themed';
+import { View, Text } from '../../style/Themed';
 
 import { LoginScreenParamList } from '../../types';
 

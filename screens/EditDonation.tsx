@@ -5,14 +5,14 @@ import DonationForm from '../components/DonationForm';
 
 import { Donation } from '../types';
 
-type ParamList ={
+type EditDonationParamList = {
   EditDonation: {
     donation: Donation
   }
 }
 
 export default function EditDonation() {
-  const route = useRoute<RouteProp<ParamList, 'EditDonation'>>();
+  const route = useRoute<RouteProp<EditDonationParamList, 'EditDonation'>>();
   // const { donation } = route.params;
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

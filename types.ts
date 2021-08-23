@@ -38,8 +38,8 @@ export type decodedJwtToken = {
 
 export type DonationsListScreenParamList = {
   DonationsListScreen: undefined;
-  DetailDonation: undefined;
-  EditDonation: undefined;
+  DetailDonation: undefined | { donation: Donation };
+  EditDonation: undefined | { donation: Donation };
 };
 
 export type User = {

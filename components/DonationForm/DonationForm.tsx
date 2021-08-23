@@ -4,7 +4,7 @@ import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import PlatformDateTimePicker from './PlatformDateTimePicker';
-import { Text, View } from '../Themed';
+import { Text, View } from '../../style/Themed';
 import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
 import { Donation } from '../../types';

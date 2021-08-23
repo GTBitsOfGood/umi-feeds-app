@@ -3,8 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput, Dimensions, Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { View, Text } from '../../components/Themed';
-import { setPhoneNumber } from './donorReducer';
+import { View, Text } from '../../style/Themed';
+import { setPhoneNumber } from '../../redux/reducers/donorReducer';
 
 import { LoginScreenParamList } from '../../types';
 

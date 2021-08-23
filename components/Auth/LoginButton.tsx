@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import * as Auth0 from '../../constants/Auth0';
 
-import { login } from './authReducer';
+import { login } from '../../redux/reducers/authReducer';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });

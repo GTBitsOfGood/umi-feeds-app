@@ -2,7 +2,7 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Button, Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { DateTime } from 'luxon';
-import { View } from '../Themed';
+import { View } from '../../style/Themed';
 
 function PlatformDateTimePicker(props: {
   datetime: Date,

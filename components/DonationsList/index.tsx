@@ -1,17 +1,21 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, StyleSheet, View, Dimensions } from 'react-native';
+import { ScrollView, RefreshControl, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { DateTime } from 'luxon';
-import { Text } from '../components/Themed';
-import { Donation } from '../types';
-import { store } from '../redux/store';
-import { logAxiosError } from '../utils';
+import { Text } from '../../style/Themed';
+import { Donation, DonationsListScreenParamList } from '../../types';
+import { store } from '../../redux/store';
+import { logAxiosError } from '../../utils';
+import styles from './styles';
+
+type DonationListBoxProps = StackNavigationProp<DonationsListScreenParamList, 'DonationsListScreen'>
 
 export default function DonationsList() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [donations, setDonations] = useState<Donation[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
     axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
@@ -66,7 +70,7 @@ export default function DonationsList() {
 }
 
 function DonationListBox(donation: Donation) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<DonationListBoxProps>();
   const endTime = DateTime.fromISO(donation.availability.endTime).toLocaleString(DateTime.DATETIME_MED);
   let pickupTime = 'TBA';
   let color = '#FC8834';
@@ -105,31 +109,3 @@ function DonationListBox(donation: Donation) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flexGrow: 1,
-    width: '80%',
-    margin: '10%',
-    paddingBottom: 35,
-  },
-  container: {
-    flex: 1,
-    width: Dimensions.get('screen').width,
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#FC8834',
-    paddingVertical: 10,
-  },
-  subtitle: {
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: 24,
-    lineHeight: 23,
-    color: '#3E3E3E',
-    marginBottom: 20,
-    marginTop: 10,
-  }
-});
