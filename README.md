@@ -1,13 +1,13 @@
-# Umi Feeds app
+# Umi Feeds app :stuffed_flatbread:
 
-React Native app for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food rescue organization. Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
+React Native app :iphone: for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food rescue organization. The Umi Feeds app allows for local businesses to fill out a form to post a food donation. Volunteers (as well as admins) :raising_hand: can view any active donations through a map or list view, and mark a donation as picked up and delivered to Umi Feeds for later redistribution to the food-insecure. Admins are notified whenever a food donation is made. 
 
 Video demo from April 2021: https://www.youtube.com/watch?v=8e0UJiaCidI.  
 And the same demo but presented by the entire team (though the app looks a bit choppy in this BlueJeans recording for some reason): https://www.youtube.com/watch?v=NXKwIf-QI3s.
 
-The Umi Feeds app allows for local businesses to fill out a form to post a food donation. Volunteers (as well as admins) can view any active donations through a map or list view, and mark a donation as picked up and delivered to Umi Feeds for later redistribution to the food-insecure. Admins are notified whenever a food donation is made.
+Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
 
-## Setup
+## Setup 	:computer:
 
 - Clone this repository to your computer.
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
@@ -16,7 +16,7 @@ The Umi Feeds app allows for local businesses to fill out a form to post a food 
   - **Note**: If you are using the Windows command prompt or a Mac, enter `npm run secrets:login` (logging in only needs to be done once) and then `npm run secrets:sync`. You may have to enter the Bitwarden password multiple times. You should re-run this whenever the secrets in Bitwarden changes.
 - Start project: `npm start`
 
-### Expo Go
+### Expo Go 
 
 Install Expo Go on your Android or iPhone/iPad. Expo Go allows you to preview your app on your Android or iPhone/iPad. Please make sure you're on the same wifi network as your development computer that launched `npm start`
 - Google Play: https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US&gl=US
@@ -31,7 +31,7 @@ Expo Go has Fast Refresh, so when you save changes to your code and your develop
 
 Expo also provides a beta web version; after you run `npm start` and your browser opens Expo Developer Tools in `localhost:19002`, you could click "Run in web browser" to see the app in your browser. Some Expo features don't work in the browser, however. 
 
-## Code/PR Workflow
+## Code/PR Workflow :nerd_face:
 
 - Assign an issue to yourself and move it to the "In Progress" pipeline. You will have to use ZenHub, either through the [Chrome or Firefox extension](https://www.zenhub.com/extension) or through their [web-app](https://app.zenhub.com/), to do this. **Pro-tip**: ZenHub will let you filter issues by labels and milestones.
 - Create a new branch in the format `[NAME]/[ISSUE-NUMBER]-[SHORT-DESCRIPTION]` (issue number is optional) by running `git checkout -b [BRANCH NAME]`.
@@ -42,6 +42,16 @@ Expo also provides a beta web version; after you run `npm start` and your browse
 - Commit changes and then push your branch by running `git push -u origin [BRANCH NAME]`.
 - Create a pull request (PR) on GitHub to merge your branch into `develop`.
 - In your PR, briefly describe the changes, link the PR to its corresponding issue, and request a Senior Developer or EM as a reviewer.
+
+## Code Structure 
+    
+* `App.tsx`       The main starting point of the app that renders the navigation component
+* `\navigations`  Defines the navigation structure of the app and renders a corresponding screen for each navigation 
+* `\screens`      The different screen for the mobile app that render components 
+* `\components`   Defines the different React Components that are used on the different screens 
+* `\redux`        Defines the redux store, reducers, and thunks used by the components 
+
+Currently components in both the `\screens` and `\components` directory are connected to the redux state. Ideally we would want to start shifting our codebase so that the react components in the `\components` are stateless and all the "smart components" connected to the redux state are the screens in the `\screens`
 
 ## TypeScript
 
