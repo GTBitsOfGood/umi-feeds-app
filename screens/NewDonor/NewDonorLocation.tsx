@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput, Dimensions, Pressable, Modal, Alert, Image } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../redux/rootReducer';
 import { View, Text } from '../../style/Themed';
 import { setAddress, setUseThisAddressForPickup } from '../../redux/reducers/donorReducer';
-import { BottomTabParamList } from '../../types';
+import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 type newDonorLocationProps = StackNavigationProp<BottomTabParamList>;
 

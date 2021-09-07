@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import * as Notifications from 'expo-notifications';
 import axios from 'axios';
 import registerForPushNotificationsAsync from '../notifications/registerForPushNotifications';
-import { RootState } from '../rootReducer';
+import { RootState } from '../redux/rootReducer';
 import { store } from '../redux/store';
 import { logAxiosError } from '../utils';
 

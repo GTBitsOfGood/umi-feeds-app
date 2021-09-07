@@ -3,8 +3,8 @@ import { combineReducers } from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer } from 'redux-persist';
 
-import authReducer from './redux/reducers/authReducer';
-import donorReducer from './redux/reducers/donorReducer';
+import authReducer from './reducers/authReducer';
+import donorReducer from './reducers/donorReducer';
 
 const persistConfig = {
   key: 'root',

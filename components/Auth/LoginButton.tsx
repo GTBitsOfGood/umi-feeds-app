@@ -33,7 +33,7 @@ function LoginButton() {
       if (result.type === 'success') {
         // Retrieve the JWT token and decode it
         const receivedToken = result.params.id_token;
-
+        console.log(receivedToken);
         dispatch(login(receivedToken));
       } else {
         Alert.alert('Authentication error!');

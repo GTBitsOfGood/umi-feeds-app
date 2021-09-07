@@ -1,3 +1,5 @@
+// NOT IN USE AS WE'RE CURRENTLY NOT FOCUSING ON WEB SUPPORT OR ANY SORT OF DEEP-LINKING
+
 import * as Linking from 'expo-linking';
 
 export default {

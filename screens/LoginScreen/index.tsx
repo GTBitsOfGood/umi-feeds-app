@@ -9,17 +9,16 @@ import { useSelector } from 'react-redux';
 import LoginButton from '../../components/Auth/LoginButton';
 import LogoutButton from '../../components/Auth/LogoutButton';
 import { View, Text } from '../../style/Themed';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../redux/rootReducer';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 
-import {
-  BottomTabParamList,
-  LoginScreenParamList,
-} from '../../types';
+import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
+
+import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 type LoginScreenProp = CompositeNavigationProp<
-  StackNavigationProp<LoginScreenParamList, 'LoginScreen'>,
-  BottomTabNavigationProp<BottomTabParamList, 'Login'>
+  StackNavigationProp<HomeScreenParamList, 'LoginScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
 function LoginScreen() {
