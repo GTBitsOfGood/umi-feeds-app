@@ -7,10 +7,9 @@ assignees: ''
 
 ---
 
-### Acceptance Criteria
+### Overall Purpose in Life
 * sample text
-### User Story
-* sample text
+
 ### Resources and PoC
 * sample text
 ### Related Tickets

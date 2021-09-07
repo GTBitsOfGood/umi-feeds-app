@@ -7,9 +7,11 @@ assignees: ''
 
 ---
 
-### Acceptance Criteria
+### Problem Description 
 * sample text
-### User Story
+### Hints 
 * sample text
 ### Story Points
+* sample text
+### Resources 
 * sample text
