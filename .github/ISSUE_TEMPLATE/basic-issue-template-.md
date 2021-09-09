@@ -12,6 +12,8 @@ assignees: ''
 
 ### Task at Hand
 
+### When you're done this is what the app should look like/do:
+
 ### Hints 
 * sample text
 ### Story Points
