@@ -9,9 +9,12 @@ assignees: ''
 
 ### Problem Description 
 * sample text
+
+### Task at Hand
+
 ### Hints 
 * sample text
 ### Story Points
-* sample text
+### ByteCoin
 ### Resources 
 * sample text
