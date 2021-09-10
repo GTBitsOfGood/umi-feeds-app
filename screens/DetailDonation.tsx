@@ -6,7 +6,8 @@ import { RouteProp, useRoute, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { View, Text } from '../style/Themed';
-import { Donation, DonationsListScreenParamList } from '../types';
+import { DonationsListScreenParamList } from '../navigation/AdminStack/DonationList/types';
+import { Donation } from '../types';
 import { logAxiosError } from '../utils';
 import { store } from '../redux/store';
 

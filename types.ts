@@ -1,8 +1,58 @@
-export type DonationsListScreenParamList = {
-  DonationsListScreen: undefined;
-  DetailDonation: undefined | { donation: Donation };
-  EditDonation: undefined | { donation: Donation };
-};
+export type Roles = 'donor' | 'volunteer' | 'recipient';
+
+export type Address = {
+  _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  businessName: string;
+  streetAddress: string;
+  buildingNumber: number;
+  city: string;
+  state: string;
+  zipCode: number;
+  longitude: number;
+  latitude: number;
+}
+
+export type Dish = {
+  _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  dishName: string;
+  cost: number;
+  pounds: number;
+  allergens: string[];
+  imageLink: string; // link to azure image
+  comments: string;
+}
+
+export type DonationDishes = {
+  _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  dishID: string; // points to the _id field of the Dish Schema
+  quantity: number;
+}
+
+export type DonationForm = {
+  _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  ongoing: boolean;
+  status: string;
+  imageLink: string;
+  dishes: DonationDishes[];
+  pickupAddress: Address;
+  pickupInstructions: string;
+  pickupStartTime: Date;
+  pickupEndTime: Date;
+  volunteerLockTime: Date; // time when volunteer agrees to pick it up
+  lockedByVolunteer: boolean; // whether the donation has been locked by a volunteer
+  confirmPickUpTime: Date; // time when donation has been picked up by volunteer
+  confirmDropOffTime: Date; // time when donation has been dropped off by volunteer
+}
+
+// OLD TYPES THAT WILL NEED TO BE CHANGED
+/* eslint-disable camelcase */
+export type decodedJwtToken = {
+  given_name: string,
+  family_name: string,
+  nickname: string,
+  name: string,
+  sub: string,
+}
 
 export type User = {
   _id: string,

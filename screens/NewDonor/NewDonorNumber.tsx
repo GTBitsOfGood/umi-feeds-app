@@ -6,9 +6,9 @@ import { useDispatch } from 'react-redux';
 import { View, Text } from '../../style/Themed';
 import { setPhoneNumber } from '../../redux/reducers/donorReducer';
 
-import { LoginScreenParamList } from '../../types';
+import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 
-type newDonorNumberProp = StackNavigationProp<LoginScreenParamList, 'NewDonorNumber'>
+type newDonorNumberProp = StackNavigationProp<HomeScreenParamList, 'NewDonorNumber'>
 
 function NewDonorNumber() {
   const dispatch = useDispatch();

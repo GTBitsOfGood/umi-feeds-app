@@ -1,16 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
-import { decodedJwtToken } from '../../types';
+import { String } from 'lodash';
+import AuthState from './types';
+import { decodedJwtToken } from '../../../types';
+
+const initialState = {
+  _id: '',
+  firstName: '',
+  lastName: '',
+  username: '',
+  email: '',
+  phoneNumber: 0,
+  pushTokens: [],
+  isAdmin: false,
+  auth0AccessToken: '',
+  roles: [],
+  pickupAddresses: [],
+  dishes: [],
+  donations: [],
+  authenticated: false,
+  jwt: '',
+} as AuthState;
 
 const authReducer = createSlice({
   name: 'authInfo',
-  initialState: {
-    authenticated: false,
-    jwt: '',
-    firstName: '',
-    lastName: '',
-    username: '',
-  },
+  initialState,
   reducers: {
     login(state, action: PayloadAction<string>) {
       state.authenticated = true;
@@ -20,6 +34,7 @@ const authReducer = createSlice({
       state.firstName = userInfo.given_name;
       state.lastName = userInfo.family_name;
       state.username = userInfo.nickname;
+      state.auth0AccessToken = userInfo.sub;
       console.log(userInfo.sub);
     },
     logout(state) {
@@ -29,6 +44,7 @@ const authReducer = createSlice({
       state.firstName = '';
       state.lastName = '';
       state.username = '';
+      state.auth0AccessToken = '';
     },
   }
 });

@@ -31,7 +31,7 @@ function LoginButton() {
   useEffect(() => {
     if (result) {
       if (result.type === 'success') {
-        // Retrieve the JWT token and decode it
+        // Retrieve the JWT access token from Auth0 and decode it
         const receivedToken = result.params.id_token;
         console.log(receivedToken);
         dispatch(login(receivedToken));

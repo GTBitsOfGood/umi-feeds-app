@@ -4,9 +4,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { StyleSheet, Button, TextInput } from 'react-native';
 import { View, Text } from '../../style/Themed';
 
-import { LoginScreenParamList } from '../../types';
+import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 
-type newDonorNameProp = StackNavigationProp<LoginScreenParamList, 'NewDonorName'>
+type newDonorNameProp = StackNavigationProp<HomeScreenParamList, 'NewDonorName'>
 
 export default function NewDonorName() {
   const navigation = useNavigation<newDonorNameProp>();

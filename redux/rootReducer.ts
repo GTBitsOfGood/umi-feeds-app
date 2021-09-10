@@ -9,7 +9,7 @@ import donorReducer from './reducers/donorReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['jwt', 'authenticated', 'firstName', 'lastName', 'username', 'email', 'address', 'phoneNumber', 'useThisAddressForPickup']
+  whitelist: ['jwt', 'authenticated', 'firstName', 'lastName', 'username', 'email', 'address', 'phoneNumber']
 };
 
 const rootReducer = combineReducers({
