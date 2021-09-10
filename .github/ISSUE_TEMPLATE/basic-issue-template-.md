@@ -7,9 +7,16 @@ assignees: ''
 
 ---
 
-### Acceptance Criteria
+### Problem Description 
 * sample text
-### User Story
+
+### Task at Hand
+
+### When you're done this is what the app should look like/do:
+
+### Hints 
 * sample text
 ### Story Points
+### ByteCoin
+### Resources 
 * sample text
