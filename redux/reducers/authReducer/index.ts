@@ -13,7 +13,6 @@ const initialState = {
   email: '',
   phoneNumber: 0,
   pushTokens: [],
-  businessName: '',
   isAdmin: false,
   auth0AccessToken: '',
   roles: [],
