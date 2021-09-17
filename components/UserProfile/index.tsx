@@ -19,6 +19,10 @@ type ProfileScreenProp = CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
+/**
+ * User Profile Component
+ * @returns {JSX.Element}
+ */
 export default function UserProfile() {
     const authState = useSelector((state: RootState) => state.auth);
     const navigation = useNavigation<ProfileScreenProp>();
@@ -63,6 +67,11 @@ export default function UserProfile() {
     )
 }
 
+/**
+ * Structure for the edit button
+ * @param props onEdit function to be called when the edit button is pressed
+ * @returns {JSX.Element}
+ */
 function EditButton(props: { onEdit: () => void }) {
     return (<View>
         <TouchableHighlight
