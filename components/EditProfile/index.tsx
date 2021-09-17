@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function ProfileScreen() {
+export default function EditProfileScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>User Profile</Text>

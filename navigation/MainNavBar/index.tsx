@@ -8,8 +8,9 @@ import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
 import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
+import ProfileNavigator from '../SharedStack/UserProfile';
 
-import {
+import { 
   BottomTabParamList,
 } from './types';
 
@@ -46,8 +47,8 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="Map"
-        component={MapScreenNavigator}
+        name="Profile"
+        component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
         }}
