@@ -2,7 +2,6 @@ export type Roles = 'donor' | 'volunteer' | 'recipient';
 
 export type Address = {
   _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
-  businessName: string;
   streetAddress: string;
   buildingNumber: number;
   city: string;

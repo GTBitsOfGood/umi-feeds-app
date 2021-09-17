@@ -6,6 +6,7 @@ const initialState = {
   email: '',
   phoneNumber: 0,
   roles: [],
+  businessName: '',
   pickupAddress: [],
 } as OnboardingState;
 

@@ -41,7 +41,7 @@ function LoginScreen() {
         )
         : (
           <View>
-            <Text style={{ fontSize: 20 }}>{`Hello, ${authState.firstName} ${authState.lastName} (${authState.username})!`}</Text>
+            <Text style={{ fontSize: 20 }}>{`Hello, ${authState.firstName} ${authState.lastName}!`}</Text>
             <Button title="Register as New Donor" onPress={() => navigation.navigate('NewDonorName')} />
             <LogoutButton />
           </View>

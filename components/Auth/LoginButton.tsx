@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 
 import * as Auth0 from '../../constants/Auth0';
 
-import { login } from '../../redux/reducers/authReducer';
+import { login, logout } from '../../redux/reducers/authReducer';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -34,7 +34,8 @@ function LoginButton() {
         // Retrieve the JWT access token from Auth0 and decode it
         const receivedToken = result.params.id_token;
         console.log(receivedToken);
-        dispatch(login(receivedToken));
+        dispatch(logout());
+        // dispatch(login(receivedToken));
       } else {
         Alert.alert('Authentication error!');
       }

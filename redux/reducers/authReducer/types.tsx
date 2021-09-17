@@ -4,7 +4,8 @@ interface AuthState {
   _id: string,
   firstName: string;
   lastName: string;
-  username: string;
+  userName: string;
+  businessName: string;
   email: string;
   phoneNumber: number;
   pushTokens: string[];

@@ -8,7 +8,8 @@ const initialState = {
   _id: '',
   firstName: '',
   lastName: '',
-  username: '',
+  userName: '',
+  businessName: '',
   email: '',
   phoneNumber: 0,
   pushTokens: [],
@@ -33,7 +34,6 @@ const authReducer = createSlice({
       const userInfo: decodedJwtToken = jwtDecode(action.payload);
       state.firstName = userInfo.given_name;
       state.lastName = userInfo.family_name;
-      state.username = userInfo.nickname;
       state.auth0AccessToken = userInfo.sub;
       console.log(userInfo.sub);
     },
@@ -43,7 +43,6 @@ const authReducer = createSlice({
 
       state.firstName = '';
       state.lastName = '';
-      state.username = '';
       state.auth0AccessToken = '';
     },
   }
