@@ -34,8 +34,8 @@ function LoginButton() {
         // Retrieve the JWT access token from Auth0 and decode it
         const receivedToken = result.params.id_token;
         console.log(receivedToken);
-        dispatch(logout());
-        // dispatch(login(receivedToken));
+        // dispatch(logout());
+        dispatch(login(receivedToken));
       } else {
         Alert.alert('Authentication error!');
       }
