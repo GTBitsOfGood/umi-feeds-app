@@ -1,10 +1,12 @@
-import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { View } from '../../style/Themed';
+import UserProfile from '../../components/UserProfile';
+import React from 'react';
 
 export default function ProfileScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>User Profile</Text>
+      <UserProfile />
     </View>
   );
 }
@@ -12,21 +14,8 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+    padding: 0,
+  }
 });
