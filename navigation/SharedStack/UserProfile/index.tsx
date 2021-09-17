@@ -1,19 +1,25 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
+import UserProfileScreen from "../../../screens/UserProfile"
+import EditUserProfileScreen from "../../../screens/UserProfile/EditProfile"
 
-import ProfileScreen from '../../../screens/UserProfile';
-import { UserProfileStackParamList } from './types';
+import { UserProfileScreenParamList } from './types';
 
-const UserProfileStack = createStackNavigator<UserProfileStackParamList>();
+const UserProfileScreenStack = createStackNavigator<UserProfileScreenParamList>();
 
-export default function UserProfile() {
-  return (
-    <UserProfileStack.Navigator>
-      <UserProfileStack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{ headerTitle: 'Login' }}
-      />
-    </UserProfileStack.Navigator>
-  );
+export default function UserProfileScreenNavigator() {
+    return (
+        <UserProfileScreenStack.Navigator>
+            <UserProfileScreenStack.Screen
+                name="UserProfileScreen"
+                component={UserProfileScreen}
+                options={{ headerTitle: 'My Account' }}
+            />
+            <UserProfileScreenStack.Screen
+                name="EditUserProfileScreen"
+                component={EditUserProfileScreen}
+                options={{ headerTitle: 'Edit Profile' }}
+            />
+        </UserProfileScreenStack.Navigator>
+    )
 }
