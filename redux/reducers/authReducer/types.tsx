@@ -11,6 +11,7 @@ interface AuthState {
   isAdmin: boolean;
   auth0AccessToken: string;
   roles: Roles[];
+  businessName: string;
   pickupAddresses: Address[];
   dishes: Dish[];
   donations: DonationForm[];
