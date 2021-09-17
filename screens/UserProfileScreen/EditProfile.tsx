@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { View } from '../../style/Themed';
-import UserProfile from '../../components/UserProfile';
 import React from 'react';
+import { View } from '../../style/Themed';
+import EditProfileScreen from '../../components/EditProfile';
 
 export default function ProfileScreen() {
   return (
     <View style={styles.container}>
-      <UserProfile />
+      <EditProfileScreen />
     </View>
   );
 }

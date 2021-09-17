@@ -2,32 +2,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
 import { String } from 'lodash';
 import AuthState from './types';
-import { Address, decodedJwtToken } from '../../../types';
-
-const fakeAddress: Address = {
-  businessName: "Smith Hall",
-  streetAddress: "Williams St NW",
-  buildingNumber: 630,
-  city: "Atlanta",
-  state: "GA",
-  zipCode: 30313,
-  longitude: 10,
-  latitude: 10
-}
+import { decodedJwtToken } from '../../../types';
 
 const initialState = {
   _id: '',
   firstName: '',
   lastName: '',
   username: '',
-  email: 'phultquist3@gatech.edu',
-  phoneNumber: 6308901801,
+  email: '',
+  phoneNumber: 0,
   pushTokens: [],
-  businessName: "Example Business",
+  businessName: '',
   isAdmin: false,
   auth0AccessToken: '',
   roles: [],
-  pickupAddresses: [fakeAddress, fakeAddress],
+  pickupAddresses: [],
   dishes: [],
   donations: [],
   authenticated: false,
