@@ -118,15 +118,19 @@ This application uses the Google Maps API for the standalone Android app. Here a
 
 ## Inspiration and Resources
 
+#### Crash Minute Videos 
+* [React Navigation](https://bluejeans.com/s/xkNwzcIvLwK)
+* [Mongo Atlas](https://bluejeans.com/s/MCs25nNpxBx)
+
 #### Redux
-* ["Redux Toolkit"](https://redux-toolkit.js.org/)
+* [Redux Toolkit](https://redux-toolkit.js.org/)
 
 #### Code Structure 
-* ["Code Structure Inspiration"](https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/)
+* [Code Structure Inspiration](https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/)
 
 #### React Navigation
-* ["React Navigation"](https://reactnavigation.org/docs/)
-* ["React Navigation with Type Checking Guide"](https://reactnavigation.org/docs/typescript/)
+* [React Navigation](https://reactnavigation.org/docs/)
+* [React Navigation with Type Checking Guide](https://reactnavigation.org/docs/typescript/)
 
 ## License
 
