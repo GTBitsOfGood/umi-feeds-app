@@ -6,7 +6,7 @@ import { ColorSchemeName } from 'react-native';
 import { useSelector } from 'react-redux';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from './types';
-import BottomTabNavigator from './MainNavBar/index';
+import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
 import { RootState } from '../redux/rootReducer';
 import LoginScreen from '../screens/LoginScreen';
@@ -30,12 +30,20 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const authState = useSelector((state: RootState) => state.auth);
+  const adminState = useSelector((state: RootState) => state.auth.isAdmin);
+
+  let TabComponent;
+  if (!adminState) {
+    TabComponent = AdminTabs;
+  } else {
+    TabComponent = DonorTabs;
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       { authState.authenticated ? (
         <>
-          <Stack.Screen name="Root" component={BottomTabNavigator} />
+          <Stack.Screen name="Root" component={TabComponent} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
