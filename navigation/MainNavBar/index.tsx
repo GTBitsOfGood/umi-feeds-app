@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import Colors from '../../constants/Colors';
@@ -43,7 +43,7 @@ function DonorTabs() {
         name="Donate"
         component={DonationScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="fast-food" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
       />
       <BottomTab.Screen

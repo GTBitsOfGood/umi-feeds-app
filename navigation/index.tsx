@@ -33,7 +33,7 @@ function RootNavigator() {
   const adminState = useSelector((state: RootState) => state.auth.isAdmin);
 
   let TabComponent;
-  if (!adminState) {
+  if (adminState) {
     TabComponent = AdminTabs;
   } else {
     TabComponent = DonorTabs;
