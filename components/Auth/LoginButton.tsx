@@ -1,6 +1,6 @@
 import * as AuthSession from 'expo-auth-session';
 import React, { useEffect } from 'react';
-import { Alert, Button, Platform } from 'react-native';
+import { Alert, Button, Platform, StyleSheet, View } from 'react-native';
 
 import { useDispatch } from 'react-redux';
 
@@ -43,10 +43,20 @@ function LoginButton() {
   }, [result]);
 
   return (
-    <Button
-      title="Log In"
-      onPress={() => promptAsync({ useProxy })}
-    />
+    <View style={styles.button}>
+      <Button
+        color="#F37B36"
+        title="Continue to sign in"
+        onPress={() => promptAsync({ useProxy })}
+      />
+    </View>
+
   );
 }
+const styles = StyleSheet.create({
+  button:{
+    width: 327,
+    height: 52,
+  }
+});
 export default LoginButton;
