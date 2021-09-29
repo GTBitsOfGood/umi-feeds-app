@@ -43,7 +43,11 @@ export type DonationForm = {
   confirmDropOffTime: Date; // time when donation has been dropped off by volunteer
 }
 
-// OLD TYPES THAT WILL NEED TO BE CHANGED
+// ========================================================================
+// ========================================================================
+// OLD TYPES DO NOT USE
+// ========================================================================
+// ========================================================================
 /* eslint-disable camelcase */
 export type decodedJwtToken = {
   given_name: string,

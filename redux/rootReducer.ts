@@ -5,6 +5,7 @@ import { persistReducer } from 'redux-persist';
 
 import authReducer from './reducers/authReducer';
 import donorReducer from './reducers/donorReducer';
+import donationCartReducer from './reducers/donationCartReducer';
 
 const persistConfig = {
   key: 'root',
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: persistReducer(persistConfig, authReducer),
-  donor: persistReducer(persistConfig, donorReducer)
+  donor: persistReducer(persistConfig, donorReducer),
+  donationCart: persistReducer(persistConfig, donationCartReducer)
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
