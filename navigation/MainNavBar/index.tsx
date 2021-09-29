@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import Colors from '../../constants/Colors';
@@ -10,7 +10,7 @@ import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
 import ProfileNavigator from '../SharedStack/UserProfile';
 
-import { 
+import {
   BottomTabParamList,
 } from './types';
 
@@ -24,7 +24,7 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-export default function BottomTabNavigator() {
+function DonorTabs() {
   const colorScheme = useColorScheme();
 
   return (
@@ -36,30 +36,68 @@ export default function BottomTabNavigator() {
         name="Home"
         component={HomeScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="log-in" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Donate"
         component={DonationScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="fast-food" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
       />
       <BottomTab.Screen
-        name="Profile"
+        name="Me"
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="DonationsList"
-        component={DonationsListNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
         }}
       />
     </BottomTab.Navigator>
   );
 }
+
+function AdminTabs() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <BottomTab.Navigator
+      initialRouteName="Home"
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+    >
+      <BottomTab.Screen
+        name="Home"
+        component={HomeScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Map"
+        component={MapScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Donations"
+        component={DonationsListNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Me"
+        component={ProfileNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+        }}
+      />
+    </BottomTab.Navigator>
+  );
+}
+
+export {
+  DonorTabs,
+  AdminTabs
+};
