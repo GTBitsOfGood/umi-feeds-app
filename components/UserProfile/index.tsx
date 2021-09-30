@@ -37,7 +37,7 @@ export default function UserProfile() {
         <Text style={styles.title}>My Account</Text>
         <View style={{ marginBottom: 40, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.profilePicture} />
-          <Text style={styles.info}>{`${authState.firstName} ${authState.lastName}`}</Text>
+          <Text style={styles.info}>{`${authState.name}`}</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.heading}>Personal Identification </Text>

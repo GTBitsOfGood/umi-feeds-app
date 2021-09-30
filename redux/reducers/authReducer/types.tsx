@@ -1,22 +1,16 @@
-import { Roles, Address, Dish, DonationForm } from '../../../types';
+import { User } from '../../../types';
 
-interface AuthState {
-  _id: string,
-  firstName: string;
-  lastName: string;
-  userName: string;
-  businessName: string;
-  email: string;
-  phoneNumber: number;
-  pushTokens: string[];
-  isAdmin: boolean;
-  auth0AccessToken: string;
-  roles: Roles[];
-  pickupAddresses: Address[];
-  dishes: Dish[];
-  donations: DonationForm[];
-  authenticated: boolean;
-  jwt: string;
+// It will be useful to store the authenticated state of the user and the jwt token
+// for sending authenticated requests to the backend in addition to the other user info
+export type AuthUser = User & {
+  authenticated: boolean,
+  jwt: string
 }
 
-export default AuthState;
+// Name, jwt, and authenticated are the only things we know during onboarding, but
+// name and jwt can still be useful when sending onboarding requests to the backend
+export type OnboardingUser = {
+  authenticated: boolean,
+  jwt: string,
+  name: string
+}
