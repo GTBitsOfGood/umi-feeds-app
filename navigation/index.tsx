@@ -9,7 +9,6 @@ import { RootStackParamList } from './types';
 import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
 import { RootState } from '../redux/rootReducer';
-import LoginScreen from '../screens/LoginScreen';
 import HomeScreenNavigator from './SharedStack/Home';
 
 // If you are not familiar with React Navigation, we recommend going through the

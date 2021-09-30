@@ -11,15 +11,16 @@ import * as Auth0 from '../../constants/Auth0';
 
 import { login, beginOnboarding } from '../../redux/reducers/authReducer';
 import { decodedJwtToken } from '../../types';
-import {AuthUser, OnboardingUser} from '../../redux/reducers/authReducer/types';
+import { OnboardingUser } from '../../redux/reducers/authReducer/types';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 function LoginButton(props: {onUserNotFound: ()=>void}) {
   const dispatch = useDispatch();
+  const { onUserNotFound } = props;
 
-  const [request, result, promptAsync] = AuthSession.useAuthRequest({
+  const [, result, promptAsync] = AuthSession.useAuthRequest({
     redirectUri,
     clientId: Auth0.auth0ClientId,
     // id_token will return a JWT token
@@ -56,8 +57,8 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
           if (err.response !== null && err.response !== undefined && err.response?.status === 303) {
             // The name and jwt will be useful during onboarding even though we don't have any more user info
             const onboardingUser:OnboardingUser = { name: userInfo.name, jwt: receivedToken, authenticated: false };
-            dispatch(beginOnboarding(onboardingUser))
-            props.onUserNotFound();
+            dispatch(beginOnboarding(onboardingUser));
+            onUserNotFound();
           } else {
             // In this case it was actually an unexpected error
             Alert.alert(`Authentication error! ${err.message}`);

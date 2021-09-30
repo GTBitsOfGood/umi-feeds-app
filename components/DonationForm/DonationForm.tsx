@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
