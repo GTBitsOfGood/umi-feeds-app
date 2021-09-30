@@ -29,8 +29,8 @@ function LoginScreen() {
     <View style={styles.container}>
       <Logo />
       <View style={{ margin: '5%' }}>
-        <Text style={{ fontSize: 20, textAlign: 'center' }}>
-          The Umi Feeds app helps restaurants, caterers, supermarkets, and others avoid seeing good food go to waste, by donating it to people in need!
+        <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 227 }}>
+          A food rescue non-profit organization based in Atlanta dedicated to serving the hungry and homeless healthy and nutritious meals.
         </Text>
       </View>
       {!authState.authenticated
