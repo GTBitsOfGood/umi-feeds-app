@@ -40,6 +40,18 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
         // Retrieve the JWT access token from Auth0 and decode it
         const receivedToken = result.params.id_token;
         const userInfo: decodedJwtToken = jwtDecode(receivedToken);
+
+        // here for testing pruposes. Change to the following if want authentication.
+        // But better to use expo-secure to store jwt token rather than redux state
+        // https://docs.expo.dev/versions/latest/sdk/securestore/
+        // console.log(userInfo.sub);
+        // axios.post(`/login/${userInfo.sub}`, {}, {
+        //   headers: {
+        //     'Content-Type': 'multipart/form-data',
+        //     Authorization: `Bearer ${receivedToken}`
+        //   }
+        // })
+
         // Now that we have the user access token we can request the user information from the backend
         axios.post(`/login/${userInfo.sub}`, {}).then((res) => {
           // This is the success condition: we have found the user based on the accesstoken
