@@ -27,16 +27,16 @@ function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Logo/>
+      <Logo />
       <View style={{ margin: '5%' }}>
-        <Text style={{ fontSize: 15, textAlign: 'center', paddingTop:227 }}>
-        A food rescue non-profit organization based in Atlanta dedicated to serving the hungry and homeless healthy and nutritious meals. 
+        <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 227 }}>
+          A food rescue non-profit organization based in Atlanta dedicated to serving the hungry and homeless healthy and nutritious meals.
         </Text>
       </View>
       {!authState.authenticated
         ? (
           <View>
-            <LoginButton/>
+            <LoginButton />
           </View>
         )
         : (
