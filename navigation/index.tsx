@@ -9,7 +9,7 @@ import { RootStackParamList } from './types';
 import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
 import { RootState } from '../redux/rootReducer';
-import LoginScreen from '../screens/LoginScreen';
+import HomeScreenNavigator from './SharedStack/Home';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -49,7 +49,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login" component={HomeScreenNavigator} />
       )
       }
     </Stack.Navigator>

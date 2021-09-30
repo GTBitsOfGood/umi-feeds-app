@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import axios from 'axios';
@@ -85,9 +85,11 @@ function DonationForm(props: { donation?: Donation }) {
   };
 
   const handleDelete = () => {
-    axios.delete(`/api/donations/${props.donation._id}`)
-      .then((res) => console.log(res.data))
-      .catch((err) => logAxiosError(err));
+    if (props.donation?._id) {
+      axios.delete(`/api/donations/${props.donation._id}`)
+        .then((res) => console.log(res.data))
+        .catch((err) => logAxiosError(err));
+    }
   };
 
   // Choose an image from the user's photo library
@@ -211,7 +213,7 @@ function DonationForm(props: { donation?: Donation }) {
             onPress={() => handleSubmit()}
             buttonStyle={{ backgroundColor: 'orange' }}
           />
-          {props.donationId && (
+          {props.donation?._id && (
             <Button
               title="Delete"
               onPress={() => handleDelete()}

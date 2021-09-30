@@ -10,7 +10,8 @@ import donationCartReducer from './reducers/donationCartReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['jwt', 'authenticated', 'firstName', 'lastName', 'username', 'email', 'address', 'phoneNumber']
+  whitelist: ['jwt', 'authenticated', '_id', 'name', 'email', 'businessName',
+    'phoneNumber', 'pushTokens', 'isAdmin', 'auth0AccessToken', 'roles', 'pickupAddresses', 'dishes', 'donations']
 };
 
 const rootReducer = combineReducers({
