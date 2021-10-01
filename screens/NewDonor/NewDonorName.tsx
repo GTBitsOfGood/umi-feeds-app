@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import * as AuthSession from 'expo-auth-session';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StyleSheet, Button, TextInput } from 'react-native';
+import { StyleSheet, Button, TextInput, Platform } from 'react-native';
 import { View, Text } from '../../style/Themed';
+
+import * as Auth0 from '../../constants/Auth0';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 
 type newDonorNameProp = StackNavigationProp<HomeScreenParamList, 'NewDonorName'>
 
+const useProxy = Platform.select({ web: false, default: true });
+const redirectUri = AuthSession.makeRedirectUri({ useProxy });
+
 export default function NewDonorName() {
   const navigation = useNavigation<newDonorNameProp>();
   const [text, onChangeText] = useState<string>('');
+
+  const [, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
+    redirectUri,
+    clientId: Auth0.auth0ClientId,
+  },
+  { authorizationEndpoint: Auth0.logoutEndpoint });
+
+  // Cancel button to reset the Auth0 credentials in the state, otherwise
+  // every new login attempt will be using that same account
+  useEffect(() => {
+    if (logoutResult) {
+      // Although logout functionality works, it receives an error from Auth0,
+      // so we only check for canceling logout rather than successful logout
+      if (logoutResult.type !== 'cancel') {
+        navigation.goBack();
+      }
+    }
+  }, [logoutResult]);
 
   return (
     <View style={{
@@ -32,7 +56,7 @@ export default function NewDonorName() {
         </View>
       </View>
       <View style={styles.buttons}>
-        <Button title="←" onPress={() => navigation.goBack()} />
+        <Button title="CANCEL" onPress={() => promptAsyncLogout({ useProxy })} />
         <Button title="NEXT" onPress={() => navigation.navigate('NewDonorNumber')} />
       </View>
     </View>

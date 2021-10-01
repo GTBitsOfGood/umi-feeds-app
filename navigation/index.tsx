@@ -30,9 +30,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const authState = useSelector((state: RootState) => state.auth);
-  const donationState = useSelector((state: RootState) => state.donationCart);
-
-  console.log(donationState);
 
   let TabComponent;
   if (authState.isAdmin) {
