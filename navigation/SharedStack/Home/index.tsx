@@ -4,6 +4,9 @@ import LoginScreen from '../../../screens/LoginScreen';
 import NewDonorName from '../../../screens/NewDonor/NewDonorName';
 import NewDonorNumber from '../../../screens/NewDonor/NewDonorNumber';
 import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
+import AllDonations from '../../../screens/AllDonations';
+import MyDishes from '../../../screens/MyDishes';
+import DonationView from '../../../screens/DetailDonation';
 import {
   HomeScreenParamList,
 } from './types';
@@ -32,6 +35,21 @@ function HomeScreen() {
         name="NewDonorLocation"
         component={NewDonorLocation}
         options={{ headerShown: false }}
+      />
+      <HomeScreenStack.Screen
+        name="DonationView"
+        component={DonationView}
+        options={{ headerShown: false, headerTitle: 'DonationView' }}
+      />
+      <HomeScreenStack.Screen
+        name="MyDishes"
+        component={MyDishes}
+        options={{ headerShown: false, headerTitle: 'MyDishes' }}
+      />
+      <HomeScreenStack.Screen
+        name="AllDonations"
+        component={AllDonations}
+        options={{ headerShown: false, headerTitle: 'AllDonations' }}
       />
     </HomeScreenStack.Navigator>
   );

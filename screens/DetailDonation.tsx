@@ -44,6 +44,7 @@ export default function DonationDetails() {
 
   return (
     <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', padding: '5%' }}>
+      <Button title="Back" onPress={() => { navigation.navigate('Home'); }}/>
       <Text style={styles.title}>Donor Availability:</Text>
       <Text>Start Time: {DateTime.fromJSDate(new Date(donation.availability.startTime)).toLocaleString(DateTime.DATETIME_FULL)}</Text>
       <Text>End Time: {DateTime.fromJSDate(new Date(donation.availability.endTime)).toLocaleString(DateTime.DATETIME_FULL)}</Text>
@@ -87,7 +88,7 @@ export default function DonationDetails() {
         title="Mark as picked up"
         onPress={handlePickup}
       />
-      {/* <Button title="Go back" onPress={() => navigation.goBack()} /> */}
+      <Button title="Go back" onPress={() => navigation.goBack()} />
     </View>
   );
 }

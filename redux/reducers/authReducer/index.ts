@@ -5,20 +5,20 @@ import AuthState from './types';
 import { decodedJwtToken } from '../../../types';
 
 const initialState = {
-  _id: '',
-  firstName: '',
-  lastName: '',
-  username: '',
-  email: '',
-  phoneNumber: 0,
+  _id: '5',
+  firstName: 'John',
+  lastName: 'Smith',
+  username: 'johnsmith',
+  email: 'johnsmith@gmail.com',
+  phoneNumber: 4040404040,
   pushTokens: [],
-  isAdmin: false,
-  auth0AccessToken: '',
+  isAdmin: true,
+  auth0AccessToken: 'password',
   roles: [],
   pickupAddresses: [],
   dishes: [],
   donations: [],
-  authenticated: false,
+  authenticated: true,
   jwt: '',
 } as AuthState;
 
