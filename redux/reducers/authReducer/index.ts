@@ -8,7 +8,7 @@ const initialState = {
   businessName: 'businessName',
   phoneNumber: 0,
   pushTokens: [],
-  isAdmin: true,
+  isAdmin: false,
   auth0AccessToken: 'password',
   roles: [],
   pickupAddresses: [],
