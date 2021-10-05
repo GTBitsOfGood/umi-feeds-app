@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import jwtDecode from 'jwt-decode';
-import { String } from 'lodash';
 import AuthState from './types';
 import { decodedJwtToken } from '../../../types';
 
@@ -35,6 +34,7 @@ const authReducer = createSlice({
       state.lastName = userInfo.family_name;
       state.username = userInfo.nickname;
       state.auth0AccessToken = userInfo.sub;
+      // eslint-disable-next-line no-console
       console.log(userInfo.sub);
     },
     logout(state) {
