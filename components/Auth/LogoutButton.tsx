@@ -14,7 +14,7 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 function LogoutButton() {
   const dispatch = useDispatch();
 
-  const [logoutRequest, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
+  const [, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
     redirectUri,
     clientId: Auth0.auth0ClientId,
   },
@@ -22,7 +22,8 @@ function LogoutButton() {
 
   useEffect(() => {
     if (logoutResult) {
-      // Although logout functionality works, it receives an error from Auth0, so we only check for canceling logout rather than successful logout
+      // Although logout functionality works, it receives an error from Auth0,
+      // so we only check for canceling logout rather than successful logout
       if (logoutResult.type !== 'cancel') {
         dispatch(logout());
       }

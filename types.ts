@@ -2,7 +2,6 @@ export type Roles = 'donor' | 'volunteer' | 'recipient';
 
 export type Address = {
   _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
-  businessName: string;
   streetAddress: string;
   buildingNumber: number;
   city: string;
@@ -44,7 +43,26 @@ export type DonationForm = {
   confirmDropOffTime: Date; // time when donation has been dropped off by volunteer
 }
 
-// OLD TYPES THAT WILL NEED TO BE CHANGED
+export type User = {
+  _id?: string, // the unqiue id assigned to a user. Let Mongo create this when you insert a document without any _id attribute
+  name: string,
+  email: string,
+  businessName: string,
+  phoneNumber: number,
+  pushTokens: string[],
+  isAdmin: boolean,
+  auth0AccessToken: string,
+  roles: string[],
+  pickupAddresses: Address[],
+  dishes: Dish[],
+  donations: DonationForm[]
+};
+
+// ========================================================================
+// ========================================================================
+// OLD TYPES DO NOT USE
+// ========================================================================
+// ========================================================================
 /* eslint-disable camelcase */
 export type decodedJwtToken = {
   given_name: string,
@@ -53,19 +71,6 @@ export type decodedJwtToken = {
   name: string,
   sub: string,
 }
-
-export type User = {
-  _id: string,
-  name: string,
-  email: string,
-  pushTokens: string,
-  recipient: boolean,
-  admin: boolean,
-  createdAt: string,
-  updatedAt: string,
-  __v: number,
-  sub: string
-};
 
 export type Donation = {
   foodImages: Array<string>,

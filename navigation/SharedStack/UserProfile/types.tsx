@@ -1,3 +1,4 @@
-export type UserProfileStackParamList = {
-  Profile: undefined;
-};
+export type UserProfileScreenParamList = {
+  UserProfileScreen: undefined;
+  EditUserProfileScreen: undefined;
+}

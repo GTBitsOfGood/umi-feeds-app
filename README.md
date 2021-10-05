@@ -70,7 +70,7 @@ Currently components in both the `\screens` and `\components` directory are conn
 
 ## Code/PR Workflow :nerd_face:
 
-- Assign an issue to yourself and move it to the "In Progress" pipeline. You will have to use ZenHub, either through the [Chrome or Firefox extension](https://www.zenhub.com/extension) or through their [web-app](https://app.zenhub.com/), to do this. **Pro-tip**: ZenHub will let you filter issues by labels and milestones.
+- Assign an issue to yourself under the projects tab [here](https://github.com/GTBitsOfGood/umi-feeds-app/projects) for the current sprint and move it to the "In Progress" pipeline.
 - Create a new branch in the format `[NAME]/[ISSUE-NUMBER]-[SHORT-DESCRIPTION]` (issue number is optional) by running `git checkout -b [BRANCH NAME]`.
   - example branch name: `daniel/48-setup-ci`
 - Be sure to lint, format, and type-check your code occasionally to catch errors by running `npm run lint`. eslint can try to automatically fix some of the linting errors with `npm run lint:fix`. Reach out to an EM if you are having problems with the type-checker or are blocked by anything else in general.
@@ -118,15 +118,19 @@ This application uses the Google Maps API for the standalone Android app. Here a
 
 ## Inspiration and Resources
 
+#### Crash Minute Videos 
+* [React Navigation](https://bluejeans.com/s/xkNwzcIvLwK)
+* [Mongo Atlas](https://bluejeans.com/s/MCs25nNpxBx)
+
 #### Redux
-* ["Redux Toolkit"](https://redux-toolkit.js.org/)
+* [Redux Toolkit](https://redux-toolkit.js.org/)
 
 #### Code Structure 
-* ["Code Structure Inspiration"](https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/)
+* [Code Structure Inspiration](https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/)
 
 #### React Navigation
-* ["React Navigation"](https://reactnavigation.org/docs/)
-* ["React Navigation with Type Checking Guide"](https://reactnavigation.org/docs/typescript/)
+* [React Navigation](https://reactnavigation.org/docs/)
+* [React Navigation with Type Checking Guide](https://reactnavigation.org/docs/typescript/)
 
 ## License
 

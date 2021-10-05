@@ -5,16 +5,19 @@ import { persistReducer } from 'redux-persist';
 
 import authReducer from './reducers/authReducer';
 import donorReducer from './reducers/donorReducer';
+import donationCartReducer from './reducers/donationCartReducer';
 
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['jwt', 'authenticated', 'firstName', 'lastName', 'username', 'email', 'address', 'phoneNumber']
+  whitelist: ['jwt', 'authenticated', '_id', 'name', 'email', 'businessName',
+    'phoneNumber', 'pushTokens', 'isAdmin', 'auth0AccessToken', 'roles', 'pickupAddresses', 'dishes', 'donations']
 };
 
 const rootReducer = combineReducers({
   auth: persistReducer(persistConfig, authReducer),
-  donor: persistReducer(persistConfig, donorReducer)
+  donor: persistReducer(persistConfig, donorReducer),
+  donationCart: persistReducer(persistConfig, donationCartReducer)
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

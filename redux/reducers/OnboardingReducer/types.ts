@@ -5,6 +5,7 @@ interface OnboardingState {
   email: string;
   phoneNumber: number;
   roles: Roles[];
+  businessName: string;
   pickupAddress: Address[];
 }
 

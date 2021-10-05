@@ -21,23 +21,25 @@ export default function Map() {
       .finally(() => setLoading(false));
   }, []);
 
-  const pickUps = isLoading ? [] : availablePickup.map((donation) => (
-    <Marker
-      key={donation._id}
-      coordinate={{
-        latitude: donation.donor.donorInfo.latitude,
-        longitude: donation.donor.donorInfo.longitude,
-      }}
-      title={donation.donor.donorInfo.name}
-      description={donation.description}
-      onCalloutPress={() => {
-        navigation.navigate('DonationDetails', {
-          donation
-        });
-      }}
-    />
-  ));
+  // const pickUps = isLoading ? [] : availablePickup.map((donation) => (
+  //   <Marker
+  //     key={donation._id}
+  //     coordinate={{
+  //       latitude: donation.donor.donorInfo.latitude,
+  //       longitude: donation.donor.donorInfo.longitude,
+  //     }}
+  //     title={donation.donor.donorInfo.name}
+  //     description={donation.description}
+  //     onCalloutPress={() => {
+  //       navigation.navigate('DonationDetails', {
+  //         donation
+  //       });
+  //     }}
+  //   />
+  // ));
 
+  // Error getting donor object as it currently returns null object so
+  // dont currently using any markers on map. Will be fixed in admin mode
   return (
     <View style={styles.container}>
       <MapView
@@ -51,7 +53,7 @@ export default function Map() {
         showsUserLocation
         showsMyLocationButton
       >
-        {pickUps}
+        {/* {pickUps} */}
       </MapView>
     </View>
   );

@@ -29,11 +29,11 @@ function NewDonorLocation() {
   // TODO: actually make a request to the backend
   const handleSubmitNewDonor = () => {
     axios.post('/api/users', {
-      name: authState.firstName + authState.lastName,
+      name: authState.name,
       email: 'example@gmail.com',
       pushTokens: ['ExponentPushToken[EXAMPLE]'],
       donorInfo: {
-        name: authState.firstName + authState.lastName,
+        name: authState.name,
         phone: donorState.phoneNumber,
         address: streetAddress,
         longitude: 0,
