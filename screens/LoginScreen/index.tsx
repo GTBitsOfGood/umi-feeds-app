@@ -32,7 +32,7 @@ const MockDishObj = {
 };
 
 type LoginScreenProp = CompositeNavigationProp<
-  StackNavigationProp<HomeScreenParamList, 'LoginScreen'>,
+  StackNavigationProp<HomeScreenParamList, 'Home'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 

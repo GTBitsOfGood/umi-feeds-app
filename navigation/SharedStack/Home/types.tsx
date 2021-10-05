@@ -1,6 +1,9 @@
 export type HomeScreenParamList = {
-  LoginScreen: undefined;
+  Home: undefined;
   NewDonorName: undefined;
   NewDonorNumber: undefined;
   NewDonorLocation: undefined;
+  DonationView: undefined;
+  MyDishes: undefined;
+  AllDonations: undefined;
 };
