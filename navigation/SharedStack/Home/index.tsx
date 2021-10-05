@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import LoginScreen from '../../../screens/LoginScreen';
+import HomeScreen from '../../../screens/HomeScreen';
 import NewDonorName from '../../../screens/NewDonor/NewDonorName';
 import NewDonorNumber from '../../../screens/NewDonor/NewDonorNumber';
 import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
@@ -13,13 +13,13 @@ import {
 
 const HomeScreenStack = createStackNavigator<HomeScreenParamList>();
 
-function HomeScreen() {
+function HomeScreenNavigator() {
   return (
     <HomeScreenStack.Navigator>
       <HomeScreenStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ headerTitle: 'Login' }}
+        name="Home"
+        component={HomeScreen}
+        options={{ headerTitle: 'Home' }}
       />
       <HomeScreenStack.Screen
         name="NewDonorName"
@@ -55,4 +55,4 @@ function HomeScreen() {
   );
 }
 
-export default HomeScreen;
+export default HomeScreenNavigator;

@@ -10,11 +10,10 @@ import LogoutButton from '../../components/Auth/LogoutButton';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
-import styles from '../../components/Map/styles';
 
 type HomeScreenProp = CompositeNavigationProp<
   StackNavigationProp<HomeScreenParamList, 'Home'>,
-  BottomTabNavigationProp<BottomTabParamList, 'Navigation'>
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
 function HomeScreen() {
@@ -33,7 +32,7 @@ function HomeScreen() {
         <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date</Text>
         <Pressable
           onPress={() => {
-            navigation.navigate('DetailDishes');
+            navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
           }}
         >
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>

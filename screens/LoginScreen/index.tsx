@@ -17,7 +17,7 @@ import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 type LoginScreenProp = CompositeNavigationProp<
-  StackNavigationProp<HomeScreenParamList, 'LoginScreen'>,
+  StackNavigationProp<HomeScreenParamList, 'Home'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 

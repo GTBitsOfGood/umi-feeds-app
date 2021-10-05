@@ -17,7 +17,7 @@ const initialState = {
   pickupAddresses: [],
   dishes: [],
   donations: [],
-  authenticated: true,
+  authenticated: false,
   jwt: '',
 } as AuthState;
 
