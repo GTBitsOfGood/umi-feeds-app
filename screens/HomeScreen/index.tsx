@@ -1,15 +1,32 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { useDispatch } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
 import LogoutButton from '../../components/Auth/LogoutButton';
+import DonateQuantityModal from '../../components/DonateQuantityModal';
+import { DonationDishes } from '../../types';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+import { addToCart } from '../../redux/reducers/donationCartReducer';
+
+import { scale, moderateScale, verticalScale } from '../../util/index';
+
+// Test Dish Object to render Modal
+const MockDishObj = {
+  _id: '894yr34fbu3bf3', // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  dishName: 'Fried Donit',
+  cost: 90.00,
+  pounds: 78,
+  allergens: ['fish', 'nuts'],
+  imageLink: 'www.google.com', // link to azure image
+  comments: '',
+};
 
 type HomeScreenProp = CompositeNavigationProp<
   StackNavigationProp<HomeScreenParamList, 'Home'>,
@@ -19,8 +36,22 @@ type HomeScreenProp = CompositeNavigationProp<
 function HomeScreen() {
   const navigation = useNavigation<HomeScreenProp>();
 
+  /**
+   * ONLY FOR TESTING AND DEMO PURPOSES TO DEMO MODAL
+   */
+  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const closeModal = () => setModalVisible(!modalVisible);
+  const modalSubmit = (quantity: DonationDishes) => dispatch(addToCart(quantity));
+
   return (
     <View style={styles.container}>
+      <DonateQuantityModal
+        visible={modalVisible}
+        dishObj={MockDishObj}
+        closeModal={closeModal}
+        modalSubmit={modalSubmit}
+      />
       <View style={styles.topContainer}>
         <Text style={styles.title}>Welcome Back</Text>
         <LogoutButton />
@@ -53,10 +84,11 @@ function HomeScreen() {
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            navigation.navigate('AllDonations');
+            // navigation.navigate('AllDonations');
+            setModalVisible(!modalVisible);
           }}
         >
-          <Text style={styles.standardText}>All Donations</Text>
+          <Text style={styles.standardText}>Test Modal Dish</Text>
         </Pressable>
       </View>
       <View style={styles.contact}>
@@ -85,8 +117,8 @@ const styles = StyleSheet.create({
     width: 315,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 59,
-    marginBottom: 51,
+    marginTop: moderateScale(10),
+    marginBottom: moderateScale(25),
     marginHorizontal: 30,
   },
   title: {
