@@ -8,6 +8,7 @@ import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
 import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
+import DishScreenNavigator from '../DonorStack/DishForm'
 import ProfileNavigator from '../SharedStack/UserProfile';
 
 import {
@@ -45,6 +46,13 @@ function DonorTabs() {
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
+      />
+      <BottomTab.Screen
+          name="Dishes"
+          component={DishScreenNavigator}
+          options={{
+            tabBarIcon: ({ color }) => <MaterialCommunityIcons name="noodles" size={30} color={color} style={{ marginBottom: -3 }} />,
+          }}
       />
       <BottomTab.Screen
         name="Me"
