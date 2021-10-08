@@ -64,14 +64,17 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   searchBar: {
-    borderColor: '#E0E0E0',
+    borderColor: '#B8B8B8',
     borderWidth: 1,
     padding: 0,
     borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20
   },
   searchInput: {
     flexGrow: 1,
-    padding: 15,
+    paddingVertical: 15,
   }
 });
 

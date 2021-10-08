@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import LogoutButton from '../../components/Auth/LogoutButton';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
-import { DonationDishes } from '../../types';
+import { Dish, DonationDishes } from '../../types';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
@@ -18,7 +18,7 @@ import { addToCart } from '../../redux/reducers/donationCartReducer';
 import { scale, moderateScale, verticalScale } from '../../util/index';
 
 // Test Dish Object to render Modal
-const MockDishObj = {
+const MockDishObj: Dish = {
   _id: '894yr34fbu3bf3', // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
   dishName: 'Fried Donit',
   cost: 90.00,
@@ -26,6 +26,7 @@ const MockDishObj = {
   allergens: ['fish', 'nuts'],
   imageLink: 'www.google.com', // link to azure image
   comments: '',
+  favorite: false,
 };
 
 type HomeScreenProp = CompositeNavigationProp<
