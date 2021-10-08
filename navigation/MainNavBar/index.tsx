@@ -9,6 +9,7 @@ import MapScreenNavigator from '../AdminStack/Map';
 import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
 import ProfileNavigator from '../SharedStack/UserProfile';
+import DishProfileScreen from '../../screens/Dishes/DishProfileScreen';
 
 import {
   BottomTabParamList,
@@ -51,6 +52,13 @@ function DonorTabs() {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Dish"
+        component={DishProfileScreen}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="fast-food" color={color} />,
         }}
       />
     </BottomTab.Navigator>

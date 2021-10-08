@@ -4,4 +4,5 @@ export type BottomTabParamList = {
   Map: undefined;
   Donations: undefined;
   Me: undefined;
+  Dish: undefined;
 };

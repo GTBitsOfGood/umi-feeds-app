@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const DishProfileScreen = () => (
+const DishSearchScreen = () => (
   <View style={styles.container}>
     <Text>Dish Search Screen</Text>
   </View>
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DishProfileScreen;
+export default DishSearchScreen;
