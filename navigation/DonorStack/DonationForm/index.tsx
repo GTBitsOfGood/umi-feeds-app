@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import DonationScreen from '../../../screens/DonationScreen';
+import DonationScreen from '../../../screens/DonationOverview/DonationScreen';
+import DishSearch from '../../../screens/DonationOverview/DishSearch';
 import {
   DonationScreenParamList,
 } from './types';
@@ -13,7 +14,12 @@ function DonationScreenNavigator() {
       <DonationScreenStack.Screen
         name="DonationScreen"
         component={DonationScreen}
-        options={{ headerTitle: 'Donation Screen' }}
+        options={{ headerTitle: 'Donation Screen', headerShown: false }}
+      />
+      <DonationScreenStack.Screen
+        name="DishSearch"
+        component={DishSearch}
+        options={{ headerTitle: 'Donation Screen', headerShown: false }}
       />
     </DonationScreenStack.Navigator>
   );
