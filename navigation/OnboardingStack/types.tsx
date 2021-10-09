@@ -1,5 +1,5 @@
 export type OnboardingStackParamList = {
-  Name: undefined;
-  Roles: undefined;
-  Address: undefined;
+  Login: undefined;
+  CreateAccount: undefined;
+  EnterAddress: undefined;
 };

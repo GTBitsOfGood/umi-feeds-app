@@ -7,6 +7,7 @@ import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
 import {
   HomeScreenParamList,
 } from './types';
+import Onboarding from '../../OnboardingStack';
 
 const HomeScreenStack = createStackNavigator<HomeScreenParamList>();
 
@@ -14,24 +15,8 @@ function HomeScreen() {
   return (
     <HomeScreenStack.Navigator>
       <HomeScreenStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{ headerTitle: 'Login' }}
-      />
-      <HomeScreenStack.Screen
-        name="NewDonorName"
-        component={NewDonorName}
-        options={{ headerShown: false }}
-      />
-      <HomeScreenStack.Screen
-        name="NewDonorNumber"
-        component={NewDonorNumber}
-        options={{ headerShown: false }}
-      />
-      <HomeScreenStack.Screen
-        name="NewDonorLocation"
-        component={NewDonorLocation}
-        options={{ headerShown: false }}
+        name="Onboarding"
+        component={Onboarding}
       />
     </HomeScreenStack.Navigator>
   );

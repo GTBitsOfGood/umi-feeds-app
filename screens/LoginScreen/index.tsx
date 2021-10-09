@@ -15,9 +15,10 @@ import Logo from '../../assets/images/umi-feeds-logo.svg';
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+import { OnboardingStackParamList } from '../../navigation/OnboardingStack/types';
 
 type LoginScreenProp = CompositeNavigationProp<
-  StackNavigationProp<HomeScreenParamList, 'LoginScreen'>,
+  StackNavigationProp<OnboardingStackParamList, 'Login'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
@@ -36,13 +37,13 @@ function LoginScreen() {
       {!authState.authenticated
         ? (
           <View>
-            <LoginButton onUserNotFound={() => navigation.navigate('NewDonorName')} />
+            <LoginButton onUserNotFound={() => navigation.navigate('EnterAddress')} />
           </View>
         )
         : (
           <View>
             <Text style={{ fontSize: 20 }}>{`Hello, ${authState.name}!`}</Text>
-            <Button title="Register as New Donor" onPress={() => navigation.navigate('NewDonorName')} />
+            <Button title="Register as New Donor" onPress={() => navigation.navigate('EnterAddress')} />
             <LogoutButton />
           </View>
         )
