@@ -9,7 +9,6 @@ import { RootStackParamList } from './types';
 import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
 import { RootState } from '../redux/rootReducer';
-import HomeScreenNavigator from './SharedStack/Home';
 import OnboardingNavigator from './OnboardingStack';
 
 // If you are not familiar with React Navigation, we recommend going through the
@@ -31,7 +30,6 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   const authState = useSelector((state: RootState) => state.auth);
-
   let TabComponent;
   if (authState.isAdmin) {
     TabComponent = AdminTabs;
@@ -49,7 +47,7 @@ function RootNavigator() {
       ) : (
         <Stack.Screen name="Login" component={OnboardingNavigator} />
       )
-      }
+    }
     </Stack.Navigator>
   );
 }

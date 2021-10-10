@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import DonationCartState from './types';
+import { DonationDishes } from '../../../types';
 
 const initialState = {
   ongoing: false,
@@ -28,7 +29,11 @@ const donationCartReducer = createSlice({
   name: 'donationCart',
   initialState,
   reducers: {
+    addToCart(state, action: PayloadAction<DonationDishes>) {
+      state.dishes.push(action.payload);
+    }
   },
 });
 
+export const { addToCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;

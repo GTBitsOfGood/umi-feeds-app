@@ -36,7 +36,7 @@ function DonorTabs() {
         name="Home"
         component={HomeScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />
         }}
       />
       <BottomTab.Screen

@@ -2,12 +2,14 @@ import * as AuthSession from 'expo-auth-session';
 import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { StyleSheet, Button, TextInput, Platform } from 'react-native';
+import { StyleSheet, TextInput, Button as LinkButton, Platform } from 'react-native';
+import { Button, CheckBox } from 'react-native-elements';
 import { View, Text } from '../../style/Themed';
 
 import * as Auth0 from '../../constants/Auth0';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
+import { HideKeyboardUtility } from '../../util/index';
 
 type newDonorNameProp = StackNavigationProp<HomeScreenParamList, 'NewDonorName'>
 
@@ -16,7 +18,12 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 export default function NewDonorName() {
   const navigation = useNavigation<newDonorNameProp>();
-  const [text, onChangeText] = useState<string>('');
+  const [businessName, onChangeBusinessName] = useState<string>('');
+  const [phoneNumber, onChangeNumber] = useState<string>();
+
+  const [donorRoleForm, onSelectDonor] = useState<boolean>(false);
+  const [volunteerRoleForm, onSelectVolunteer] = useState<boolean>(false);
+  const [recipientRoleForm, onSelectRecipient] = useState<boolean>(false);
 
   const [, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
     redirectUri,
@@ -37,56 +44,114 @@ export default function NewDonorName() {
   }, [logoutResult]);
 
   return (
-    <View style={{
-      flex: 1,
-      flexDirection: 'column',
-      justifyContent: 'space-between'
-    }}
-    >
-      <View style={styles.inputs}>
-        <Text style={styles.title}>What is your business’s name?</Text>
-        <View style={styles.form}>
-          <Text style={{ fontWeight: 'bold' }}>Business Name</Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            placeholder="Trattoria"
-            enablesReturnKeyAutomatically
+    <HideKeyboardUtility>
+      <View style={{
+        flex: 1,
+        flexDirection: 'column',
+        padding: 20,
+        justifyContent: 'space-between'
+      }}
+      >
+        <View style={{ flex: 1,
+          width: '100%',
+          paddingTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'flex-start' }}
+        >
+          <LinkButton title="← Cancel" color="#F37B36" onPress={() => promptAsyncLogout({ useProxy })} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>Create Account</Text>
+          <Text style={styles.subtitle}>Fill out the information to create your profile.</Text>
+        </View>
+        <View style={[styles.inputs, { flex: 7 }]}>
+          <View style={styles.form}>
+            <TextInput
+              value={businessName}
+              onChangeText={onChangeBusinessName}
+              style={styles.input}
+              placeholder="Company Name"
+              enablesReturnKeyAutomatically
+            />
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={onChangeNumber}
+              placeholder="Phone Number"
+              enablesReturnKeyAutomatically
+              keyboardType="numeric"
+              textContentType="telephoneNumber"
+            />
+            <Text style={styles.subtitle}>Select All Roles that Apply.</Text>
+            <CheckBox
+              containerStyle={styles.checkbox}
+              textStyle={{ fontWeight: 'normal' }}
+              title="Donor"
+              checked={donorRoleForm}
+              onPress={() => onSelectDonor(!donorRoleForm)}
+              checkedColor="#F37B36"
+            />
+            <CheckBox
+              containerStyle={styles.checkbox}
+              textStyle={{ fontWeight: 'normal' }}
+              title="Volunteer"
+              checked={volunteerRoleForm}
+              onPress={() => onSelectVolunteer(!volunteerRoleForm)}
+              checkedColor="#F37B36"
+            />
+            <CheckBox
+              containerStyle={styles.checkbox}
+              textStyle={{ fontWeight: 'normal' }}
+              title="Recipient"
+              checked={recipientRoleForm}
+              onPress={() => onSelectRecipient(!recipientRoleForm)}
+              checkedColor="#F37B36"
+            />
+          </View>
+        </View>
+        <View style={[{ flex: 0.8,
+          width: '100%',
+          justifyContent: 'center' }]}
+        >
+          <Button
+            title="Next"
+            buttonStyle={{ backgroundColor: '#F37B36', height: '100%' }}
+            onPress={() => navigation.navigate('NewDonorNumber')}
           />
         </View>
       </View>
-      <View style={styles.buttons}>
-        <Button title="CANCEL" onPress={() => promptAsyncLogout({ useProxy })} />
-        <Button title="NEXT" onPress={() => navigation.navigate('NewDonorNumber')} />
-      </View>
-    </View>
+    </HideKeyboardUtility>
   );
 }
 
 const styles = StyleSheet.create({
   inputs: {
-    paddingLeft: 45,
-    paddingTop: 115
+    paddingTop: 0
   },
   form: {
-    paddingTop: 136
+    // flex: 1,
+    // flexDirection: 'column',
+    // justifyContent: 'space-between'
   },
   input: {
-    height: 40,
-    marginTop: 12,
+    height: '20%',
+    marginTop: 1,
     marginBottom: 12,
     borderWidth: 0.5,
     color: 'black',
     borderColor: 'black',
-    borderRadius: 10,
-    width: 330,
+    borderRadius: 5,
     padding: 10,
   },
   title: {
-    color: 'rgba(252,136,52,1)',
-    fontSize: 45,
-    lineHeight: 52.73,
+    color: '#202020',
+    fontSize: 35,
+    lineHeight: 40,
     fontWeight: 'bold',
+  },
+  subtitle: {
+    color: '#202020',
+    fontSize: 16,
   },
   buttons: {
     paddingLeft: 45,
@@ -94,5 +159,11 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  checkbox: {
+    width: '40%',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#FFFFFF',
+    padding: 2
   }
 });

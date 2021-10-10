@@ -3,18 +3,18 @@ import { AuthUser, OnboardingUser } from './types';
 
 const initialState = {
   _id: '',
-  name: '',
-  email: '',
-  businessName: '',
+  name: 'Test Name',
+  email: 'randmemail',
+  businessName: 'businessName',
   phoneNumber: 0,
   pushTokens: [],
   isAdmin: false,
-  auth0AccessToken: '',
+  auth0AccessToken: 'password',
   roles: [],
   pickupAddresses: [],
   dishes: [],
   donations: [],
-  authenticated: false,
+  authenticated: true,
   jwt: '',
 } as AuthUser;
 

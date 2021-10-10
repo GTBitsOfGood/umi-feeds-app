@@ -18,6 +18,7 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
 function LoginButton(props: {onUserNotFound: ()=>void}) {
   const dispatch = useDispatch();
+
   const { onUserNotFound } = props;
 
   const [, result, promptAsync] = AuthSession.useAuthRequest({
@@ -92,4 +93,5 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
     </View>
   );
 }
+
 export default LoginButton;
