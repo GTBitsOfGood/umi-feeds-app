@@ -12,7 +12,7 @@ import { View, Text } from '../../../style/Themed';
 import { setAddress, setUseThisAddressForPickup } from '../../../redux/reducers/donorReducer';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
-const API_KEY = 'AIzaSyDV1e0TuU6bdCfQtdZIfUmmdvSXmrTlAoQ';
+const API_KEY = 'ENTER_API_KEY';
 
 type newDonorLocationProps = StackNavigationProp<BottomTabParamList>;
 
