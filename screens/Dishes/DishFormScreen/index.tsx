@@ -19,25 +19,3 @@ const styles = StyleSheet.create({
 });
 
 export default NewDishFormScreen;
-
-
-// import React from 'react';
-// import { StyleSheet } from 'react-native';
-// import DishForm from '../../../components/DishForm/DishForm';
-// import { View } from '../../../style/Themed';
-
-// export default function DishScreen() {
-//   return (
-//     <View style={styles.container}>
-//       <DishForm />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
