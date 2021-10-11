@@ -26,13 +26,13 @@ export default function useNotifications(): [string | undefined | null, boolean 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) => {
       // TODO: we may want to make this request after logging in instead
-      if (store.getState().auth.jwt) {
-        axios.post(
-          '/api/token',
-          { token: expoPushToken },
-          { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } }
-        ).catch((error) => logAxiosError(error));
-      }
+      // if (store.getState().auth.jwt) {
+      //   axios.post(
+      //     '/api/token',
+      //     { token: expoPushToken },
+      //     { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } }
+      //   ).catch((error) => logAxiosError(error));
+      // }
       setExpoPushToken(token);
     });
 

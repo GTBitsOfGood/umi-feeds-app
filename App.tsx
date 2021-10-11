@@ -11,7 +11,6 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import useNotifications from './hooks/useNotifications';
 import Navigation from './navigation';
 import { store } from './redux/store';
 import { logAxiosError } from './utils';
@@ -29,10 +28,6 @@ Notifications.setNotificationHandler({
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
-  const [expoPushToken] = useNotifications();
-
-  // eslint-disable-next-line no-console
-  console.log(`Expo Push Token : ${expoPushToken}`);
 
   if (!isLoadingComplete) {
     return null;
