@@ -57,8 +57,9 @@ const authReducer = createSlice({
     logout(state) {
       setState(state, initialState);
     },
+    // Add Dish created to the authState
     addDish(state, action: PayloadAction<Dish>) {
-      state.dishes.push(action.payload)
+      state.dishes.push(action.payload);
     }
   }
 });

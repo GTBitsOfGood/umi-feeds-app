@@ -1,12 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import DishForm from '../../../components/DishForm/DishForm';
 
-
 const NewDishFormScreen = () => (
-    <View style={styles.container}>
-      <DishForm />
-    </View>
+  <View style={styles.container}>
+    <DishForm />
+  </View>
 );
 
 // React Native Styles
