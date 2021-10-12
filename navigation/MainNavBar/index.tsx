@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import Colors from '../../constants/Colors';
@@ -19,7 +20,7 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
 function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3, paddingVertical: 10 }} {...props} />;
+  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
@@ -29,20 +30,9 @@ function DonorTabs() {
 
   return (
     <BottomTab.Navigator
+      style={styles.container}
       initialRouteName="Home"
-      tabBarOptions={{
-        activeTintColor: Colors[colorScheme].tint,
-        style: { height: '8%',
-          borderTopLeftRadius: 4,
-          borderTopRightRadius: 4,
-          shadowColor: 'rgba(144, 144, 144, 1)',
-          shadowOpacity: 0.15,
-          shadowOffset: {
-            width: 0,
-            height: -4,
-          },
-          shadowRadius: 12
-        } }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
         name="Home"
@@ -55,7 +45,7 @@ function DonorTabs() {
         name="Donate"
         component={DonationScreenNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3, paddingVertical: 10 }} />,
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
       />
       <BottomTab.Screen
@@ -74,19 +64,9 @@ function AdminTabs() {
 
   return (
     <BottomTab.Navigator
+      style={styles.container}
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint,
-        style: { height: '8%',
-          borderTopLeftRadius: 4,
-          borderTopRightRadius: 4,
-          shadowColor: 'rgba(144, 144, 144, 1)',
-          shadowOpacity: 0.15,
-          shadowOffset: {
-            width: 0,
-            height: -4,
-          },
-          shadowRadius: 12
-        } }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
     >
       <BottomTab.Screen
         name="Home"
@@ -124,3 +104,19 @@ export {
   DonorTabs,
   AdminTabs
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: '9%',
+    paddingBottom: 5,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    shadowColor: 'rgba(144, 144, 144, 1)',
+    shadowOpacity: 0.15,
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowRadius: 12
+  },
+});
