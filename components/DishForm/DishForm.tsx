@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Text, View } from '../../style/Themed';
 import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Dish } from '../../types';
 import { AntDesign } from '@expo/vector-icons';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
@@ -21,17 +21,6 @@ function DishForm(props: { dish?: Dish }) {
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
   const [pounds, setPounds] = useState<number | ''>(props.dish?.pounds ?? '');
 
-  const [dairyAllergy, onSelectDairy] = useState<boolean>(false);
-  const [glutenAllergy, onSelectGluten] = useState<boolean>(false);
-  const [soyAllergy, onSelectSoy] = useState<boolean>(false);
-  const [treeNutAllergy, onSelectTreeNut] = useState<boolean>(false);
-  const [fishAllergy, onSelectFish] = useState<boolean>(false);
-  const [peanutAllergy, onSelectPeanut] = useState<boolean>(false);
-  const [shellfishAllergy, onSelectShellfish] = useState<boolean>(false);
-  const [eggAllergy, onSelectEgg] = useState<boolean>(false);
-  const [otherAllergy, onSelectOther] = useState<boolean>(false);
-  const [noAllergy, onSelectNone] = useState<boolean>(false);
-
   const [comments, setComments] = useState(props.dish?.comments ?? '');
   const [allergens, setAllergens] = useState<string[]>([]);
 
@@ -39,10 +28,10 @@ function DishForm(props: { dish?: Dish }) {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const closeModal = () => setModalVisible(!modalVisible);
-  const modalSubmit = (quantity: DonationDishes) => dispatch(addToCart(quantity));
+  const modalSubmit = (quantity: DonationDishes) => setQuantity(quantity);
+  const [quantity, setQuantity] = useState<DonationDishes>() 
 
   const DishObj = {
-    _id: '614d6998e84ff2fcfcf79a4a', // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
     dishName: dishName,
     cost: Number(cost),
     pounds: Number(pounds),
@@ -54,29 +43,26 @@ function DishForm(props: { dish?: Dish }) {
   const handleSubmit = () => {
     if (isFormValid()) {
       setModalVisible(!modalVisible);
-      const formData = new FormData();
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
-        formData.append('foodImages', file as any);
+        setUploadImage(file.uri)
       }
-      const json = {
-        dishName: dishName,
-        cost: cost,
-        pounds: pounds,
-        allergens: allergens,
-        comments: comments,
-      };
-      formData.append('json', JSON.stringify(json));
+      dispatch(addDish(DishObj));
+      if (quantity) {
+        dispatch(addToCart(quantity));
+      }
       console.log('Submitting dish form');
+      // TO DO: set up POST request and have reducer actions within 
     }
 
 
   }
 
   const isFormValid = () => {
-    let allergy = (dairyAllergy || glutenAllergy || 
-      soyAllergy || treeNutAllergy || fishAllergy || peanutAllergy || shellfishAllergy || eggAllergy ||
-      otherAllergy || noAllergy)
+    let allergy = (allergens.indexOf("dairy") > -1 || allergens.indexOf("gluten") > -1 || 
+    allergens.indexOf("soy") > -1 || allergens.indexOf("tree nuts") > -1 || allergens.indexOf("fish") > -1 || 
+    allergens.indexOf("peanuts") > -1 || allergens.indexOf("shellfish") > -1 || allergens.indexOf("egg") > -1 || 
+    allergens.indexOf("other") > -1 || allergens.indexOf("none") > -1)
     return dishName && cost && pounds && allergy
   }
 
@@ -97,6 +83,7 @@ function DishForm(props: { dish?: Dish }) {
             const file = { uri: result.uri, name: 'image.jpg', type: 'image/jpeg' };
             setUploadImage(result.uri);
           }
+          
         };
 
     return (
@@ -146,10 +133,9 @@ function DishForm(props: { dish?: Dish }) {
                           title="Dairy"
                           checkedColor="#F37B36"
                           // checked={this.state.checked}  
-                          checked={dairyAllergy}
+                          checked={allergens.indexOf("dairy") > -1}
                           onPress={() => {
-                            onSelectDairy(!dairyAllergy);
-                            if (!dairyAllergy) {
+                            if (allergens.indexOf("dairy") == -1) {
                               setAllergens(allergens => [...allergens, "dairy"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -165,10 +151,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Gluten"
                           checkedColor="#F37B36"
-                          checked={glutenAllergy}
+                          checked={allergens.indexOf("gluten") > -1}
                           onPress={() => {
-                            onSelectGluten(!glutenAllergy);
-                            if (!glutenAllergy) {
+                            if (allergens.indexOf("gluten") == -1) {
                               setAllergens(allergens => [...allergens, "gluten"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -185,10 +170,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Soy"
                           checkedColor="#F37B36"
-                          checked={soyAllergy}
+                          checked={allergens.indexOf("soy") > -1}
                           onPress={() => {
-                            onSelectSoy(!soyAllergy);
-                            if (!soyAllergy) {
+                            if (allergens.indexOf("soy") == -1) {
                               setAllergens(allergens => [...allergens, "soy"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -204,10 +188,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Tree nuts"
                           checkedColor="#F37B36"
-                          checked={treeNutAllergy}
+                          checked={allergens.indexOf("treen nuts") > -1}
                           onPress={() => {
-                            onSelectTreeNut(!treeNutAllergy);
-                            if (!treeNutAllergy) {
+                            if (allergens.indexOf("tree nuts") == -1) {
                               setAllergens(allergens => [...allergens, "tree nuts"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -223,10 +206,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Fish"
                           checkedColor="#F37B36"
-                          checked={fishAllergy}
+                          checked={allergens.indexOf("fish") > -1}
                           onPress={() => {
-                            onSelectFish(!fishAllergy);
-                            if (!fishAllergy) {
+                            if (allergens.indexOf("fish") == -1) {
                               setAllergens(allergens => [...allergens, "fish"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -242,10 +224,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Peanut"
                           checkedColor="#F37B36"
-                          checked={peanutAllergy}
+                          checked={allergens.indexOf("peanuts") > -1}
                           onPress={() => {
-                            onSelectPeanut(!peanutAllergy);
-                            if (!peanutAllergy) {
+                            if (allergens.indexOf("peanuts") == -1) {
                               setAllergens(allergens => [...allergens, "peanuts"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -261,10 +242,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Shellfish"
                           checkedColor="#F37B36"
-                          checked={shellfishAllergy}
+                          checked={allergens.indexOf("shellfish") > -1}
                           onPress={() => {
-                            onSelectShellfish(!shellfishAllergy);
-                            if (!shellfishAllergy) {
+                            if (allergens.indexOf("shellfish") == -1) {
                               setAllergens(allergens => [...allergens, "shellfish"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -280,10 +260,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Egg"
                           checkedColor="#F37B36"
-                          checked={eggAllergy}
+                          checked={allergens.indexOf("egg") > -1}
                           onPress={() => {
-                            onSelectEgg(!eggAllergy);
-                            if (!eggAllergy) {
+                            if (allergens.indexOf("egg") == -1) {
                               setAllergens(allergens => [...allergens, "egg"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -299,10 +278,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="Other"
                           checkedColor="#F37B36"
-                          checked={otherAllergy}
+                          checked={allergens.indexOf("other") > -1}
                           onPress={() => {
-                            onSelectOther(!otherAllergy);
-                            if (!otherAllergy) {
+                            if (allergens.indexOf("other") == -1) {
                               setAllergens(allergens => [...allergens, "other"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -318,10 +296,9 @@ function DishForm(props: { dish?: Dish }) {
                           textStyle={{ fontWeight: 'normal' }}
                           title="None"
                           checkedColor="#F37B36"
-                          checked={noAllergy}
+                          checked={allergens.indexOf("none") > -1}
                           onPress={() => {
-                            onSelectNone(!noAllergy);
-                            if (!noAllergy) {
+                            if (allergens.indexOf("none") == -1) {
                               setAllergens(allergens => [...allergens, "none"])
                             } else {
                               setAllergens(allergens => allergens.filter(function(str) {
@@ -369,7 +346,6 @@ function DishForm(props: { dish?: Dish }) {
                       </Pressable>
                       <DonateQuantityModal
                         visible={modalVisible}
-                        // need to figure out how to use the current dish object that i am returning
                         dishObj={DishObj}
                         closeModal={closeModal}
                         modalSubmit={modalSubmit}
