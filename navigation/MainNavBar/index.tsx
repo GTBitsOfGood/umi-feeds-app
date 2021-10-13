@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import Colors from '../../constants/Colors';
@@ -30,7 +31,7 @@ function DonorTabs() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
@@ -63,7 +64,7 @@ function AdminTabs() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
@@ -101,3 +102,19 @@ export {
   DonorTabs,
   AdminTabs
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: '9%',
+    paddingBottom: 5,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    shadowColor: 'rgba(144, 144, 144, 1)',
+    shadowOpacity: 0.15,
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowRadius: 12
+  },
+});
