@@ -30,9 +30,8 @@ function DonorTabs() {
 
   return (
     <BottomTab.Navigator
-      style={styles.container}
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
@@ -64,9 +63,8 @@ function AdminTabs() {
 
   return (
     <BottomTab.Navigator
-      style={styles.container}
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
