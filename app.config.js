@@ -41,7 +41,8 @@ export default {
       favicon: './assets/images/favicon.png'
     },
     extra: {
-      AXIOS_BASEURL: process.env.AXIOS_BASEURL
+      AXIOS_BASEURL: process.env.AXIOS_BASEURL,
+      GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
     }
   }
 };

@@ -7,7 +7,7 @@ const initialState = {
   _id: '',
   name: 'Test Name',
   email: 'randmemail',
-  businessName: 'businessName',
+  businessName: 'business',
   phoneNumber: 0,
   pushTokens: [],
   isAdmin: false,
@@ -16,7 +16,7 @@ const initialState = {
   pickupAddresses: [],
   dishes: [],
   donations: [],
-  authenticated: true,
+  authenticated: false,
   jwt: '',
 } as AuthUser;
 
@@ -45,13 +45,6 @@ const authReducer = createSlice({
     // Update the authState with the user information
     login(state, action: PayloadAction<AuthUser>) {
       setState(state, action.payload);
-    },
-    // Update the jwt, name, and authenticated state of authState.  Although we don't have any
-    // other user information this can be useful when submitting information during onboarding
-    beginOnboarding(state, action: PayloadAction<OnboardingUser>) {
-      state.jwt = action.payload.jwt;
-      state.name = action.payload.name;
-      state.authenticated = false;
     },
     // Clear the authState
     logout(state) {
