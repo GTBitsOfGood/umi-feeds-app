@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
-import { HideKeyboardUtility } from '../../util/index';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import { HideKeyboardUtility } from '../../util/index';
 import { Text, View } from '../../style/Themed';
 import { Dish, DonationDishes } from '../../types';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
@@ -43,6 +43,7 @@ function DishForm(props: { dish?: Dish }) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
         setUploadImage(file.uri);
       }
+      console.log(DishObj);
       dispatch(addDish(DishObj));
       if (quantity) {
         dispatch(addToCart(quantity));
@@ -58,7 +59,7 @@ function DishForm(props: { dish?: Dish }) {
     || allergens.indexOf('soy') > -1 || allergens.indexOf('tree nuts') > -1 || allergens.indexOf('fish') > -1
     || allergens.indexOf('peanuts') > -1 || allergens.indexOf('shellfish') > -1 || allergens.indexOf('egg') > -1
     || allergens.indexOf('other') > -1 || allergens.indexOf('none') > -1);
-    return dishName && cost && pounds && allergy;
+    return dishName === '' || cost === '' || pounds === '' || !allergy;
   };
 
   const pickImage = async () => {
@@ -82,6 +83,51 @@ function DishForm(props: { dish?: Dish }) {
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={donateModalVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          closeModal();
+        }}
+      >
+        <View style={[styles.centeredView, donateModalVisible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : {}]}>
+          <HideKeyboardUtility>
+            <KeyboardAvoidingView behavior="padding" style={styles.modalView}>
+              <Text style={styles.modalText}>Donate Dish?</Text>
+              <Text style={styles.modalSubtitle}>
+                Would you like to donate this dish today?
+              </Text>
+              <Pressable
+                style={[styles.button, styles.saveButton]}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                  setDonateModalVisible(!donateModalVisible);
+                  handleSubmit();
+                }}
+              >
+                <Text style={styles.textStyle}>Yes</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.cancelButton]}
+                onPress={() => {
+                  setDonateModalVisible(!donateModalVisible);
+                  handleSubmit();
+                }}
+              >
+                <Text style={styles.cancelTextStyle}>No</Text>
+              </Pressable>
+            </KeyboardAvoidingView>
+          </HideKeyboardUtility>
+        </View>
+      </Modal>
+      <DonateQuantityModal
+        visible={modalVisible}
+        dishObj={DishObj}
+        closeModal={closeModal}
+        modalSubmit={modalSubmit}
+      />
       <ScrollView style={styles.scrollView}>
         <View style={styles.dishContainer}>
           <Text style={styles.title}>Create a new dish</Text>
@@ -129,10 +175,10 @@ function DishForm(props: { dish?: Dish }) {
                           // checked={this.state.checked}
                 checked={allergens.indexOf('dairy') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('dairy') == -1) {
+                  if (allergens.indexOf('dairy') === -1) {
                     setAllergens((allergens) => [...allergens, 'dairy']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'dairy'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'dairy'));
                   }
                 }}
               />
@@ -145,10 +191,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('gluten') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('gluten') == -1) {
+                  if (allergens.indexOf('gluten') === -1) {
                     setAllergens((allergens) => [...allergens, 'gluten']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'gluten'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'gluten'));
                   }
                 }}
               />
@@ -161,10 +207,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('soy') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('soy') == -1) {
+                  if (allergens.indexOf('soy') === -1) {
                     setAllergens((allergens) => [...allergens, 'soy']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'soy'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'soy'));
                   }
                 }}
               />
@@ -177,10 +223,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('tree nuts') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('tree nuts') == -1) {
+                  if (allergens.indexOf('tree nuts') === -1) {
                     setAllergens((allergens) => [...allergens, 'tree nuts']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'tree nuts'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'tree nuts'));
                   }
                 }}
               />
@@ -193,10 +239,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('fish') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('fish') == -1) {
+                  if (allergens.indexOf('fish') === -1) {
                     setAllergens((allergens) => [...allergens, 'fish']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'fish'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'fish'));
                   }
                 }}
               />
@@ -209,10 +255,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('peanuts') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('peanuts') == -1) {
+                  if (allergens.indexOf('peanuts') === -1) {
                     setAllergens((allergens) => [...allergens, 'peanuts']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'peanuts'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'peanuts'));
                   }
                 }}
               />
@@ -225,10 +271,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('shellfish') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('shellfish') == -1) {
+                  if (allergens.indexOf('shellfish') === -1) {
                     setAllergens((allergens) => [...allergens, 'shellfish']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'shellfish'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'shellfish'));
                   }
                 }}
               />
@@ -241,10 +287,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('egg') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('egg') == -1) {
+                  if (allergens.indexOf('egg') === -1) {
                     setAllergens((allergens) => [...allergens, 'egg']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'egg'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'egg'));
                   }
                 }}
               />
@@ -257,10 +303,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('other') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('other') == -1) {
+                  if (allergens.indexOf('other') === -1) {
                     setAllergens((allergens) => [...allergens, 'other']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'other'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'other'));
                   }
                 }}
               />
@@ -273,10 +319,10 @@ function DishForm(props: { dish?: Dish }) {
                 checkedColor="#F37B36"
                 checked={allergens.indexOf('none') > -1}
                 onPress={() => {
-                  if (allergens.indexOf('none') == -1) {
+                  if (allergens.indexOf('none') === -1) {
                     setAllergens((allergens) => [...allergens, 'none']);
                   } else {
-                    setAllergens((allergens) => allergens.filter((str) => str != 'none'));
+                    setAllergens((allergens) => allergens.filter((str) => str !== 'none'));
                   }
                 }}
               />
@@ -307,59 +353,14 @@ function DishForm(props: { dish?: Dish }) {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
             <Pressable
-              disabled={!isFormValid}
-              style={isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
+              disabled={isFormValid()}
+              style={!isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
               onPress={() => {
-                setDonateModalVisible(!donateModalVisible)
+                setDonateModalVisible(!donateModalVisible);
               }}
             >
               <Text style={styles.submitText}>Create dish</Text>
             </Pressable>
-            <Modal
-              animationType="fade"
-              transparent
-              visible={donateModalVisible}
-              onRequestClose={() => {
-                Alert.alert('Modal has been closed.');
-                closeModal();
-              }}
-             >
-              <View style={[styles.centeredView, donateModalVisible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : {}]}>
-                <HideKeyboardUtility>
-                  <KeyboardAvoidingView behavior="padding" style={styles.modalView}>
-                            <Text style={styles.modalText}>Donate Dish?</Text>
-                            <Text style={styles.modalSubtitle}>
-                                Would you like to donate this dish today?
-                            </Text>
-                            <Pressable 
-                              style={[styles.button, styles.saveButton]}
-                              onPress={() => {
-                                setModalVisible(!modalVisible);
-                                setDonateModalVisible(!donateModalVisible);
-                                handleSubmit();
-                              }}
-                            >
-                              <Text style={styles.textStyle}>Save</Text>
-                            </Pressable>
-                            <Pressable
-                              style={[styles.button, styles.cancelButton]}
-                              onPress={() => {
-                                setDonateModalVisible(!donateModalVisible);
-                                handleSubmit();
-                              }}
-                            >
-                              <Text style={styles.cancelTextStyle}>Skip</Text>
-                            </Pressable>
-                  </KeyboardAvoidingView>
-                </HideKeyboardUtility>
-              </View>
-            </Modal>
-            <DonateQuantityModal
-              visible={modalVisible}
-              dishObj={DishObj}
-              closeModal={closeModal}
-              modalSubmit={modalSubmit}
-            />
           </View>
         </View>
       </ScrollView>

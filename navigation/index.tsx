@@ -39,15 +39,15 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {/* { authState.authenticated ? ( */}
-      <>
-        <Stack.Screen name="Root" component={TabComponent} />
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      </>
-      {/* ) : (
+      { authState.authenticated ? (
+        <>
+          <Stack.Screen name="Root" component={TabComponent} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        </>
+      ) : (
         <Stack.Screen name="Login" component={LoginScreen} />
       )
-      } */}
+      }
     </Stack.Navigator>
   );
 }
