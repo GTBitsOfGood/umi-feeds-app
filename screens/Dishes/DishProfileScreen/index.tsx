@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Image, Text } from 'react-native';
-import { Button } from 'react-native-elements';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Dish } from './types';
 
@@ -31,15 +31,26 @@ export default function DishProfileScreen() {
     }
   }
 
-  const quantity = 0;
+  const [quantity, setQuantity] = useState(0);
+  const onPlus = () => setQuantity((prevQuantity) => prevQuantity + 1);
+  const onMinus = () => setQuantity((prevQuantity) => prevQuantity - 1);
+
+  const [count, setCount] = useState(0);
+  const onPress = () => setCount((prevCount) => prevCount + 1);
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Back"
-        type="clear"
+      <TouchableOpacity
         style={styles.backButton}
-      />
+        onPress={onPress}
+      >
+        <Icon
+          name="chevron-left"
+          color="#F37B36"
+          style={styles.backIcon}
+        />
+        <Text style={styles.backText}>Back</Text>
+      </TouchableOpacity>
       <View style={styles.imgContainer}>
         <Image
           source={{ uri: MockDish.imageLink }}
@@ -74,20 +85,33 @@ export default function DishProfileScreen() {
           <Text>{MockDish.pounds} lbs</Text>
         </View>
         <View>
-          <Text style={styles.detailLabel}>Allergen(s)</Text>
+          <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
           <Text>{allergens}</Text>
         </View>
       </View>
       <View style={styles.quantityContainer}>
-        <Text>Quantity</Text>
-        <View style={styles.counter}>
+        <Text style={styles.quantityLabel}>Quantity</Text>
+        <View style={styles.quantityController}>
+          <Icon.Button
+            name="minus"
+            size={20}
+            color="#5D5D5D"
+            backgroundColor="white"
+            onPress={onMinus}
+          />
+          <Text style={styles.quantityCount}>{quantity}</Text>
           <Icon.Button
             name="plus"
-            size={10}
+            size={20}
             color="#5D5D5D"
+            backgroundColor="white"
+            onPress={onPlus}
           />
         </View>
       </View>
+      <TouchableOpacity style={styles.addToListButton}>
+        <Text style={styles.addToListText}>Add to donation list ({quantity})</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -102,8 +126,20 @@ const styles = StyleSheet.create({
   },
   backButton: {
     margin: 10,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    color: '#F37B36',
+    fontSize: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    paddingLeft: 10
+  },
+  backIcon: {
+    paddingTop: 4,
+    fontSize: 10
+  },
+  backText: {
+    color: '#F37B36',
+    paddingLeft: 5,
+    fontSize: 15
   },
   imgContainer: {
     width: '100%',
@@ -115,7 +151,7 @@ const styles = StyleSheet.create({
   favButton: {
     height: 100,
     position: 'absolute',
-    top: 250,
+    top: 230,
     right: '8%',
     elevation: 10,
   },
@@ -147,10 +183,49 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   quantityContainer: {
-    marginLeft: 24,
-    marginTop: 20
+    display: 'flex',
+    flexDirection: 'row',
+    marginHorizontal: 24,
   },
-  counter: {
-    borderColor: '#E6E6E6',
+  quantityLabel: {
+    fontWeight: '700',
+    color: '#B8B8B8',
+    fontSize: 12,
+    marginTop: 72
+  },
+  quantityController: {
+    marginHorizontal: 25,
+    marginTop: 50,
+    display: 'flex',
+    flexDirection: 'row',
+    borderColor: '#B8B8B8',
+    borderWidth: 1,
+    paddingVertical: 10,
+    padding: 15,
+    borderRadius: 4
+  },
+  quantityCount: {
+    paddingHorizontal: 80,
+    paddingTop: 8,
+  },
+  addToListButton: {
+    backgroundColor: '#F37B36',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    position: 'absolute',
+    width: 364,
+    height: 52,
+    left: 25,
+    top: 58,
+  },
+  addToListText: {
+    fontWeight: '700',
+    color: 'white',
+    fontSize: 17,
   }
 });
