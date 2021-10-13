@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Image, StyleSheet, ScrollView, Platform, Pressable } from 'react-native';
+import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
+import { HideKeyboardUtility } from '../../util/index';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch } from 'react-redux';
@@ -9,6 +10,7 @@ import { Dish, DonationDishes } from '../../types';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
 import { addDish } from '../../redux/reducers/authReducer';
 import { addToCart } from '../../redux/reducers/donationCartReducer';
+import styles from './styles';
 
 function DishForm(props: { dish?: Dish }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
@@ -20,6 +22,7 @@ function DishForm(props: { dish?: Dish }) {
   const [allergens, setAllergens] = useState<string[]>([]);
 
   const dispatch = useDispatch();
+  const [donateModalVisible, setDonateModalVisible] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const closeModal = () => setModalVisible(!modalVisible);
   const modalSubmit = (quantity: DonationDishes) => setQuantity(quantity);
@@ -36,7 +39,6 @@ function DishForm(props: { dish?: Dish }) {
 
   const handleSubmit = () => {
     if (isFormValid()) {
-      setModalVisible(!modalVisible);
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
         setUploadImage(file.uri);
@@ -173,7 +175,7 @@ function DishForm(props: { dish?: Dish }) {
                 textStyle={{ fontWeight: 'normal' }}
                 title="Tree nuts"
                 checkedColor="#F37B36"
-                checked={allergens.indexOf('treen nuts') > -1}
+                checked={allergens.indexOf('tree nuts') > -1}
                 onPress={() => {
                   if (allergens.indexOf('tree nuts') == -1) {
                     setAllergens((allergens) => [...allergens, 'tree nuts']);
@@ -303,18 +305,55 @@ function DishForm(props: { dish?: Dish }) {
               multiline
             />
           </View>
-
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
-
             <Pressable
               disabled={!isFormValid}
               style={isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
               onPress={() => {
-                handleSubmit();
+                setDonateModalVisible(!donateModalVisible)
               }}
             >
               <Text style={styles.submitText}>Create dish</Text>
             </Pressable>
+            <Modal
+              animationType="fade"
+              transparent
+              visible={donateModalVisible}
+              onRequestClose={() => {
+                Alert.alert('Modal has been closed.');
+                closeModal();
+              }}
+             >
+              <View style={[styles.centeredView, donateModalVisible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : {}]}>
+                <HideKeyboardUtility>
+                  <KeyboardAvoidingView behavior="padding" style={styles.modalView}>
+                            <Text style={styles.modalText}>Donate Dish?</Text>
+                            <Text style={styles.modalSubtitle}>
+                                Would you like to donate this dish today?
+                            </Text>
+                            <Pressable 
+                              style={[styles.button, styles.saveButton]}
+                              onPress={() => {
+                                setModalVisible(!modalVisible);
+                                setDonateModalVisible(!donateModalVisible);
+                                handleSubmit();
+                              }}
+                            >
+                              <Text style={styles.textStyle}>Save</Text>
+                            </Pressable>
+                            <Pressable
+                              style={[styles.button, styles.cancelButton]}
+                              onPress={() => {
+                                setDonateModalVisible(!donateModalVisible);
+                                handleSubmit();
+                              }}
+                            >
+                              <Text style={styles.cancelTextStyle}>Skip</Text>
+                            </Pressable>
+                  </KeyboardAvoidingView>
+                </HideKeyboardUtility>
+              </View>
+            </Modal>
             <DonateQuantityModal
               visible={modalVisible}
               dishObj={DishObj}
@@ -327,114 +366,5 @@ function DishForm(props: { dish?: Dish }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignContent: 'center'
-  },
-  scrollView: {
-    marginHorizontal: 0,
-    width: '100%',
-  },
-  pictureButton: {
-    width: 327,
-    height: 52,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: '#F37B36',
-  },
-  pictureButtonText: {
-    flex: 1,
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: 17,
-    lineHeight: 20,
-    alignItems: 'center',
-    textAlign: 'center',
-    color: '#F37B36',
-    paddingTop: 15
-
-  },
-  boxInput: {
-    borderWidth: 2,
-    borderColor: 'lightgray',
-    borderRadius: 6,
-    marginVertical: 10,
-    fontFamily: 'Roboto',
-    width: 325,
-  },
-  dishContainer: {
-    width: '80%',
-    margin: '10%',
-    justifyContent: 'center',
-    alignContent: 'center',
-  },
-  title: {
-    fontSize: 32,
-    paddingVertical: 10,
-  },
-  description: {
-    fontSize: 15,
-    paddingVertical: 10,
-  },
-  subsection: {
-    paddingTop: 15,
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: '#202020'
-  },
-  checkboxContainer: {
-    display: 'flex',
-    flex: 1,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
-    alignItems: 'flex-start'
-  },
-  checkbox: {
-    borderWidth: 0,
-    color: '#202020',
-    fontSize: 15,
-    backgroundColor: 'transparent',
-    borderColor: '#FFFFFF',
-  },
-  item: {
-    width: '50%'
-  },
-  commentInput: {
-    borderWidth: 2,
-    borderColor: 'lightgray',
-    borderRadius: 6,
-    marginVertical: 10,
-    fontFamily: 'Roboto',
-    width: 325,
-    height: 174
-  },
-  submitButtonDisabled: {
-    backgroundColor: '#B8B8B8',
-    width: 327,
-    height: 52,
-    borderRadius: 4
-  },
-  submitButton: {
-    backgroundColor: '#F37B36',
-    width: 327,
-    height: 52,
-    borderRadius: 4
-  },
-  submitText: {
-    flex: 1,
-    fontStyle: 'normal',
-    fontWeight: 'bold',
-    fontSize: 17,
-    lineHeight: 20,
-    alignItems: 'center',
-    textAlign: 'center',
-    color: 'white',
-    paddingTop: 17
-  }
-});
 
 export default DishForm;
