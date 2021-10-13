@@ -9,9 +9,10 @@ import jwtDecode from 'jwt-decode';
 import axios, { AxiosError } from 'axios';
 import * as Auth0 from '../../constants/Auth0';
 
-import { login, beginOnboarding } from '../../redux/reducers/authReducer';
+import { login } from '../../redux/reducers/authReducer';
+import { beginOnboarding } from '../../redux/reducers/OnboardingReducer';
 import { decodedJwtToken } from '../../types';
-import { OnboardingUser } from '../../redux/reducers/authReducer/types';
+import { BeginOnboardingUser } from '../../redux/reducers/OnboardingReducer/types';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -69,7 +70,12 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
           // the database. In this case we should redirect to onboarding to sign up this new user.
           if (err.response !== null && err.response !== undefined && err.response?.status === 303) {
             // The name and jwt will be useful during onboarding even though we don't have any more user info
-            const onboardingUser:OnboardingUser = { name: userInfo.name, jwt: receivedToken, authenticated: false };
+            const onboardingUser:BeginOnboardingUser = {
+              name: `${userInfo.given_name} ${userInfo.family_name}`,
+              auth0AccessToken: userInfo.sub,
+              email: userInfo.name, // name field is email
+              jwt: receivedToken,
+            };
             dispatch(beginOnboarding(onboardingUser));
             onUserNotFound();
           } else {

@@ -1,12 +1,25 @@
-import { Address, Roles } from '../../../types';
+import { Roles } from '../../../types';
 
-interface OnboardingState {
+export interface OnboardingState {
   name: string;
   email: string;
   phoneNumber: number;
   roles: Roles[];
   businessName: string;
-  pickupAddress: Address[];
+  isAdmin: boolean;
+  auth0AccessToken: string,
+  jwt: string,
 }
 
-export default OnboardingState;
+export type BeginOnboardingUser = {
+  jwt: string,
+  auth0AccessToken: string,
+  name: string,
+  email: string,
+}
+
+export type NameOnboardingUser = {
+  businessName: string,
+  roles: Roles[],
+  phoneNumber: number;
+}

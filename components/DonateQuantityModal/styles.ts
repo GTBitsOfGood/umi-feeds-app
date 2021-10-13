@@ -7,13 +7,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
+  modalPlacement: {
+    flex: 8
+  },
   modalView: {
     display: 'flex',
     flexDirection: 'column',
     width: '80%',
-    height: '55%',
+    height: '90%',
     textAlign: 'left',
-    margin: 100,
     backgroundColor: 'white',
     borderRadius: 20,
     padding: 20,
@@ -24,10 +26,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 4,
-    elevation: 10
+    elevation: 10,
   },
   button: {
-    height: '15%',
+    height: '20%',
     width: '100%',
     borderRadius: 4,
     padding: 10,
