@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, TouchableHighlight } from 'react-native';
+import { StyleProp, StyleSheet, TouchableHighlight, ViewStyle } from 'react-native';
 
 import { Text, View } from '../../style/Themed';
 
-export default function DishQuantityPreview(props: { text: JSX.Element, onPress: () => void, quantityAdded: number, customStyle?: any }) {
+export default function DishQuantityPreview(props: { text: JSX.Element, onPress: () => void, quantityAdded: number, customStyle?: StyleProp<ViewStyle> }) {
   return (
-    <View style={{ ...styles.favoriteDish, ...props.customStyle }}>
+    <View style={{ ...styles.favoriteDish, ...(props.customStyle as Record<string, unknown>) }}>
       {/* textAlignVertical is supported only on Android, so another View must be used */}
       <View style={{ alignSelf: 'center', flexShrink: 2, paddingRight: 20 }}>
         <Text numberOfLines={2} style={styles.favoriteDishText}>{props.text}</Text>
@@ -16,13 +16,11 @@ export default function DishQuantityPreview(props: { text: JSX.Element, onPress:
       >
         {props.quantityAdded > 0 ? (
           <View style={{ ...styles.addButton, backgroundColor: orangeColor }}>
-            <Text style={{ ...styles.outlinedButtonText, color: 'white' }}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded})`}</Text>
-            {/* <Text style={{ ...styles.outlinedButtonText, color: 'white' }}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded >= 99 ? '99+' : props.quantityAdded})`}</Text> */}
+            <Text style={{ ...styles.outlinedButtonText, color: 'white' }}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded >= 99 ? '99+' : props.quantityAdded})`}</Text>
           </View>
         ) : (
           <View style={styles.addButton}>
-            <Text style={styles.outlinedButtonText}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded})`}</Text>
-            {/* <Text style={styles.outlinedButtonText}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded >= 99 ? '99+' : props.quantityAdded})`}</Text> */}
+            <Text style={styles.outlinedButtonText}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded >= 99 ? '99+' : props.quantityAdded})`}</Text>
           </View>
         )}
       </TouchableHighlight>
