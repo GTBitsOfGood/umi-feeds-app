@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { StyleSheet, TouchableHighlight } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { Text, View } from '../../style/Themed';
+import Icon from '../../assets/images/add_shopping_cart.svg';
+import { RootState } from '../../redux/rootReducer';
 
 export default function CartButton(props: { onPress: () => void, color: string }) {
+  const donationCartState = useSelector((state: RootState) => state.donationCart);
   const styles = StyleSheet.create({
     container: {
     },
@@ -20,6 +23,15 @@ export default function CartButton(props: { onPress: () => void, color: string }
       marginTop: 10,
       color: props.color || 'black'
     },
+    cartQuantity: {
+      position: 'absolute',
+      // backgroundColor: 'red',
+      marginLeft: 2,
+      fontWeight: 'bold',
+      fontSize: 18,
+      textAlign: 'center',
+      width: '100%'
+    }
   });
   return (
     <View style={styles.container}>
@@ -28,7 +40,11 @@ export default function CartButton(props: { onPress: () => void, color: string }
         underlayColor="transparent"
       >
         <View>
-          <Icon name="shoppingcart" size={40} style={styles.icon} />
+          <Icon style={styles.icon} />
+          {
+            donationCartState.dishes.reduce((prev, curr) => prev + curr.quantity, 0) > 99
+              ? <Text style={{ ...styles.cartQuantity, fontSize: 12, fontWeight: '500', marginTop: 6 }}>99+</Text>
+              : <Text style={styles.cartQuantity}>{donationCartState.dishes.reduce((prev, curr) => prev + curr.quantity, 0)}</Text>}
         </View>
       </TouchableHighlight>
     </View>
