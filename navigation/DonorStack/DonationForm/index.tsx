@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import DonationScreen from '../../../screens/DonationOverview/DonationScreen';
-import DishSearch from '../../../screens/DonationOverview/DishSearch';
+import DonationScreen from '../../../screens/DonateTab';
+import DishSearch from '../../../screens/Dishes/DishSearchScreen';
 import {
   DonationScreenParamList,
 } from './types';
