@@ -1,9 +1,9 @@
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, TextInput } from 'react-native';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { RootState } from '../../redux/rootReducer';
@@ -14,7 +14,9 @@ import ChevronButton from '../../components/DonationForm/ChevronButton';
 import styles from '../../components/DonationForm/styles';
 import { DonationScreenParamList } from '../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
-import { Dish } from '../../types';
+import { Dish, DonationDishes } from '../../types';
+import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
+import DonateQuantityModal from '../../components/DonateQuantityModal';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
@@ -25,36 +27,27 @@ export default function DishSearch() {
   const navigation = useNavigation<DonationScreenProp>();
   const donationCartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
-  // const allDishes: Dish[] = authState.dishes;
-  const allDishes: Dish[] = [
-    {
-      _id: '1',
-      dishName: 'Chicken',
-      cost: 1,
-      pounds: 1,
-      allergens: [],
-      imageLink: 'https',
-      comments: 'test',
-      favorite: false,
-    },
-    {
-      _id: '2',
-      dishName: 'Aspararagus',
-      cost: 1,
-      pounds: 1,
-      allergens: [],
-      imageLink: 'https',
-      comments: 'test',
-      favorite: false,
-    },
-  ];
 
-  // TODO: Update this array to include all dishes initially
+  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [modalDishObject, setModalDishObject] = useState<Dish>();
+  const closeModal = () => setModalVisible(!modalVisible);
+  const modalSubmit = (quantity: DonationDishes) => dispatch(addToCart(quantity));
+  const removeDish = (dishId: string | undefined) => dispatch(removeDishFromCart(dishId));
+
+  const allDishes: Dish[] = authState.dishes;
+
   const [filteredDishes, setFilteredDishes] = useState<Dish[]>(allDishes);
   const [searchText, setSearchText] = useState('');
 
   return (
     <View style={styles.container}>
+      <DonateQuantityModal
+        visible={modalVisible}
+        dishObj={modalDishObject}
+        closeModal={closeModal}
+        modalSubmit={modalSubmit}
+      />
       <ScrollView style={styles.scrollView}>
         <View style={styles.contentContainer}>
           <ChevronButton onPress={() => navigation.goBack()} text="Back" />
@@ -78,10 +71,18 @@ export default function DishSearch() {
             <DishQuantityPreview
               text={boldSearchCharacters(item.dishName, searchText)}
               onPress={() => {
-                alert('TODO: Add to cart!');
+                const donationDishes = donationCartState.dishes.filter((dish) => dish.dishID === item._id);
+
+                // if the dish is already in the cart, set the quantity to 0 when pressed
+                if ((donationDishes.reduce((prev, curr) => prev + curr.quantity, 0) > 0)) {
+                  removeDish(item._id);
+                  return;
+                }
+                setModalDishObject(item);
+                setModalVisible(true);
               }}
               key={item._id}
-              quantityAdded={0}
+              quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0)}
               customStyle={{ borderWidth: 0, borderBottomWidth: 1, borderColor: '#e6e6e6' }}
             />
           )) : <Text>No results found</Text>}
@@ -91,6 +92,10 @@ export default function DishSearch() {
   );
 }
 
+/**
+ * @param props children, the child text
+ * @returns JSX.Element
+ */
 function BoldText(props: { children: string }) {
   return (
     <Text style={{ fontWeight: '800' }}>
@@ -99,12 +104,18 @@ function BoldText(props: { children: string }) {
   );
 }
 
+/**
+ * Bolds the characters the dishname that repeat characters in the search text, preserving the case of the characters
+ * @param dishName the name of the dish
+ * @param searchText the name of the text in the search box
+ * @returns a JSX element with the matching search box text bolded, with capitalization preserved
+ */
 function boldSearchCharacters(dishName: string, searchText: string): JSX.Element {
   if (searchText === '') {
     return <Text>{dishName}</Text>;
   }
   const nonBoldStrings = dishName.toLowerCase().split(searchText.toLowerCase());
-  const nonBoldSpans = nonBoldStrings.map((span, i) => <Text>{span}</Text>);
+  const nonBoldSpans = nonBoldStrings.map((span) => <Text>{span}</Text>);
   const boldSearchText = <BoldText>{searchText.toLowerCase()}</BoldText>;
 
   // think of this as the .join function, but with a separator of a JSX.Element

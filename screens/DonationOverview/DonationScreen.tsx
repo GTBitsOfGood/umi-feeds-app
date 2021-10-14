@@ -9,7 +9,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import Header from '../../components/DonationForm/Header';
 import DishQuantityPreview from '../../components/DonationForm/DishQuantityPreview';
 import { RootState } from '../../redux/rootReducer';
-import { addToCart } from '../../redux/reducers/donationCartReducer';
+import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
 
 import { DonationScreenParamList } from '../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
@@ -28,29 +28,8 @@ type DonationScreenProp = CompositeNavigationProp<
 export default function DonationScreen() {
   const donationCartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
-  // const allDishes = authState.dishes;
-  const allDishes = [
-    {
-      _id: '1',
-      dishName: 'Chicken',
-      cost: 1,
-      pounds: 1,
-      allergens: [],
-      imageLink: 'https',
-      comments: 'test',
-      favorite: true,
-    },
-    {
-      _id: '2',
-      dishName: 'Aspararagus',
-      cost: 1,
-      pounds: 1,
-      allergens: [],
-      imageLink: 'https',
-      comments: 'test',
-      favorite: false,
-    },
-  ];
+  const allDishes = authState.dishes;
+
   const navigation = useNavigation<DonationScreenProp>();
 
   const dispatch = useDispatch();
@@ -58,6 +37,7 @@ export default function DonationScreen() {
   const [modalDishObject, setModalDishObject] = useState<Dish>();
   const closeModal = () => setModalVisible(!modalVisible);
   const modalSubmit = (quantity: DonationDishes) => dispatch(addToCart(quantity));
+  const removeDish = (dishId: string | undefined) => dispatch(removeDishFromCart(dishId));
 
   return (
     <View style={styles.container}>
@@ -96,22 +76,22 @@ export default function DonationScreen() {
               text={<Text>{item.dishName}</Text>}
               key={item._id}
               onPress={() => {
-                const donationDish = donationCartState.dishes.find((dish) => dish.dishID === item._id);
-                if (!donationDish) return;
-                if ((donationDish?.quantity ?? 0) > 0) {
-                  donationDish.quantity = 0;
-                  modalSubmit(donationDish);
+                const donationDishes = donationCartState.dishes.filter((dish) => dish.dishID === item._id);
+
+                // if the dish is already in the cart, set the quantity to 0 when pressed
+                if ((donationDishes.reduce((prev, curr) => prev + curr.quantity, 0) > 0)) {
+                  removeDish(item._id);
                   return;
                 }
                 setModalDishObject(item);
                 setModalVisible(true);
               }}
-              quantityAdded={donationCartState.dishes.find((dish) => dish.dishID === item._id)?.quantity || 0}
+              quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
+          <Text>{donationCartState.dishes.map((d) => `${d.dishID}: ${d.quantity}`).join('\n')}</Text>
         </View>
       </ScrollView>
-      {/* <DonationForm /> */}
     </View>
   );
 }

@@ -31,9 +31,12 @@ const donationCartReducer = createSlice({
   reducers: {
     addToCart(state, action: PayloadAction<DonationDishes>) {
       state.dishes.push(action.payload);
+    },
+    removeDishFromCart(state, action: PayloadAction<string | undefined>) {
+      state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
     }
   },
 });
 
-export const { addToCart } = donationCartReducer.actions;
+export const { addToCart, removeDishFromCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;
