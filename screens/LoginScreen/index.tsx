@@ -23,7 +23,7 @@ function LoginScreen() {
         </Text>
       </View>
       <View>
-        <LoginButton onUserNotFound={() => navigation.navigate('OnboardingForm')} />
+        <LoginButton onUserNotFound={() => navigation.navigate('OnboardingNameForm')} />
       </View>
     </View>
   );

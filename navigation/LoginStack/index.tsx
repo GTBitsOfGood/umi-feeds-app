@@ -1,7 +1,8 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import LoginScreen from '../../screens/LoginScreen';
-import NewDonorName from '../../screens/NewDonor/NewDonorName';
+import OnboardingNameForm from '../../screens/Onboarding/Name';
+import AddressOnboardingForm from '../../screens/Onboarding/Address';
 import {
   LoginStackParamList
 } from './types';
@@ -18,9 +19,14 @@ export default function LoginStack() {
         options={{ headerTitle: 'Login' }}
       />
       <OnboardingStack.Screen
-        name="OnboardingForm"
-        component={NewDonorName}
-        options={{ headerTitle: 'Onboarding' }}
+        name="OnboardingNameForm"
+        component={OnboardingNameForm}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen
+        name="OnboardingAddressForm"
+        component={AddressOnboardingForm}
+        options={{ headerShown: false }}
       />
     </OnboardingStack.Navigator>
   );
