@@ -50,7 +50,12 @@ function DonateTab() {
         options={{ headerTitle: 'Donate' }}
       />
       <DonationScreenStack.Screen
-        name="ReviewScreen"
+        name="ReviewCartScreen"
+        component={DonateReviewScreen}
+        options={{ headerTitle: 'Donate' }}
+      />
+      <DonationScreenStack.Screen
+        name="ReviewContactScreen"
         component={DonateReviewScreen}
         options={{ headerTitle: 'Donate' }}
       />

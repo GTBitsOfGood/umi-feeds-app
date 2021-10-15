@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const DonateReviewScreen = () => (
+const ReviewContactScreen = () => (
   <View style={styles.container}>
-    <Text>Donation Confirmation and Review Screens</Text>
+    <Text>Donation Confirmation and Review Contact Screens</Text>
   </View>
 );
 
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DonateReviewScreen;
+export default ReviewContactScreen;
