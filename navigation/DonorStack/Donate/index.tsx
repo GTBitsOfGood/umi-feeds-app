@@ -17,7 +17,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="DonateHomeScreen"
         component={DonateHomePage}
-        options={{ headerTitle: 'Donate' }}
+        options={{ headerTitle: 'Donate', headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="NewDishForm"
@@ -32,7 +32,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="DishSearch"
         component={DishSearchScreen}
-        options={{ headerTitle: 'New Dish' }}
+        options={{ headerTitle: 'Dish Search', headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="DonateListScreen"
