@@ -35,6 +35,7 @@ function DishForm(props: { dish?: Dish }) {
     allergens,
     imageLink: String(uploadImage), // link to azure image
     comments: String(comments),
+    favorite: true,
   };
 
   const handleSubmit = () => {

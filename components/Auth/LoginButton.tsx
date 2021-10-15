@@ -61,9 +61,9 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
             const { user } = res.data; // res.data.user is of type User
             user.jwt = receivedToken; // add jwt and authenticated to make it an AuthUser
             user.authenticated = true;
-            dispatch(login(user));
+            return dispatch(login(user));
           } else {
-            Alert.alert('Authentication error!');
+            return Alert.alert('Authentication error!');
           }
         }).catch((err:AxiosError) => {
           // We actually expect an AxiosError with response code 303 if the user could not be located in
@@ -77,10 +77,10 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
               jwt: receivedToken,
             };
             dispatch(beginOnboarding(onboardingUser));
-            onUserNotFound();
+            return onUserNotFound();
           } else {
             // In this case it was actually an unexpected error
-            Alert.alert(`Authentication error! ${err.message}`);
+            return Alert.alert(`Authentication error! ${err.message}`);
           }
         });
       } else {

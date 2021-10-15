@@ -10,6 +10,7 @@ import { RootState } from '../../redux/rootReducer';
 import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
 
 import { DonationScreenParamList } from '../../navigation/DonorStack/DonationForm/types';
+import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 import styles from './styles';
@@ -21,7 +22,7 @@ import { Dish, DonationDishes } from '../../types';
 import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
+  StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
@@ -73,7 +74,7 @@ export default function DonationScreen() {
         <View style={styles.contentContainer}>
           <Header title="Donate" />
           <TouchableHighlight
-            onPress={() => alert('Create new pressed!')}
+            onPress={() => navigation.navigate('NewDishForm')}
             underlayColor="transparent"
           >
             <View style={styles.filledButton}>
@@ -83,7 +84,7 @@ export default function DonationScreen() {
             </View>
           </TouchableHighlight>
           <TouchableHighlight
-            onPress={() => navigation.navigate('DishSearch')}
+            onPress={() => navigation.navigate('DonateSearchDish')}
             underlayColor="transparent"
           >
             <View style={styles.outlinedButton}>
