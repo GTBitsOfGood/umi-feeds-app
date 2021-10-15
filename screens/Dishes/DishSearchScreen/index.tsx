@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { RootState } from '../../../redux/rootReducer';
-import DishQuantityPreview from '../../../components/DonationForm/DishQuantityPreview';
+import DishQuantityPreview from '../../../components/DishPreview';
 import { Text, View } from '../../../style/Themed';
-import Header from '../../../components/DonationForm/Header';
-import ChevronButton from '../../../components/DonationForm/ChevronButton';
+import Header from '../../../components/Header';
+import ChevronButton from '../../../components/ChevronButton';
 import styles from '../../../components/DonationForm/styles';
 import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { State } from 'react-native-gesture-handler';
 import { Dish } from '../../../types';
-import { AuthUser, OnboardingUser } from './types';
+import { AuthUser } from './types';
 
 const initialState = {
   _id: '',
@@ -14,7 +14,15 @@ const initialState = {
   auth0AccessToken: 'password',
   roles: [],
   pickupAddresses: [],
-  dishes: [],
+  dishes: [{
+    favorite: true,
+    dishName: 'fofo',
+    cost: 90.90,
+    pounds: 90,
+    allergens: [],
+    imageLink: '',
+    comments: 'Yes'
+  }],
   donations: [],
   authenticated: false,
   jwt: '',
@@ -57,6 +65,6 @@ const authReducer = createSlice({
   }
 });
 
-export const { login, beginOnboarding, logout, addDish } = authReducer.actions;
+export const { login, logout, addDish } = authReducer.actions;
 
 export default authReducer.reducer;

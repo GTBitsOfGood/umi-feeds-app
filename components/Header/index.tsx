@@ -3,7 +3,7 @@ import React from 'react';
 import { Text, View } from '../../style/Themed';
 import styles, { orangeColor } from './styles';
 
-import CartButton from './CartButton';
+import CartButton from '../CartButton';
 
 export default function Header(props: { title: string }) {
   return (

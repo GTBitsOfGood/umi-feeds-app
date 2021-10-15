@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { TouchableHighlight } from 'react-native';
 
 import { Text, View } from '../../style/Themed';
-import styles, { orangeColor } from './styles';
+import { orangeColor } from '../DonationForm/styles';
 
 export default function ChevronButton(props: { text: string, onPress: () => void }) {
   return (

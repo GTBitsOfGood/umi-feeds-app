@@ -6,19 +6,19 @@ import { useNavigation, CompositeNavigationProp } from '@react-navigation/native
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
-import Header from '../../components/DonationForm/Header';
-import DishQuantityPreview from '../../components/DonationForm/DishQuantityPreview';
 import { RootState } from '../../redux/rootReducer';
 import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
 
 import { DonationScreenParamList } from '../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
-import styles from '../../components/DonationForm/styles';
+import styles from './styles';
 import { Text, View } from '../../style/Themed';
 
-import DonateQuantityModal from '../../components/DonateQuantityModal';
 import { Dish, DonationDishes } from '../../types';
+
+// import components
+import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
@@ -28,7 +28,29 @@ type DonationScreenProp = CompositeNavigationProp<
 export default function DonationScreen() {
   const donationCartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
-  const allDishes = authState.dishes;
+  // const allDishes = authState.dishes;
+  // Fake data for demo purposes
+  const allDishes = [
+    {
+      _id: 'hednejn',
+      favorite: true,
+      dishName: 'fofo',
+      cost: 90.90,
+      pounds: 90,
+      allergens: [],
+      imageLink: '',
+      comments: 'Yes'
+    }, {
+      _id: 'heejn',
+      favorite: true,
+      dishName: 'good luck',
+      cost: 90.90,
+      pounds: 90,
+      allergens: [],
+      imageLink: '',
+      comments: 'Yes'
+    }
+  ];
 
   const navigation = useNavigation<DonationScreenProp>();
 
@@ -89,7 +111,6 @@ export default function DonationScreen() {
               quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
-          {/* <Text>{donationCartState.dishes.map((d) => `${d.dishID}: ${d.quantity}`).join('\n')}</Text> */}
         </View>
       </ScrollView>
     </View>
