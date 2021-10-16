@@ -29,29 +29,7 @@ type DonationScreenProp = CompositeNavigationProp<
 export default function DonationScreen() {
   const donationCartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
-  // const allDishes = authState.dishes;
-  // Fake data for demo purposes
-  const allDishes = [
-    {
-      _id: 'hednejn',
-      favorite: true,
-      dishName: 'fofo',
-      cost: 90.90,
-      pounds: 90,
-      allergens: [],
-      imageLink: '',
-      comments: 'Yes'
-    }, {
-      _id: 'heejn',
-      favorite: true,
-      dishName: 'good luck',
-      cost: 90.90,
-      pounds: 90,
-      allergens: [],
-      imageLink: '',
-      comments: 'Yes'
-    }
-  ];
+  const allDishes = authState.dishes;
 
   const navigation = useNavigation<DonationScreenProp>();
 
@@ -112,6 +90,7 @@ export default function DonationScreen() {
               quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
+          <Text>{donationCartState.dishes.map((d) => `${d.dishID}: ${d.quantity}\n`)}</Text>
         </View>
       </ScrollView>
     </View>
