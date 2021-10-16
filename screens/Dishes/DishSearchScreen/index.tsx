@@ -67,7 +67,7 @@ export default function DishSearch() {
               style={styles.searchInput}
             />
           </View>
-          {filteredDishes.length > 0 ? filteredDishes.map((item) => (
+          {filteredDishes.length > 0 ? filteredDishes.filter((item) => item.dishName).map((item) => (
             <DishQuantityPreview
               text={boldSearchCharacters(item.dishName, searchText)}
               onPress={() => {
