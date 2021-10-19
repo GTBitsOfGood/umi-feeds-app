@@ -9,6 +9,7 @@ import MapScreenNavigator from '../AdminStack/Map';
 import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
 import ProfileNavigator from '../SharedStack/UserProfile';
+import DonationListScreenNavigator from '../DonorStack/DonationList';
 
 import {
   BottomTabParamList,
@@ -44,6 +45,13 @@ function DonorTabs() {
         component={DonationScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Donation List"
+        component={DonationListScreenNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
       />
       <BottomTab.Screen
