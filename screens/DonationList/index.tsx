@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React, { useEffect, useReducer, useState } from 'react';
 import {
   View,
@@ -73,7 +74,7 @@ const DonationListScreen = () => {
         <View style={{ flex: 1 }}>
           <ScrollView>
             {state.donationCart.dishes.map((item: any, i: any) => (
-              <Row key={i} item={item} i={i} />
+              <Row key={item.foodName} item={item} i={i} />
             ))}
           </ScrollView>
         </View>
@@ -174,9 +175,9 @@ function Row({ item, i }: any) {
                 }}
               >
                 <MaterialCommunityIcons
-                  name='dots-vertical'
+                  name="dots-vertical"
                   size={24}
-                  color='black'
+                  color="black"
                 />
               </TouchableOpacity>
             )}

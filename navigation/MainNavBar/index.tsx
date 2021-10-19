@@ -48,7 +48,7 @@ function DonorTabs() {
         }}
       />
       <BottomTab.Screen
-        name="Donation List"
+        name="DonationList"
         component={DonationListScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="cart" size={30} color={color} style={{ marginBottom: -3 }} />,
