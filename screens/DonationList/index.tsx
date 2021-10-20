@@ -20,7 +20,7 @@ import {
   deleteDonationList,
   updateQty,
 } from '../../redux/reducers/donationCartReducer';
-import rootReducer from '../../redux/rootReducer';
+
 import { HideKeyboardUtility } from '../../util';
 
 const DonationListScreen = () => {
@@ -74,7 +74,7 @@ const DonationListScreen = () => {
         <View style={{ flex: 1 }}>
           <ScrollView>
             {state.donationCart.dishes.map((item: any, i: any) => (
-              <Row key={item.foodName} item={item} i={i} />
+              <Row key={item._id} item={item} i={i} />
             ))}
           </ScrollView>
         </View>

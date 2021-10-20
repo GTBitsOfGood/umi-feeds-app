@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import DonationListScreen from '../../../screens/DonationList';
 // import DonationScreen from '../../../screens/DonationScreen';
+import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
 
 import {
   DonationScreenParamList,
@@ -15,7 +16,7 @@ function DonationListScreenNavigator() {
       <DonationListScreenStack.Screen
         name="DonationScreen"
         component={DonationListScreen}
-        options={{ headerTitle: 'Donation List Screen' }}
+        options={{ headerShown: false }}
       />
     </DonationListScreenStack.Navigator>
   );
