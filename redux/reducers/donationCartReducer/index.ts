@@ -52,9 +52,12 @@ const donationCartReducer = createSlice({
       }
       state.dishes = list;
       console.log(item);
+    },
+    removeDishFromCart(state, action: PayloadAction<string | undefined>) {
+      state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
     }
   },
 });
 
-export const { addToCart, setDonationList, getDonationList, deleteDonationList, updateQty } = donationCartReducer.actions;
+export const { addToCart, setDonationList, getDonationList, deleteDonationList, updateQty, removeDishFromCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;

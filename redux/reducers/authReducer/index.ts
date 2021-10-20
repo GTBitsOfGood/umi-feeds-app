@@ -1,20 +1,30 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AuthUser, OnboardingUser } from './types';
+import { State } from 'react-native-gesture-handler';
+import { Dish } from '../../../types';
+import { AuthUser } from './types';
 
 const initialState = {
   _id: '',
   name: 'Test Name',
   email: 'randmemail',
-  businessName: 'businessName',
+  businessName: 'business',
   phoneNumber: 0,
   pushTokens: [],
   isAdmin: false,
   auth0AccessToken: 'password',
   roles: [],
   pickupAddresses: [],
-  dishes: [],
+  dishes: [{
+    favorite: true,
+    dishName: 'fofo',
+    cost: 90.90,
+    pounds: 90,
+    allergens: [],
+    imageLink: '',
+    comments: 'Yes'
+  }],
   donations: [],
-  authenticated: true,
+  authenticated: false,
   jwt: '',
 } as AuthUser;
 
@@ -44,20 +54,17 @@ const authReducer = createSlice({
     login(state, action: PayloadAction<AuthUser>) {
       setState(state, action.payload);
     },
-    // Update the jwt, name, and authenticated state of authState.  Although we don't have any
-    // other user information this can be useful when submitting information during onboarding
-    beginOnboarding(state, action: PayloadAction<OnboardingUser>) {
-      state.jwt = action.payload.jwt;
-      state.name = action.payload.name;
-      state.authenticated = false;
-    },
     // Clear the authState
     logout(state) {
       setState(state, initialState);
     },
+    // Add Dish created to the authState
+    addDish(state, action: PayloadAction<Dish>) {
+      state.dishes.push(action.payload);
+    }
   }
 });
 
-export const { login, beginOnboarding, logout } = authReducer.actions;
+export const { login, logout, addDish } = authReducer.actions;
 
 export default authReducer.reducer;

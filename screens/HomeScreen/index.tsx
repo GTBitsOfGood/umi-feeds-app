@@ -9,16 +9,17 @@ import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import LogoutButton from '../../components/Auth/LogoutButton';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
-import { DonationDishes } from '../../types';
+import { Dish, DonationDishes } from '../../types';
+import { GeneralModal } from '../../components';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 import { addToCart } from '../../redux/reducers/donationCartReducer';
 
-import { scale, moderateScale, verticalScale } from '../../util/index';
+import { moderateScale } from '../../util/index';
 
 // Test Dish Object to render Modal
-const MockDishObj = {
+const MockDishObj: Dish = {
   _id: '894yr34fbu3bf3', // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
   dishName: 'Fried Donit',
   cost: 90.00,
@@ -26,6 +27,7 @@ const MockDishObj = {
   allergens: ['fish', 'nuts'],
   imageLink: 'www.google.com', // link to azure image
   comments: '',
+  favorite: false,
 };
 
 type HomeScreenProp = CompositeNavigationProp<
@@ -42,14 +44,24 @@ function HomeScreen() {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const closeModal = () => setModalVisible(!modalVisible);
-  const modalSubmit = (quantity: DonationDishes) => dispatch(addToCart(quantity));
+  const modalSubmit = (button1: boolean, button2: boolean) => {
+    if (button1) {
+      console.log('Button 1 Pressed');
+    } else {
+      console.log('Button 2 Pressed');
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <DonateQuantityModal
+      <GeneralModal
+        title="Cool Modal"
+        subtitle="Long description of something cool and awesome and I can't think of anything else to say"
         visible={modalVisible}
-        dishObj={MockDishObj}
         closeModal={closeModal}
+        numButtons={2}
+        buttonOneTitle="Save"
+        buttonTwoTitle="Delete"
         modalSubmit={modalSubmit}
       />
       <View style={styles.topContainer}>

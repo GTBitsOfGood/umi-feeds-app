@@ -1,4 +1,5 @@
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import Colors from '../../constants/Colors';
@@ -8,6 +9,7 @@ import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
 import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
+import DonateTab from '../DonorStack/Donate';
 import ProfileNavigator from '../SharedStack/UserProfile';
 import DonationListScreenNavigator from '../DonorStack/DonationList';
 
@@ -31,7 +33,7 @@ function DonorTabs() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
@@ -42,7 +44,7 @@ function DonorTabs() {
       />
       <BottomTab.Screen
         name="Donate"
-        component={DonationScreenNavigator}
+        component={DonateTab}
         options={{
           tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
@@ -71,7 +73,7 @@ function AdminTabs() {
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
     >
       <BottomTab.Screen
         name="Home"
@@ -109,3 +111,19 @@ export {
   DonorTabs,
   AdminTabs
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: '9%',
+    paddingBottom: 5,
+    borderTopLeftRadius: 4,
+    borderTopRightRadius: 4,
+    shadowColor: 'rgba(144, 144, 144, 1)',
+    shadowOpacity: 0.15,
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowRadius: 12
+  },
+});

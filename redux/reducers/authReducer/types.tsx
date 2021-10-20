@@ -6,11 +6,3 @@ export type AuthUser = User & {
   authenticated: boolean,
   jwt: string
 }
-
-// Name, jwt, and authenticated are the only things we know during onboarding, but
-// name and jwt can still be useful when sending onboarding requests to the backend
-export type OnboardingUser = {
-  authenticated: boolean,
-  jwt: string,
-  name: string
-}

@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import DishForm from '../../../components/DishForm/DishForm';
+import { View, Text, StyleSheet } from 'react-native';
 
-const NewDishFormScreen = () => (
+const ReviewCartScreen = () => (
   <View style={styles.container}>
-    <DishForm />
+    <Text>Donation Confirmation and Review Cart Screens</Text>
   </View>
 );
 
@@ -17,4 +16,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default NewDishFormScreen;
+export default ReviewCartScreen;

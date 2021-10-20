@@ -2,7 +2,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import DonationListScreen from '../../../screens/DonationList';
 // import DonationScreen from '../../../screens/DonationScreen';
-import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
 
 import {
   DonationScreenParamList,

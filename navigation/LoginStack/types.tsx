@@ -1,4 +1,5 @@
 export type LoginStackParamList = {
   Login: undefined;
-  OnboardingForm: undefined;
+  OnboardingNameForm: undefined;
+  OnboardingAddressForm: undefined;
 };
