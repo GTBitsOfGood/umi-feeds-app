@@ -20,6 +20,7 @@ import {
   deleteDonationList,
   updateQty,
 } from '../../redux/reducers/donationCartReducer';
+import { Header } from '../../components';
 
 import { HideKeyboardUtility } from '../../util';
 
@@ -50,7 +51,8 @@ const DonationListScreen = () => {
   return (
     <Provider>
       <View style={styles.container}>
-        <View style={styles.header}>
+        <Header title="Donation List" />
+        {/* <View style={styles.header}>
           <View>
             <Text style={styles.title}>Donation List</Text>
           </View>
@@ -59,7 +61,7 @@ const DonationListScreen = () => {
             <Text style={{ position: 'absolute', top: 11, right: 55 }}>{state.donationCart.dishes.length}</Text>
             <Text style={styles.title2}>List</Text>
           </View>
-        </View>
+        </View> */}
         <View>
           <Text style={styles.title3}>Here is the list</Text>
         </View>
@@ -344,6 +346,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#FFFFFF'
   },
   header: {
     flexDirection: 'row',
