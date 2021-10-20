@@ -5,13 +5,13 @@ import styles, { orangeColor } from './styles';
 
 import CartButton from '../CartButton';
 
-export default function Header(props: { title: string }) {
+export default function Header(props: { title: string, showCartButton?: boolean }) {
   return (
     <View style={styles.headerContainer}>
       <View style={{ alignSelf: 'center' }}>
         <Text style={styles.title}>{props.title}</Text>
       </View>
-      <CartButton onPress={() => alert('Cart Pressed!')} color={orangeColor} />
+      {(props.showCartButton !== false) && <CartButton onPress={() => alert('Cart Pressed!')} color={orangeColor} />}
     </View>
   );
 }
