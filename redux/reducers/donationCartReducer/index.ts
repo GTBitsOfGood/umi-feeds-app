@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import DonationCartState from './types';
 import { DonationDishes } from '../../../types';
+import { DonationCartState, PickupTimeInformation } from './types';
 
 const initialState = {
   ongoing: false,
@@ -34,9 +34,14 @@ const donationCartReducer = createSlice({
     },
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
       state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
+    },
+    setPickUpTimeInformation(state, action: PayloadAction<PickupTimeInformation>) {
+      state.pickupInstructions = action.payload.pickupInstructions;
+      state.pickupStartTime = action.payload.pickupStartTime;
+      state.pickupEndTime = action.payload.pickupEndTime;
     }
   },
 });
 
-export const { addToCart, removeDishFromCart } = donationCartReducer.actions;
+export const { addToCart, removeDishFromCart, setPickUpTimeInformation } = donationCartReducer.actions;
 export default donationCartReducer.reducer;

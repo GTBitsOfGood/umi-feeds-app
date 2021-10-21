@@ -10,7 +10,7 @@ import { Address, DonationDishes } from '../../../types';
 // refer to the following link for more details
 // https://blog.bam.tech/developer-news/the-redux-best-practice-do-not-put-non-serializable-values-in-state-or-actions-explained
 
-interface DonationCartState {
+export interface DonationCartState {
   ongoing: boolean;
   status: string;
   imageLink: string;
@@ -25,4 +25,8 @@ interface DonationCartState {
   confirmDropOffTime: number; // time when donation has been dropped off by volunteer
 }
 
-export default DonationCartState;
+export type PickupTimeInformation = {
+  pickupInstructions: string;
+  pickupStartTime: number;
+  pickupEndTime: number;
+}
