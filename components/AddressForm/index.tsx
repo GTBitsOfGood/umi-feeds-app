@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
 import Constants from 'expo-constants';
 import { HeaderBackButton } from '@react-navigation/stack';
-import { TouchableWithoutFeedback, StyleSheet, View, Text, TextInput, Keyboard } from 'react-native';
+import { TouchableWithoutFeedback, StyleSheet, View, Text, TextInput, Keyboard, ScrollView } from 'react-native';
 
 import { Button } from 'react-native-elements';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Address } from '../../types';
-
+import { Header } from '../../components';
 import { moderateScale } from '../../util';
+import { PrimaryButton, SecondaryButton } from '../Button';
 
 type AddressFormProps = {
   ButtonTitle: string,
   UserAddress?: Address,
   goBack: () => void,
   onSubmit: (addressObj: Address | null) => void,
+  defaultValues?: Address,
 }
 
-const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressFormProps) => {
+const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit, defaultValues }: AddressFormProps) => {
   const [address, setAddress] = useState<string>(UserAddress ? UserAddress.streetAddress : '');
   const [city, setCity] = useState<string>(UserAddress ? UserAddress?.city : '');
   const [zipCode, onZipCodeChange] = useState<string>(UserAddress ? UserAddress.zipCode.toString : '');
@@ -34,27 +36,28 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
 
   return (
     <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
-      <View style={{
-        flex: 1,
-        padding: moderateScale(20),
-        flexDirection: 'column',
-        backgroundColor: '#FFFFFF'
-      }}
+      <ScrollView
+        style={{
+          padding: moderateScale(20),
+          backgroundColor: '#FFFFFF'
+        }}
+        keyboardShouldPersistTaps="always"
       >
-        <View style={{ flex: 1 }} />
+        <View style={{}} />
         <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />
-        <View style={{ flex: 25 }}>
-          <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-evenly' }}>
-            <View style={{ flex: 0.5 }} />
-            <View style={{ flex: 1 }}>
-              <Text style={styles.title}>Enter address</Text>
+        <View style={{}}>
+          <View style={{}}>
+            <View style={{}} />
+            <View style={{}}>
+              <Header title="Enter address" showCartButton={false} />
+              {/* <Text style={styles.title}>Enter address</Text> */}
             </View>
-            <View style={{ flex: 1.5 }}>
+            <View style={{}}>
               <Text style={styles.description}>
                 Fill out the address information below. We’ll share this with your assigned driver for pickup.
               </Text>
             </View>
-            <View style={{ flex: 10 }}>
+            <View style={{}}>
               <View style={styles.google}>
                 <GooglePlacesAutocomplete
                   styles={{ textInput: styles.googleInput, listView: { position: 'absolute', zIndex: 100, borderColor: 'black', borderWidth: 1, top: moderateScale(50), elevation: 3 } }}
@@ -83,7 +86,6 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
                 placeholder="Country/Region"
                 value="United States"
                 editable={false}
-                textContentType="countryName"
               />
               <TextInput
                 style={styles.input}
@@ -102,11 +104,7 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
               />
             </View>
           </View>
-        </View>
-        <View style={{ flex: 4 }}>
-          <Button
-            buttonStyle={{ backgroundColor: '#F37B36', height: '70%', padding: 10, marginTop: moderateScale(25) }}
-            title={ButtonTitle}
+          <PrimaryButton
             onPress={() => {
               if (address.trim().length === 0) {
                 onSubmit(null);
@@ -121,11 +119,12 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
                   latitude,
                 });
               }
-            }
-            }
-          />
+            }}
+          >
+            {ButtonTitle}
+          </PrimaryButton>
         </View>
-      </View>
+      </ScrollView>
     </TouchableWithoutFeedback>
   );
 };
@@ -134,7 +133,7 @@ export default AddressForm;
 
 const styles = StyleSheet.create({
   backButton: {
-    flex: 2,
+    // flex: 2,
   },
   google: {
     height: moderateScale(55),
@@ -144,9 +143,9 @@ const styles = StyleSheet.create({
   googleInput: {
     height: moderateScale(50),
     marginBottom: moderateScale(8),
-    borderWidth: 0.5,
+    borderWidth: 1,
     color: 'black',
-    borderColor: 'black',
+    borderColor: '#b8b8b8',
     borderRadius: 4,
     width: 330,
   },
@@ -155,9 +154,9 @@ const styles = StyleSheet.create({
     height: moderateScale(55),
     marginTop: moderateScale(8),
     marginBottom: moderateScale(8),
-    borderWidth: 0.5,
+    borderWidth: 1,
     color: 'black',
-    borderColor: 'black',
+    borderColor: '#b8b8b8',
     borderRadius: 4,
     width: 330,
     padding: 10,
@@ -166,7 +165,7 @@ const styles = StyleSheet.create({
     color: '#202020',
     fontSize: 32,
     lineHeight: 37,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   description: {
     marginTop: moderateScale(5),
