@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { State } from 'react-native-gesture-handler';
-import { Dish } from '../../../types';
+import { Address, Dish } from '../../../types';
 import { AuthUser } from './types';
 
 const initialState = {
@@ -61,10 +61,14 @@ const authReducer = createSlice({
     // Add Dish created to the authState
     addDish(state, action: PayloadAction<Dish>) {
       state.dishes.push(action.payload);
+    },
+    // Set the pickupAddresses in the authState
+    setPickupAddresses(state, action: PayloadAction<Address[]>) {
+      state.pickupAddresses = action.payload;
     }
   }
 });
 
-export const { login, logout, addDish } = authReducer.actions;
+export const { login, logout, addDish, setPickupAddresses } = authReducer.actions;
 
 export default authReducer.reducer;
