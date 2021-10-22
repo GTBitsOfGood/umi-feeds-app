@@ -1,19 +1,21 @@
-import { isDate, isNumber, pick } from 'lodash';
+import { isDate } from 'lodash';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, Pressable, KeyboardAvoidingView } from 'react-native';
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
-import PlatformDateTimePicker from '../../../components/DateTimePicker';
 import { moderateScale, HideKeyboardUtility } from '../../../util';
 import { setPickUpTimeInformation } from '../../../redux/reducers/donationCartReducer';
+import PlatformDatePicker from '../../../components/DateTimePicker/DatePicker';
+import PlatformTimePicker from '../../../components/DateTimePicker/TimePicker';
+import Header from '../../../components/Header';
 
 function DonateSchedulePickupScreen() {
+  const currentDate = new Date();
   const dispatch = useDispatch();
-  const [startTime, setStartTime] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState<Date>(new Date());
+  const [startTime, setStartTime] = useState<Date>(currentDate);
+  const [endTime, setEndTime] = useState<Date>(currentDate);
   const [pickupInstructions, setPickupInstructions] = useState<string>('');
-  const [pickupDate, setPickupDate] = useState(new Date());
-  const [showDateTime, setShowDateTime] = useState<boolean>(false);
+  const [pickupDate, setPickupDate] = useState(currentDate);
 
   const handleSubmit = () => {
     if (isFormValid()) {
@@ -22,49 +24,47 @@ function DonateSchedulePickupScreen() {
         pickupStartTime: Number(startTime),
         pickupEndTime: Number(endTime),
       }));
-    }
-  };
-
-  const isValidDate = (d: Date) => {
-    if (d.getTime() > (Date.now() + 60 * 60 * 2 * 1000)) {
-      return !isDate(d);
     } else {
-      return false;
+      console.log('Form is not valid');
     }
   };
 
+  /* Check that the pickup date is valid and not in the past */
   const isFormValid = () => {
-    console.log(pickupDate);
-    return isValidDate(pickupDate);
+    const validStartTime = isDate(startTime) && startTime > new Date();
+    const validEndTime = isDate(endTime) && endTime > startTime;
+    return (validStartTime && validEndTime);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        Pickup time
-      </Text>
+      <Header title="Pickup time" />
       <Text style={styles.description}>
         Schedule the date and time for your donation pickup.
       </Text>
       <Text style={styles.subsection}>
         Pickup Date
       </Text>
-      {/* <TouchableHighlight
-        onPress={() => setShowDateTime(true)}
-        underlayColor="transparent"
-      >
-        <View style={styles.dateInput}>
-          <Text style={styles.description}>
-            Create new dish
-          </Text>
-        </View>
-      </TouchableHighlight> */}
       <View style={styles.dateInput}>
-        <PlatformDateTimePicker datetime={startTime} setDatetime={setStartTime} />
+        <PlatformDatePicker datetime={pickupDate} setDatetime={setPickupDate} />
       </View>
       <Text style={styles.subsection}>
         Pickup time window
       </Text>
+      <View style={styles.pickupWindowContainer}>
+        <View style={styles.timeItem}>
+          <View style={styles.timeWithText}>
+            <Text style={styles.pickupText}> Earliest time for food pickup </Text>
+            <PlatformTimePicker datetime={startTime} setDatetime={setStartTime} />
+          </View>
+        </View>
+        <View style={styles.timeItem}>
+          <View style={styles.timeWithText}>
+            <Text style={styles.pickupText}> Latest time for food pickup </Text>
+            <PlatformTimePicker datetime={endTime} setDatetime={setEndTime} />
+          </View>
+        </View>
+      </View>
       <Text style={styles.subsection}>
         Pickup Instructions (optional)
       </Text>
@@ -86,7 +86,7 @@ function DonateSchedulePickupScreen() {
         <Pressable
           disabled={isFormValid()}
           style={isFormValid() ? styles.filledButton : styles.unfilledButton}
-          onPress={handleSubmit()}
+          onPress={handleSubmit}
         >
           <Text style={styles.reviewText}>Review</Text>
         </Pressable>
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
   subsection: {
     fontSize: 17,
     fontWeight: '700',
-    color: '#202020'
+    color: '#202020',
+    paddingBottom: moderateScale(10)
   },
   boxInput: {
     borderWidth: 2,
@@ -124,21 +125,17 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginVertical: 10,
     fontFamily: 'Roboto',
+
   },
   commentInput: {
     borderWidth: 2,
     borderColor: 'lightgray',
     borderRadius: 6,
-    marginVertical: moderateScale(10),
     fontFamily: 'Roboto',
     height: '40%',
-    width: '100%'
+    width: '100%',
   },
   dateInput: {
-    borderWidth: 2,
-    borderColor: 'lightgray',
-    borderRadius: 6,
-    marginVertical: 10,
     fontFamily: 'Roboto',
     height: '10%',
     width: '100%'
@@ -149,7 +146,7 @@ const styles = StyleSheet.create({
     height: '20%',
     borderRadius: 4
   },
-  filledButton :{
+  filledButton: {
     backgroundColor: '#F37B36',
     width: '100%',
     height: '20%',
@@ -165,6 +162,27 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     paddingTop: moderateScale(13)
+  },
+  pickupWindowContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'flex-start',
+    alignItems: 'flex-start',
+    paddingBottom: moderateScale(10)
+  },
+  timeItem: {
+    marginLeft: 15,
+    marginRight: 20,
+    width: '40%'
+  },
+  timeWithText: {
+    flexDirection: 'column'
+  },
+  pickupText: {
+    fontSize: 12,
+    color: '#5D5D5D',
   }
 });
 
