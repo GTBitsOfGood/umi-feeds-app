@@ -4,6 +4,7 @@ import { DonateReviewScreen, DonateAddressScreen, DonateSchedulePickupScreen, Do
 import { NewDishFormScreen, DishProfileScreen, DishSearchScreen } from '../../../screens/Dishes';
 import DonateHomePage from '../../../screens/DonateTab';
 import DishSearch from '../../../screens/Dishes/DishSearchScreen';
+import ReviewContactScreen from '../../../screens/DonationForm/ReviewScreen/ReviewContact';
 
 import {
   DonateTabParamList,
@@ -14,6 +15,11 @@ const DonationScreenStack = createStackNavigator<DonateTabParamList>();
 function DonateTab() {
   return (
     <DonationScreenStack.Navigator>
+      <DonationScreenStack.Screen
+        name="ReviewContactScreen"
+        component={ReviewContactScreen}
+        options={{ headerTitle: 'Donate', headerShown: false }}
+      />
       <DonationScreenStack.Screen
         name="DonateHomeScreen"
         component={DonateHomePage}
@@ -59,11 +65,11 @@ function DonateTab() {
         component={DonateReviewScreen}
         options={{ headerTitle: 'Donate' }}
       />
-      <DonationScreenStack.Screen
-        name="ReviewContactScreen"
-        component={DonateReviewScreen}
-        options={{ headerTitle: 'Donate' }}
-      />
+      {/* <DonationScreenStack.Screen */}
+      {/*  name="ReviewContactScreen" */}
+      {/*  component={ReviewContactScreen} */}
+      {/*  options={{ headerTitle: 'Donate', headerShown: false }} */}
+      {/* /> */}
     </DonationScreenStack.Navigator>
   );
 }
