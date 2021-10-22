@@ -38,7 +38,7 @@ function DonateSchedulePickupScreen() {
 
   return (
     <View style={styles.container}>
-      <Header title="Pickup time" />
+      <Header title="Pickup time" showCartButton={false} />
       <Text style={styles.description}>
         Schedule the date and time for your donation pickup.
       </Text>

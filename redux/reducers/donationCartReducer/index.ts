@@ -40,8 +40,13 @@ const donationCartReducer = createSlice({
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
       state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
     },
+    setPickUpTimeInformation(state, action: PayloadAction<PickupTimeInformation>) {
+      state.pickupInstructions = action.payload.pickupInstructions;
+      state.pickupStartTime = action.payload.pickupStartTime;
+      state.pickupEndTime = action.payload.pickupEndTime;
+    },
   },
 });
 
-export const { addToCart, removeDishFromCart, resetCart } = donationCartReducer.actions;
+export const { addToCart, removeDishFromCart, resetCart, setPickUpTimeInformation } = donationCartReducer.actions;
 export default donationCartReducer.reducer;
