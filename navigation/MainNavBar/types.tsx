@@ -5,4 +5,5 @@ export type BottomTabParamList = {
   Dishes: undefined;
   Donations: undefined;
   Me: undefined;
+  DishProfile: undefined;
 };
