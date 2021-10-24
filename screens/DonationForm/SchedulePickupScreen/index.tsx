@@ -10,22 +10,19 @@ import PlatformTimePicker from '../../../components/DateTimePicker/TimePicker';
 import Header from '../../../components/Header';
 
 function DonateSchedulePickupScreen() {
-  const currentDate = new Date();
   const dispatch = useDispatch();
-  const [startTime, setStartTime] = useState<Date>(currentDate);
-  const [endTime, setEndTime] = useState<Date>(currentDate);
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(new Date());
   const [pickupInstructions, setPickupInstructions] = useState<string>('');
-  const [pickupDate, setPickupDate] = useState(currentDate);
+  const [pickupDate, setPickupDate] = useState(new Date());
 
   const handleSubmit = () => {
-    if (isFormValid()) {
+    if (!isFormValid()) {
       dispatch(setPickUpTimeInformation({
         pickupInstructions,
         pickupStartTime: Number(startTime),
         pickupEndTime: Number(endTime),
       }));
-    } else {
-      console.log('Form is not valid');
     }
   };
 
@@ -33,7 +30,7 @@ function DonateSchedulePickupScreen() {
   const isFormValid = () => {
     const validStartTime = isDate(startTime) && startTime > new Date();
     const validEndTime = isDate(endTime) && endTime > startTime;
-    return (validStartTime && validEndTime);
+    return (!validStartTime && !validEndTime);
   };
 
   return (
@@ -46,7 +43,10 @@ function DonateSchedulePickupScreen() {
         Pickup Date
       </Text>
       <View style={styles.dateInput}>
-        <PlatformDatePicker datetime={pickupDate} setDatetime={setPickupDate} />
+        <PlatformDatePicker
+          datetime={pickupDate}
+          setDatetime={setPickupDate}
+        />
       </View>
       <Text style={styles.subsection}>
         Pickup time window
@@ -55,13 +55,19 @@ function DonateSchedulePickupScreen() {
         <View style={styles.timeItem}>
           <View style={styles.timeWithText}>
             <Text style={styles.pickupText}> Earliest time for food pickup </Text>
-            <PlatformTimePicker datetime={startTime} setDatetime={setStartTime} />
+            <PlatformTimePicker
+              datetime={startTime}
+              setDatetime={setStartTime}
+            />
           </View>
         </View>
         <View style={styles.timeItem}>
           <View style={styles.timeWithText}>
             <Text style={styles.pickupText}> Latest time for food pickup </Text>
-            <PlatformTimePicker datetime={endTime} setDatetime={setEndTime} />
+            <PlatformTimePicker
+              datetime={endTime}
+              setDatetime={setEndTime}
+            />
           </View>
         </View>
       </View>
@@ -82,10 +88,10 @@ function DonateSchedulePickupScreen() {
           </KeyboardAvoidingView>
         </HideKeyboardUtility>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: moderateScale(10), width: '100%', height: '40%' }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20), width: '100%', height: '40%' }}>
         <Pressable
           disabled={isFormValid()}
-          style={isFormValid() ? styles.filledButton : styles.unfilledButton}
+          style={isFormValid() ? styles.unfilledButton : styles.filledButton}
           onPress={handleSubmit}
         >
           <Text style={styles.reviewText}>Review</Text>
@@ -111,21 +117,21 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 15,
-    paddingVertical: moderateScale(10),
+    color: '#828282',
+    paddingBottom: moderateScale(10)
   },
   subsection: {
     fontSize: 17,
     fontWeight: '700',
     color: '#202020',
-    paddingBottom: moderateScale(10)
+    paddingBottom: moderateScale(5)
   },
   boxInput: {
     borderWidth: 2,
     borderColor: 'lightgray',
     borderRadius: 6,
-    marginVertical: 10,
+    marginVertical: moderateScale(10),
     fontFamily: 'Roboto',
-
   },
   commentInput: {
     borderWidth: 2,
@@ -137,8 +143,8 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     fontFamily: 'Roboto',
-    height: '10%',
-    width: '100%'
+    width: '100%',
+    paddingBottom: moderateScale(10)
   },
   unfilledButton: {
     backgroundColor: '#B8B8B8',
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F37B36',
     width: '100%',
     height: '20%',
-    borderRadius: 4
+    borderRadius: 4,
   },
   reviewText: {
     flex: 1,
@@ -183,6 +189,7 @@ const styles = StyleSheet.create({
   pickupText: {
     fontSize: 12,
     color: '#5D5D5D',
+    paddingBottom: moderateScale(5)
   }
 });
 

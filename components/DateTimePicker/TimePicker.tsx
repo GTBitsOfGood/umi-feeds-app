@@ -1,6 +1,6 @@
 import React, { useState, Dispatch, SetStateAction } from 'react';
 import { Button, Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 import { DateTime } from 'luxon';
 import { View } from '../../style/Themed';
 
@@ -29,13 +29,14 @@ function PlatformTimePicker(props: {
   if (Platform.OS === 'ios') {
     return (
       <View>
-        <DateTimePicker
+        <RNDateTimePicker
           value={props.datetime}
           mode="time"
           style={{ width: '100%' }}
           minuteInterval={1}
           display="default"
           onChange={onChange}
+          minimumDate={new Date()}
         />
       </View>
     );
@@ -51,13 +52,14 @@ function PlatformTimePicker(props: {
 
         {show && (
         <View>
-          <DateTimePicker
+          <RNDateTimePicker
             value={props.datetime}
             mode={mode}
             style={{ width: '100%' }}
             minuteInterval={1}
             display="default"
             onChange={onChange}
+            minimumDate={new Date()}
           />
         </View>
         )}
