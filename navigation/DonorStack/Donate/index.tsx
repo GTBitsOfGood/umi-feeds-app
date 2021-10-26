@@ -16,11 +16,6 @@ function DonateTab() {
   return (
     <DonationScreenStack.Navigator>
       <DonationScreenStack.Screen
-        name="ReviewContactScreen"
-        component={ReviewContactScreen}
-        options={{ headerTitle: 'Donate', headerShown: false }}
-      />
-      <DonationScreenStack.Screen
         name="DonateHomeScreen"
         component={DonateHomePage}
         options={{ headerTitle: 'Donate', headerShown: false }}
@@ -65,11 +60,11 @@ function DonateTab() {
         component={DonateReviewScreen}
         options={{ headerTitle: 'Donate' }}
       />
-      {/* <DonationScreenStack.Screen */}
-      {/*  name="ReviewContactScreen" */}
-      {/*  component={ReviewContactScreen} */}
-      {/*  options={{ headerTitle: 'Donate', headerShown: false }} */}
-      {/* /> */}
+      <DonationScreenStack.Screen
+        name="ReviewContactScreen"
+        component={ReviewContactScreen}
+        options={{ headerTitle: 'Donate', headerShown: false }}
+      />
     </DonationScreenStack.Navigator>
   );
 }

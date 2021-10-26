@@ -77,7 +77,7 @@ export default function DonationScreen() {
               text={<Text>{item.dishName}</Text>}
               key={item._id}
               onPress={() => {
-                const donationDishes = donationCartState.dishes.filter((dish) => dish.dishID === item._id);
+                const donationDishes = donationCartState.donationDishes.filter((dish) => dish.dishID === item._id);
 
                 // if the dish is already in the cart, set the quantity to 0 when pressed
                 if ((donationDishes.reduce((prev, curr) => prev + curr.quantity, 0) > 0)) {
@@ -87,10 +87,10 @@ export default function DonationScreen() {
                 setModalDishObject(item);
                 setModalVisible(true);
               }}
-              quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
+              quantityAdded={donationCartState.donationDishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
-          <Text>{donationCartState.dishes.map((d) => `${d.dishID}: ${d.quantity}\n`)}</Text>
+          <Text>{donationCartState.donationDishes.map((d) => `${d.dishID}: ${d.quantity}\n`)}</Text>
         </View>
       </ScrollView>
     </View>
