@@ -20,9 +20,10 @@ import {
   deleteDonationList,
   updateQty,
 } from '../../redux/reducers/donationCartReducer';
-import { Header } from '../../components';
+import { ChevronButton, Header } from '../../components';
 
 import { HideKeyboardUtility } from '../../util';
+import DonateQuantityModal from '../../components/DonateQuantityModal';
 
 const DonationListScreen = () => {
   const [donationDishList, setdonationDishList] = useState([
@@ -51,6 +52,9 @@ const DonationListScreen = () => {
   return (
     <Provider>
       <View style={styles.container}>
+        <View style={{ marginTop: 50, marginLeft: 15 }}>
+          <ChevronButton text="Back" onPress={() => { }} />
+        </View>
         <Header title="Donation List" />
         {/* <View style={styles.header}>
           <View>
@@ -62,15 +66,16 @@ const DonationListScreen = () => {
             <Text style={styles.title2}>List</Text>
           </View>
         </View> */}
-        <View>
-          <Text style={styles.title3}>Here is the list</Text>
+        {/* Needed to add the relative part because the header and the line below were too far apart */}
+        <View style={{ position: 'relative', top: -25 }}>
+          <Text style={styles.title3}>{'Here is the list of what you\'re donating'}</Text>
         </View>
         <View style={styles.tableTitle}>
           <View style={styles.tableH1}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Dish item</Text>
+            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Dish item</Text>
           </View>
           <View style={styles.tableH2}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Qty</Text>
+            <Text style={{ fontSize: 17, fontWeight: 'bold' }}>Qty</Text>
           </View>
         </View>
         <View style={{ flex: 1 }}>
@@ -87,12 +92,12 @@ const DonationListScreen = () => {
             alignItems: 'center',
             borderWidth: 1,
             height: 50,
-            borderColor: 'orange',
+            borderColor: '#F37B36',
             borderRadius: 4,
             backgroundColor: 'white',
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'orange' }}>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#F37B36' }}>
             + Add Dishes to donate
           </Text>
         </View>
@@ -104,8 +109,8 @@ const DonationListScreen = () => {
             borderWidth: 1,
             height: 50,
             borderRadius: 4,
-            borderColor: 'orange',
-            backgroundColor: 'orange',
+            borderColor: '#F37B36',
+            backgroundColor: '#F37B36',
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
@@ -132,7 +137,7 @@ function Row({ item, i }: any) {
     setVisible(false);
   };
 
-  const changeQuantity = () => {
+  const changeQuantity = (quantity: any) => {
     setshowQuantity(false);
     dispatch(updateQty({ item, quantity }));
   };
@@ -155,7 +160,7 @@ function Row({ item, i }: any) {
       }}
     >
       <View style={{ flex: 8 }}>
-        <Text style={{ fontSize: 20 }}>{item.dishID}</Text>
+        <Text style={{ fontSize: 15 }}>{item.dishID}</Text>
       </View>
       <View
         style={{
@@ -164,7 +169,7 @@ function Row({ item, i }: any) {
           justifyContent: 'space-between',
         }}
       >
-        <Text style={{ fontSize: 20 }}>{item.quantity}</Text>
+        <Text style={{ fontSize: 15 }}>{item.quantity}</Text>
         <View>
           <Menu
             style={{ marginTop: -100, marginLeft: -30 }}
@@ -179,12 +184,12 @@ function Row({ item, i }: any) {
                 <MaterialCommunityIcons
                   name="dots-vertical"
                   size={24}
-                  color="black"
+                  color="#DADADA"
                 />
               </TouchableOpacity>
             )}
           >
-            <Menu.Item onPress={() => {}} title="View Dish " />
+            <Menu.Item onPress={() => { }} title="View Dish " />
             <Menu.Item
               onPress={() => {
                 setshowQuantity(true);
@@ -196,7 +201,17 @@ function Row({ item, i }: any) {
           </Menu>
         </View>
       </View>
-      <Modal
+      <DonateQuantityModal
+        visible={showQuantity}
+        dishObj={item}
+        closeModal={() => {
+          setshowQuantity(false);
+        }}
+        modalSubmit={(pl) => {
+          changeQuantity(pl.quantity);
+        }}
+      />
+      {/* <Modal
         animationType="fade"
         transparent
         visible={showQuantity}
@@ -252,7 +267,7 @@ function Row({ item, i }: any) {
           </View>
           <View style={{ flex: 4 }} />
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }
@@ -366,7 +381,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   title3: {
-    fontSize: 20,
+    fontSize: 15,
     paddingTop: 10,
   },
   tableTitle: {
@@ -374,6 +389,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'black',
     marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   tableH1: {
     flex: 8,
