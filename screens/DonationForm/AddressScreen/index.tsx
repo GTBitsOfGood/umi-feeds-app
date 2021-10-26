@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, ScrollView, TouchableHighlight, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import styles from './styles';
 import { RootState } from '../../../redux/rootReducer';
@@ -12,6 +13,7 @@ import { Address } from '../../../types';
 import { Header, ChevronButton } from '../../../components';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { PrimaryButton, SecondaryButton } from '../../../components/Button';
+import { setPickupAddresses } from '../../../redux/reducers/authReducer';
 
 const orangeColor = '#F37B36';
 
@@ -20,6 +22,10 @@ type DonationScreenProp = StackNavigationProp<DonateTabParamList, 'DonateHomeScr
 const DonateFormAddressScreen = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const navigation = useNavigation<DonationScreenProp>();
+  const dispatch = useDispatch();
+
+  // console.log('test');
+  // console.log(authState.pickupAddresses);
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(authState.pickupAddresses.length === 1 ? authState.pickupAddresses[0] : null);
 
@@ -44,8 +50,29 @@ const DonateFormAddressScreen = () => {
               address={address}
               businessName={authState.businessName}
               onPress={() => setSelectedAddress(address)}
-              onEdit={() => alert('test edit!')}
-              onDelete={() => alert('test delete!')}
+              onEdit={() => {
+                navigation.navigate('EditAddressScreen' as any, { address });
+              }}
+              onDelete={() => {
+                const url = `/api/user/pickupAddress/${authState._id}?addressId=${address._id}`;
+                Alert.alert('Are you sure you want to delete this pickup address?', '', [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Delete',
+                    style: 'destructive',
+                    onPress: () => {
+                      axios.delete(url).then(() => {
+                        dispatch(setPickupAddresses(authState.pickupAddresses.filter((a: Address) => a._id !== address._id)));
+                      }).catch((e) => {
+                        Alert.alert('Error deleting pickup address.', e.message);
+                      });
+                    }
+                  }
+                ]);
+              }}
             />
           ))}
           <PrimaryButton

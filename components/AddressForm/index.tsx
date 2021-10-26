@@ -3,23 +3,21 @@ import Constants from 'expo-constants';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { TouchableWithoutFeedback, StyleSheet, View, Text, TextInput, Keyboard, ScrollView } from 'react-native';
 
-import { Button } from 'react-native-elements';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Address } from '../../types';
 import { Header } from '../../components';
 import { moderateScale } from '../../util';
-import { PrimaryButton, SecondaryButton } from '../Button';
+import { PrimaryButton } from '../Button';
 
 type AddressFormProps = {
   ButtonTitle: string,
   UserAddress?: Address,
   goBack: () => void,
   onSubmit: (addressObj: Address | null) => void,
-  defaultValues?: Address,
 }
 
-const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit, defaultValues }: AddressFormProps) => {
+const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressFormProps) => {
   const [address, setAddress] = useState<string>(UserAddress ? UserAddress.streetAddress : '');
   const [city, setCity] = useState<string>(UserAddress ? UserAddress?.city : '');
   const [zipCode, onZipCodeChange] = useState<string>(UserAddress ? UserAddress.zipCode.toString : '');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { AddressForm } from '../../../components';
@@ -12,22 +12,22 @@ import { setPickupAddresses } from '../../../redux/reducers/authReducer';
 
 type DonationScreenProp = StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>;
 
-export default function EditAddresScreen() {
+export default function EditAddresScreen({ route }: { route: { params: { address: Address | undefined } } }) {
   const authState = useSelector((state: RootState) => state.auth);
   const navigation = useNavigation<DonationScreenProp>();
   const dispatch = useDispatch();
 
+  const oldAddress = route?.params?.address ?? null;
+
   const onSuccess = (response: AxiosResponse) => {
-    const newPickupAddresses = response.data as Address[];
-    console.log(response);
+    const newPickupAddresses = response.data.pickupAddresses as Address[];
     // set authState pickup addresses to response
     dispatch(setPickupAddresses(newPickupAddresses));
     navigation.goBack();
   };
 
-  const onError = (response: any) => {
-    console.log(response);
-    alert('Error! This address could not be saved. Please try again later');
+  const onError = () => {
+    alert('This address could not be saved. Please try again later');
   };
 
   return (
@@ -35,13 +35,13 @@ export default function EditAddresScreen() {
       goBack={navigation.goBack}
       onSubmit={(address) => {
         if (address) {
-          if (address._id) {
-            axios.put(`/pickupAddress/${address._id}`, {
-              ...address,
-              _id: address._id
+          if (oldAddress) {
+            axios.put(`api/user/pickupAddress/${authState._id}`, {
+              _id: oldAddress._id, // preserve id
+              ...address
             }).then(onSuccess).catch(onError);
           } else {
-            axios.post(`/pickupAddress/${authState._id}`, address).then(onSuccess).catch(onError);
+            axios.post(`/api/user/pickupAddress/${authState._id}`, address).then(onSuccess).catch(onError);
           }
         }
       }}
