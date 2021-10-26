@@ -71,17 +71,6 @@ export default function DonationScreen() {
               </Text>
             </View>
           </TouchableHighlight>
-          <TouchableHighlight
-          // FOR TESTING MAKE SURE TO DELETE!!!!!!
-            onPress={() => navigation.navigate('SchedulePickupScreen')}
-            underlayColor="transparent"
-          >
-            <View style={styles.filledButton}>
-              <Text style={styles.filledButtonText}>
-                Schedule Pickup Screen
-              </Text>
-            </View>
-          </TouchableHighlight>
           <Text style={styles.subtitle}>Favorite Dishes</Text>
           {allDishes.filter((dish) => dish.favorite).length === 0 ? <Text style={{ textAlign: 'center', color: 'gray' }}>No favorite dishes</Text> : allDishes.filter((dish) => dish.favorite).map((item) => (
             <DishQuantityPreview

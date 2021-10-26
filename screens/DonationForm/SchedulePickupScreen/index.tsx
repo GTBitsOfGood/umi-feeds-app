@@ -1,6 +1,5 @@
-import { isDate } from 'lodash';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, Pressable, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView } from 'react-native';
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import { moderateScale, HideKeyboardUtility } from '../../../util';
@@ -28,8 +27,8 @@ function DonateSchedulePickupScreen() {
 
   /* Check that the pickup date is valid and not in the past */
   const isFormValid = () => {
-    const validStartTime = isDate(startTime) && startTime > new Date();
-    const validEndTime = isDate(endTime) && endTime > startTime;
+    const validStartTime = startTime > new Date();
+    const validEndTime = endTime > startTime;
     return (!validStartTime && !validEndTime);
   };
 
