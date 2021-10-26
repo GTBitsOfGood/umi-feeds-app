@@ -8,7 +8,7 @@ const initialState = {
   name: 'Test Name',
   email: 'randmemail',
   businessName: 'business',
-  phoneNumber: 0,
+  phoneNumber: 1234567890,
   pushTokens: [],
   isAdmin: false,
   auth0AccessToken: 'password',

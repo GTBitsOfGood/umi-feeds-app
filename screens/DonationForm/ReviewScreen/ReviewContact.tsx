@@ -1,14 +1,18 @@
-import React from 'react';
-import {Pressable, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useFonts } from 'expo-font';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
 import ChevronButton from '../../../components/ChevronButton';
 import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import Pencil from '../../../assets/images/pencil.svg';
+import { GeneralModal } from '../../../components';
+import { RootState } from '../../../redux/rootReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
     StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
@@ -17,6 +21,8 @@ type DonationScreenProp = CompositeNavigationProp<
 
 export default function ReviewContactScreen(props: ThemeProps) {
   const navigation = useNavigation<DonationScreenProp>();
+  const cartState = useSelector((state: RootState) => state.donationCart);
+  const authState = useSelector((state: RootState) => state.auth);
 
   const [loaded] = useFonts({
     Roboto: require('../../../assets/fonts/Roboto-Regular.ttf'),
@@ -24,12 +30,34 @@ export default function ReviewContactScreen(props: ThemeProps) {
 
   const color = useThemeColor({ light: props.lightColor, dark: props.darkColor }, 'text');
 
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const toggleModal = () => setModalVisible(!modalVisible);
+  const modalSubmit = (button1: boolean, button2: boolean) => {
+    if (button1) {
+      console.log('Button 1 Pressed');
+    } else {
+      console.log('Button 2 Pressed');
+    }
+  };
+
   if (!loaded) {
     return null;
   }
 
+  const startTimeString = new Date(cartState.pickupStartTime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  const endTimeString = new Date(cartState.pickupEndTime).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+
   return (
     <View style={styles.container}>
+      <GeneralModal
+        title="Thank you for your donation!"
+        subtitle="A confirmation receipt has been sent to your email."
+        visible={modalVisible}
+        closeModal={toggleModal}
+        numButtons={1}
+        buttonOneTitle="Yes"
+        modalSubmit={modalSubmit}
+      />
       <View style={styles.contentContainer}>
         <View style={styles.backContainer}>
           <ChevronButton onPress={() => navigation.goBack()} text="Donation cart" />
@@ -45,9 +73,9 @@ export default function ReviewContactScreen(props: ThemeProps) {
             color={color}
             headerText="Contact information"
             onEdit={() => { alert('something funny'); }}
-            line1="Kimberly Do"
-            line2="(404) 123-4567"
-            line3="gt@gatech.edu"
+            line1={authState.name}
+            line2={authState.phoneNumber.toString().replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}
+            line3={authState.email}
           />
           <View
             style={{
@@ -60,9 +88,9 @@ export default function ReviewContactScreen(props: ThemeProps) {
             color={color}
             headerText="Pickup location"
             onEdit={() => { alert('something hilarious'); }}
-            line1="Georgia Tech Restaurant"
-            line2="2222 Georgia Tech St"
-            line3="Atlanta, GA 30332"
+            line1={authState.businessName}
+            line2={`${cartState.pickupAddress.buildingNumber} ${cartState.pickupAddress.streetAddress}`}
+            line3={`${cartState.pickupAddress.city}, ${cartState.pickupAddress.state} ${cartState.pickupAddress.zipCode}`}
           />
           <View
             style={{
@@ -75,15 +103,40 @@ export default function ReviewContactScreen(props: ThemeProps) {
             color={color}
             headerText="Pickup time"
             onEdit={() => { alert('my sleep schedule'); }}
-            line1="Date 3/21/2021"
-            line2="From 3:30 PM to 10:00 PM"
+            line1={`Date ${new Date(cartState.pickupStartTime).toLocaleDateString()}`}
+            line2={`From ${startTimeString} to ${endTimeString}`}
           />
         </View>
         <View style={styles.buttonContainer}>
-          <Pressable style={styles.submitButton}>
+          <Pressable
+            style={styles.submitButton}
+            onPress={() => {
+              const formdata = new FormData();
+              formdata.append('data', JSON.stringify({
+                ongoing: true,
+                status: 'pending pickup',
+                imageLink: cartState.imageLink,
+                dishes: cartState.donationDishes,
+                pickupAddress: cartState.pickupAddress,
+                pickupInstructions: cartState.pickupInstructions,
+                pickupStartTime: new Date(cartState.pickupStartTime),
+                pickupEndTime: new Date(cartState.pickupEndTime),
+                volunteerLockTime: new Date(cartState.volunteerLockTime), // time when volunteer agrees to pick it up
+                lockedByVolunteer: cartState.lockedByVolunteer, // whether the donation has been locked by a volunteer
+                confirmPickUpTime: new Date(cartState.confirmPickUpTime), // time when donation has been picked up by volunteer
+                confirmDropOffTime: new Date(cartState.confirmDropOffTime), // time when donation has been dropped off by volunteer
+              }));
+              formdata.append('description', 'Check app for details');
+              axios.post(`/api/donationform?id=${authState._id}`, formdata).then(() => {
+                toggleModal();
+              }).catch((err) => {
+                console.error(err);
+              });
+            }}
+          >
             <Text
               style={{ fontSize: 17, color: 'white', alignSelf: 'center', fontWeight: 'bold', margin: 20 }}
-              onPress={() => { alert('submit'); }}> Confirm donation
+            > Confirm donation
             </Text>
           </Pressable>
         </View>

@@ -3,26 +3,26 @@ import DonationCartState from './types';
 import { DonationDishes } from '../../../types';
 
 const initialState = {
-  ongoing: false,
-  status: '',
-  imageLink: '',
-  dishes: [],
+  ongoing: true,
+  status: 'pending pickup',
+  imageLink: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836',
+  donationDishes: [], // just dishes was having a conflict with the user dishes values!!!
   pickupAddress: {
-    streetAddress: '',
-    buildingNumber: 0,
-    city: '',
-    state: '',
-    zipCode: 0,
-    longitude: 0,
-    latitude: 0,
+    streetAddress: 'Georgia Tech Street',
+    buildingNumber: 123,
+    city: 'Atlanta',
+    state: 'GA',
+    zipCode: 30332,
+    longitude: 33.7795374,
+    latitude: -84.4068937,
   },
-  pickupInstructions: '',
-  pickupStartTime: 0,
-  pickupEndTime: 0,
-  volunteerLockTime: 0, // time when volunteer agrees to pick it up
+  pickupInstructions: 'no additional instructions',
+  pickupStartTime: 1641045600000,
+  pickupEndTime: 1641052800000,
+  volunteerLockTime: 1641049200000, // time when volunteer agrees to pick it up
   lockedByVolunteer: false, // whether the donation has been locked by a volunteer
-  confirmPickUpTime: 0, // time when donation has been picked up by volunteer
-  confirmDropOffTime: 0,
+  confirmPickUpTime: 1641049200000, // time when donation has been picked up by volunteer
+  confirmDropOffTime: 1641051000000,
 } as DonationCartState;
 
 const donationCartReducer = createSlice({
@@ -31,14 +31,14 @@ const donationCartReducer = createSlice({
   reducers: {
     addToCart(state, action: PayloadAction<DonationDishes>) {
       if (action.payload) {
-        state.dishes.push(action.payload);
+        state.donationDishes.push(action.payload);
       }
     },
     resetCart(state) {
-      state.dishes = [];
+      state.donationDishes = [];
     },
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
-      state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
+      state.donationDishes = state.donationDishes.filter((dish) => (dish.dishID !== action.payload));
     }
   },
 });
