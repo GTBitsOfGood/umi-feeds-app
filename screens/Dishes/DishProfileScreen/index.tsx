@@ -20,11 +20,11 @@ const MockDish = {
 } as Dish;
 
 export default function DishProfileScreen() {
-  const [favorite, setFavorite] = useState(MockDish.favorite);
+  // const [favorite, setFavorite] = useState(MockDish.favorite);
 
-  const addFavorite = () => {
-    setFavorite(!favorite);
-  };
+  // const addFavorite = () => {
+  //   setFavorite(!favorite);
+  // };
 
   const allergens = [];
   for (let i = 0; i < MockDish.allergens.length; i += 1) {
@@ -35,6 +35,12 @@ export default function DishProfileScreen() {
     }
   }
 
+  const comm = [];
+  if (MockDish.comments !== '') {
+    comm.push(<Text style={styles.detailLabel} key={MockDish._id}>{MockDish.comments === '' ? '' : 'Additional comment(s)'}</Text>);
+    comm.push(<Text key={1} style={styles.detailValue}>{MockDish.comments}</Text>);
+  }
+
   const [quantity, setQuantity] = useState(0);
   const onPlus = () => setQuantity((prevQuantity) => prevQuantity + 1);
   const onMinus = () => setQuantity((prevQuantity) => (prevQuantity === 0 ? prevQuantity : prevQuantity - 1));
@@ -42,7 +48,7 @@ export default function DishProfileScreen() {
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
       <View style={styles.container}>
-        <View style={{ paddingLeft: '5%', paddingTop: '5%' }}>
+        <View style={{ paddingLeft: '5%', paddingTop: '8%' }}>
           <ChevronButton
             text="Back"
             onPress={onPlus}
@@ -60,20 +66,33 @@ export default function DishProfileScreen() {
               justifyContent: 'flex-end',
             }}
           >
-            <Icon.Button
-              name={favorite ? 'star' : 'star-o'}
+            <Icon
+              name={MockDish.favorite ? 'star' : 'star-o'}
               size={30}
               color="#F37B36"
-              backgroundColor="transparent"
-              onPress={addFavorite}
+              // onPress={addFavorite}
               style={{
-                justifyContent: 'flex-end',
+                alignSelf: 'flex-end',
+                backgroundColor: 'white',
+                borderRadius: 15,
+                margin: 10,
+                padding: 5
               }}
             />
           </ImageBackground>
         </View>
         <View style={styles.detailContainer}>
-          <Text style={styles.title}>{MockDish.dishName}</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+            <Text style={styles.title}>{MockDish.dishName}</Text>
+            <View style={{ flexDirection: 'column' }}>
+              <Icon
+                name="pencil"
+                color="#5D5D5D"
+                size={25.5}
+              />
+              <Text style={{ color: '#5D5D5D' }}>Edit</Text>
+            </View>
+          </View>
           <View style={{ flexDirection: 'row' }}>
             <View>
               <Text style={styles.detailLabel}>Price per Serving</Text>
@@ -84,32 +103,37 @@ export default function DishProfileScreen() {
               <Text style={styles.detailValue}>{MockDish.pounds} lbs</Text>
             </View>
           </View>
-          {/* <View style={{ flex: }}>
-          <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
-          <Text style={styles.detailValue}>{allergens}</Text>
-        </View> */}
           <View>
-            <Text style={styles.detailLabel} key={MockDish._id}>{MockDish.comments === '' ? '' : 'Additional comment(s)'}</Text>
-            <Text style={styles.detailValue}>{MockDish.comments}</Text>
+            <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
+            <Text style={styles.detailValue}>{allergens}</Text>
+          </View>
+          <View>
+            {comm}
           </View>
         </View>
         <View style={styles.quantityContainer}>
           <Text style={styles.quantityLabel}>Quantity</Text>
           <View style={styles.quantityController}>
-            <Icon.Button
+            <Icon
               name="minus"
               size={20}
               color="#5D5D5D"
-              backgroundColor="transparent"
               onPress={onMinus}
+              style={{
+                backgroundColor: 'transparent',
+                paddingHorizontal: moderateScale(15)
+              }}
             />
             <Text style={styles.quantityCount}>{quantity}</Text>
-            <Icon.Button
+            <Icon
               name="plus"
               size={20}
               color="#5D5D5D"
-              backgroundColor="transparent"
               onPress={onPlus}
+              style={{
+                backgroundColor: 'transparent',
+                paddingHorizontal: moderateScale(15)
+              }}
             />
           </View>
         </View>
@@ -125,16 +149,17 @@ export default function DishProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: moderateScale(24),
-    paddingVertical: moderateScale(25)
+    paddingVertical: moderateScale(25),
+    height: '110%'
   },
   imgContainer: {
     height: moderateScale(200),
+    marginTop: moderateScale(20)
   },
   detailContainer: {
     paddingTop: moderateScale(12),
     flexDirection: 'column',
     flexWrap: 'wrap',
-    width: '75%',
   },
   title: {
     fontSize: moderateScale(25),
@@ -155,32 +180,38 @@ const styles = StyleSheet.create({
   },
   quantityContainer: {
     marginTop: moderateScale(5),
-    marginBottom: moderateScale(20)
+    marginBottom: moderateScale(20),
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%'
   },
   quantityLabel: {
     fontWeight: '700',
     color: '#B8B8B8',
     fontSize: 12,
-    marginRight: 25,
+    minWidth: '20%'
   },
   quantityController: {
     display: 'flex',
     flexDirection: 'row',
     borderColor: '#B8B8B8',
     borderWidth: 1,
-    paddingVertical: 10,
+    paddingVertical: moderateScale(15),
     borderRadius: 4,
+    minWidth: '80%',
+    justifyContent: 'space-evenly'
   },
   quantityCount: {
-    paddingHorizontal: moderateScale(86),
-    paddingTop: 8
+    alignItems: 'center',
+    paddingHorizontal: 25
   },
   addToListButton: {
     backgroundColor: '#F37B36',
     alignItems: 'center',
-    paddingVertical: moderateScale(12),
+    paddingVertical: moderateScale(16),
     borderRadius: 4,
     width: '100%',
+    marginTop: moderateScale(30)
   },
   addToListText: {
     fontWeight: '700',
