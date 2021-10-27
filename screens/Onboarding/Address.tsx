@@ -45,7 +45,7 @@ export default function AddressOnboardingForm() {
       dispatch(reset());
       dispatch(login(user));
     }).catch((err: AxiosError) => {
-      Alert.alert('Authentication error! Please Try Again at Another time');
+      Alert.alert('Authentication error! Please try again at another time');
     });
   };
 
