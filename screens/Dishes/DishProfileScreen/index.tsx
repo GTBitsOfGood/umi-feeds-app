@@ -16,16 +16,10 @@ const MockDish = {
   allergens: ['Walnuts', 'Peanuts', 'Gluten'],
   imageLink: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-202102-airfryerchickenparm-180-ls-1612561654.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*',
   favorite: true,
-  comments: 'Entered additional comments woot',
+  comments: '',
 } as Dish;
 
 export default function DishProfileScreen() {
-  // const [favorite, setFavorite] = useState(MockDish.favorite);
-
-  // const addFavorite = () => {
-  //   setFavorite(!favorite);
-  // };
-
   const allergens = [];
   for (let i = 0; i < MockDish.allergens.length; i += 1) {
     if (i === MockDish.allergens.length - 1) {
@@ -46,101 +40,96 @@ export default function DishProfileScreen() {
   const onMinus = () => setQuantity((prevQuantity) => (prevQuantity === 0 ? prevQuantity : prevQuantity - 1));
 
   return (
-    <ScrollView style={{ backgroundColor: 'white' }}>
-      <View style={styles.container}>
-        <View style={{ paddingLeft: '5%', paddingTop: '8%' }}>
-          <ChevronButton
-            text="Back"
+    <ScrollView
+      contentContainerStyle={{
+        flexGrow: 1,
+      }}
+      style={styles.container}
+    >
+      <View style={{ flex: 2 }} />
+      <View style={{ flex: 2, paddingLeft: '5%', paddingTop: '8%' }}>
+        <ChevronButton
+          text="Back"
+          onPress={onPlus}
+        />
+      </View>
+      <View style={styles.imgContainer}>
+        <ImageBackground
+          source={{ uri: MockDish.imageLink }}
+          imageStyle={{
+            borderRadius: 4,
+            alignSelf: 'center',
+          }}
+          style={{
+            height: '100%',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Icon
+            name={MockDish.favorite ? 'star' : 'star-o'}
+            size={30}
+            color="#F37B36"
+            style={{
+              alignSelf: 'flex-end',
+              backgroundColor: 'white',
+              borderRadius: 15,
+              margin: 10,
+              padding: 5
+            }}
+          />
+        </ImageBackground>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={styles.title}>{MockDish.dishName}</Text>
+        <View style={{ flexDirection: 'column', marginLeft: 15 }}>
+          <Icon
+            name="pencil"
+            color="#5D5D5D"
+            size={25.5}
+          />
+          <Text style={{ color: '#5D5D5D' }}>Edit</Text>
+        </View>
+      </View>
+      <View style={styles.detailContainer}>
+        <View style={{ flexDirection: 'row' }}>
+          <View>
+            <Text style={styles.detailLabel}>Price per Serving</Text>
+            <Text style={styles.detailValue}>${MockDish.cost.toString()}</Text>
+          </View>
+          <View>
+            <Text style={styles.detailLabel}>Weight per Serving</Text>
+            <Text style={styles.detailValue}>{MockDish.pounds} lbs</Text>
+          </View>
+        </View>
+        <View>
+          <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
+          <Text style={styles.detailValue}>{allergens}</Text>
+        </View>
+        <View>{comm}</View>
+      </View>
+      <View style={styles.quantityContainer}>
+        <Text style={styles.quantityLabel}>Quantity</Text>
+        <View style={styles.quantityController}>
+          <Icon.Button
+            name="minus"
+            size={20}
+            color="#5D5D5D"
+            backgroundColor="transparent"
+            onPress={onMinus}
+          />
+          <Text style={styles.quantityCount}>{quantity}</Text>
+          <Icon.Button
+            name="plus"
+            size={20}
+            color="#5D5D5D"
+            backgroundColor="transparent"
             onPress={onPlus}
           />
         </View>
-        <View style={styles.imgContainer}>
-          <ImageBackground
-            source={{ uri: MockDish.imageLink }}
-            imageStyle={{
-              borderRadius: 4,
-              alignSelf: 'center',
-            }}
-            style={{
-              height: '100%',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Icon
-              name={MockDish.favorite ? 'star' : 'star-o'}
-              size={30}
-              color="#F37B36"
-              // onPress={addFavorite}
-              style={{
-                alignSelf: 'flex-end',
-                backgroundColor: 'white',
-                borderRadius: 15,
-                margin: 10,
-                padding: 5
-              }}
-            />
-          </ImageBackground>
-        </View>
-        <View style={styles.detailContainer}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={styles.title}>{MockDish.dishName}</Text>
-            <View style={{ flexDirection: 'column' }}>
-              <Icon
-                name="pencil"
-                color="#5D5D5D"
-                size={25.5}
-              />
-              <Text style={{ color: '#5D5D5D' }}>Edit</Text>
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View>
-              <Text style={styles.detailLabel}>Price per Serving</Text>
-              <Text style={styles.detailValue}>$ {MockDish.cost.toString()}</Text>
-            </View>
-            <View>
-              <Text style={styles.detailLabel}>Weight per Serving</Text>
-              <Text style={styles.detailValue}>{MockDish.pounds} lbs</Text>
-            </View>
-          </View>
-          <View>
-            <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
-            <Text style={styles.detailValue}>{allergens}</Text>
-          </View>
-          <View>
-            {comm}
-          </View>
-        </View>
-        <View style={styles.quantityContainer}>
-          <Text style={styles.quantityLabel}>Quantity</Text>
-          <View style={styles.quantityController}>
-            <Icon
-              name="minus"
-              size={20}
-              color="#5D5D5D"
-              onPress={onMinus}
-              style={{
-                backgroundColor: 'transparent',
-                paddingHorizontal: moderateScale(15)
-              }}
-            />
-            <Text style={styles.quantityCount}>{quantity}</Text>
-            <Icon
-              name="plus"
-              size={20}
-              color="#5D5D5D"
-              onPress={onPlus}
-              style={{
-                backgroundColor: 'transparent',
-                paddingHorizontal: moderateScale(15)
-              }}
-            />
-          </View>
-        </View>
-        <TouchableOpacity style={styles.addToListButton}>
-          <Text style={styles.addToListText}>Add to donation list ({quantity})</Text>
-        </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.addToListButton}>
+        <Text style={styles.addToListText}>Add to donation list ({quantity})</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -153,19 +142,21 @@ const styles = StyleSheet.create({
     height: '110%'
   },
   imgContainer: {
-    height: moderateScale(200),
-    marginTop: moderateScale(20)
+    flex: 2000,
+    marginVertical: moderateScale(5),
+    marginTop: moderateScale(15)
   },
   detailContainer: {
+    flexGrow: 5,
     paddingTop: moderateScale(12),
     flexDirection: 'column',
     flexWrap: 'wrap',
   },
   title: {
-    fontSize: moderateScale(25),
+    flex: 5,
+    fontSize: moderateScale(32),
     fontWeight: '500',
     alignSelf: 'flex-start',
-    marginBottom: moderateScale(16)
   },
   detailLabel: {
     marginBottom: 8,
@@ -179,6 +170,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(15)
   },
   quantityContainer: {
+    flex: 6,
     marginTop: moderateScale(5),
     marginBottom: moderateScale(20),
     flexDirection: 'row',
@@ -199,19 +191,21 @@ const styles = StyleSheet.create({
     paddingVertical: moderateScale(15),
     borderRadius: 4,
     minWidth: '80%',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
   },
   quantityCount: {
     alignItems: 'center',
     paddingHorizontal: 25
   },
   addToListButton: {
+    flex: 4,
     backgroundColor: '#F37B36',
     alignItems: 'center',
     paddingVertical: moderateScale(16),
     borderRadius: 4,
     width: '100%',
-    marginTop: moderateScale(30)
+    marginVertical: moderateScale(20)
   },
   addToListText: {
     fontWeight: '700',
