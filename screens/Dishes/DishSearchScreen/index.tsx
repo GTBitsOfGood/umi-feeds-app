@@ -67,7 +67,7 @@ export default function DishSearch() {
               style={styles.searchInput}
             />
           </View>
-          {filteredDishes.length > 0 ? filteredDishes.map((item) => (
+          {filteredDishes.length > 0 ? filteredDishes.filter((item) => item.dishName).map((item) => (
             <DishQuantityPreview
               text={boldSearchCharacters(item.dishName, searchText)}
               onPress={() => {
@@ -136,11 +136,11 @@ function boldSearchCharacters(dishName: string, searchText: string): JSX.Element
     currentText += spanText;
 
     if (span.type === BoldText) {
-      return <BoldText>{spanTextInDishName}</BoldText>;
+      return <BoldText key={Math.random()}>{spanTextInDishName}</BoldText>;
     } else {
-      return <Text>{spanTextInDishName}</Text>;
+      return <Text key={Math.random()}>{spanTextInDishName}</Text>;
     }
   });
 
-  return <Text>{combinedSpansCapitalized}</Text>;
+  return <Text key={Math.random()}>{combinedSpansCapitalized}</Text>;
 }

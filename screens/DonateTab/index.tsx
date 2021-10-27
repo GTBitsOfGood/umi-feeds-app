@@ -29,29 +29,7 @@ type DonationScreenProp = CompositeNavigationProp<
 export default function DonationScreen() {
   const donationCartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
-  // const allDishes = authState.dishes;
-  // Fake data for demo purposes
-  const allDishes = [
-    {
-      _id: 'hednejn',
-      favorite: true,
-      dishName: 'fofo',
-      cost: 90.90,
-      pounds: 90,
-      allergens: [],
-      imageLink: '',
-      comments: 'Yes'
-    }, {
-      _id: 'heejn',
-      favorite: true,
-      dishName: 'good luck',
-      cost: 90.90,
-      pounds: 90,
-      allergens: [],
-      imageLink: '',
-      comments: 'Yes'
-    }
-  ];
+  const allDishes = authState.dishes;
 
   const navigation = useNavigation<DonationScreenProp>();
 

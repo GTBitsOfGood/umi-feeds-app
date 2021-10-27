@@ -30,7 +30,12 @@ const donationCartReducer = createSlice({
   initialState,
   reducers: {
     addToCart(state, action: PayloadAction<DonationDishes>) {
-      state.dishes.push(action.payload);
+      if (action.payload) {
+        state.dishes.push(action.payload);
+      }
+    },
+    resetCart(state) {
+      state.dishes = [];
     },
     setDonationList(state, action) {
       state.dishes = [].concat(action.payload);
@@ -59,5 +64,6 @@ const donationCartReducer = createSlice({
   },
 });
 
-export const { addToCart, setDonationList, getDonationList, deleteDonationList, updateQty, removeDishFromCart } = donationCartReducer.actions;
+
+export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;

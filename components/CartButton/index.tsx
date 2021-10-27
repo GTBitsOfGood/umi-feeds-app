@@ -44,7 +44,7 @@ export default function CartButton(props: { onPress: () => void, color: string }
           {
             donationCartState.dishes.reduce((prev, curr) => prev + curr.quantity, 0) > 99
               ? <Text style={{ ...styles.cartQuantity, fontSize: 12, fontWeight: '500', marginTop: 6 }}>99+</Text>
-              : <Text style={styles.cartQuantity}>{donationCartState.dishes.reduce((prev, curr) => prev + curr.quantity, 0)}</Text>}
+              : <Text style={styles.cartQuantity}>{donationCartState.dishes.reduce((prev, curr) => prev + (curr.quantity ?? 0), 0)}</Text>}
         </View>
       </TouchableHighlight>
     </View>
