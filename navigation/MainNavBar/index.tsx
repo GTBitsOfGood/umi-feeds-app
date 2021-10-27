@@ -83,13 +83,6 @@ function AdminTabs() {
         }}
       />
       <BottomTab.Screen
-        name="Donations"
-        component={DonationsListNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="Me"
         component={ProfileNavigator}
         options={{

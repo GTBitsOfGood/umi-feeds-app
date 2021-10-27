@@ -65,6 +65,7 @@
     "react-native-gesture-handler": "~1.8.0",
     "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-maps": "0.27.1",
+    "react-native-paper": "^4.9.2",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
     "react-native-svg": "12.1.0",
