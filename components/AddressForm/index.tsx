@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Constants from 'expo-constants';
 import { HeaderBackButton } from '@react-navigation/stack';
-import { TouchableWithoutFeedback, StyleSheet, View, Text, TextInput, Keyboard, ScrollView } from 'react-native';
+import { SectionList, StyleSheet, View, Text, TextInput, Keyboard, ScrollView } from 'react-native';
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
 import { Address } from '../../types';
-import { Header } from '../../components';
-import { moderateScale } from '../../util';
+import Header from '../Header';
+import { moderateScale, HideKeyboardUtility } from '../../util';
 import { PrimaryButton } from '../Button';
 
 type AddressFormProps = {
@@ -33,13 +33,13 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+    <HideKeyboardUtility>
       <ScrollView
         style={{
           padding: moderateScale(20),
           backgroundColor: '#FFFFFF'
         }}
-        keyboardShouldPersistTaps="always"
+        keyboardShouldPersistTaps="handled"
       >
         <View style={{}} />
         <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />
@@ -123,7 +123,7 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
           </PrimaryButton>
         </View>
       </ScrollView>
-    </TouchableWithoutFeedback>
+    </HideKeyboardUtility>
   );
 };
 

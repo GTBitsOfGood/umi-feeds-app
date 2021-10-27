@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: '85%',
     marginHorizontal: '7.5%',
-    marginTop: '5%',
+    marginTop: '10%',
   },
   addressCard: {
     borderWidth: 1,
