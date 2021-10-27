@@ -7,6 +7,7 @@ import DonationListScreen from '../../../screens/DonationList';
 import { NewDishFormScreen, DishProfileScreen, DishSearchScreen } from '../../../screens/Dishes';
 import DonateHomePage from '../../../screens/DonateTab';
 import DishSearch from '../../../screens/Dishes/DishSearchScreen';
+import ReviewContactScreen from '../../../screens/DonationForm/ReviewScreen/ReviewContact';
 
 import {
   DonateTabParamList,
@@ -69,8 +70,8 @@ function DonateTab() {
       />
       <DonationScreenStack.Screen
         name="ReviewContactScreen"
-        component={DonateReviewScreen}
-        options={{ headerTitle: 'Donate' }}
+        component={ReviewContactScreen}
+        options={{ headerTitle: 'Donate', headerShown: false }}
       />
     </DonationScreenStack.Navigator>
   );
