@@ -71,7 +71,6 @@ export default function DonationScreen() {
               quantityAdded={donationCartState.donationDishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
-          <Text>{donationCartState.donationDishes.map((d) => `${d.dishID}: ${d.quantity}\n`)}</Text>
         </View>
       </ScrollView>
     </View>

@@ -7,11 +7,8 @@ import useColorScheme from '../../hooks/useColorScheme';
 
 import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
-import DonationScreenNavigator from '../DonorStack/DonationForm';
-import DonationsListNavigator from '../AdminStack/DonationList';
 import DonateTab from '../DonorStack/Donate';
 import ProfileNavigator from '../SharedStack/UserProfile';
-import { DishProfileScreen } from '../../screens/Dishes';
 
 import {
   BottomTabParamList,

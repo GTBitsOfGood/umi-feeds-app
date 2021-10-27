@@ -1,28 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { State } from 'react-native-gesture-handler';
 import { Address, Dish } from '../../../types';
 import { AuthUser } from './types';
 
 const initialState = {
   _id: '',
-  name: 'Test Name',
-  email: 'randmemail',
-  businessName: 'business',
-  phoneNumber: 1234567890,
+  name: '',
+  email: '',
+  businessName: '',
+  phoneNumber: 0,
   pushTokens: [],
   isAdmin: false,
-  auth0AccessToken: 'password',
+  auth0AccessToken: '',
   roles: [],
   pickupAddresses: [],
-  dishes: [{
-    favorite: true,
-    dishName: 'fofo',
-    cost: 90.90,
-    pounds: 90,
-    allergens: [],
-    imageLink: '',
-    comments: 'Yes'
-  }],
+  dishes: [],
   donations: [],
   authenticated: false,
   jwt: '',

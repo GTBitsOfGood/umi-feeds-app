@@ -8,14 +8,14 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
 import ChevronButton from '../../../components/ChevronButton';
-import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
+import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import Pencil from '../../../assets/images/pencil.svg';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
-    StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
+    StackNavigationProp<DonateTabParamList, 'ReviewContactScreen'>,
     BottomTabNavigationProp<BottomTabParamList, 'Home'>
     >;
 

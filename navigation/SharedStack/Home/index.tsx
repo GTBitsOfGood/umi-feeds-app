@@ -5,7 +5,6 @@ import NewDonorName from '../../../screens/NewDonor/NewDonorName';
 import NewDonorNumber from '../../../screens/NewDonor/NewDonorNumber';
 import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
 import AllDonations from '../../../screens/AllDonations';
-import MyDishes from '../../../screens/MyDishes';
 import DonationView from '../../../screens/DetailDonation';
 import {
   HomeScreenParamList,
@@ -40,11 +39,6 @@ function HomeScreenNavigator() {
         name="DonationView"
         component={DonationView}
         options={{ headerShown: false, headerTitle: 'DonationView' }}
-      />
-      <HomeScreenStack.Screen
-        name="MyDishes"
-        component={MyDishes}
-        options={{ headerShown: false, headerTitle: 'MyDishes' }}
       />
       <HomeScreenStack.Screen
         name="AllDonations"

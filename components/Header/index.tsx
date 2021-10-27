@@ -17,7 +17,7 @@ export default function Header(props: { title: string, showCartButton?: boolean 
       <View style={{ alignSelf: 'center' }}>
         <Text style={styles.title}>{props.title}</Text>
       </View>
-      {(props.showCartButton !== false) && <CartButton onPress={() => navigation.navigate('AddressScreen')} color={orangeColor} />}
+      {(props.showCartButton !== false) && <CartButton onPress={() => navigation.navigate('DonateListScreen')} color={orangeColor} />}
     </View>
   );
 }

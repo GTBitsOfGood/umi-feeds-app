@@ -3,11 +3,19 @@ import DonationCartState from './types';
 import { DonationDishes } from '../../../types';
 
 const initialState = {
-  donationDishes: [], // just dishes was having a conflict with the user dishes values!!!
+  donationDishes: [],
   ongoing: false,
   status: '',
   imageLink: '',
-  pickupAddress: {},
+  pickupAddress: {
+    streetAddress: '',
+    buildingNumber: 0,
+    city: '',
+    state: '',
+    zipCode: 0,
+    longitude: 0,
+    latitude: 0,
+  },
   pickupInstructions: '',
   pickupStartTime: 0,
   pickupEndTime: 0,
@@ -30,7 +38,7 @@ const donationCartReducer = createSlice({
       state.donationDishes = [];
     },
     setDonationList(state, action) {
-      state.dishes = [].concat(action.payload);
+      state.donationDishes = [].concat(action.payload);
     },
     getDonationList(state) {
       return state;
@@ -55,7 +63,6 @@ const donationCartReducer = createSlice({
     }
   },
 });
-
 
 export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;
