@@ -11,6 +11,7 @@ import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
 import DonateTab from '../DonorStack/Donate';
 import ProfileNavigator from '../SharedStack/UserProfile';
+import { DishProfileScreen } from '../../screens/Dishes';
 
 import {
   BottomTabParamList,
@@ -79,13 +80,6 @@ function AdminTabs() {
         component={MapScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Donations"
-        component={DonationsListNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
       <BottomTab.Screen

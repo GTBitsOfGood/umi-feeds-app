@@ -9,4 +9,5 @@ export type DonateTabParamList = {
   SchedulePickupScreen: undefined,
   ReviewCartScreen: undefined,
   ReviewContactScreen: undefined,
+  EditAddressScreen: undefined,
 };
