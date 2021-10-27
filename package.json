@@ -36,6 +36,7 @@
     "@types/luxon": "^1.26.1",
     "@types/react-redux": "^7.1.16",
     "@unimodules/core": "~6.0.0",
+    "@unimodules/react-native-adapter": "^6.3.9",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
     "expo": "~40.0.0",
