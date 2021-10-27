@@ -50,7 +50,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
   return (
     <View style={styles.container}>
       <GeneralModal
-        title="Thank you for your donation!"
+        title="Thank you!"
         subtitle="A confirmation receipt has been sent to your email."
         visible={modalVisible}
         closeModal={toggleModal}
@@ -161,7 +161,7 @@ function InfoBlock(props:InfoBlockProps) {
         <View style={{ flex: 6, justifyContent: 'center' }}>
           <Text style={styles.subheader}> {props.headerText} </Text>
         </View>
-        <View style={{ flex: 2 }} />
+        <View style={{ flex: 1 }} />
         <View style={{ flex: 2, justifyContent: 'center' }} onTouchEnd={props.onEdit}>
           { /*  @ts-ignore | typescript is concerned about the "color" attribute, but this works with
                         @ts-ignore | the svg because I modified it to change to currentColor when drawing the path */ }
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '500',
     fontSize: 21,
-    lineHeight: 25
+    lineHeight: 25,
   },
   text: {
     fontFamily: 'Roboto',
