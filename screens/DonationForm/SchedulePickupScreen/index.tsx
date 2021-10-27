@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native';
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
+import Icon from 'react-native-vector-icons/Entypo';
 import { moderateScale, HideKeyboardUtility } from '../../../util';
 import { setPickUpTimeInformation } from '../../../redux/reducers/donationCartReducer';
 import PlatformDatePicker from '../../../components/DateTimePicker/DatePicker';
@@ -10,8 +11,8 @@ import Header from '../../../components/Header';
 
 function DonateSchedulePickupScreen() {
   const dispatch = useDispatch();
-  const [startTime, setStartTime] = useState<Date>(new Date());
-  const [endTime, setEndTime] = useState<Date>(new Date());
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
   const [pickupInstructions, setPickupInstructions] = useState<string>('');
   const [pickupDate, setPickupDate] = useState(new Date());
 
@@ -33,7 +34,15 @@ function DonateSchedulePickupScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }}>
+      <TouchableHighlight>
+        <View style={{ flexDirection: 'row', marginTop: '5%' }}>
+          <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
+          <Text style={{ fontSize: 16, color: '#F37B36', fontWeight: '400', marginLeft: 4 }}>
+            Your Address
+          </Text>
+        </View>
+      </TouchableHighlight>
       <Header title="Pickup time" showCartButton={false} />
       <Text style={styles.description}>
         Schedule the date and time for your donation pickup.
@@ -56,7 +65,7 @@ function DonateSchedulePickupScreen() {
             <Text style={styles.pickupText}> Earliest time for food pickup </Text>
             <PlatformTimePicker
               datetime={startTime}
-              setDatetime={setStartTime}
+              setDatetime={setEndTime}
             />
           </View>
         </View>
@@ -65,7 +74,7 @@ function DonateSchedulePickupScreen() {
             <Text style={styles.pickupText}> Latest time for food pickup </Text>
             <PlatformTimePicker
               datetime={endTime}
-              setDatetime={setEndTime}
+              setDatetime={setStartTime}
             />
           </View>
         </View>
@@ -74,20 +83,18 @@ function DonateSchedulePickupScreen() {
         Pickup Instructions (optional)
       </Text>
       <View style={styles.commentInput}>
-        <HideKeyboardUtility>
-          <KeyboardAvoidingView>
-            <Input
-              value={pickupInstructions}
-              placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
-              onChangeText={(instructions: string) => setPickupInstructions(instructions)}
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 15, width: '100%', height: '40%', textAlignVertical: 'top' }}
-              multiline
-            />
-          </KeyboardAvoidingView>
-        </HideKeyboardUtility>
+        <KeyboardAvoidingView>
+          <Input
+            value={pickupInstructions}
+            placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
+            onChangeText={(instructions: string) => setPickupInstructions(instructions)}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            style={{ fontSize: 15, width: '100%', textAlignVertical: 'top' }}
+            multiline
+          />
+        </KeyboardAvoidingView>
       </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20), width: '100%', height: '40%' }}>
+      <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20), width: '100%', height: '40%' }}>
         <Pressable
           disabled={isFormValid()}
           style={isFormValid() ? styles.unfilledButton : styles.filledButton}
@@ -96,19 +103,17 @@ function DonateSchedulePickupScreen() {
           <Text style={styles.reviewText}>Review</Text>
         </Pressable>
       </View>
-
-    </View>
-
+    </ScrollView>
   );
 }
 
 // React Native Styles
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    margin: '5%'
+    margin: '5%',
   },
   title: {
     fontSize: 32,
@@ -117,13 +122,14 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 15,
     color: '#828282',
-    paddingBottom: moderateScale(10)
+    paddingBottom: moderateScale(10),
+    flex: 1,
   },
   subsection: {
+    flex: 1,
     fontSize: 17,
     fontWeight: '700',
     color: '#202020',
-    paddingBottom: moderateScale(5)
   },
   boxInput: {
     borderWidth: 2,
@@ -133,11 +139,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   commentInput: {
+    flex: 10,
     borderWidth: 2,
     borderColor: 'lightgray',
     borderRadius: 6,
     fontFamily: 'Roboto',
-    height: '40%',
+    height: '30%',
     width: '100%',
   },
   dateInput: {
@@ -148,13 +155,13 @@ const styles = StyleSheet.create({
   unfilledButton: {
     backgroundColor: '#B8B8B8',
     width: '100%',
-    height: '20%',
+    height: '100%',
     borderRadius: 4
   },
   filledButton: {
     backgroundColor: '#F37B36',
     width: '100%',
-    height: '20%',
+    height: '100%',
     borderRadius: 4,
   },
   reviewText: {
@@ -169,18 +176,15 @@ const styles = StyleSheet.create({
     paddingTop: moderateScale(13)
   },
   pickupWindowContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    flex: 3,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignContent: 'flex-start',
-    alignItems: 'flex-start',
     paddingBottom: moderateScale(10)
   },
   timeItem: {
     marginLeft: 15,
     marginRight: 20,
-    width: '40%'
+    width: '40%',
+    flex: 2
   },
   timeWithText: {
     flexDirection: 'column'
