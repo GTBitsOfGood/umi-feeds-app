@@ -6,7 +6,7 @@ const initialState = {
   ongoing: false,
   status: '',
   imageLink: '',
-  dishes: [],
+  dishes: [{ dishID: 'asd', quantity: 2, _id: `${Math.random()}` }],
   pickupAddress: {
     streetAddress: '',
     buildingNumber: 0,
@@ -37,11 +37,33 @@ const donationCartReducer = createSlice({
     resetCart(state) {
       state.dishes = [];
     },
+    setDonationList(state, action) {
+      state.dishes = [].concat(action.payload);
+    },
+    getDonationList(state) {
+      return state;
+    },
+    deleteDonationList(state: any, action) {
+      const list = state.dishes.filter((f: any) => f._id !== action.payload._id);
+      state.dishes = list;
+    },
+    updateQty(state: any, action) {
+      const item = state.dishes.filter((f: any) => f._id === action.payload.item._id)[0];
+      const list = state.dishes;
+      for (let index = 0; index < list.length; index += 1) {
+        if (list[index]._id === item._id) {
+          list[index].quantity = action.payload.quantity;
+        }
+      }
+      state.dishes = list;
+      console.log(item);
+    },
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
       state.dishes = state.dishes.filter((dish) => (dish.dishID !== action.payload));
     }
   },
 });
 
-export const { addToCart, removeDishFromCart, resetCart } = donationCartReducer.actions;
+
+export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart } = donationCartReducer.actions;
 export default donationCartReducer.reducer;
