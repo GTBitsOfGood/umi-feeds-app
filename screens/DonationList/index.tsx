@@ -1,31 +1,41 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Modal,
-  Pressable,
-  TextInput,
-  KeyboardAvoidingView,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Button, Menu, Divider, Provider } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Menu, Provider } from 'react-native-paper';
+
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
+import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+
 import {
   setDonationList,
-  getDonationList,
   deleteDonationList,
   updateQty,
 } from '../../redux/reducers/donationCartReducer';
 import { ChevronButton, Header } from '../../components';
 
-import { HideKeyboardUtility } from '../../util';
+import { moderateScale } from '../../util';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
 
+type DonationScreenProp = CompositeNavigationProp<
+  StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
+>;
+
 const DonationListScreen = () => {
+  const navigation = useNavigation<DonationScreenProp>();
+
   const [donationDishList, setdonationDishList] = useState([
     {
       _id: ` ${Math.random()}`,
@@ -48,24 +58,14 @@ const DonationListScreen = () => {
   useEffect(() => {
     dispatch(setDonationList(donationDishList));
   }, []);
-  // const [state, dispatchAction] = useReducer(getDonationList);
+
   return (
     <Provider>
       <View style={styles.container}>
-        <View style={{ marginTop: 50, marginLeft: 15 }}>
-          <ChevronButton text="Back" onPress={() => { }} />
+        <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
+          <ChevronButton text="Back" onPress={() => navigation.goBack()} />
         </View>
         <Header title="Donation List" />
-        {/* <View style={styles.header}>
-          <View>
-            <Text style={styles.title}>Donation List</Text>
-          </View>
-          <View style={styles.listNumber}>
-            <AntDesign name="shoppingcart" size={50} color="orange" />
-            <Text style={{ position: 'absolute', top: 11, right: 55 }}>{state.donationCart.dishes.length}</Text>
-            <Text style={styles.title2}>List</Text>
-          </View>
-        </View> */}
         {/* Needed to add the relative part because the header and the line below were too far apart */}
         <View style={{ position: 'relative', top: -25 }}>
           <Text style={styles.title3}>{'Here is the list of what you\'re donating'}</Text>
@@ -97,7 +97,7 @@ const DonationListScreen = () => {
             backgroundColor: 'white',
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#F37B36' }}>
+          <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#F37B36' }}>
             + Add Dishes to donate
           </Text>
         </View>
@@ -113,7 +113,7 @@ const DonationListScreen = () => {
             backgroundColor: '#F37B36',
           }}
         >
-          <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>
+          <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
             Schedule Donation Pickup
           </Text>
         </View>
@@ -132,7 +132,6 @@ function Row({ item, i }: any) {
   const closeMenu = () => setVisible(false);
   const dispatch = useDispatch();
   const removeDish = () => {
-    console.log('remove dish', item);
     dispatch(deleteDonationList(item));
     setVisible(false);
   };
@@ -211,151 +210,9 @@ function Row({ item, i }: any) {
           changeQuantity(pl.quantity);
         }}
       />
-      {/* <Modal
-        animationType="fade"
-        transparent
-        visible={showQuantity}
-        onRequestClose={() => {}}
-      >
-        <View
-          style={[
-            styless.centeredView,
-            visible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : {},
-          ]}
-        >
-          <View style={{ flex: 2 }} />
-          <View style={styless.modalPlacement}>
-            <HideKeyboardUtility>
-              <KeyboardAvoidingView
-                behavior="padding"
-                style={styless.modalView}
-              >
-                <Text style={styless.modalText}>Change Quantity</Text>
-                <Text style={styless.modalSubtitle}>
-                  How many servings of
-                  <Text style={{ fontWeight: 'bold' }}> {item.dishID} </Text>
-                  do you want to donate?
-                </Text>
-                <View>
-                  <TextInput
-                    value={`${quantity}`}
-                    onChangeText={(evnt) => setQuantity(evnt)}
-                    style={styless.input}
-                    placeholder="Quantity"
-                    enablesReturnKeyAutomatically
-                    keyboardType="numeric"
-                  />
-                  <Pressable
-                    style={[styless.button, styless.saveButton]}
-                    onPress={() => {
-                      changeQuantity();
-                    }}
-                  >
-                    <Text style={styless.textStyle}>Save</Text>
-                  </Pressable>
-                  <Pressable
-                    style={[styless.button, styless.cancelButton]}
-                    onPress={() => {
-                      setshowQuantity(false);
-                    }}
-                  >
-                    <Text style={styless.cancelTextStyle}>Cancel</Text>
-                  </Pressable>
-                </View>
-              </KeyboardAvoidingView>
-            </HideKeyboardUtility>
-          </View>
-          <View style={{ flex: 4 }} />
-        </View>
-      </Modal> */}
     </View>
   );
 }
-
-const styless = StyleSheet.create({
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalPlacement: {
-    flex: 8,
-  },
-  modalView: {
-    display: 'flex',
-    flexDirection: 'column',
-    width: '80%',
-    height: '90%',
-    textAlign: 'left',
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    elevation: 10,
-  },
-  button: {
-    height: '20%',
-    width: '100%',
-    borderRadius: 4,
-    padding: 10,
-    elevation: 2,
-    marginBottom: 10,
-    alignItems: 'center',
-  },
-  saveButton: {
-    backgroundColor: '#F37B36',
-  },
-  cancelButton: {
-    borderRadius: 10,
-    borderWidth: 3,
-    borderColor: '#F37B36',
-    backgroundColor: '#FFFFFF',
-  },
-  textStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    alignItems: 'center',
-    textAlign: 'center',
-    fontSize: 17,
-  },
-  cancelTextStyle: {
-    color: '#F37B36',
-    fontWeight: 'bold',
-    alignItems: 'center',
-    textAlign: 'center',
-    fontSize: 17,
-  },
-  modalText: {
-    color: '#202020',
-    fontSize: 26,
-    lineHeight: 30,
-    fontWeight: 'bold',
-  },
-  modalSubtitle: {
-    marginTop: 5,
-    color: '#202020',
-    fontSize: 15,
-    lineHeight: 20,
-  },
-  input: {
-    height: '20%',
-    width: '100%',
-    marginTop: 20,
-    marginBottom: 20,
-    borderWidth: 0.5,
-    color: 'black',
-    borderColor: 'black',
-    borderRadius: 5,
-    padding: 10,
-  },
-});
 
 const styles = StyleSheet.create({
   container: {
