@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import { StyleSheet, ImageBackground, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Text, View } from '../../../style/Themed';
 import { Dish } from './types';
 import { ChevronButton } from '../../../components';
+import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
 import { moderateScale } from '../../../util/index';
+
+type DonationScreenProp = CompositeNavigationProp<
+  StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
+>;
 
 const MockDish = {
   _id: 'flkjawfjf',
@@ -20,6 +30,8 @@ const MockDish = {
 } as Dish;
 
 export default function DishProfileScreen() {
+  const navigation = useNavigation<DonationScreenProp>();
+
   const allergens = [];
   for (let i = 0; i < MockDish.allergens.length; i += 1) {
     if (i === MockDish.allergens.length - 1) {
@@ -47,10 +59,10 @@ export default function DishProfileScreen() {
       style={styles.container}
     >
       <View style={{ flex: 2 }} />
-      <View style={{ flex: 2, paddingLeft: '5%', paddingTop: '8%' }}>
+      <View style={{ flex: 2, paddingLeft: '5%', paddingTop: '5%' }}>
         <ChevronButton
           text="Back"
-          onPress={onPlus}
+          onPress={() => navigation.goBack()}
         />
       </View>
       <View style={styles.imgContainer}>
@@ -94,7 +106,7 @@ export default function DishProfileScreen() {
         <View style={{ flexDirection: 'row' }}>
           <View>
             <Text style={styles.detailLabel}>Price per Serving</Text>
-            <Text style={styles.detailValue}>${MockDish.cost.toString()}</Text>
+            <Text style={styles.detailValue}>$ {MockDish.cost.toString()}</Text>
           </View>
           <View>
             <Text style={styles.detailLabel}>Weight per Serving</Text>
@@ -137,6 +149,7 @@ export default function DishProfileScreen() {
 // React Native Styles
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: 'white',
     paddingHorizontal: moderateScale(24),
     paddingVertical: moderateScale(25),
     height: '110%'
@@ -172,7 +185,7 @@ const styles = StyleSheet.create({
   quantityContainer: {
     flex: 6,
     marginTop: moderateScale(5),
-    marginBottom: moderateScale(20),
+    marginBottom: moderateScale(5),
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%'
@@ -188,7 +201,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderColor: '#B8B8B8',
     borderWidth: 1,
-    paddingVertical: moderateScale(15),
+    paddingVertical: moderateScale(10),
     borderRadius: 4,
     minWidth: '80%',
     justifyContent: 'space-evenly',
@@ -205,7 +218,7 @@ const styles = StyleSheet.create({
     paddingVertical: moderateScale(16),
     borderRadius: 4,
     width: '100%',
-    marginVertical: moderateScale(20)
+    marginVertical: moderateScale(15)
   },
   addToListText: {
     fontWeight: '700',

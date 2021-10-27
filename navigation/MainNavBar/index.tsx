@@ -56,14 +56,6 @@ function DonorTabs() {
           tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
         }}
       />
-      <BottomTab.Screen
-        name="DishProfile"
-        component={DishProfileScreen}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="fast-food" color={color} />,
-          tabBarVisible: false,
-        }}
-      />
     </BottomTab.Navigator>
   );
 }

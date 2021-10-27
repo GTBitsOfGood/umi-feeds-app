@@ -32,7 +32,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="DishProfile"
         component={DishProfileScreen}
-        options={{ headerTitle: 'New Dish' }}
+        options={{ headerTitle: 'New Dish', headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="DishSearch"
