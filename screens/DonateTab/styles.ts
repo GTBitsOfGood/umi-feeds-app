@@ -5,7 +5,6 @@ export const orangeColor = '#F37B36';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: '10%',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     width: '85%',
     marginHorizontal: '7.5%',
-    marginTop: '5%',
+    paddingTop: '15%',
   },
   headerContainer: {
     marginBottom: 20,

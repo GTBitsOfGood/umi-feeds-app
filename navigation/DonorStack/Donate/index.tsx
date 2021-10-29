@@ -1,9 +1,10 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { DonateReviewScreen, DonateAddressScreen, DonateSchedulePickupScreen, DonateListscreen } from '../../../screens/DonationForm';
+import { DonateAddressScreen, DonateReviewDonationCart, DonateListScreen, EditAddressScreen } from '../../../screens/DonationForm';
 import { NewDishFormScreen, DishProfileScreen, DishSearchScreen } from '../../../screens/Dishes';
 import DonateHomePage from '../../../screens/DonateTab';
 import DishSearch from '../../../screens/Dishes/DishSearchScreen';
+import ReviewContactScreen from '../../../screens/DonationForm/ReviewScreen/ReviewContact';
 
 import {
   DonateTabParamList,
@@ -32,7 +33,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="DishProfile"
         component={DishProfileScreen}
-        options={{ headerTitle: 'New Dish' }}
+        options={{ headerTitle: 'New Dish', headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="DishSearch"
@@ -41,28 +42,33 @@ function DonateTab() {
       />
       <DonationScreenStack.Screen
         name="DonateListScreen"
-        component={DonateListscreen}
-        options={{ headerTitle: 'Donate' }}
+        component={DonateListScreen}
+        options={{ headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="AddressScreen"
         component={DonateAddressScreen}
-        options={{ headerTitle: 'Donate' }}
+        options={{ headerTitle: 'Donate', headerShown: false }}
+      />
+      <DonationScreenStack.Screen
+        name="EditAddressScreen"
+        component={EditAddressScreen}
+        options={{ headerTitle: 'Donate', headerShown: false }}
       />
       <DonationScreenStack.Screen
         name="SchedulePickupScreen"
-        component={DonateSchedulePickupScreen}
+        component={DonateReviewDonationCart}
         options={{ headerTitle: 'Donate' }}
       />
       <DonationScreenStack.Screen
         name="ReviewCartScreen"
-        component={DonateReviewScreen}
+        component={DonateReviewDonationCart}
         options={{ headerTitle: 'Donate' }}
       />
       <DonationScreenStack.Screen
         name="ReviewContactScreen"
-        component={DonateReviewScreen}
-        options={{ headerTitle: 'Donate' }}
+        component={ReviewContactScreen}
+        options={{ headerTitle: 'Donate', headerShown: false }}
       />
     </DonationScreenStack.Navigator>
   );
