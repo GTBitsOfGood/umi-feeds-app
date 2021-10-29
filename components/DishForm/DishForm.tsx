@@ -4,6 +4,7 @@ import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios';
 import { HideKeyboardUtility } from '../../util/index';
 import { Text, View } from '../../style/Themed';
 import { Dish, DonationDishes } from '../../types';
@@ -50,7 +51,7 @@ function DishForm(props: { dish?: Dish }) {
         dispatch(addToCart(quantity));
       }
       console.log('Submitting dish form');
-      // TO DO: set up POST request and have reducer actions within
+      axios.post('/api/dishes', DishObj);
     }
   };
 
