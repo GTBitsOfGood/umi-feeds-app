@@ -14,7 +14,7 @@ interface DonationCartState {
   ongoing: boolean;
   status: string;
   imageLink: string;
-  dishes: DonationDishes[];
+  donationDishes: DonationDishes[]; // just dishes was having a conflict with the user dishes values!!!
   pickupAddress: Address;
   pickupInstructions: string;
   pickupStartTime: number;

@@ -9,13 +9,12 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RootState } from '../../redux/rootReducer';
 import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
 
-import { DonationScreenParamList } from '../../navigation/DonorStack/DonationForm/types';
 import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 import styles from './styles';
 import { Text, View } from '../../style/Themed';
-
+import { PrimaryButton, SecondaryButton } from '../../components/Button';
 import { Dish, DonationDishes } from '../../types';
 
 // import components
@@ -51,33 +50,15 @@ export default function DonationScreen() {
       <ScrollView style={styles.scrollView}>
         <View style={styles.contentContainer}>
           <Header title="Donate" />
-          <TouchableHighlight
-            onPress={() => navigation.navigate('NewDishForm')}
-            underlayColor="transparent"
-          >
-            <View style={styles.filledButton}>
-              <Text style={styles.filledButtonText}>
-                Create new dish
-              </Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={() => navigation.navigate('DonateSearchDish')}
-            underlayColor="transparent"
-          >
-            <View style={styles.outlinedButton}>
-              <Text style={styles.outlinedButtonText}>
-                Search for dishes
-              </Text>
-            </View>
-          </TouchableHighlight>
+          <PrimaryButton onPress={() => navigation.navigate('NewDishForm')}>Create new dish</PrimaryButton>
+          <SecondaryButton onPress={() => navigation.navigate('DonateSearchDish')}>Search for dishes</SecondaryButton>
           <Text style={styles.subtitle}>Favorite Dishes</Text>
           {allDishes.filter((dish) => dish.favorite).length === 0 ? <Text style={{ textAlign: 'center', color: 'gray' }}>No favorite dishes</Text> : allDishes.filter((dish) => dish.favorite).map((item) => (
             <DishQuantityPreview
               text={<Text>{item.dishName}</Text>}
               key={item._id}
               onPress={() => {
-                const donationDishes = donationCartState.dishes.filter((dish) => dish.dishID === item._id);
+                const donationDishes = donationCartState.donationDishes.filter((dish) => dish.dishID === item._id);
 
                 // if the dish is already in the cart, set the quantity to 0 when pressed
                 if ((donationDishes.reduce((prev, curr) => prev + curr.quantity, 0) > 0)) {
@@ -87,10 +68,9 @@ export default function DonationScreen() {
                 setModalDishObject(item);
                 setModalVisible(true);
               }}
-              quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
+              quantityAdded={donationCartState.donationDishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0) || 0}
             />
           ))}
-          <Text>{donationCartState.dishes.map((d) => `${d.dishID}: ${d.quantity}\n`)}</Text>
         </View>
       </ScrollView>
     </View>

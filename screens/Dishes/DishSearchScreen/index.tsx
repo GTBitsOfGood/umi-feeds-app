@@ -71,7 +71,7 @@ export default function DishSearch() {
             <DishQuantityPreview
               text={boldSearchCharacters(item.dishName, searchText)}
               onPress={() => {
-                const donationDishes = donationCartState.dishes.filter((dish) => dish.dishID === item._id);
+                const donationDishes = donationCartState.donationDishes.filter((dish) => dish.dishID === item._id);
 
                 // if the dish is already in the cart, set the quantity to 0 when pressed
                 if ((donationDishes.reduce((prev, curr) => prev + curr.quantity, 0) > 0)) {
@@ -82,7 +82,7 @@ export default function DishSearch() {
                 setModalVisible(true);
               }}
               key={item._id}
-              quantityAdded={donationCartState.dishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0)}
+              quantityAdded={donationCartState.donationDishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0)}
               customStyle={{ borderWidth: 0, borderBottomWidth: 1, borderColor: '#e6e6e6' }}
             />
           )) : <Text>No results found</Text>}
@@ -136,11 +136,11 @@ function boldSearchCharacters(dishName: string, searchText: string): JSX.Element
     currentText += spanText;
 
     if (span.type === BoldText) {
-      return <BoldText>{spanTextInDishName}</BoldText>;
+      return <BoldText key={Math.random()}>{spanTextInDishName}</BoldText>;
     } else {
-      return <Text>{spanTextInDishName}</Text>;
+      return <Text key={Math.random()}>{spanTextInDishName}</Text>;
     }
   });
 
-  return <Text>{combinedSpansCapitalized}</Text>;
+  return <Text key={Math.random()}>{combinedSpansCapitalized}</Text>;
 }
