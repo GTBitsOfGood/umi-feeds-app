@@ -1,8 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-
-import { DonateReviewScreen, DonateAddressScreen, DonateSchedulePickupScreen, DonateListScreen, EditAddressScreen } from '../../../screens/DonationForm';
-
+import { DonateAddressScreen, DonateReviewDonationCart, DonateListScreen, EditAddressScreen } from '../../../screens/DonationForm';
 import { NewDishFormScreen, DishProfileScreen, DishSearchScreen } from '../../../screens/Dishes';
 import DonateHomePage from '../../../screens/DonateTab';
 import DishSearch from '../../../screens/Dishes/DishSearchScreen';
@@ -59,12 +57,12 @@ function DonateTab() {
       />
       <DonationScreenStack.Screen
         name="SchedulePickupScreen"
-        component={DonateSchedulePickupScreen}
+        component={DonateReviewDonationCart}
         options={{ headerTitle: 'Donate' }}
       />
       <DonationScreenStack.Screen
         name="ReviewCartScreen"
-        component={DonateReviewScreen}
+        component={DonateReviewDonationCart}
         options={{ headerTitle: 'Donate' }}
       />
       <DonationScreenStack.Screen
