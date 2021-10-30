@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { HideKeyboardUtility } from '../../util/index';
@@ -12,12 +12,16 @@ import DonateQuantityModal from '../../components/DonateQuantityModal';
 import { addDish } from '../../redux/reducers/authReducer';
 import { addToCart } from '../../redux/reducers/donationCartReducer';
 import styles from './styles';
+import { logAxiosError } from '../../utils';
+import { RootState } from '../../redux/rootReducer';
+import { store } from '../../redux/store';
 
 function DishForm(props: { dish?: Dish }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
   const [dishName, setDishName] = useState(props.dish?.dishName ?? '');
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
   const [pounds, setPounds] = useState<number | ''>(props.dish?.pounds ?? '');
+  const authState = useSelector((state: RootState) => state.auth);
 
   const [comments, setComments] = useState(props.dish?.comments ?? '');
   const [allergens, setAllergens] = useState<string[]>([]);
@@ -40,18 +44,31 @@ function DishForm(props: { dish?: Dish }) {
   };
 
   const handleSubmit = () => {
+    const formData = new FormData();
     if (isFormValid()) {
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
         setUploadImage(file.uri);
+        formData.append('dishImage', file as any);
       }
       console.log(DishObj);
       dispatch(addDish(DishObj));
       if (quantity) {
         dispatch(addToCart(quantity));
       }
+      formData.append('json', JSON.stringify(DishObj));
       console.log('Submitting dish form');
-      axios.post('/api/dishes', DishObj);
+      axios.post(`/api/dishes/${authState._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${store.getState().auth.jwt}`
+        }
+      })
+        .then((res) => console.log(res.data))
+        .catch((err) => {
+          Alert.alert('Invalid Dish', 'Your dish has an invalid field. Please correct it and try again.');
+          logAxiosError(err);
+        });
     }
   };
 
