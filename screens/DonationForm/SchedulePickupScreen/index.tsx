@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, To
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
-import { moderateScale, HideKeyboardUtility } from '../../../util';
+import { moderateScale } from '../../../util';
 import { setPickUpTimeInformation } from '../../../redux/reducers/donationCartReducer';
 import PlatformDatePicker from '../../../components/DateTimePicker/DatePicker';
 import PlatformTimePicker from '../../../components/DateTimePicker/TimePicker';
@@ -65,7 +65,7 @@ function DonateSchedulePickupScreen() {
             <Text style={styles.pickupText}> Earliest time for food pickup </Text>
             <PlatformTimePicker
               datetime={startTime}
-              setDatetime={setEndTime}
+              setDatetime={setStartTime}
             />
           </View>
         </View>
@@ -74,7 +74,7 @@ function DonateSchedulePickupScreen() {
             <Text style={styles.pickupText}> Latest time for food pickup </Text>
             <PlatformTimePicker
               datetime={endTime}
-              setDatetime={setStartTime}
+              setDatetime={setEndTime}
             />
           </View>
         </View>
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
   unfilledButton: {
     backgroundColor: '#B8B8B8',
     width: '100%',
-    height: '100%',
+    height: '85%',
     borderRadius: 4
   },
   filledButton: {
     backgroundColor: '#F37B36',
     width: '100%',
-    height: '100%',
+    height: '85%',
     borderRadius: 4,
   },
   reviewText: {
@@ -169,7 +169,6 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 17,
-    lineHeight: moderateScale(20),
     alignItems: 'center',
     textAlign: 'center',
     color: 'white',
