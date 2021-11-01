@@ -7,11 +7,9 @@ import useColorScheme from '../../hooks/useColorScheme';
 
 import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
-import DonationScreenNavigator from '../DonorStack/DonationForm';
 import DonationsListNavigator from '../AdminStack/DonationList';
 import DonateTab from '../DonorStack/Donate';
 import ProfileNavigator from '../SharedStack/UserProfile';
-import Pickup from '../../screens/DonationForm/SchedulePickupScreen';
 
 import {
   BottomTabParamList,
@@ -54,13 +52,6 @@ function DonorTabs() {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="testing"
-        component={Pickup}
-        options={{
-          tabBarIcon: ({ color }) => <MaterialCommunityIcons name="hand-heart" size={30} color={color} style={{ marginBottom: -3 }} />,
         }}
       />
     </BottomTab.Navigator>
