@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios';
 import { HideKeyboardUtility } from '../../util/index';
 import { Text, View } from '../../style/Themed';
 import { Dish, DonationDishes } from '../../types';
@@ -11,6 +12,8 @@ import DonateQuantityModal from '../../components/DonateQuantityModal';
 import { addDish } from '../../redux/reducers/authReducer';
 import { addToCart } from '../../redux/reducers/donationCartReducer';
 import styles from './styles';
+import { logAxiosError } from '../../utils';
+import { store } from '../../redux/store';
 
 function DishForm(props: { dish?: Dish }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
@@ -25,8 +28,8 @@ function DishForm(props: { dish?: Dish }) {
   const [donateModalVisible, setDonateModalVisible] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const closeModal = () => setModalVisible(!modalVisible);
-  const modalSubmit = (quantity: DonationDishes) => setQuantity(quantity);
   const [quantity, setQuantity] = useState<DonationDishes>();
+  const [dishResponse, setDishResponse] = useState<Dish>();
 
   const DishObj = {
     dishName,
@@ -39,28 +42,48 @@ function DishForm(props: { dish?: Dish }) {
   };
 
   const handleSubmit = () => {
+    console.log(isFormValid());
     if (isFormValid()) {
+      const formData = new FormData();
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
         setUploadImage(file.uri);
+        formData.append('dishImage', file as any);
       }
       console.log(DishObj);
-      dispatch(addDish(DishObj));
-      if (quantity) {
-        dispatch(addToCart(quantity));
-      }
+      formData.append('json', JSON.stringify(DishObj));
       console.log('Submitting dish form');
-      // TO DO: set up POST request and have reducer actions within
+      axios.post(`/api/dishes?id=${store.getState().auth._id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${store.getState().auth.jwt}`
+        }
+      })
+        .then((res) => {
+          console.log(res.data);
+          setDishResponse(res.data.dishForm);
+          dispatch(addDish(res.data.dishForm)); // backend returns object with name "dishForm" on successful response
+        })
+        .catch((err) => {
+          logAxiosError(err);
+          Alert.alert('Cannot Submit Dish', 'There was an error submitting your dish, please try again.');
+        });
     }
+  };
+
+  // Is called once quantity is specified after choosing to donate dishes, will add specified quantity to cart
+  const donateQuantityModalSubmit = (quantity: DonationDishes) => {
+    setQuantity(quantity);
+    dispatch(addToCart(quantity));
   };
 
   // Check that the required inputs are all filled, allergens only requires one to be checked.
   const isFormValid = () => {
-    const allergy = (allergens.indexOf('dairy') > -1 || allergens.indexOf('gluten') > -1
-    || allergens.indexOf('soy') > -1 || allergens.indexOf('tree nuts') > -1 || allergens.indexOf('fish') > -1
-    || allergens.indexOf('peanuts') > -1 || allergens.indexOf('shellfish') > -1 || allergens.indexOf('egg') > -1
-    || allergens.indexOf('other') > -1 || allergens.indexOf('none') > -1);
-    return dishName === '' || cost === '' || pounds === '' || !allergy;
+    const containsAllergen = (allergens.includes('dairy') || allergens.includes('gluten')
+    || allergens.includes('soy') || allergens.includes('tree nuts') || allergens.includes('fish')
+    || allergens.includes('peanuts') || allergens.includes('shellfish') || allergens.includes('egg')
+    || allergens.includes('other') || allergens.includes('none'));
+    return !(dishName === '' || cost === '' || pounds === '' || !containsAllergen);
   };
 
   const pickImage = async () => {
@@ -125,9 +148,9 @@ function DishForm(props: { dish?: Dish }) {
       </Modal>
       <DonateQuantityModal
         visible={modalVisible}
-        dishObj={DishObj}
+        dishObj={dishResponse}
         closeModal={closeModal}
-        modalSubmit={modalSubmit}
+        modalSubmit={donateQuantityModalSubmit}
       />
       <ScrollView style={styles.scrollView}>
         <View style={styles.dishContainer}>
@@ -354,8 +377,8 @@ function DishForm(props: { dish?: Dish }) {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
             <Pressable
-              disabled={isFormValid()}
-              style={!isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
+              disabled={!isFormValid()}
+              style={isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
               onPress={() => {
                 setDonateModalVisible(!donateModalVisible);
               }}
