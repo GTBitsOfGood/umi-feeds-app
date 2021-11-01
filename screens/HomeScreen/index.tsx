@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    fontFamily: 'Roboto-Regular',
+    backgroundColor: 'white',
   },
   standardText: {
     fontSize: 20,

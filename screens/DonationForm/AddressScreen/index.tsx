@@ -14,6 +14,7 @@ import { Header, ChevronButton } from '../../../components';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { PrimaryButton, SecondaryButton } from '../../../components/Button';
 import { setPickupAddresses } from '../../../redux/reducers/authReducer';
+import { setAddress } from '../../../redux/reducers/donationCartReducer';
 
 const orangeColor = '#F37B36';
 
@@ -28,6 +29,13 @@ const DonateFormAddressScreen = () => {
   // console.log(authState.pickupAddresses);
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(authState.pickupAddresses.length === 1 ? authState.pickupAddresses[0] : null);
+
+  const handleSubmit = () => {
+    if (selectedAddress) {
+      dispatch(setAddress(selectedAddress));
+    }
+    navigation.navigate('SchedulePickupScreen');
+  };
 
   return (
     <View style={styles.container}>
@@ -76,7 +84,7 @@ const DonateFormAddressScreen = () => {
             />
           ))}
           <PrimaryButton
-            onPress={() => alert('test!')}
+            onPress={handleSubmit}
             disabled={!selectedAddress}
           >
             Schedule pickup time
@@ -88,7 +96,7 @@ const DonateFormAddressScreen = () => {
 };
 
 function AddressCard(props: { address: Address, businessName: string, onPress: () => void, onEdit: () => void, onDelete: () => void, selected?: boolean }) {
-  const fullAddress = `${props.address.buildingNumber} ${props.address.streetAddress} \n${props.address.city}, ${props.address.state} ${props.address.zipCode}`;
+  const fullAddress = `${props.address.streetAddress} \n${props.address.city}, ${props.address.state} ${props.address.zipCode}`;
 
   return (
     <TouchableHighlight onPress={props.onPress} underlayColor="transparent">

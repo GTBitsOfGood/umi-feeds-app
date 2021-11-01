@@ -1,10 +1,22 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { DonationDishes } from '../../../types';
+import { RootState } from '../../../redux/rootReducer';
 
-// test donation dishes
+import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+
+type ReviewCartScreenProp = CompositeNavigationProp<
+  StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
+>;
+
 const MockDonationObj1: DonationDishes = {
   _id: '12365778678678',
   dishID: 'Avocado Tofu Salad',
@@ -18,13 +30,18 @@ const MockDonationObj2: DonationDishes = {
 };
 
 function ReviewDonationCart() {
+  const navigation = useNavigation<ReviewCartScreenProp>();
+
+  const cartState = useSelector((state: RootState) => state.donationCart);
+  const authState = useSelector((state: RootState) => state.auth);
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 2, width: '100%', justifyContent: 'space-around', marginBottom: 20 }}>
-        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
+        <Pressable onPress={() => navigation.goBack()} style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
           <AntDesign name="left" size={21} color="rgba(243, 123, 54, 1)" />
-          <Text style={{ fontSize: 15, color: 'rgba(243, 123, 54, 1)' }}>Donation cart</Text>
-        </View>
+          <Text style={{ fontSize: 15, color: 'rgba(243, 123, 54, 1)' }}>Schedule Pickup</Text>
+        </Pressable>
         <View style={styles.topContainer}>
           <Text style={[styles.title, { marginBottom: 8 }]}>Review details</Text>
           <Text style={styles.standardText}>Confirm that your donation list is correct</Text>
@@ -53,24 +70,21 @@ function ReviewDonationCart() {
             </View>
             <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7 }} />
           </View>
-          <View style={styles.listItem}>
-            <View style={[{ marginVertical: 20 }, styles.spacedContainer]}>
-              <Text style={styles.standardText}>{MockDonationObj1.dishID}</Text>
-              <Text style={styles.standardText}>{MockDonationObj1.quantity}</Text>
-            </View>
-            <View style={{ width: '100%', borderTopColor: 'rgba(229, 229, 229, 1)', borderTopWidth: 1 }} />
-          </View>
-          <View style={styles.listItem}>
-            <View style={[{ marginVertical: 20 }, styles.spacedContainer]}>
-              <Text style={styles.standardText}>{MockDonationObj2.dishID}</Text>
-              <Text style={styles.standardText}>{MockDonationObj2.quantity}</Text>
-            </View>
-            <View style={{ width: '100%', borderTopColor: 'rgba(229, 229, 229, 1)', borderTopWidth: 1 }} />
-          </View>
+          {
+            cartState.donationDishes.map((DonationDishObj: DonationDishes) => (
+              <View style={styles.listItem} key={DonationDishObj.dishID}>
+                <View style={[{ marginVertical: 20 }, styles.spacedContainer]}>
+                  <Text style={styles.standardText}>{authState.dishes.filter((Dish) => Dish._id === DonationDishObj.dishID)[0].dishName}</Text>
+                  <Text style={styles.standardText}>{DonationDishObj.quantity}</Text>
+                </View>
+                <View style={{ width: '100%', borderTopColor: 'rgba(229, 229, 229, 1)', borderTopWidth: 1 }} />
+              </View>
+            ))
+          }
         </View>
       </View>
       <View style={{ flex: 1, width: '100%', justifyContent: 'flex-end' }}>
-        <Pressable onPress={() => console.log('hello')} style={{ height: 52, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(243, 123, 54, 1)', borderWidth: 2, borderRadius: 4 }}>
+        <Pressable onPress={() => navigation.navigate('ReviewContactScreen')} style={{ height: 52, justifyContent: 'center', alignItems: 'center', borderColor: 'rgba(243, 123, 54, 1)', borderWidth: 2, borderRadius: 4 }}>
           <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'rgba(243, 123, 54, 1)' }}>Next</Text>
         </Pressable>
       </View>

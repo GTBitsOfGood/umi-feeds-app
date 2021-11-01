@@ -4,7 +4,7 @@ import { CompositeNavigationProp, useNavigation } from '@react-navigation/native
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useFonts } from 'expo-font';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
 import ChevronButton from '../../../components/ChevronButton';
@@ -13,6 +13,7 @@ import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import Pencil from '../../../assets/images/pencil.svg';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
+import { resetCart } from '../../../redux/reducers/donationCartReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
     StackNavigationProp<DonateTabParamList, 'ReviewContactScreen'>,
@@ -21,6 +22,7 @@ type DonationScreenProp = CompositeNavigationProp<
 
 export default function ReviewContactScreen(props: ThemeProps) {
   const navigation = useNavigation<DonationScreenProp>();
+  const dispatch = useDispatch();
   const cartState = useSelector((state: RootState) => state.donationCart);
   const authState = useSelector((state: RootState) => state.auth);
 
@@ -38,6 +40,8 @@ export default function ReviewContactScreen(props: ThemeProps) {
     } else {
       console.log('Button 2 Pressed');
     }
+    dispatch(resetCart());
+    navigation.navigate('Home');
   };
 
   if (!loaded) {
@@ -72,7 +76,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
           <InfoBlock
             color={color}
             headerText="Contact information"
-            onEdit={() => { alert('something funny'); }}
+            onEdit={() => navigation.navigate('Me')}
             line1={authState.name}
             line2={authState.phoneNumber.toString().replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')}
             line3={authState.email}
@@ -87,9 +91,9 @@ export default function ReviewContactScreen(props: ThemeProps) {
           <InfoBlock
             color={color}
             headerText="Pickup location"
-            onEdit={() => { alert('something hilarious'); }}
+            onEdit={() => navigation.navigate('AddressScreen')}
             line1={authState.businessName}
-            line2={`${cartState.pickupAddress.buildingNumber} ${cartState.pickupAddress.streetAddress}`}
+            line2={`${cartState.pickupAddress.streetAddress}`}
             line3={`${cartState.pickupAddress.city}, ${cartState.pickupAddress.state} ${cartState.pickupAddress.zipCode}`}
           />
           <View
@@ -102,7 +106,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
           <InfoBlock
             color={color}
             headerText="Pickup time"
-            onEdit={() => { alert('my sleep schedule'); }}
+            onEdit={() => navigation.navigate('SchedulePickupScreen')}
             line1={`Date ${new Date(cartState.pickupStartTime).toLocaleDateString()}`}
             line2={`From ${startTimeString} to ${endTimeString}`}
           />

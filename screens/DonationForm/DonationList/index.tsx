@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -85,7 +86,8 @@ const DonationListScreen = () => {
             + Add Dishes to donate
           </Text>
         </View>
-        <View
+        <Pressable
+          onPress={() => navigation.navigate('AddressScreen')}
           style={{
             marginTop: 20,
             justifyContent: 'center',
@@ -100,7 +102,7 @@ const DonationListScreen = () => {
           <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white' }}>
             Schedule Donation Pickup
           </Text>
-        </View>
+        </Pressable>
       </View>
     </Provider>
   );

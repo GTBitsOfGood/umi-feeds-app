@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DonationDishes } from '../../../types';
+import { DonationDishes, Address } from '../../../types';
 import { DonationCartState, PickupTimeInformation } from './types';
 
 const initialState = {
@@ -11,7 +11,7 @@ const initialState = {
     streetAddress: '',
     buildingNumber: 0,
     city: '',
-    state: '',
+    state: 'GA',
     zipCode: 0,
     longitude: 0,
     latitude: 0,
@@ -56,18 +56,25 @@ const donationCartReducer = createSlice({
         }
       }
       state.donationDishes = list;
-      console.log(item);
     },
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
-      state.donationDishes = state.donationDishes.filter((dish) => (dish.dishID !== action.payload));
+      state.donationDishes = state.donationDishes.filter((dish: DonationDishes) => (dish.dishID !== action.payload));
     },
     setPickUpTimeInformation(state, action: PayloadAction<PickupTimeInformation>) {
       state.pickupInstructions = action.payload.pickupInstructions;
       state.pickupStartTime = action.payload.pickupStartTime;
       state.pickupEndTime = action.payload.pickupEndTime;
     },
+    setAddress(state, action: PayloadAction<Address>) {
+      state.pickupAddress.streetAddress = action.payload.streetAddress;
+      state.pickupAddress.city = action.payload.city;
+      state.pickupAddress.state = action.payload.state;
+      state.pickupAddress.zipCode = action.payload.zipCode;
+      state.pickupAddress.latitude = action.payload.latitude;
+      state.pickupAddress.longitude = action.payload.longitude;
+    }
   },
 });
 
-export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart, setPickUpTimeInformation } = donationCartReducer.actions;
+export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart, setPickUpTimeInformation, setAddress } = donationCartReducer.actions;
 export default donationCartReducer.reducer;

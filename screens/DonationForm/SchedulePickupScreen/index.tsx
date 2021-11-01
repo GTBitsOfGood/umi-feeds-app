@@ -3,13 +3,21 @@ import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, To
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+
 import { moderateScale } from '../../../util';
 import { setPickUpTimeInformation } from '../../../redux/reducers/donationCartReducer';
 import PlatformDatePicker from '../../../components/DateTimePicker/DatePicker';
 import PlatformTimePicker from '../../../components/DateTimePicker/TimePicker';
 import Header from '../../../components/Header';
+import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
+
+type ScheudlePickupScreenProp = StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>;
 
 function DonateSchedulePickupScreen() {
+  const navigation = useNavigation<ScheudlePickupScreenProp>();
+
   const dispatch = useDispatch();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
@@ -20,9 +28,10 @@ function DonateSchedulePickupScreen() {
     if (!isFormValid()) {
       dispatch(setPickUpTimeInformation({
         pickupInstructions,
-        pickupStartTime: Number(startTime),
-        pickupEndTime: Number(endTime),
+        pickupStartTime: startTime.getTime(),
+        pickupEndTime: endTime.getTime(),
       }));
+      navigation.navigate('ReviewCartScreen');
     }
   };
 
@@ -35,14 +44,14 @@ function DonateSchedulePickupScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }}>
-      <TouchableHighlight>
+      <Pressable onPress={() => navigation.goBack()}>
         <View style={{ flexDirection: 'row', marginTop: '5%' }}>
           <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
           <Text style={{ fontSize: 16, color: '#F37B36', fontWeight: '400', marginLeft: 4 }}>
             Your Address
           </Text>
         </View>
-      </TouchableHighlight>
+      </Pressable>
       <Header title="Pickup time" showCartButton={false} />
       <Text style={styles.description}>
         Schedule the date and time for your donation pickup.
@@ -155,13 +164,13 @@ const styles = StyleSheet.create({
   unfilledButton: {
     backgroundColor: '#B8B8B8',
     width: '100%',
-    height: '90%',
+    height: '95%',
     borderRadius: 4
   },
   filledButton: {
     backgroundColor: '#F37B36',
     width: '100%',
-    height: '90%',
+    height: '95%',
     borderRadius: 4,
   },
   reviewText: {

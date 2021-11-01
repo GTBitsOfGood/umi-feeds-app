@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Address, Dish } from '../../../types';
+import { Address, Dish, DonationDishes } from '../../../types';
 import { AuthUser } from './types';
 
 const initialState = {
@@ -56,7 +56,7 @@ const authReducer = createSlice({
     // Set the pickupAddresses in the authState
     setPickupAddresses(state, action: PayloadAction<Address[]>) {
       state.pickupAddresses = action.payload;
-    }
+    },
   }
 });
 
