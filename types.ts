@@ -33,7 +33,7 @@ export type DonationForm = {
   ongoing: boolean;
   status: string;
   imageLink: string;
-  dishes: DonationDishes[];
+  donationDishes: DonationDishes[];
   pickupAddress: Address;
   pickupInstructions: string;
   pickupStartTime: Date;

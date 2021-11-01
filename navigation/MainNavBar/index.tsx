@@ -7,7 +7,6 @@ import useColorScheme from '../../hooks/useColorScheme';
 
 import HomeScreenNavigator from '../SharedStack/Home';
 import MapScreenNavigator from '../AdminStack/Map';
-import DonationsListNavigator from '../AdminStack/DonationList';
 import DonateTab from '../DonorStack/Donate';
 import ProfileNavigator from '../SharedStack/UserProfile';
 
@@ -78,13 +77,6 @@ function AdminTabs() {
         component={MapScreenNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Donations"
-        component={DonationsListNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="list" color={color} />,
         }}
       />
       <BottomTab.Screen

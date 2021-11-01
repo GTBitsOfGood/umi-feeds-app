@@ -106,7 +106,9 @@ const GeneralModal = ({
           <HideKeyboardUtility>
             <KeyboardAvoidingView behavior="padding" style={[styles.modalView, { height: modalHeight }]}>
               <View style={{ flex: 1 }}>
-                <Text style={[styles.modalText, { flex: flexTitle }]}>{title}</Text>
+                <View style={{ flex: flexTitle }}>
+                  <Text style={styles.modalText}>{title}</Text>
+                </View>
                 <Text style={[styles.modalSubtitle, { flex: flexSubtitle }]}>
                   {subtitle}
                 </Text>
@@ -142,7 +144,6 @@ const styles = StyleSheet.create({
   modalView: {
     flexDirection: 'column',
     width: '80%',
-    // height: '60%',
     textAlign: 'left',
     backgroundColor: 'white',
     borderRadius: 20,
