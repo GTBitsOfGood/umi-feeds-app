@@ -8,10 +8,10 @@ function PlatformTimePicker(props: {
   datetime: Date,
   setDatetime: Dispatch<SetStateAction<Date>>
 }) {
-  const [mode, setMode] = useState<'date' | 'time'>('date');
+  const [mode, setMode] = useState<'date' | 'time'>('time');
   const [show, setShow] = useState(false);
 
-  const onChange = (event: any, selectedDate?: Date) => {
+  const onChange = (event: any, selectedDate?: any) => {
     const currentDate = selectedDate || props.datetime;
     setShow(Platform.OS === 'ios');
     props.setDatetime(currentDate);

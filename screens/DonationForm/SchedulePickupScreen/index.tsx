@@ -62,7 +62,7 @@ function DonateSchedulePickupScreen() {
       <View style={styles.pickupWindowContainer}>
         <View style={styles.timeItem}>
           <View style={styles.timeWithText}>
-            <Text style={styles.pickupText}> Earliest time for food pickup </Text>
+            <Text style={styles.pickupText}>Earliest time for food pickup </Text>
             <PlatformTimePicker
               datetime={startTime}
               setDatetime={setStartTime}
@@ -71,7 +71,7 @@ function DonateSchedulePickupScreen() {
         </View>
         <View style={styles.timeItem}>
           <View style={styles.timeWithText}>
-            <Text style={styles.pickupText}> Latest time for food pickup </Text>
+            <Text style={styles.pickupText}>Latest time for food pickup. Before end of Day!</Text>
             <PlatformTimePicker
               datetime={endTime}
               setDatetime={setEndTime}
@@ -94,7 +94,7 @@ function DonateSchedulePickupScreen() {
           />
         </KeyboardAvoidingView>
       </View>
-      <View style={{ flex: 2, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20), width: '100%', height: '40%' }}>
+      <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20) }}>
         <Pressable
           disabled={isFormValid()}
           style={isFormValid() ? styles.unfilledButton : styles.filledButton}
@@ -155,13 +155,13 @@ const styles = StyleSheet.create({
   unfilledButton: {
     backgroundColor: '#B8B8B8',
     width: '100%',
-    height: '85%',
+    height: '90%',
     borderRadius: 4
   },
   filledButton: {
     backgroundColor: '#F37B36',
     width: '100%',
-    height: '85%',
+    height: '90%',
     borderRadius: 4,
   },
   reviewText: {
@@ -169,8 +169,7 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 17,
-    alignItems: 'center',
-    textAlign: 'center',
+    alignSelf: 'center',
     color: 'white',
     paddingTop: moderateScale(13)
   },
