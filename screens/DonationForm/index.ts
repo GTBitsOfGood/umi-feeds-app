@@ -1,4 +1,5 @@
 export { default as DonateAddressScreen } from './AddressScreen';
+export { default as DonateSchedulePickupScreen } from './SchedulePickupScreen/index';
 export { default as DonateReviewDonationCart } from './ReviewScreen/ReviewCart';
 export { default as DonateListscreen } from './DonationList';
 export { default as DonateListScreen } from './DonationList';

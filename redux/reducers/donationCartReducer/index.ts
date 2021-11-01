@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import DonationCartState from './types';
 import { DonationDishes } from '../../../types';
+import { DonationCartState, PickupTimeInformation } from './types';
 
 const initialState = {
   donationDishes: [],
@@ -45,24 +45,29 @@ const donationCartReducer = createSlice({
     },
     deleteDonationList(state: any, action) {
       const list = state.dishes.filter((f: any) => f._id !== action.payload._id);
-      state.dishes = list;
+      state.donationDishes = list;
     },
     updateQty(state: any, action) {
-      const item = state.dishes.filter((f: any) => f._id === action.payload.item._id)[0];
-      const list = state.dishes;
+      const item = state.donationDishes.filter((f: any) => f._id === action.payload.item._id)[0];
+      const list = state.donationDishes;
       for (let index = 0; index < list.length; index += 1) {
         if (list[index]._id === item._id) {
           list[index].quantity = action.payload.quantity;
         }
       }
-      state.dishes = list;
+      state.donationDishes = list;
       console.log(item);
     },
     removeDishFromCart(state, action: PayloadAction<string | undefined>) {
       state.donationDishes = state.donationDishes.filter((dish) => (dish.dishID !== action.payload));
-    }
+    },
+    setPickUpTimeInformation(state, action: PayloadAction<PickupTimeInformation>) {
+      state.pickupInstructions = action.payload.pickupInstructions;
+      state.pickupStartTime = action.payload.pickupStartTime;
+      state.pickupEndTime = action.payload.pickupEndTime;
+    },
   },
 });
 
-export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart } = donationCartReducer.actions;
+export const { addToCart, setDonationList, getDonationList, removeDishFromCart, deleteDonationList, updateQty, resetCart, setPickUpTimeInformation } = donationCartReducer.actions;
 export default donationCartReducer.reducer;
