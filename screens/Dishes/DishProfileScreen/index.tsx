@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {StyleSheet, ImageBackground, ScrollView, Route } from 'react-native';
+import { StyleSheet, ImageBackground, ScrollView, Route } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
