@@ -16,6 +16,7 @@ import { useNavigation, CompositeNavigationProp } from '@react-navigation/native
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import Icon from 'react-native-vector-icons/Entypo';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
@@ -28,6 +29,8 @@ import { ChevronButton, Header } from '../../../components';
 
 import { moderateScale } from '../../../util';
 import DonateQuantityModal from '../../../components/DonateQuantityModal';
+import { Dish, DonationDishes } from '../../../types';
+import { SecondaryButton } from '../../../components/Button';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
@@ -39,6 +42,20 @@ const DonationListScreen = () => {
 
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state);
+
+  const [dishMap, setDishMap] = React.useState(new Map());
+
+  const getDishFromID = (dishID:string) => {
+    if (dishMap.size !== state.auth.dishes.length) {
+      const newDishMap = new Map();
+      state.auth.dishes.forEach((dish:Dish) => {
+        newDishMap.set(dish._id, dish);
+      });
+      setDishMap(newDishMap);
+      return newDishMap.get(dishID);
+    }
+    return dishMap.get(dishID);
+  };
 
   return (
     <Provider>
@@ -63,14 +80,15 @@ const DonationListScreen = () => {
           {
             state.donationCart.donationDishes.length === 0 ? null : (
               <ScrollView>
-                {state.donationCart.donationDishes.map((item: any, i: any) => (
-                  <Row key={item._id} item={item} i={i} />
-                ))}
+                {state.donationCart.donationDishes.map(
+                  (item: any) => <Row key={item._id} keyVal={item._id} donationDish={item} dish={getDishFromID(item.dishID)} />
+                )}
               </ScrollView>
             )
           }
         </View>
-        <View
+        <Pressable
+          onPress={() => navigation.navigate('DonateHomeScreen')}
           style={{
             marginTop: 20,
             justifyContent: 'center',
@@ -85,7 +103,7 @@ const DonationListScreen = () => {
           <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#F37B36' }}>
             + Add Dishes to donate
           </Text>
-        </View>
+        </Pressable>
         <Pressable
           onPress={() => navigation.navigate('AddressScreen')}
           style={{
@@ -108,32 +126,39 @@ const DonationListScreen = () => {
   );
 };
 
+type RowInfo = {
+    keyVal: string;
+    donationDish: DonationDishes;
+    dish: Dish;
+}
+
 export default DonationListScreen;
 
-function Row({ item, i }: any) {
+function Row({ keyVal, donationDish, dish }: RowInfo) {
   const [visible, setVisible] = React.useState(false);
+
+  const navigation = useNavigation<DonationScreenProp>();
 
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
   const dispatch = useDispatch();
   const removeDish = () => {
-    dispatch(deleteDonationList(item));
+    dispatch(deleteDonationList(donationDish));
     setVisible(false);
   };
 
   const changeQuantity = (quantity: any) => {
     setshowQuantity(false);
-    dispatch(updateQty({ item, quantity }));
+    dispatch(updateQty({ item: donationDish, quantity }));
   };
   const setQuantity = (evnt: any) => {
     setQty(evnt);
   };
   const [showQuantity, setshowQuantity] = React.useState(false);
-  const [quantity, setQty] = React.useState(item.quantity);
+  const [quantity, setQty] = React.useState(donationDish.quantity);
   return (
     <View
-      key={i}
       style={{
         flexDirection: 'row',
         height: 50,
@@ -143,30 +168,35 @@ function Row({ item, i }: any) {
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
       }}
+      key={keyVal}
     >
-      <View style={{ flex: 8 }}>
-        <Text style={{ fontSize: 15 }}>{item.dishID}</Text>
+      <View key={keyVal} style={{ flex: 8 }}>
+        <Text key={keyVal} style={{ fontSize: 15 }}>{dish.dishName}</Text>
       </View>
       <View
+        key={keyVal}
         style={{
           flex: 2,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}
       >
-        <Text style={{ fontSize: 15 }}>{item.quantity}</Text>
-        <View>
+        <Text key={keyVal} style={{ fontSize: 15 }}>{donationDish.quantity}</Text>
+        <View key={keyVal}>
           <Menu
+            key={keyVal}
             style={{ marginTop: -100, marginLeft: -30 }}
             visible={visible}
             onDismiss={closeMenu}
             anchor={(
               <TouchableOpacity
+                key={keyVal}
                 onPress={() => {
                   setVisible(true);
                 }}
               >
                 <MaterialCommunityIcons
+                  key={keyVal}
                   name="dots-vertical"
                   size={24}
                   color="#DADADA"
@@ -174,21 +204,23 @@ function Row({ item, i }: any) {
               </TouchableOpacity>
             )}
           >
-            <Menu.Item onPress={() => { }} title="View Dish " />
+            <Menu.Item key={keyVal} onPress={() => { navigation.navigate('DishProfile')}} title="View Dish " />
             <Menu.Item
+              key={keyVal}
               onPress={() => {
                 setshowQuantity(true);
                 setVisible(false);
               }}
               title="Change Quantity"
             />
-            <Menu.Item onPress={() => removeDish()} title="Remove Dish" />
+            <Menu.Item key={keyVal} onPress={() => removeDish()} title="Remove Dish" />
           </Menu>
         </View>
       </View>
       <DonateQuantityModal
+        key={keyVal}
         visible={showQuantity}
-        dishObj={item}
+        dishObj={dish}
         closeModal={() => {
           setshowQuantity(false);
         }}
