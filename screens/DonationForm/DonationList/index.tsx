@@ -16,13 +16,11 @@ import { useNavigation, CompositeNavigationProp } from '@react-navigation/native
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Entypo';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
 import {
-  setDonationList,
-  deleteDonationList,
+  removeDishFromCart,
   updateQty,
 } from '../../../redux/reducers/donationCartReducer';
 import { ChevronButton, Header } from '../../../components';
@@ -30,7 +28,6 @@ import { ChevronButton, Header } from '../../../components';
 import { moderateScale } from '../../../util';
 import DonateQuantityModal from '../../../components/DonateQuantityModal';
 import { Dish, DonationDishes } from '../../../types';
-import { SecondaryButton } from '../../../components/Button';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
@@ -81,7 +78,7 @@ const DonationListScreen = () => {
             state.donationCart.donationDishes.length === 0 ? null : (
               <ScrollView>
                 {state.donationCart.donationDishes.map(
-                  (item: any) => <Row key={item._id} keyVal={item._id} donationDish={item} dish={getDishFromID(item.dishID)} />
+                  (item: any) => <Row key={item.dishID} donationDish={item} dish={getDishFromID(item.dishID)} />
                 )}
               </ScrollView>
             )
@@ -134,7 +131,7 @@ type RowInfo = {
 
 export default DonationListScreen;
 
-function Row({ keyVal, donationDish, dish }: RowInfo) {
+function Row({ donationDish, dish }: RowInfo) {
   const [visible, setVisible] = React.useState(false);
 
   const navigation = useNavigation<DonationScreenProp>();
@@ -144,13 +141,13 @@ function Row({ keyVal, donationDish, dish }: RowInfo) {
   const closeMenu = () => setVisible(false);
   const dispatch = useDispatch();
   const removeDish = () => {
-    dispatch(deleteDonationList(donationDish));
+    dispatch(removeDishFromCart(donationDish.dishID));
     setVisible(false);
   };
 
   const changeQuantity = (quantity: any) => {
     setshowQuantity(false);
-    dispatch(updateQty({ item: donationDish, quantity }));
+    dispatch(updateQty({ dish: donationDish, quantity }));
   };
   const setQuantity = (evnt: any) => {
     setQty(evnt);
@@ -168,35 +165,30 @@ function Row({ keyVal, donationDish, dish }: RowInfo) {
         borderBottomWidth: 0.5,
         borderBottomColor: 'gray',
       }}
-      key={keyVal}
     >
-      <View key={keyVal} style={{ flex: 8 }}>
-        <Text key={keyVal} style={{ fontSize: 15 }}>{dish.dishName}</Text>
+      <View style={{ flex: 8 }}>
+        <Text style={{ fontSize: 15 }}>{dish !== undefined ? dish.dishName : donationDish._id}</Text>
       </View>
       <View
-        key={keyVal}
         style={{
           flex: 2,
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}
       >
-        <Text key={keyVal} style={{ fontSize: 15 }}>{donationDish.quantity}</Text>
-        <View key={keyVal}>
+        <Text style={{ fontSize: 15 }}>{donationDish.quantity}</Text>
+        <View>
           <Menu
-            key={keyVal}
             style={{ marginTop: -100, marginLeft: -30 }}
             visible={visible}
             onDismiss={closeMenu}
             anchor={(
               <TouchableOpacity
-                key={keyVal}
                 onPress={() => {
                   setVisible(true);
                 }}
               >
                 <MaterialCommunityIcons
-                  key={keyVal}
                   name="dots-vertical"
                   size={24}
                   color="#DADADA"
@@ -204,21 +196,24 @@ function Row({ keyVal, donationDish, dish }: RowInfo) {
               </TouchableOpacity>
             )}
           >
-            <Menu.Item key={keyVal} onPress={() => { navigation.navigate('DishProfile')}} title="View Dish " />
             <Menu.Item
-              key={keyVal}
+              onPress={() => { // @ts-ignore passing params to navigation screen causing typescript confusion
+                navigation.navigate('DishProfile', { dish, canEdit: true });
+              }}
+              title="View Dish "
+            />
+            <Menu.Item
               onPress={() => {
                 setshowQuantity(true);
                 setVisible(false);
               }}
               title="Change Quantity"
             />
-            <Menu.Item key={keyVal} onPress={() => removeDish()} title="Remove Dish" />
+            <Menu.Item onPress={() => removeDish()} title="Remove Dish" />
           </Menu>
         </View>
       </View>
       <DonateQuantityModal
-        key={keyVal}
         visible={showQuantity}
         dishObj={dish}
         closeModal={() => {
