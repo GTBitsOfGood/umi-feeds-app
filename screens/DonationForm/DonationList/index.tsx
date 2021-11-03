@@ -124,7 +124,6 @@ const DonationListScreen = () => {
 };
 
 type RowInfo = {
-    keyVal: string;
     donationDish: DonationDishes;
     dish: Dish;
 }
