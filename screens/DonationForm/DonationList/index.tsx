@@ -43,7 +43,7 @@ const DonationListScreen = () => {
   const [dishMap, setDishMap] = React.useState(new Map());
 
   const getDishFromID = (dishID:string) => {
-    if (dishMap.size !== state.auth.dishes.length) {
+    if (dishMap.size !== state.auth.dishes.length || dishMap.get(dishID) === undefined) {
       const newDishMap = new Map();
       state.auth.dishes.forEach((dish:Dish) => {
         newDishMap.set(dish._id, dish);
