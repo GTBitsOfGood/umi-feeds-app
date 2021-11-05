@@ -28,7 +28,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="NewDishForm"
         component={NewDishFormScreen}
-        options={{ headerTitle: 'New Dish' }}
+        options={{ headerTitle: 'New Dish', headerTintColor: '#F37B36' }}
       />
       <DonationScreenStack.Screen
         name="DishProfile"
