@@ -45,9 +45,25 @@ const styles = StyleSheet.create({
     marginRight: 2,
     marginTop: 12
   },
+  editButton: {
+    fontSize: 14,
+    color: lightBlueColor,
+    marginRight: 2,
+    marginTop: 0
+  },
+  moreButton: {
+    fontSize: 14,
+    color: lightBlueColor,
+    marginRight: 2
+  },
   icon: {
     marginTop: 10,
+    marginLeft: 4,
     color: lightBlueColor,
+  },
+  moreIcon: {
+    marginLeft: 4,
+    color: lightBlueColor
   },
   info: {
     fontSize: 18,
