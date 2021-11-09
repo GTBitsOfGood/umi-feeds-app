@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Address, Dish, DonationDishes } from '../../../types';
+import { Address, Dish } from '../../../types';
 import { AuthUser } from './types';
 
 const initialState = {

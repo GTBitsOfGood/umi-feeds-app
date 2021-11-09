@@ -14,6 +14,7 @@ import { addToCart } from '../../redux/reducers/donationCartReducer';
 import styles from './styles';
 import { logAxiosError } from '../../utils';
 import { store } from '../../redux/store';
+import { setLoading } from '../../redux/reducers/loadingReducer';
 
 function DishForm(props: { dish?: Dish }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
@@ -44,6 +45,7 @@ function DishForm(props: { dish?: Dish }) {
   const handleSubmit = () => {
     console.log(isFormValid());
     if (isFormValid()) {
+      dispatch(setLoading({ loading: true }));
       const formData = new FormData();
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
@@ -67,6 +69,8 @@ function DishForm(props: { dish?: Dish }) {
         .catch((err) => {
           logAxiosError(err);
           Alert.alert('Cannot Submit Dish', 'There was an error submitting your dish, please try again.');
+        }).finally(() => {
+          dispatch(setLoading({ loading: false, desination: 'DonateHomeScreen' }));
         });
     }
   };

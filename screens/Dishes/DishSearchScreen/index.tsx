@@ -70,6 +70,7 @@ export default function DishSearch() {
           {filteredDishes.length > 0 ? filteredDishes.filter((item) => item.dishName).map((item) => (
             <DishQuantityPreview
               text={boldSearchCharacters(item.dishName, searchText)}
+              key={item._id}
               onPress={() => {
                 const donationDishes = donationCartState.donationDishes.filter((dish) => dish.dishID === item._id);
 
@@ -81,26 +82,13 @@ export default function DishSearch() {
                 setModalDishObject(item);
                 setModalVisible(true);
               }}
-              key={item._id}
               quantityAdded={donationCartState.donationDishes.filter((dish) => dish.dishID === item._id).reduce((prev, curr) => prev + curr.quantity, 0)}
               customStyle={{ borderWidth: 0, borderBottomWidth: 1, borderColor: '#e6e6e6' }}
             />
-          )) : <Text>No results found</Text>}
+          )) : <Text key="null">No results found</Text>}
         </View>
       </ScrollView>
     </View>
-  );
-}
-
-/**
- * @param props children, the child text
- * @returns JSX.Element
- */
-function BoldText(props: { children: string }) {
-  return (
-    <Text style={{ fontWeight: '800' }}>
-      {props.children}
-    </Text>
   );
 }
 
@@ -111,36 +99,39 @@ function BoldText(props: { children: string }) {
  * @returns a JSX element with the matching search box text bolded, with capitalization preserved
  */
 function boldSearchCharacters(dishName: string, searchText: string): JSX.Element {
+  interface textSpan {
+    text: string;
+    bold: boolean;
+  }
   if (searchText === '') {
-    return <Text>{dishName}</Text>;
+    return <Text key={dishName}>{dishName}</Text>;
   }
   const nonBoldStrings = dishName.toLowerCase().split(searchText.toLowerCase());
-  const nonBoldSpans = nonBoldStrings.map((span) => <Text>{span}</Text>);
-  const boldSearchText = <BoldText>{searchText.toLowerCase()}</BoldText>;
+  const nonBoldSpans = nonBoldStrings.map((span) => ({ text: span, bold: false } as textSpan));
+  const boldSearchText = { text: searchText.toLowerCase(), bold: true } as textSpan;
 
   // think of this as the .join function, but with a separator of a JSX.Element
-  function reducer(prev: JSX.Element[], current: JSX.Element): JSX.Element[] {
+  function reducer(prev: textSpan[], current: textSpan): textSpan[] {
     return prev.length === 0 ? [...prev, current] : [...prev, boldSearchText, current];
   }
 
-  const combinedSpans = nonBoldSpans.reduce<JSX.Element[]>(reducer, []);
+  const combinedSpans = nonBoldSpans.reduce<textSpan[]>(reducer, []);
 
   // preserves capitalization of original dish name
   let currentText = '';
   const combinedSpansCapitalized = combinedSpans.map((span) => {
-    const spanText = span.props.children;
-
+    const spanText = span.text;
     // find text in dishname that matches the current span
     const spanTextInDishName = dishName.slice(currentText.length, currentText.length + spanText.length);
 
     currentText += spanText;
 
-    if (span.type === BoldText) {
-      return <BoldText key={Math.random()}>{spanTextInDishName}</BoldText>;
+    if (span.bold) {
+      return <Text key={spanTextInDishName + Math.random()} style={{ fontWeight: 'bold' }}>{spanTextInDishName}</Text>;
     } else {
-      return <Text key={Math.random()}>{spanTextInDishName}</Text>;
+      return <Text key={spanTextInDishName + Math.random()}>{spanTextInDishName}</Text>;
     }
   });
 
-  return <Text key={Math.random()}>{combinedSpansCapitalized}</Text>;
+  return <Text key={searchText + Math.random()}>{combinedSpansCapitalized}</Text>;
 }
