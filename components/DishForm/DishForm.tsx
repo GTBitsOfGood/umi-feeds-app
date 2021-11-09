@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { HideKeyboardUtility } from '../../util/index';
@@ -31,6 +31,7 @@ function DishForm(props: { dish?: Dish }) {
   const closeModal = () => setModalVisible(!modalVisible);
   const [quantity, setQuantity] = useState<DonationDishes>();
   const [dishResponse, setDishResponse] = useState<Dish>();
+  const [favorite, setFavorite] = useState<boolean>(false);
 
   const DishObj = {
     dishName,
@@ -39,7 +40,7 @@ function DishForm(props: { dish?: Dish }) {
     allergens,
     imageLink: String(uploadImage), // link to azure image
     comments: String(comments),
-    favorite: true,
+    favorite
   };
 
   const handleSubmit = () => {
@@ -192,6 +193,16 @@ function DishForm(props: { dish?: Dish }) {
               multiline
             />
           </View>
+          <CheckBox
+            containerStyle={styles.checkbox}
+            textStyle={{ fontWeight: 'normal' }}
+            title="Favorite Dish"
+            checkedColor="#F37B36"
+            checked={favorite}
+            onPress={() => {
+              setFavorite(!favorite);
+            }}
+          />
           <Text style={styles.subsection}>This dish may contain (required):</Text>
           <View style={styles.checkboxContainer}>
             <View style={styles.item}>
