@@ -5,4 +5,5 @@ export type HomeScreenParamList = {
   NewDonorLocation: undefined;
   DonationView: undefined;
   AllDonations: undefined;
+  DonationsList: undefined;
 };

@@ -13,6 +13,7 @@ import ProfileNavigator from '../SharedStack/UserProfile';
 import {
   BottomTabParamList,
 } from './types';
+import DonationsList from '../../components/DonationsList';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -49,6 +50,13 @@ function DonorTabs() {
       <BottomTab.Screen
         name="Me"
         component={ProfileNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="testing"
+        component={DonationsList}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
         }}
