@@ -192,7 +192,7 @@ function DonationListBox(props: { donation: DonationForm, selectedId: string, se
         <Text style={{ color, fontSize: 15, fontWeight: 'bold' }}>{endTime}</Text>
         <Text
           style={{ color: '#5D5D5D', fontSize: 15, fontWeight: 'bold' }}
-          onPress={() => navigation.navigate('DetailDonation', props.donation )}
+          onPress={() => navigation.navigate('DetailDonation', props.donation)}
         >
           View ⟩
         </Text>
