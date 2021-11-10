@@ -1,16 +1,14 @@
 import { View, Text, StyleSheet, Pressable, ScrollView, Linking } from 'react-native';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
-import LogoutButton from '../../components/Auth/LogoutButton';
-import DonateQuantityModal from '../../components/DonateQuantityModal';
-import { Dish, DonationDishes, DonationForm } from '../../types';
-import { GeneralModal, Header } from '../../components';
+import { DonationForm } from '../../types';
+import { Header } from '../../components';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
@@ -18,18 +16,6 @@ import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 import { RootState } from '../../redux/rootReducer';
 import { moderateScale } from '../../util/index';
-
-// Test Dish Object to render Modal
-const MockDishObj: Dish = {
-  _id: '894yr34fbu3bf3', // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
-  dishName: 'Fried Donit',
-  cost: 90.00,
-  pounds: 78,
-  allergens: ['fish', 'nuts'],
-  imageLink: 'www.google.com', // link to azure image
-  comments: '',
-  favorite: false,
-};
 
 type HomeScreenProp = CompositeNavigationProp<
   StackNavigationProp<HomeScreenParamList, 'Home'>,
@@ -51,7 +37,6 @@ function HomeScreen() {
     >
       <View style={styles.topContainer}>
         <Header title="Welcome Back" showCartButton={false} />
-        <LogoutButton />
       </View>
       <View style={styles.donationHeader}>
         <Text style={styles.standardText}>Current donation</Text>
@@ -146,7 +131,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   standardText: {
     fontSize: 20,
@@ -210,6 +195,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'gray',
     fontSize: 11,
-    marginBottom: 2
+    marginVertical: 5
   }
 });

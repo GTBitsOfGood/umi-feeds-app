@@ -19,7 +19,7 @@ export default function LoadingScreen({
         dispatch(setLoading({ loading: false }));
       }}
       >
-        <Text style={{ color: '#eee', marginTop: 20 }}>Set loading false</Text>
+        <Text style={{ color: '#eee', marginTop: 20 }}>Set loading</Text>
       </TouchableOpacity>
     </View>
   );
