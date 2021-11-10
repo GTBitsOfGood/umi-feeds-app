@@ -42,7 +42,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
       console.log('Button 2 Pressed');
     }
     dispatch(resetCart());
-    navigation.navigate('Home');
+    // navigation.navigate('Home');
   };
 
   if (!loaded) {
@@ -127,7 +127,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
                 pickupStartTime: new Date(cartState.pickupStartTime),
                 pickupEndTime: new Date(cartState.pickupEndTime),
                 volunteerLockTime: new Date(cartState.volunteerLockTime), // time when volunteer agrees to pick it up
-                lockedByVolunteer: cartState.lockedByVolunteer, // whether the donation has been locked by a volunteer
+                lockedByVolunteer: false, // whether the donation has been locked by a volunteer
                 confirmPickUpTime: new Date(cartState.confirmPickUpTime), // time when donation has been picked up by volunteer
                 confirmDropOffTime: new Date(cartState.confirmDropOffTime), // time when donation has been dropped off by volunteer
               }));
@@ -138,7 +138,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
               }).catch((err) => {
                 console.error(err);
               }).finally(() => {
-                dispatch(setLoading({ loading: false, desination: 'Home' }));
+                dispatch(setLoading({ loading: false }));
               });
             }}
           >

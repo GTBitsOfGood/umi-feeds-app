@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import LogoutButton from '../../components/Auth/LogoutButton';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
-import { Dish, DonationDishes } from '../../types';
+import { Dish, DonationDishes, DonationForm } from '../../types';
 import { GeneralModal, Header } from '../../components';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 
@@ -37,8 +37,9 @@ type HomeScreenProp = CompositeNavigationProp<
 >;
 
 function HomeScreen() {
-  const donationCartState = useSelector((state: RootState) => state.donationCart);
+  const userDonations = useSelector((state: RootState) => state.auth.donations);
   const navigation = useNavigation<HomeScreenProp>();
+  let counter = 0;
 
   return (
     <ScrollView
@@ -52,36 +53,47 @@ function HomeScreen() {
         <Header title="Welcome Back" showCartButton={false} />
         <LogoutButton />
       </View>
-      {donationCartState.ongoing ? (
-        <>
-          <View style={styles.donationHeader}>
-            <Text style={styles.standardText}>Current donation</Text>
-          </View>
-          <View style={styles.donationContainer}>
-            <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date</Text>
-            <Pressable
-              onPress={() => {
-                navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
-              }}
-            >
-              <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
-                <Text style={{ fontSize: 12 }}>View</Text>
-                <AntDesign name="right" size={16} />
+      <View style={styles.donationHeader}>
+        <Text style={styles.standardText}>Current donation</Text>
+      </View>
+      {
+        userDonations.map((donations: DonationForm) => {
+          if (donations.ongoing) {
+            return (
+              <View style={styles.donationContainer} key={donations._id}>
+                <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
+                    <Text style={{ fontSize: 12 }}>View</Text>
+                    <AntDesign name="right" size={16} />
+                  </View>
+                </Pressable>
               </View>
-            </Pressable>
-          </View>
-        </>
-      ) : (
-        <View style={styles.donationHeader}>
-          <Text>You currently have no ongoing donations.</Text>
-        </View>
-      )
+            );
+          } else {
+            // eslint-disable-next-line no-plusplus
+            counter++;
+            if (counter === userDonations.length) {
+              return (
+                <View style={styles.donationHeader}>
+                  <Text>You currently have no ongoing donations.</Text>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          }
+        })
       }
       <View style={styles.boxesContainer}>
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            navigation.navigate('MyDishes');
+            navigation.navigate('Me');
           }}
         >
           <Text style={styles.standardText}>My Dishes</Text>
@@ -167,7 +179,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 30,
     marginTop: 18,
-    marginBottom: 47
+    marginBottom: 15
   },
   boxesContainer: {
     flexDirection: 'row',
