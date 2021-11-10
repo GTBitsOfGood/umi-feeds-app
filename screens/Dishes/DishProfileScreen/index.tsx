@@ -9,6 +9,7 @@ import { Text, View } from '../../../style/Themed';
 import { ChevronButton } from '../../../components';
 import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import NoImageAvailable from '../../../assets/images/NoImageAvailable.jpeg';
 
 import { moderateScale } from '../../../util/index';
 
@@ -55,7 +56,7 @@ export default function DishProfileScreen({ route }:Route) {
       </View>
       <View style={styles.imgContainer}>
         <ImageBackground
-          source={{ uri: route.params.dish.imageLink }}
+          source={route.params.dish.imageLink !== '' ? { uri: route.params.dish.imageLink } : NoImageAvailable}
           imageStyle={{
             borderRadius: 4,
             alignSelf: 'center',
