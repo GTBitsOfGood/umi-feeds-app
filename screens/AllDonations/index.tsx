@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import DonationsList from '../../components/DonationsList';
 
 export default function AllDonations() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>All Donations</Text>
+      {/* <Text style={styles.title}>All Donations</Text> */}
+      <DonationsList />
     </View>
   );
 }

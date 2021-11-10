@@ -96,7 +96,7 @@ function HomeScreen() {
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            // navigation.navigate('AllDonations');
+            navigation.navigate('AllDonations');
             setModalVisible(!modalVisible);
           }}
         >

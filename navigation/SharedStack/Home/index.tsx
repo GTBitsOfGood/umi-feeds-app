@@ -6,6 +6,8 @@ import NewDonorNumber from '../../../screens/NewDonor/NewDonorNumber';
 import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
 import AllDonations from '../../../screens/AllDonations';
 import DonationView from '../../../screens/DetailDonation';
+import DonationsList from '../../../components/DonationsList';
+import DetailDonationScreen from '../../../components/DetailDonation';
 import {
   HomeScreenParamList,
 } from './types';
@@ -44,6 +46,16 @@ function HomeScreenNavigator() {
         name="AllDonations"
         component={AllDonations}
         options={{ headerShown: false, headerTitle: 'AllDonations' }}
+      />
+      <HomeScreenStack.Screen
+        name="DetailDonation"
+        component={DetailDonationScreen}
+        options={{ headerShown: false, headerTitle: 'DetailDonation' }}
+      />
+      <HomeScreenStack.Screen
+        name="DonationsList"
+        component={DonationsList}
+        options={{ headerShown: false, headerTitle: 'DonationsList' }}
       />
     </HomeScreenStack.Navigator>
   );
