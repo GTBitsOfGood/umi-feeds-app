@@ -80,7 +80,7 @@ const df1 = {
 
 const df2 = {
   _id: 'df2id',
-  ongoing: false,
+  ongoing: true,
   status: 'ongoing',
   imageLink: 'https://spoonuniversity.com/wp-content/uploads/sites/26/2015/09/IMG_8295.jpg',
   donationDishes: [dd1, dd2],
@@ -135,7 +135,7 @@ export default function DonationsList() {
         <Text style={styles.title}>My donations</Text>
         <Text style={styles.subtitle}>Ongoing Donations</Text>
         {ongoingDonations}
-        <Text style={styles.subtitle}>Completed Donations</Text>
+        <Text style={styles.subtitle}>Past Donations</Text>
         {pastDonations}
       </ScrollView>
     </View>
@@ -145,7 +145,7 @@ export default function DonationsList() {
 function DonationListBox(props: { donation: DonationForm, selectedId: string, setSelectedList: (param1?: string) => void }) {
   const navigation = useNavigation<DonationListBoxProps>();
 
-  const endTime = props.donation.pickupEndTime.toLocaleString().slice(0, 10);
+  const endTime = props.donation.pickupEndTime.toLocaleString().slice(0, 9);
   let pickupTime = 'TBA';
   let color = '#FC8834';
   if (props.donation.pickupEndTime !== undefined) {
@@ -173,7 +173,8 @@ function DonationListBox(props: { donation: DonationForm, selectedId: string, se
     <Pressable
       style={props.donation._id === props.selectedId ? {
         marginBottom: 10,
-        padding: 18,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
         borderColor: orangeColor,
         borderWidth: 2,
         backgroundColor: 'rgba(243, 123, 54, 0.15)',
@@ -181,12 +182,13 @@ function DonationListBox(props: { donation: DonationForm, selectedId: string, se
       } : {
         borderWidth: 2,
         marginBottom: 10,
-        padding: 18,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
         borderColor: color,
         height: 161 }}
       onPress={() => props.setSelectedList(props.donation._id)}
     >
-      <View style={{ flex: 1, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
         <Text style={{ color, fontSize: 15, fontWeight: 'bold' }}>{endTime}</Text>
         <Text
           style={{ color: '#5D5D5D', fontSize: 15, fontWeight: 'bold' }}
@@ -195,7 +197,7 @@ function DonationListBox(props: { donation: DonationForm, selectedId: string, se
           View ⟩
         </Text>
       </View>
-      <View style={{ flex: 1, marginBottom: 10 }}>
+      <View style={{ flex: 1 }}>
         <Text>{donationDish} </Text>
       </View>
       <View style={{ flex: 1 }}>
