@@ -25,14 +25,12 @@ function LogoutButton() {
 
   useEffect(() => {
     if (logoutResult) {
-      console.log('logging out');
       // Although logout functionality works, it receives an error from Auth0,
       // so we only check for canceling logout rather than successful logout
       if (logoutResult.type !== 'cancel') {
         batch(() => {
           dispatch(logout());
           dispatch(resetCart());
-          dispatch(setLoading({ loading: false }));
         });
       }
     }
@@ -43,6 +41,7 @@ function LogoutButton() {
       buttonStyle={{ backgroundColor: '#F37B36', height: 50, marginBottom: 20 }}
       title="Log Out"
       onPress={() => {
+        console.log('logging out');
         promptAsyncLogout({ useProxy });
       }}
     />

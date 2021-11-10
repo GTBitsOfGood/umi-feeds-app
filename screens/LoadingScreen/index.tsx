@@ -16,7 +16,7 @@ export default function LoadingScreen({
       {/* <Text style={styles.title}>Loading</Text> */}
       <ActivityIndicator />
       <TouchableOpacity onPress={() => {
-        dispatch(setLoading({ loading: false }));
+        dispatch(setLoading({ loading: true }));
       }}
       >
         <Text style={{ color: '#eee', marginTop: 20 }}>Set loading</Text>
