@@ -5,12 +5,14 @@ import { ColorSchemeName } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 import { RootStackParamList } from './types';
 import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
 import { RootState } from '../redux/rootReducer';
 import LoginStack from './LoginStack';
-// import LoginScreen from '../screens/LoginScreen';
+
+import { navigationRef } from './RootNavigation';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -19,6 +21,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     <NavigationContainer
       // linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      ref={navigationRef}
     >
       <RootNavigator />
     </NavigationContainer>
@@ -30,6 +33,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const loadingState = useSelector((state: RootState) => state.loading);
   const authState = useSelector((state: RootState) => state.auth);
   let TabComponent;
   if (authState.isAdmin) {
@@ -40,15 +44,19 @@ function RootNavigator() {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      { authState.authenticated ? (
+      {authState.authenticated ? (
         <>
           <Stack.Screen name="Root" component={TabComponent} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginStack} />
+        <>
+          <Stack.Screen name="Login" component={LoginStack} />
+          <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
+        </>
       )
-    }
+      }
     </Stack.Navigator>
   );
 }

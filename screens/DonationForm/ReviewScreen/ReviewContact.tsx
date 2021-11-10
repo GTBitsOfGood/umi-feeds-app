@@ -4,7 +4,7 @@ import { CompositeNavigationProp, useNavigation } from '@react-navigation/native
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useFonts } from 'expo-font';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, batch } from 'react-redux';
 import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
 import ChevronButton from '../../../components/ChevronButton';
@@ -14,11 +14,12 @@ import Pencil from '../../../assets/images/pencil.svg';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
 import { resetCart } from '../../../redux/reducers/donationCartReducer';
+import { setLoading } from '../../../redux/reducers/loadingReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
-    StackNavigationProp<DonateTabParamList, 'ReviewContactScreen'>,
-    BottomTabNavigationProp<BottomTabParamList, 'Home'>
-    >;
+  StackNavigationProp<DonateTabParamList, 'ReviewContactScreen'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
+>;
 
 export default function ReviewContactScreen(props: ThemeProps) {
   const navigation = useNavigation<DonationScreenProp>();
@@ -126,15 +127,18 @@ export default function ReviewContactScreen(props: ThemeProps) {
                 pickupStartTime: new Date(cartState.pickupStartTime),
                 pickupEndTime: new Date(cartState.pickupEndTime),
                 volunteerLockTime: new Date(cartState.volunteerLockTime), // time when volunteer agrees to pick it up
-                lockedByVolunteer: cartState.lockedByVolunteer, // whether the donation has been locked by a volunteer
+                lockedByVolunteer: false, // whether the donation has been locked by a volunteer
                 confirmPickUpTime: new Date(cartState.confirmPickUpTime), // time when donation has been picked up by volunteer
                 confirmDropOffTime: new Date(cartState.confirmDropOffTime), // time when donation has been dropped off by volunteer
               }));
+              dispatch(setLoading({ loading: true }));
               formdata.append('description', 'Check app for details');
               axios.post(`/api/donationform?id=${authState._id}`, formdata).then(() => {
                 toggleModal();
               }).catch((err) => {
                 console.error(err);
+              }).finally(() => {
+                dispatch(setLoading({ loading: false }));
               });
             }}
           >
@@ -152,13 +156,13 @@ export default function ReviewContactScreen(props: ThemeProps) {
 type InfoBlockProps = {
   color: string,
   headerText: string,
-  onEdit: ()=>void,
+  onEdit: () => void,
   line1: string,
   line2: string,
   line3?: string
 };
 
-function InfoBlock(props:InfoBlockProps) {
+function InfoBlock(props: InfoBlockProps) {
   return (
     <View>
       <View style={{ flexDirection: 'row' }}>
@@ -174,9 +178,9 @@ function InfoBlock(props:InfoBlockProps) {
         </View>
       </View>
       <View style={{ marginLeft: 6 }}>
-        <Text style={styles.text}> { props.line1 } </Text>
-        <Text style={styles.text}> { props.line2 } </Text>
-        <Text style={styles.text}> { props.line3 || null } </Text>
+        <Text style={styles.text}> {props.line1} </Text>
+        <Text style={styles.text}> {props.line2} </Text>
+        <Text style={styles.text}> {props.line3 || null} </Text>
       </View>
     </View>
   );

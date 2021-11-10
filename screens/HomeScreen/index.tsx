@@ -1,21 +1,22 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Linking } from 'react-native';
 import React, { useState } from 'react';
 
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
 import LogoutButton from '../../components/Auth/LogoutButton';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
-import { Dish, DonationDishes } from '../../types';
-import { GeneralModal } from '../../components';
+import { Dish, DonationDishes, DonationForm } from '../../types';
+import { GeneralModal, Header } from '../../components';
+import Logo from '../../assets/images/umi-feeds-logo.svg';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
-import { addToCart } from '../../redux/reducers/donationCartReducer';
 
+import { RootState } from '../../redux/rootReducer';
 import { moderateScale } from '../../util/index';
 
 // Test Dish Object to render Modal
@@ -36,59 +37,63 @@ type HomeScreenProp = CompositeNavigationProp<
 >;
 
 function HomeScreen() {
+  const userDonations = useSelector((state: RootState) => state.auth.donations);
   const navigation = useNavigation<HomeScreenProp>();
-
-  /**
-   * ONLY FOR TESTING AND DEMO PURPOSES TO DEMO MODAL
-   */
-  const dispatch = useDispatch();
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const closeModal = () => setModalVisible(!modalVisible);
-  const modalSubmit = (button1: boolean, button2: boolean) => {
-    if (button1) {
-      console.log('Button 1 Pressed');
-    } else {
-      console.log('Button 2 Pressed');
-    }
-  };
+  let counter = 0;
 
   return (
-    <View style={styles.container}>
-      <GeneralModal
-        title="Cool Modal"
-        subtitle="Long description of something cool and awesome and I can't think of anything else to say"
-        visible={modalVisible}
-        closeModal={closeModal}
-        numButtons={2}
-        buttonOneTitle="Save"
-        buttonTwoTitle="Delete"
-        modalSubmit={modalSubmit}
-      />
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'space-between'
+      }}
+    >
       <View style={styles.topContainer}>
-        <Text style={styles.title}>Welcome Back</Text>
+        <Header title="Welcome Back" showCartButton={false} />
         <LogoutButton />
       </View>
       <View style={styles.donationHeader}>
-        <Text style={styles.standardText}>Current Ongoing Donation</Text>
+        <Text style={styles.standardText}>Current donation</Text>
       </View>
-      <View style={styles.donationContainer}>
-        <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date</Text>
-        <Pressable
-          onPress={() => {
-            navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
-          }}
-        >
-          <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
-            <Text style={{ fontSize: 12, color: 'rgba(75, 120, 203, 1)' }}>View</Text>
-            <AntDesign name="right" size={18} color="rgba(75, 120, 203, 1)" />
-          </View>
-        </Pressable>
-      </View>
+      {
+        userDonations.map((donations: DonationForm) => {
+          if (donations.ongoing) {
+            return (
+              <View style={styles.donationContainer} key={donations._id}>
+                <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
+                <Pressable
+                  onPress={() => {
+                    navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
+                  }}
+                >
+                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
+                    <Text style={{ fontSize: 12 }}>View</Text>
+                    <AntDesign name="right" size={16} />
+                  </View>
+                </Pressable>
+              </View>
+            );
+          } else {
+            // eslint-disable-next-line no-plusplus
+            counter++;
+            if (counter === userDonations.length) {
+              return (
+                <View style={styles.donationHeader}>
+                  <Text>You currently have no ongoing donations.</Text>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          }
+        })
+      }
       <View style={styles.boxesContainer}>
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            navigation.navigate('MyDishes');
+            navigation.navigate('Me');
           }}
         >
           <Text style={styles.standardText}>My Dishes</Text>
@@ -97,17 +102,42 @@ function HomeScreen() {
           style={styles.boxes}
           onPress={() => {
             // navigation.navigate('AllDonations');
-            setModalVisible(!modalVisible);
           }}
         >
-          <Text style={styles.standardText}>Test Modal Dish</Text>
+          <Text style={styles.standardText}>All Donations</Text>
         </Pressable>
       </View>
       <View style={styles.contact}>
-        <Text style={[styles.standardText, { marginBottom: 10 }]}>Umi Feeds</Text>
-        <Text style={{ fontSize: 12, color: 'rgba(62, 62, 62, 1)' }}>Contact</Text>
+        <View style={{
+          // flex: 1
+        }}
+        >
+          <Text style={[styles.standardText, { marginBottom: 10 }]}>Umi Feeds contact</Text>
+          <Text style={styles.field}>
+            Phone
+          </Text>
+          <Text onPress={() => {
+            Linking.openURL('tel:6787185864');
+          }}
+          >
+            678-718-5864
+          </Text>
+          <Text style={styles.field}>
+            Email
+          </Text>
+          <Text onPress={() => {
+            Linking.openURL('mailto:umi@umifeeds.org');
+          }}
+          >
+            umi@umifeeds.org
+          </Text>
+        </View>
+        <Logo style={{
+          flexShrink: 1
+        }}
+        />
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -116,21 +146,18 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: 'white',
   },
   standardText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '500',
     color: 'rgba(62, 62, 62, 1)',
   },
   topContainer: {
-    width: 315,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: moderateScale(10),
-    marginBottom: moderateScale(25),
+    marginTop: moderateScale(20),
+    marginBottom: moderateScale(0),
     marginHorizontal: 30,
   },
   title: {
@@ -139,7 +166,6 @@ const styles = StyleSheet.create({
     color: 'rgba(252, 136, 52, 1)',
   },
   donationHeader: {
-    width: 315,
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginHorizontal: 30
@@ -147,20 +173,15 @@ const styles = StyleSheet.create({
   donationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: 315,
     height: 75,
     borderWidth: 2,
     borderColor: 'rgba(252, 136, 52, 1)',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    borderRadius: 10,
     marginHorizontal: 30,
     marginTop: 18,
-    marginBottom: 47
+    marginBottom: 15
   },
   boxesContainer: {
-    width: 315,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal: 30,
@@ -171,20 +192,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 138,
     height: 193,
-    backgroundColor: 'rgba(225, 235, 247, 1)',
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    backgroundColor: 'rgba(255, 216, 196, 1)',
+    borderRadius: 10
   },
   contact: {
-    width: 315,
     marginHorizontal: 30,
-    marginBottom: 142,
+    marginBottom: 20,
+    flexDirection: 'row',
+    overflow: 'hidden'
   },
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
   },
+  field: {
+    fontWeight: '700',
+    color: 'gray',
+    fontSize: 11,
+    marginBottom: 2
+  }
 });

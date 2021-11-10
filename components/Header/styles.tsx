@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '500',
     // fontFamily: 'Roboto',
     paddingVertical: 0,

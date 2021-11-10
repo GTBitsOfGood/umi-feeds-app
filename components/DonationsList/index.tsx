@@ -22,7 +22,7 @@ export default function DonationsList() {
     axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setDonations(res.data.donations))
       .catch((error) => logAxiosError(error))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading({ loading: false }));
   }, []);
 
   const onRefresh = React.useCallback(() => {
@@ -33,7 +33,7 @@ export default function DonationsList() {
         setRefreshing(false);
       })
       .catch((error) => logAxiosError(error))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading({ loading: false }));
   }, []);
 
   const ongoingDonations: JSX.Element[] = [];
