@@ -9,8 +9,20 @@ import ReviewContactScreen from '../../../screens/DonationForm/ReviewScreen/Revi
 import {
   DonateTabParamList,
 } from './types';
+import { Dish } from '../../../screens/Dishes/DishProfileScreen/types';
 
 const DonationScreenStack = createStackNavigator<DonateTabParamList>();
+
+const MockDish = {
+  _id: 'flkjawfjf',
+  dishName: 'Cheesy Garlic Chicken Parmesan',
+  cost: 8.00,
+  pounds: 2,
+  allergens: ['Walnuts', 'Peanuts', 'Gluten'],
+  imageLink: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-202102-airfryerchickenparm-180-ls-1612561654.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*',
+  favorite: true,
+  comments: '',
+} as Dish;
 
 function DonateTab() {
   return (
@@ -33,7 +45,8 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="DishProfile"
         component={DishProfileScreen}
-        options={{ headerTitle: 'New Dish', headerShown: false }}
+        options={{ headerTitle: 'New Dish', headerShown: false }} // @ts-ignore typescript upset about initialParams
+        initialParams={{ dish: MockDish, canEdit: true }}
       />
       <DonationScreenStack.Screen
         name="DishSearch"
