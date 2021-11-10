@@ -16,7 +16,8 @@ import { logAxiosError } from '../../utils';
 import { store } from '../../redux/store';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 
-function DishForm(props: { dish?: Dish }) {
+// eslint-disable-next-line react/no-unused-prop-types
+function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
   const [dishName, setDishName] = useState(props.dish?.dishName ?? '');
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
@@ -44,7 +45,6 @@ function DishForm(props: { dish?: Dish }) {
   };
 
   const handleSubmit = () => {
-    console.log(isFormValid());
     if (isFormValid()) {
       dispatch(setLoading({ loading: true }));
       const formData = new FormData();
@@ -53,9 +53,7 @@ function DishForm(props: { dish?: Dish }) {
         setUploadImage(file.uri);
         formData.append('dishImage', file as any);
       }
-      console.log(DishObj);
       formData.append('json', JSON.stringify(DishObj));
-      console.log('Submitting dish form');
       axios.post(`/api/dishes?id=${store.getState().auth._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -63,7 +61,6 @@ function DishForm(props: { dish?: Dish }) {
         }
       })
         .then((res) => {
-          console.log(res.data);
           setDishResponse(res.data.dishForm);
           dispatch(addDish(res.data.dishForm)); // backend returns object with name "dishForm" on successful response
         })
@@ -80,6 +77,7 @@ function DishForm(props: { dish?: Dish }) {
   const donateQuantityModalSubmit = (quantity: DonationDishes) => {
     setQuantity(quantity);
     dispatch(addToCart(quantity));
+    return props.onSuccessfulDishSubmit();
   };
 
   // Check that the required inputs are all filled, allergens only requires one to be checked.

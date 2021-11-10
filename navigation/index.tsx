@@ -48,12 +48,10 @@ function RootNavigator() {
         <>
           <Stack.Screen name="Root" component={TabComponent} />
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
         </>
       ) : (
         <>
           <Stack.Screen name="Login" component={LoginStack} />
-          <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
         </>
       )
       }

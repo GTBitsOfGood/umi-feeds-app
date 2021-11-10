@@ -14,6 +14,7 @@ import Pencil from '../../../assets/images/pencil.svg';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
 import { resetCart } from '../../../redux/reducers/donationCartReducer';
+import { addDonation } from '../../../redux/reducers/authReducer';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
@@ -133,12 +134,12 @@ export default function ReviewContactScreen(props: ThemeProps) {
               }));
               dispatch(setLoading({ loading: true }));
               formdata.append('description', 'Check app for details');
-              axios.post(`/api/donationform?id=${authState._id}`, formdata).then(() => {
+              axios.post(`/api/donationform?id=${authState._id}`, formdata).then((res) => {
+                console.log(res.data);
+                dispatch(addDonation(res.data.donationform));
                 toggleModal();
               }).catch((err) => {
                 console.error(err);
-              }).finally(() => {
-                dispatch(setLoading({ loading: false }));
               });
             }}
           >

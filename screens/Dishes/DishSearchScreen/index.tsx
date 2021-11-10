@@ -12,14 +12,14 @@ import { Text, View } from '../../../style/Themed';
 import Header from '../../../components/Header';
 import ChevronButton from '../../../components/ChevronButton';
 import styles from '../../../components/DonationForm/styles';
-import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
+import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { Dish, DonationDishes } from '../../../types';
 import { addToCart, removeDishFromCart } from '../../../redux/reducers/donationCartReducer';
 import DonateQuantityModal from '../../../components/DonateQuantityModal';
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
+  StackNavigationProp<DonateTabParamList, 'DishSearch'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
