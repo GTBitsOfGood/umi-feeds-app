@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -43,78 +44,76 @@ function DonateSchedulePickupScreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1, flexDirection: 'column', justifyContent: 'center' }} behavior="padding">
-      <ScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }}>
-        <Pressable onPress={() => navigation.goBack()}>
-          <View style={{ flexDirection: 'row', marginTop: '5%' }}>
-            <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
-            <Text style={{ fontSize: 16, color: '#F37B36', fontWeight: '400', marginLeft: 4 }}>
-              Your Address
-            </Text>
-          </View>
-        </Pressable>
-        <Header title="Pickup time" showCartButton={false} />
-        <Text style={styles.description}>
-          Schedule the date and time for your donation pickup.
-        </Text>
-        <Text style={styles.subsection}>
-          Pickup Date
-        </Text>
-        <View style={styles.dateInput}>
-          <PlatformDatePicker
-            datetime={pickupDate}
-            setDatetime={setPickupDate}
-          />
+    <KeyboardAwareScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }} resetScrollToCoords={{ x: 0, y: 0 }} keyboardOpeningTime={0} extraHeight={150}>
+      <Pressable onPress={() => navigation.goBack()}>
+        <View style={{ flexDirection: 'row', marginTop: '5%' }}>
+          <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
+          <Text style={{ fontSize: 16, color: '#F37B36', fontWeight: '400', marginLeft: 4 }}>
+            Your Address
+          </Text>
         </View>
-        <Text style={styles.subsection}>
-          Pickup time window
-        </Text>
-        <View style={styles.pickupWindowContainer}>
-          <View style={styles.timeItem}>
-            <View style={styles.timeWithText}>
-              <Text style={styles.pickupText}>Earliest time for food pickup </Text>
-              <PlatformTimePicker
-                datetime={startTime}
-                setDatetime={setStartTime}
-              />
-            </View>
-          </View>
-          <View style={styles.timeItem}>
-            <View style={styles.timeWithText}>
-              <Text style={styles.pickupText}>Latest time for food pickup. Before end of Day!</Text>
-              <PlatformTimePicker
-                datetime={endTime}
-                setDatetime={setEndTime}
-              />
-            </View>
-          </View>
-        </View>
-        <Text style={styles.subsection}>
-          Pickup Instructions (optional)
-        </Text>
-        <View style={styles.commentInput}>
-          <KeyboardAvoidingView>
-            <Input
-              value={pickupInstructions}
-              placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
-              onChangeText={(instructions: string) => setPickupInstructions(instructions)}
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 15, width: '100%', textAlignVertical: 'top' }}
-              multiline
+      </Pressable>
+      <Header title="Pickup time" showCartButton={false} />
+      <Text style={styles.description}>
+        Schedule the date and time for your donation pickup.
+      </Text>
+      <Text style={styles.subsection}>
+        Pickup Date
+      </Text>
+      <View style={styles.dateInput}>
+        <PlatformDatePicker
+          datetime={pickupDate}
+          setDatetime={setPickupDate}
+        />
+      </View>
+      <Text style={styles.subsection}>
+        Pickup time window
+      </Text>
+      <View style={styles.pickupWindowContainer}>
+        <View style={styles.timeItem}>
+          <View style={styles.timeWithText}>
+            <Text style={styles.pickupText}>Earliest time for food pickup </Text>
+            <PlatformTimePicker
+              datetime={startTime}
+              setDatetime={setStartTime}
             />
-          </KeyboardAvoidingView>
+          </View>
         </View>
-        <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20) }}>
-          <Pressable
-            disabled={isFormValid()}
-            style={isFormValid() ? styles.unfilledButton : styles.filledButton}
-            onPress={handleSubmit}
-          >
-            <Text style={styles.reviewText}>Review</Text>
-          </Pressable>
+        <View style={styles.timeItem}>
+          <View style={styles.timeWithText}>
+            <Text style={styles.pickupText}>Latest time for food pickup. Before end of Day!</Text>
+            <PlatformTimePicker
+              datetime={endTime}
+              setDatetime={setEndTime}
+            />
+          </View>
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      </View>
+      <Text style={styles.subsection}>
+        Pickup Instructions (optional)
+      </Text>
+      <View style={styles.commentInput}>
+        <KeyboardAvoidingView>
+          <Input
+            value={pickupInstructions}
+            placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
+            onChangeText={(instructions: string) => setPickupInstructions(instructions)}
+            inputContainerStyle={{ borderBottomWidth: 0 }}
+            style={{ fontSize: 15, width: '100%', textAlignVertical: 'top' }}
+            multiline
+          />
+        </KeyboardAvoidingView>
+      </View>
+      <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20) }}>
+        <Pressable
+          disabled={isFormValid()}
+          style={isFormValid() ? styles.unfilledButton : styles.filledButton}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.reviewText}>Review</Text>
+        </Pressable>
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 
