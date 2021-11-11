@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, ImageBackground, ScrollView } from 'react-native';
+import { StyleSheet, ImageBackground, ScrollView, Route } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Text, View } from '../../../style/Themed';
-import { Dish } from './types';
 import { ChevronButton } from '../../../components';
 import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import NoImageAvailable from '../../../assets/images/NoImageAvailable.jpeg';
 
 import { moderateScale } from '../../../util/index';
 
@@ -18,33 +18,22 @@ type DonationScreenProp = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
-const MockDish = {
-  _id: 'flkjawfjf',
-  dishName: 'Cheesy Garlic Chicken Parmesan',
-  cost: 8.00,
-  pounds: 2,
-  allergens: ['Walnuts', 'Peanuts', 'Gluten'],
-  imageLink: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-202102-airfryerchickenparm-180-ls-1612561654.jpg?crop=1.00xw:1.00xh;0,0&resize=980:*',
-  favorite: true,
-  comments: '',
-} as Dish;
-
-export default function DishProfileScreen() {
+export default function DishProfileScreen({ route }:Route) {
   const navigation = useNavigation<DonationScreenProp>();
 
   const allergens = [];
-  for (let i = 0; i < MockDish.allergens.length; i += 1) {
-    if (i === MockDish.allergens.length - 1) {
-      allergens.push(<Text key={i}>{MockDish.allergens[i]}</Text>);
+  for (let i = 0; i < route.params.dish.allergens.length; i += 1) {
+    if (i === route.params.dish.allergens.length - 1) {
+      allergens.push(<Text key={i}>{route.params.dish.allergens[i]}</Text>);
     } else {
-      allergens.push(<Text key={i}>{MockDish.allergens[i]}, </Text>);
+      allergens.push(<Text key={i}>{route.params.dish.allergens[i]}, </Text>);
     }
   }
 
   const comm = [];
-  if (MockDish.comments !== '') {
-    comm.push(<Text style={styles.detailLabel} key={MockDish._id}>{MockDish.comments === '' ? '' : 'Additional comment(s)'}</Text>);
-    comm.push(<Text key={1} style={styles.detailValue}>{MockDish.comments}</Text>);
+  if (route.params.dish.comments !== '') {
+    comm.push(<Text style={styles.detailLabel} key={route.params.dish._id}>{route.params.dish.comments === '' ? '' : 'Additional comment(s)'}</Text>);
+    comm.push(<Text key={1} style={styles.detailValue}>{route.params.dish.comments}</Text>);
   }
 
   const [quantity, setQuantity] = useState(0);
@@ -67,7 +56,7 @@ export default function DishProfileScreen() {
       </View>
       <View style={styles.imgContainer}>
         <ImageBackground
-          source={{ uri: MockDish.imageLink }}
+          source={route.params.dish.imageLink !== '' ? { uri: route.params.dish.imageLink } : NoImageAvailable}
           imageStyle={{
             borderRadius: 4,
             alignSelf: 'center',
@@ -78,7 +67,7 @@ export default function DishProfileScreen() {
           }}
         >
           <Icon
-            name={MockDish.favorite ? 'star' : 'star-o'}
+            name={route.params.dish.favorite ? 'star' : 'star-o'}
             size={30}
             color="#F37B36"
             style={{
@@ -92,7 +81,7 @@ export default function DishProfileScreen() {
         </ImageBackground>
       </View>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={styles.title}>{MockDish.dishName}</Text>
+        <Text style={styles.title}>{route.params.dish.dishName}</Text>
         <View style={{ flexDirection: 'column', marginLeft: 15 }}>
           <Icon
             name="pencil"
@@ -106,42 +95,46 @@ export default function DishProfileScreen() {
         <View style={{ flexDirection: 'row' }}>
           <View>
             <Text style={styles.detailLabel}>Price per Serving</Text>
-            <Text style={styles.detailValue}>$ {MockDish.cost.toString()}</Text>
+            <Text style={styles.detailValue}>$ {route.params.dish.cost.toString()}</Text>
           </View>
           <View>
             <Text style={styles.detailLabel}>Weight per Serving</Text>
-            <Text style={styles.detailValue}>{MockDish.pounds} lbs</Text>
+            <Text style={styles.detailValue}>{route.params.dish.pounds} lbs</Text>
           </View>
         </View>
         <View>
-          <Text style={styles.detailLabel} key={MockDish._id}>Allergen(s)</Text>
+          <Text style={styles.detailLabel} key={route.params.dish._id}>Allergen(s)</Text>
           <Text style={styles.detailValue}>{allergens}</Text>
         </View>
         <View>{comm}</View>
       </View>
-      <View style={styles.quantityContainer}>
-        <Text style={styles.quantityLabel}>Quantity</Text>
-        <View style={styles.quantityController}>
-          <Icon.Button
-            name="minus"
-            size={20}
-            color="#5D5D5D"
-            backgroundColor="transparent"
-            onPress={onMinus}
-          />
-          <Text style={styles.quantityCount}>{quantity}</Text>
-          <Icon.Button
-            name="plus"
-            size={20}
-            color="#5D5D5D"
-            backgroundColor="transparent"
-            onPress={onPlus}
-          />
-        </View>
-      </View>
-      <TouchableOpacity style={styles.addToListButton}>
-        <Text style={styles.addToListText}>Add to donation list ({quantity})</Text>
-      </TouchableOpacity>
+      { (route.params.canEdit) ?? (
+        <>
+          <View style={styles.quantityContainer}>
+            <Text style={styles.quantityLabel}>Quantity</Text>
+            <View style={styles.quantityController}>
+              <Icon.Button
+                name="minus"
+                size={20}
+                color="#5D5D5D"
+                backgroundColor="transparent"
+                onPress={onMinus}
+              />
+              <Text style={styles.quantityCount}>{quantity}</Text>
+              <Icon.Button
+                name="plus"
+                size={20}
+                color="#5D5D5D"
+                backgroundColor="transparent"
+                onPress={onPlus}
+              />
+            </View>
+          </View>
+          <TouchableOpacity style={styles.addToListButton}>
+            <Text style={styles.addToListText}>Add to donation list ({quantity})</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </ScrollView>
   );
 }

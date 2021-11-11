@@ -2,7 +2,7 @@ import React from 'react';
 import axios, { AxiosError } from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, batch } from 'react-redux';
 import { Alert } from 'react-native';
 import { LoginStackParamList } from '../../navigation/LoginStack/types';
 import { AddressForm } from '../../components';
@@ -12,6 +12,7 @@ import { RootState } from '../../redux/rootReducer';
 import { Address } from '../../types';
 import { login } from '../../redux/reducers/authReducer';
 import { reset } from '../../redux/reducers/OnboardingReducer';
+import { setLoading } from '../../redux/reducers/loadingReducer';
 
 type OnboardingAddressFormProp = StackNavigationProp<LoginStackParamList, 'OnboardingAddressForm'>
 
@@ -25,6 +26,7 @@ export default function AddressOnboardingForm() {
   const goBack = () => navigation.goBack();
 
   const onSubmit = (addressObj: Address | null) => {
+    dispatch(setLoading({ loading: true }));
     axios.post('/signup', {
       name: onboardingState.name,
       businessName: onboardingState.businessName,
@@ -42,8 +44,11 @@ export default function AddressOnboardingForm() {
       const user = res.data;
       user.jwt = onboardingState.jwt;
       user.authenticated = true;
-      dispatch(reset());
-      dispatch(login(user));
+      batch(() => {
+        dispatch(reset());
+        dispatch(login(user));
+        dispatch(setLoading({ loading: false }));
+      });
     }).catch((err: AxiosError) => {
       Alert.alert('Authentication error! Please try again at another time');
     });

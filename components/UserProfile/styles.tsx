@@ -15,17 +15,18 @@ const styles = StyleSheet.create({
     marginBottom: 0
   },
   title: {
-    fontSize: 48,
+    fontSize: 30,
     fontWeight: 'bold',
-    color: '#FC8834',
+    color: '#202020',
     paddingVertical: 10,
+    marginBottom: 20
   },
   heading: {
     fontStyle: 'normal',
     fontWeight: 'bold',
     fontSize: 18,
     lineHeight: 23,
-    color: '#FC8834',
+    color: '#202020',
     marginBottom: 20,
     marginTop: 10,
   },

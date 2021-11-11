@@ -19,6 +19,7 @@ import { Dish, DonationDishes } from '../../types';
 
 // import components
 import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
+import { setLoading } from '../../redux/reducers/loadingReducer';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,

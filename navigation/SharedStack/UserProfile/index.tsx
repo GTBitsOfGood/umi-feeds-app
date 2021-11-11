@@ -13,7 +13,7 @@ export default function UserProfileScreenNavigator() {
       <UserProfileScreenStack.Screen
         name="UserProfileScreen"
         component={UserProfileScreen}
-        options={{ headerTitle: 'My Account' }}
+        options={{ headerTitle: 'My Account', headerShown: false }}
       />
       <UserProfileScreenStack.Screen
         name="EditUserProfileScreen"

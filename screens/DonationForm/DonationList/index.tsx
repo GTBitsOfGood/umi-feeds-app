@@ -20,14 +20,14 @@ import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types'
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
 import {
-  setDonationList,
-  deleteDonationList,
+  removeDishFromCart,
   updateQty,
 } from '../../../redux/reducers/donationCartReducer';
 import { ChevronButton, Header } from '../../../components';
 
 import { moderateScale } from '../../../util';
 import DonateQuantityModal from '../../../components/DonateQuantityModal';
+import { Dish, DonationDishes } from '../../../types';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
@@ -39,6 +39,20 @@ const DonationListScreen = () => {
 
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state);
+
+  const [dishMap, setDishMap] = React.useState(new Map());
+
+  const getDishFromID = (dishID:string) => {
+    if (dishMap.size !== state.auth.dishes.length || dishMap.get(dishID) === undefined) {
+      const newDishMap = new Map();
+      state.auth.dishes.forEach((dish:Dish) => {
+        newDishMap.set(dish._id, dish);
+      });
+      setDishMap(newDishMap);
+      return newDishMap.get(dishID);
+    }
+    return dishMap.get(dishID);
+  };
 
   return (
     <Provider>
@@ -63,14 +77,15 @@ const DonationListScreen = () => {
           {
             state.donationCart.donationDishes.length === 0 ? null : (
               <ScrollView>
-                {state.donationCart.donationDishes.map((item: any, i: any) => (
-                  <Row key={item._id} item={item} i={i} />
-                ))}
+                {state.donationCart.donationDishes.map(
+                  (item: any) => <Row key={item.dishID} donationDish={item} dish={getDishFromID(item.dishID)} />
+                )}
               </ScrollView>
             )
           }
         </View>
-        <View
+        <Pressable
+          onPress={() => navigation.navigate('DonateHomeScreen')}
           style={{
             marginTop: 20,
             justifyContent: 'center',
@@ -85,7 +100,7 @@ const DonationListScreen = () => {
           <Text style={{ fontSize: 17, fontWeight: 'bold', color: '#F37B36' }}>
             + Add Dishes to donate
           </Text>
-        </View>
+        </Pressable>
         <Pressable
           onPress={() => navigation.navigate('AddressScreen')}
           style={{
@@ -108,32 +123,38 @@ const DonationListScreen = () => {
   );
 };
 
+type RowInfo = {
+    donationDish: DonationDishes;
+    dish: Dish;
+}
+
 export default DonationListScreen;
 
-function Row({ item, i }: any) {
+function Row({ donationDish, dish }: RowInfo) {
   const [visible, setVisible] = React.useState(false);
+
+  const navigation = useNavigation<DonationScreenProp>();
 
   const openMenu = () => setVisible(true);
 
   const closeMenu = () => setVisible(false);
   const dispatch = useDispatch();
   const removeDish = () => {
-    dispatch(deleteDonationList(item));
+    dispatch(removeDishFromCart(donationDish.dishID));
     setVisible(false);
   };
 
   const changeQuantity = (quantity: any) => {
     setshowQuantity(false);
-    dispatch(updateQty({ item, quantity }));
+    dispatch(updateQty({ dish: donationDish, quantity }));
   };
   const setQuantity = (evnt: any) => {
     setQty(evnt);
   };
   const [showQuantity, setshowQuantity] = React.useState(false);
-  const [quantity, setQty] = React.useState(item.quantity);
+  const [quantity, setQty] = React.useState(donationDish.quantity);
   return (
     <View
-      key={i}
       style={{
         flexDirection: 'row',
         height: 50,
@@ -145,7 +166,7 @@ function Row({ item, i }: any) {
       }}
     >
       <View style={{ flex: 8 }}>
-        <Text style={{ fontSize: 15 }}>{item.dishID}</Text>
+        <Text style={{ fontSize: 15 }}>{dish !== undefined ? dish.dishName : donationDish._id}</Text>
       </View>
       <View
         style={{
@@ -154,7 +175,7 @@ function Row({ item, i }: any) {
           justifyContent: 'space-between',
         }}
       >
-        <Text style={{ fontSize: 15 }}>{item.quantity}</Text>
+        <Text style={{ fontSize: 15 }}>{donationDish.quantity}</Text>
         <View>
           <Menu
             style={{ marginTop: -100, marginLeft: -30 }}
@@ -174,7 +195,12 @@ function Row({ item, i }: any) {
               </TouchableOpacity>
             )}
           >
-            <Menu.Item onPress={() => { }} title="View Dish " />
+            <Menu.Item
+              onPress={() => { // @ts-ignore passing params to navigation screen causing typescript confusion
+                navigation.navigate('DishProfile', { dish, canEdit: true });
+              }}
+              title="View Dish "
+            />
             <Menu.Item
               onPress={() => {
                 setshowQuantity(true);
@@ -188,7 +214,7 @@ function Row({ item, i }: any) {
       </View>
       <DonateQuantityModal
         visible={showQuantity}
-        dishObj={item}
+        dishObj={dish}
         closeModal={() => {
           setshowQuantity(false);
         }}

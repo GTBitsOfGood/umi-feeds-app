@@ -10,9 +10,11 @@ import { useSelector } from 'react-redux';
 import styles from './styles';
 import { Text } from '../../style/Themed';
 import { RootState } from '../../redux/rootReducer';
+import Header from '../Header';
 
 import { UserProfileScreenParamList } from '../../navigation/SharedStack/UserProfile/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+import LogoutButton from '../../components/Auth/LogoutButton';
 
 type ProfileScreenProp = CompositeNavigationProp<
     StackNavigationProp<UserProfileScreenParamList, 'UserProfileScreen'>,
@@ -34,14 +36,14 @@ export default function UserProfile() {
       <ScrollView
         contentContainerStyle={styles.scrollView}
       >
-        <Text style={styles.title}>My Account</Text>
+        <Text style={styles.title}>Profile</Text>
         <View style={{ marginBottom: 40, alignItems: 'center', justifyContent: 'center' }}>
           <View style={styles.profilePicture} />
           <Text style={styles.info}>{`${authState.name}`}</Text>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.heading}>Personal Identification </Text>
-          <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
+          {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
         </View>
 
         <Text style={styles.body}>Phone Number</Text>
@@ -51,12 +53,13 @@ export default function UserProfile() {
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text style={styles.heading}>Business Information</Text>
-          <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
+          {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
         </View>
         <Text style={styles.body}>Name</Text>
         <Text style={styles.description}>{authState.businessName || 'No Business Name'}</Text>
         <Text style={styles.body}>Address{authState.pickupAddresses.length > 1 ? 'es' : ''}</Text>
         <Text style={styles.description}>{fullAddress}</Text>
+        <LogoutButton />
       </ScrollView>
     </View>
   );

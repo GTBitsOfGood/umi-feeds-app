@@ -13,6 +13,7 @@ import ProfileNavigator from '../SharedStack/UserProfile';
 import {
   BottomTabParamList,
 } from './types';
+import DonationsList from '../../components/DonationsList';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 

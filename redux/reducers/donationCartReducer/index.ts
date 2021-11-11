@@ -47,12 +47,12 @@ const donationCartReducer = createSlice({
       const list = state.dishes.filter((f: any) => f._id !== action.payload._id);
       state.donationDishes = list;
     },
-    updateQty(state: any, action) {
-      const item = state.donationDishes.filter((f: any) => f._id === action.payload.item._id)[0];
+    updateQty(state, action: PayloadAction<{dish:DonationDishes, quantity:number}>) {
+      const item = state.donationDishes.filter((f: any) => f.dishID === action.payload.dish.dishID)[0];
       const list = state.donationDishes;
       for (let index = 0; index < list.length; index += 1) {
-        if (list[index]._id === item._id) {
-          list[index].quantity = action.payload.quantity;
+        if (list[index].dishID === item.dishID) {
+          list[index].quantity = action.payload?.quantity;
         }
       }
       state.donationDishes = list;
