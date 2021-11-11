@@ -1,99 +1,132 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { ScrollView, RefreshControl, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, View, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { DateTime } from 'luxon';
+import { useSelector } from 'react-redux';
 import { Text } from '../../style/Themed';
-import { Donation } from '../../types';
+import { DonationForm, DonationDishes, Address, Dish } from '../../types';
 import { DonationsListScreenParamList } from '../../navigation/AdminStack/DonationList/types';
-import { store } from '../../redux/store';
-import { logAxiosError } from '../../utils';
+import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
+import { orangeColor } from '../Button/styles';
+import { RootState } from '../../redux/rootReducer';
+import { ChevronButton } from '..';
+import { moderateScale } from '../../util/index';
 import styles from './styles';
 
 type DonationListBoxProps = StackNavigationProp<DonationsListScreenParamList, 'DonationsListScreen'>
+type HomeScreenProps = StackNavigationProp<HomeScreenParamList, 'Home'>
 
 export default function DonationsList() {
-  const [isLoading, setLoading] = useState<boolean>(true);
-  const [donations, setDonations] = useState<Donation[]>([]);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const authState = useSelector((state: RootState) => state.auth);
+  const navigation = useNavigation<HomeScreenProps>();
 
-  useEffect(() => {
-    axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
-      .then((res) => setDonations(res.data.donations))
-      .catch((error) => logAxiosError(error))
-      .finally(() => setLoading({ loading: false }));
-  }, []);
+  const [selectedList, setSelectedList] = useState('');
 
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    axios.get<{ donations: Donation[] }>('/api/donations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
-      .then((res) => {
-        setDonations(res.data.donations);
-        setRefreshing(false);
-      })
-      .catch((error) => logAxiosError(error))
-      .finally(() => setLoading({ loading: false }));
-  }, []);
-
-  const ongoingDonations: JSX.Element[] = [];
-  const pastDonations: JSX.Element[] = [];
-  if (!isLoading) {
-    donations.forEach((donation) => {
-      if (donation.pickup !== undefined && 'pickupTime' in donation.pickup) {
-        pastDonations.push(<DonationListBox
-          key={donation._id}
-          {...donation}
-        />);
-      } else {
-        ongoingDonations.push(<DonationListBox
-          key={donation._id}
-          {...donation}
-        />);
-      }
-    });
-  }
+  const setId = (id?: string) => {
+    if (id) {
+      setSelectedList(id);
+    }
+  };
 
   return (
     <View style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scrollView}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
-        <Text style={styles.title}>All Donations</Text>
+        <ChevronButton text="Back" onPress={() => navigation.navigate('Home')} />
+        <Text style={styles.title}>My donations</Text>
         <Text style={styles.subtitle}>Ongoing Donations</Text>
-        {ongoingDonations}
-        <Text style={styles.subtitle}>Completed Donations</Text>
-        {pastDonations}
+        {
+          authState.donations.map((donation) => {
+            if (donation.ongoing) {
+              return (
+                <DonationListBox
+                  key={donation._id}
+                  donation={donation}
+                  selectedId={selectedList}
+                  setSelectedList={setId}
+                  dishes={authState.dishes}
+                />
+              );
+            } else {
+              return null;
+            }
+          })
+        }
+        <Text style={styles.subtitle}>Past Donations</Text>
+        {
+          authState.donations.map((donation) => {
+            if (!donation.ongoing) {
+              return (
+                <DonationListBox
+                  key={donation._id}
+                  donation={donation}
+                  selectedId={selectedList}
+                  setSelectedList={setId}
+                  dishes={authState.dishes}
+                />
+              );
+            } else {
+              return null;
+            }
+          })
+        }
       </ScrollView>
     </View>
   );
 }
 
-function DonationListBox(donation: Donation) {
-  const navigation = useNavigation<DonationListBoxProps>();
-  const endTime = DateTime.fromISO(donation.availability.endTime).toLocaleString(DateTime.DATETIME_MED);
+function DonationListBox(props: { donation: DonationForm, selectedId: string, dishes: Dish[], setSelectedList: (param1?: string) => void }) {
+  const navigation = useNavigation<HomeScreenProps>();
+  const { dishes, donation } = props;
+  const endTime = props.donation.pickupEndTime.toLocaleString().slice(0, 9);
   let pickupTime = 'TBA';
   let color = '#FC8834';
-  if (donation.pickup !== undefined && 'pickupTime' in donation.pickup) {
-    pickupTime = DateTime.fromISO(donation.pickup.pickupTime).toLocaleString(DateTime.TIME_SIMPLE);
+  if (props.donation.pickupEndTime !== undefined) {
+    pickupTime = new Date(props.donation.pickupEndTime).toLocaleDateString('en-US');
     color = '#3E3E3E';
   }
+
+  // const donationDish = [];
+  // if (donation.dishes) {
+  //   for (let i = 0; i < donation.dishes.length; i += 1) {
+  //     const { dishID } = donation.dishes[i];
+  //     const numDish = dishes.length < 5 ? dishes.length : 5;
+  //     for (let j = 0; j < numDish; j += 1) {
+  //       console.log(dishes[j]._id);
+  //       if (dishes[j]._id === dishID) {
+  //         donationDish.push(dishes[j].dishName);
+  //         // donationDish.push(<Text style={{ color, fontSize: 14, flex: 1 }} key={props.donation.donationDishes[i]._id}>{dishes[j].dishName} ({props.donation.donationDishes[i].quantity})</Text>);
+  //       }
+  //     }
+  //   }
+  // }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        borderWidth: 1,
+    <Pressable
+      style={props.donation._id === props.selectedId ? {
         marginBottom: 10,
-        borderRadius: 20,
-        padding: 10,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
+        borderColor: orangeColor,
+        borderWidth: 2,
+        backgroundColor: 'rgba(243, 123, 54, 0.15)',
+        height: moderateScale(120),
+        borderRadius: 4
+      } : {
+        borderWidth: 2,
+        borderRadius: 4,
+        marginBottom: 10,
+        paddingVertical: 16,
+        paddingHorizontal: 18,
         borderColor: color,
-      }}
+        height: moderateScale(120) }}
+      onPress={() => props.setSelectedList(props.donation._id)}
     >
-      <View style={{ flex: 1, marginBottom: 10, flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ color, fontSize: 18, fontWeight: 'bold' }}>{endTime}</Text>
+      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ color, fontSize: 15, fontWeight: 'bold' }}>{endTime}</Text>
         <Text
-          style={{ color: '#4B78CB', fontSize: 16, fontWeight: 'bold' }}
+          style={{ color: '#5D5D5D', fontSize: 15, fontWeight: 'bold' }}
           onPress={() => navigation.navigate('DetailDonation', {
             donation
           })}
@@ -101,12 +134,19 @@ function DonationListBox(donation: Donation) {
           View ⟩
         </Text>
       </View>
-      <View style={{ flex: 1, marginBottom: 10 }}>
-        <Text style={{ color, fontSize: 14 }}>{donation.description}</Text>
+      {/* <View style={{ flex: 3, paddingVertical: 10 }}>
+        <Text>
+          {
+            donationDish.map((dish) => <Text style={{ color, fontSize: 14, flex: 1 }} key={dish}>{dish}, </Text>)
+          }
+        </Text>
+      </View> */}
+      <View style={{ flex: 2, marginVertical: 5 }}>
+        <Text style={{ color, fontSize: 15 }}>{donation.pickupInstructions}</Text>
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={{ color, fontSize: 14 }}>{`Picked up at: ${pickupTime}`}</Text>
+        <Text style={{ color, fontSize: 15 }}>{`Picked up at: ${pickupTime}`}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 }

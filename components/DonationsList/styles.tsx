@@ -10,21 +10,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: Dimensions.get('screen').width,
+    backgroundColor: 'white'
   },
   title: {
-    fontSize: 48,
+    fontSize: 32,
     fontWeight: 'bold',
-    color: '#FC8834',
-    paddingVertical: 10,
+    color: '#3E3E3E',
+    paddingTop: 28,
+    paddingBottom: 8,
   },
   subtitle: {
     fontStyle: 'normal',
     fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: 21,
     lineHeight: 23,
     color: '#3E3E3E',
-    marginBottom: 20,
-    marginTop: 10,
+    paddingBottom: 20,
+    paddingTop: 24
   }
 });
 
