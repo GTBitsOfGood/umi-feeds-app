@@ -50,10 +50,10 @@ function DetailDonationScreen(donation: DonationForm) {
   const authState = useSelector((state: RootState) => state.auth);
 
   const donationDish = [];
-  for (let i = 0; i < donation.route.params.donation.donationDishes.length; i += 1) {
-    let dishName = donation.route.params.donation.donationDishes[i].dishID;
+  for (let i = 0; i < donation.route.params.donation.dishes.length; i += 1) {
+    let dishName = donation.route.params.donation.dishes[i].dishID;
     for (let j = 0; j < authState.dishes.length; j += 1) {
-      if (authState.dishes[j]._id === donation.route.params.donation.donationDishes[i].dishID) {
+      if (authState.dishes[j]._id === donation.route.params.donation.dishes[i].dishID) {
         dishName = authState.dishes[i].dishName;
       }
     }
@@ -61,7 +61,7 @@ function DetailDonationScreen(donation: DonationForm) {
       <>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{dishName}</Text>
-          <Text>{donation.route.params.donation.donationDishes[i].quantity}</Text>
+          <Text>{donation.route.params.donation.dishes[i].quantity}</Text>
         </View>
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
       </>

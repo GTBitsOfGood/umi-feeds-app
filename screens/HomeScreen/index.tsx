@@ -88,7 +88,7 @@ function HomeScreen() {
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            navigation.navigate('MyDishes');
+            console.log('hello');
           }}
         >
           <Text style={styles.standardText}>My Dishes</Text>
@@ -97,7 +97,6 @@ function HomeScreen() {
           style={styles.boxes}
           onPress={() => {
             navigation.navigate('AllDonations');
-            setModalVisible(!modalVisible);
           }}
         >
           <Text style={styles.standardText}>Test Modal Dish</Text>
