@@ -15,6 +15,7 @@ import styles from './styles';
 import { logAxiosError } from '../../utils';
 import { store } from '../../redux/store';
 import { setLoading } from '../../redux/reducers/loadingReducer';
+import { GeneralModal } from '..';
 
 // eslint-disable-next-line react/no-unused-prop-types
 function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
@@ -30,6 +31,7 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   const [donateModalVisible, setDonateModalVisible] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const closeModal = () => setModalVisible(!modalVisible);
+  const closeDonateModal = () => setDonateModalVisible(!donateModalVisible);
   const [quantity, setQuantity] = useState<DonationDishes>();
   const [dishResponse, setDishResponse] = useState<Dish>();
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -44,7 +46,7 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
     favorite
   };
 
-  const handleSubmit = () => {
+  const handleModalSubmit = (yesPressed: boolean, noPressed: boolean) => {
     if (isFormValid()) {
       dispatch(setLoading({ loading: true }));
       const formData = new FormData();
@@ -70,6 +72,9 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
         }).finally(() => {
           dispatch(setLoading({ loading: false, desination: 'DonateHomeScreen' }));
         });
+    }
+    if (yesPressed) {
+      setModalVisible(!modalVisible);
     }
   };
 
@@ -110,45 +115,16 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
 
   return (
     <View style={styles.container}>
-      <Modal
-        animationType="fade"
-        transparent
+      <GeneralModal
+        title="Donate Dish?"
+        subtitle="Would you like to donate this dish today?"
+        numButtons={2}
+        buttonOneTitle="Yes"
+        buttonTwoTitle="No"
         visible={donateModalVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          closeModal();
-        }}
-      >
-        <View style={[styles.centeredView, donateModalVisible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : {}]}>
-          <HideKeyboardUtility>
-            <KeyboardAvoidingView behavior="padding" style={styles.modalView}>
-              <Text style={styles.modalText}>Donate Dish?</Text>
-              <Text style={styles.modalSubtitle}>
-                Would you like to donate this dish today?
-              </Text>
-              <Pressable
-                style={[styles.button, styles.saveButton]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                  setDonateModalVisible(!donateModalVisible);
-                  handleSubmit();
-                }}
-              >
-                <Text style={styles.textStyle}>Yes</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.cancelButton]}
-                onPress={() => {
-                  setDonateModalVisible(!donateModalVisible);
-                  handleSubmit();
-                }}
-              >
-                <Text style={styles.cancelTextStyle}>No</Text>
-              </Pressable>
-            </KeyboardAvoidingView>
-          </HideKeyboardUtility>
-        </View>
-      </Modal>
+        closeModal={closeDonateModal}
+        modalSubmit={handleModalSubmit}
+      />
       <DonateQuantityModal
         visible={modalVisible}
         dishObj={dishResponse}

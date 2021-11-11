@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Input } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -43,7 +44,7 @@ function DonateSchedulePickupScreen() {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }}>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }} resetScrollToCoords={{ x: 0, y: 0 }} keyboardOpeningTime={0} extraHeight={150}>
       <Pressable onPress={() => navigation.goBack()}>
         <View style={{ flexDirection: 'row', marginTop: '5%' }}>
           <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
@@ -112,7 +113,7 @@ function DonateSchedulePickupScreen() {
           <Text style={styles.reviewText}>Review</Text>
         </Pressable>
       </View>
-    </ScrollView>
+    </KeyboardAwareScrollView>
   );
 }
 

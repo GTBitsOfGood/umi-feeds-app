@@ -52,8 +52,7 @@ function ReviewDonationCart() {
           <Text style={styles.subHeader}>Donation list</Text>
           <Pressable
             onPress={() => {
-              // eslint-disable-next-line no-console
-              console.debug('Edit Button Pressed');
+              navigation.navigate('DonateListScreen');
             }}
           >
             <View style={{ justifyContent: 'center' }}>

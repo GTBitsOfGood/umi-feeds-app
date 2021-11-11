@@ -43,6 +43,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
       console.log('Button 2 Pressed');
     }
     dispatch(resetCart());
+    navigation.popToTop();
     navigation.navigate('Home');
   };
 
