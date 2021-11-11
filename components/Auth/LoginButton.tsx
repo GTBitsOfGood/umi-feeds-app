@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Alert, Platform, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, batch, useSelector } from 'react-redux';
 
 import jwtDecode from 'jwt-decode';
 import axios, { AxiosError } from 'axios';
@@ -13,11 +13,12 @@ import { login } from '../../redux/reducers/authReducer';
 import { beginOnboarding } from '../../redux/reducers/OnboardingReducer';
 import { decodedJwtToken } from '../../types';
 import { BeginOnboardingUser } from '../../redux/reducers/OnboardingReducer/types';
+import { setLoading } from '../../redux/reducers/loadingReducer/index'
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
 
-function LoginButton(props: {onUserNotFound: ()=>void}) {
+function LoginButton(props: { onUserNotFound: () => void }) {
   const dispatch = useDispatch();
 
   const { onUserNotFound } = props;
@@ -34,7 +35,7 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
       nonce: 'nonce',
     },
   },
-  { authorizationEndpoint: Auth0.authorizationEndpoint });
+    { authorizationEndpoint: Auth0.authorizationEndpoint });
 
   useEffect(() => {
     if (result) {
@@ -54,6 +55,8 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
         //   }
         // })
 
+        dispatch(setLoading({ loading: true }));
+
         // Now that we have the user access token we can request the user information from the backend
         axios.post(`/login/${userInfo.sub}`, {}).then((res) => {
           // This is the success condition: we have found the user based on the accesstoken
@@ -65,24 +68,28 @@ function LoginButton(props: {onUserNotFound: ()=>void}) {
           } else {
             return Alert.alert('Authentication error!');
           }
-        }).catch((err:AxiosError) => {
+        }).catch((err: AxiosError) => {
           // We actually expect an AxiosError with response code 303 if the user could not be located in
           // the database. In this case we should redirect to onboarding to sign up this new user.
           if (err.response !== null && err.response !== undefined && err.response?.status === 303) {
             // The name and jwt will be useful during onboarding even though we don't have any more user info
-            const onboardingUser:BeginOnboardingUser = {
+            const onboardingUser: BeginOnboardingUser = {
               name: `${userInfo.given_name} ${userInfo.family_name}`,
               auth0AccessToken: userInfo.sub,
               email: userInfo.name, // name field is email
               jwt: receivedToken,
             };
+
             dispatch(beginOnboarding(onboardingUser));
             return onUserNotFound();
           } else {
             // In this case it was actually an unexpected error
             return Alert.alert(`Authentication error! ${err.message}`);
           }
-        });
+        })
+          .finally(() => {
+            dispatch(setLoading({ loading: false, desination: 'Root' }));
+          });
       } else {
         Alert.alert('Authentication error!');
       }

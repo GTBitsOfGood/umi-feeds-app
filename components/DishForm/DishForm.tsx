@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { HideKeyboardUtility } from '../../util/index';
@@ -14,8 +14,10 @@ import { addToCart } from '../../redux/reducers/donationCartReducer';
 import styles from './styles';
 import { logAxiosError } from '../../utils';
 import { store } from '../../redux/store';
+import { setLoading } from '../../redux/reducers/loadingReducer';
 
-function DishForm(props: { dish?: Dish }) {
+// eslint-disable-next-line react/no-unused-prop-types
+function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
   const [dishName, setDishName] = useState(props.dish?.dishName ?? '');
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
@@ -30,6 +32,7 @@ function DishForm(props: { dish?: Dish }) {
   const closeModal = () => setModalVisible(!modalVisible);
   const [quantity, setQuantity] = useState<DonationDishes>();
   const [dishResponse, setDishResponse] = useState<Dish>();
+  const [favorite, setFavorite] = useState<boolean>(false);
 
   const DishObj = {
     dishName,
@@ -38,21 +41,19 @@ function DishForm(props: { dish?: Dish }) {
     allergens,
     imageLink: String(uploadImage), // link to azure image
     comments: String(comments),
-    favorite: true,
+    favorite
   };
 
   const handleSubmit = () => {
-    console.log(isFormValid());
     if (isFormValid()) {
+      dispatch(setLoading({ loading: true }));
       const formData = new FormData();
       if (uploadImage) {
         const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
         setUploadImage(file.uri);
         formData.append('dishImage', file as any);
       }
-      console.log(DishObj);
       formData.append('json', JSON.stringify(DishObj));
-      console.log('Submitting dish form');
       axios.post(`/api/dishes?id=${store.getState().auth._id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -60,13 +61,14 @@ function DishForm(props: { dish?: Dish }) {
         }
       })
         .then((res) => {
-          console.log(res.data);
           setDishResponse(res.data.dishForm);
           dispatch(addDish(res.data.dishForm)); // backend returns object with name "dishForm" on successful response
         })
         .catch((err) => {
           logAxiosError(err);
           Alert.alert('Cannot Submit Dish', 'There was an error submitting your dish, please try again.');
+        }).finally(() => {
+          dispatch(setLoading({ loading: false, desination: 'DonateHomeScreen' }));
         });
     }
   };
@@ -75,6 +77,7 @@ function DishForm(props: { dish?: Dish }) {
   const donateQuantityModalSubmit = (quantity: DonationDishes) => {
     setQuantity(quantity);
     dispatch(addToCart(quantity));
+    return props.onSuccessfulDishSubmit();
   };
 
   // Check that the required inputs are all filled, allergens only requires one to be checked.
@@ -188,6 +191,16 @@ function DishForm(props: { dish?: Dish }) {
               multiline
             />
           </View>
+          <CheckBox
+            containerStyle={styles.checkbox}
+            textStyle={{ fontWeight: 'normal' }}
+            title="Favorite Dish"
+            checkedColor="#F37B36"
+            checked={favorite}
+            onPress={() => {
+              setFavorite(!favorite);
+            }}
+          />
           <Text style={styles.subsection}>This dish may contain (required):</Text>
           <View style={styles.checkboxContainer}>
             <View style={styles.item}>

@@ -18,7 +18,7 @@ export default function Map() {
     axios.get<{ donation: Donation[] }>('/api/available-pickup', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => setAvailablePickup(res.data.donation))
       .catch((error) => logAxiosError(error))
-      .finally(() => setLoading(false));
+      .finally(() => setLoading({ loading: false }));
   }, []);
 
   // const pickUps = isLoading ? [] : availablePickup.map((donation) => (

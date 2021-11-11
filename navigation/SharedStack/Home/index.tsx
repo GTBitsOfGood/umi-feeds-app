@@ -21,7 +21,7 @@ function HomeScreenNavigator() {
       <HomeScreenStack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerTitle: 'Home' }}
+        options={{ headerTitle: 'Home', headerShown: false }}
       />
       <HomeScreenStack.Screen
         name="NewDonorName"

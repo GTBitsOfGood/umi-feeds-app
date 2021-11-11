@@ -163,9 +163,12 @@ const authReducer = createSlice({
     setPickupAddresses(state, action: PayloadAction<Address[]>) {
       state.pickupAddresses = action.payload;
     },
+    addDonation(state, action: PayloadAction<DonationForm>) {
+      state.donations.push(action.payload);
+    }
   }
 });
 
-export const { login, logout, addDish, setPickupAddresses } = authReducer.actions;
+export const { login, logout, addDish, setPickupAddresses, addDonation } = authReducer.actions;
 
 export default authReducer.reducer;
