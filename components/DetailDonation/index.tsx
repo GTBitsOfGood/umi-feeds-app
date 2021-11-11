@@ -58,13 +58,13 @@ function DetailDonationScreen(donation: DonationForm) {
       }
     }
     donationDish.push(
-      <>
+      <View key={donation.route.params.donation.dishes[i].dishID}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{dishName}</Text>
           <Text>{donation.route.params.donation.dishes[i].quantity}</Text>
         </View>
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
-      </>
+      </View>
     );
   }
 

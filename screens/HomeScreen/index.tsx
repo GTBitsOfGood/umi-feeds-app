@@ -46,17 +46,22 @@ function HomeScreen() {
           if (donations.ongoing) {
             return (
               <View style={styles.donationContainer} key={donations._id}>
-                <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginVertical: 15, marginHorizontal: 12 }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
-                <Pressable
-                  onPress={() => {
-                    navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
-                  }}
-                >
-                  <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
-                    <Text style={{ fontSize: 12 }}>View</Text>
-                    <AntDesign name="right" size={16} />
-                  </View>
-                </Pressable>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginTop: 15, marginHorizontal: 12, fontWeight: '800', }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
+                    }}
+                  >
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginVertical: 15, marginHorizontal: 12 }}>
+                      <Text style={{ fontSize: 12 }}>View</Text>
+                      <AntDesign name="right" size={16} />
+                    </View>
+                  </Pressable>
+                </View>
+                <View style={{ flex: 0.66, marginHorizontal: 12, flexDirection: 'row' }}>
+                  <Text style={{ fontWeight: '800' }}>Status: </Text><Text>{donations.status}</Text>
+                </View>
               </View>
             );
           } else {
@@ -78,7 +83,7 @@ function HomeScreen() {
         <Pressable
           style={styles.boxes}
           onPress={() => {
-            navigation.navigate('Me');
+            navigation.navigate('Donate');
           }}
         >
           <Text style={styles.standardText}>My Dishes</Text>
@@ -156,8 +161,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   donationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flex: 1,
+    flexDirection: 'column',
+    // justifyContent: 'space-between',
     height: 75,
     borderWidth: 2,
     borderColor: 'rgba(252, 136, 52, 1)',

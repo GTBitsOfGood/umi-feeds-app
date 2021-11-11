@@ -54,13 +54,6 @@ function DonorTabs() {
           tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
         }}
       />
-      <BottomTab.Screen
-        name="testing"
-        component={DonationsList}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
-        }}
-      />
     </BottomTab.Navigator>
   );
 }
