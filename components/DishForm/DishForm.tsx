@@ -75,6 +75,8 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
     }
     if (yesPressed) {
       setModalVisible(!modalVisible);
+    } else if (noPressed) {
+      return props.onSuccessfulDishSubmit();
     }
   };
 

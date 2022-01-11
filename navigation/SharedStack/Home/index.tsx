@@ -1,9 +1,9 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import HomeScreen from '../../../screens/HomeScreen';
-import NewDonorName from '../../../screens/NewDonor/NewDonorName';
-import NewDonorNumber from '../../../screens/NewDonor/NewDonorNumber';
-import NewDonorLocation from '../../../screens/NewDonor/NewDonorLocation';
+import NewDonorName from '../../../screens/NewDonor[DEPRECATED]/NewDonorName';
+import NewDonorNumber from '../../../screens/NewDonor[DEPRECATED]/NewDonorNumber';
+import NewDonorLocation from '../../../screens/NewDonor[DEPRECATED]/NewDonorLocation';
 import AllDonations from '../../../screens/AllDonations';
 import DonationView from '../../../screens/DetailDonation';
 import DonationsList from '../../../components/DonationsList';
