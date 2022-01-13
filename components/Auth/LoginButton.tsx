@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Alert, Platform, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { useDispatch, batch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import jwtDecode from 'jwt-decode';
 import axios, { AxiosError } from 'axios';
@@ -13,7 +13,7 @@ import { login } from '../../redux/reducers/authReducer';
 import { beginOnboarding } from '../../redux/reducers/OnboardingReducer';
 import { decodedJwtToken } from '../../types';
 import { BeginOnboardingUser } from '../../redux/reducers/OnboardingReducer/types';
-import { setLoading } from '../../redux/reducers/loadingReducer/index'
+import { setLoading } from '../../redux/reducers/loadingReducer/index';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -35,7 +35,7 @@ function LoginButton(props: { onUserNotFound: () => void }) {
       nonce: 'nonce',
     },
   },
-    { authorizationEndpoint: Auth0.authorizationEndpoint });
+  { authorizationEndpoint: Auth0.authorizationEndpoint });
 
   useEffect(() => {
     if (result) {
@@ -88,7 +88,7 @@ function LoginButton(props: { onUserNotFound: () => void }) {
           }
         })
           .finally(() => {
-            dispatch(setLoading({ loading: false, desination: 'Root' }));
+            dispatch(setLoading({ loading: false }));
           });
       } else {
         Alert.alert('Authentication error!');

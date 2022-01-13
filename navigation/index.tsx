@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
@@ -5,7 +6,6 @@ import { ColorSchemeName } from 'react-native';
 
 import { useSelector } from 'react-redux';
 import NotFoundScreen from '../screens/NotFoundScreen';
-import LoadingScreen from '../screens/LoadingScreen';
 import { RootStackParamList } from './types';
 import { AdminTabs, DonorTabs } from './MainNavBar/index';
 
@@ -33,7 +33,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const loadingState = useSelector((state: RootState) => state.loading);
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const authState = useSelector((state: RootState) => state.auth);
   let TabComponent;
   if (authState.isAdmin) {
@@ -42,6 +43,7 @@ function RootNavigator() {
     TabComponent = DonorTabs;
   }
 
+  console.log(loadingState);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {authState.authenticated ? (
@@ -50,9 +52,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <>
-          <Stack.Screen name="Login" component={LoginStack} />
-        </>
+        <Stack.Screen name="Login" component={LoginStack} />
       )
       }
     </Stack.Navigator>

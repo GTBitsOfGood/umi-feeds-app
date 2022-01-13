@@ -1,7 +1,5 @@
 import { StyleSheet } from 'react-native';
 
-export const orangeColor = '#F37B36';
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

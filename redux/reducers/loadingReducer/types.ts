@@ -1,4 +1,4 @@
 export type LoadingState = {
-    loading: boolean;
+    loadingStatus: boolean;
     loadStartTime: number;
 };

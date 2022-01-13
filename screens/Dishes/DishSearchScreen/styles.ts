@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-
-export const orangeColor = '#F37B36';
+import { ThemeColor } from '../../../constants/Colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +38,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   filledButton: {
-    backgroundColor: orangeColor,
+    backgroundColor: ThemeColor,
     paddingHorizontal: 10,
     paddingVertical: 16,
     borderRadius: 4,
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   outlinedButton: {
-    borderColor: orangeColor,
+    borderColor: ThemeColor,
     borderWidth: 2,
     paddingHorizontal: 10,
     paddingVertical: 16,
@@ -59,7 +58,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   outlinedButtonText: {
-    color: orangeColor,
+    color: ThemeColor,
     fontWeight: '700',
     textAlign: 'center'
   },

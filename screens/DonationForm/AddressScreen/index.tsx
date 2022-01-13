@@ -10,13 +10,11 @@ import axios from 'axios';
 import styles from './styles';
 import { RootState } from '../../../redux/rootReducer';
 import { Address } from '../../../types';
-import { Header, ChevronButton } from '../../../components';
+import { Header, ChevronButton, PrimaryButton, SecondaryButton } from '../../../components';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { PrimaryButton, SecondaryButton } from '../../../components/Button';
 import { setPickupAddresses } from '../../../redux/reducers/authReducer';
 import { setAddress } from '../../../redux/reducers/donationCartReducer';
-
-const orangeColor = '#F37B36';
+import { ThemeColor } from '../../../constants/Colors';
 
 type DonationScreenProp = StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>;
 
@@ -24,9 +22,6 @@ const DonateFormAddressScreen = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const navigation = useNavigation<DonationScreenProp>();
   const dispatch = useDispatch();
-
-  // console.log('test');
-  // console.log(authState.pickupAddresses);
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(authState.pickupAddresses.length === 1 ? authState.pickupAddresses[0] : null);
 
@@ -100,7 +95,7 @@ function AddressCard(props: { address: Address, businessName: string, onPress: (
 
   return (
     <TouchableHighlight onPress={props.onPress} underlayColor="transparent">
-      <View style={[styles.addressCard, (props.selected ? { borderColor: orangeColor, borderWidth: 2, backgroundColor: 'rgba(243, 123, 54, 0.15)' } : {})]}>
+      <View style={[styles.addressCard, (props.selected ? { borderColor: ThemeColor, borderWidth: 2, backgroundColor: 'rgba(243, 123, 54, 0.15)' } : {})]}>
         <View style={{ flex: 2 }}>
           <Text style={{ fontWeight: '700', fontSize: 15 }}>{props.businessName}</Text>
           <Text style={{ marginTop: 5, fontSize: 12 }}>{fullAddress}</Text>

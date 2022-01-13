@@ -9,14 +9,15 @@ interface DonateQuantityModalParams {
   visible: boolean,
   dishObj?: Dish,
   closeModal: () => void,
-  modalSubmit: (donationDish: DonationDishes) => void,
+  modalSubmit: (donationDish: DonationDishes) => void, // if submit button for modal is pressed
+  modalCancel?: () => void, // if cancel button for modal is pressed
 }
 
 /**
  * Takes in the visibility of the modal as well as a Dish Object to render
  * styles appropriately
  */
-const DonateQuantityModal = ({ visible, dishObj, closeModal, modalSubmit }: DonateQuantityModalParams) => {
+const DonateQuantityModal = ({ visible, dishObj, closeModal, modalSubmit, modalCancel }: DonateQuantityModalParams) => {
   const [quantity, setQuantity] = useState<string>('');
 
   return (
@@ -75,6 +76,9 @@ const DonateQuantityModal = ({ visible, dishObj, closeModal, modalSubmit }: Dona
                   onPress={() => {
                     setQuantity('');
                     closeModal();
+                    if (modalCancel) {
+                      modalCancel();
+                    }
                   }}
                 >
                   <Text style={styles.cancelTextStyle}>Cancel</Text>

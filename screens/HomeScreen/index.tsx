@@ -46,8 +46,8 @@ function HomeScreen() {
           if (donations.ongoing) {
             return (
               <View style={styles.donationContainer} key={donations._id}>
-                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
-                  <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginTop: 15, marginHorizontal: 12, fontWeight: '800', }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ fontSize: 14, color: 'rgba(252, 136, 52, 1)', marginTop: 15, marginHorizontal: 12, fontWeight: '800' }}>Date {new Date(donations.pickupStartTime).toLocaleDateString('en-US')}</Text>
                   <Pressable
                     onPress={() => {
                       navigation.navigate('AllDonations'); // needs to be changed to detaildonation screen
@@ -163,7 +163,6 @@ const styles = StyleSheet.create({
   donationContainer: {
     flex: 1,
     flexDirection: 'column',
-    // justifyContent: 'space-between',
     height: 75,
     borderWidth: 2,
     borderColor: 'rgba(252, 136, 52, 1)',

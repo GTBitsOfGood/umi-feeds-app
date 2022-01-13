@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
-import DonationsList from '../../components/DonationsList';
+import { StyleSheet, Text, View } from 'react-native';
 
-export default function AllDonations() {
+export default function EditProfileScreen() {
   return (
     <View style={styles.container}>
-      <DonationsList />
+      <Text style={styles.title}>Edit User Profile</Text>
     </View>
   );
 }

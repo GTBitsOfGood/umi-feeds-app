@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, TouchableHighlight } from 'react-native';
+import { ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 
@@ -14,12 +14,10 @@ import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 import styles from './styles';
 import { Text, View } from '../../style/Themed';
-import { PrimaryButton, SecondaryButton } from '../../components/Button';
 import { Dish, DonationDishes } from '../../types';
 
 // import components
-import { Header, DonateQuantityModal, DishQuantityPreview } from '../../components';
-import { setLoading } from '../../redux/reducers/loadingReducer';
+import { Header, DonateQuantityModal, DishQuantityPreview, PrimaryButton, SecondaryButton } from '../../components';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,

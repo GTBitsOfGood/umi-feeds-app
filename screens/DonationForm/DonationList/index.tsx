@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -18,6 +18,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { RootState } from '../../../redux/rootReducer';
 
 import {
   removeDishFromCart,
@@ -36,9 +37,7 @@ type DonationScreenProp = CompositeNavigationProp<
 
 const DonationListScreen = () => {
   const navigation = useNavigation<DonationScreenProp>();
-
-  const dispatch = useDispatch();
-  const state = useSelector((state: any) => state);
+  const state = useSelector((state: RootState) => state);
 
   const [dishMap, setDishMap] = React.useState(new Map());
 
@@ -78,7 +77,7 @@ const DonationListScreen = () => {
             state.donationCart.donationDishes.length === 0 ? null : (
               <ScrollView>
                 {state.donationCart.donationDishes.map(
-                  (item: any) => <Row key={item.dishID} donationDish={item} dish={getDishFromID(item.dishID)} />
+                  (item: DonationDishes) => <Row key={item.dishID} donationDish={item} dish={getDishFromID(item.dishID)} />
                 )}
               </ScrollView>
             )
@@ -135,8 +134,6 @@ function Row({ donationDish, dish }: RowInfo) {
 
   const navigation = useNavigation<DonationScreenProp>();
 
-  const openMenu = () => setVisible(true);
-
   const closeMenu = () => setVisible(false);
   const dispatch = useDispatch();
   const removeDish = () => {
@@ -148,11 +145,8 @@ function Row({ donationDish, dish }: RowInfo) {
     setshowQuantity(false);
     dispatch(updateQty({ dish: donationDish, quantity }));
   };
-  const setQuantity = (evnt: any) => {
-    setQty(evnt);
-  };
+
   const [showQuantity, setshowQuantity] = React.useState(false);
-  const [quantity, setQty] = React.useState(donationDish.quantity);
   return (
     <View
       style={{

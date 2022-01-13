@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Image, ScrollView, Platform, Pressable, Modal, Alert, KeyboardAvoidingView } from 'react-native';
+import { Image, ScrollView, Platform, Pressable, Alert } from 'react-native';
 import { Input, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector, batch } from 'react-redux';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
-import { HideKeyboardUtility } from '../../util/index';
 import { Text, View } from '../../style/Themed';
 import { Dish, DonationDishes } from '../../types';
 import DonateQuantityModal from '../../components/DonateQuantityModal';
@@ -14,11 +13,30 @@ import { addToCart } from '../../redux/reducers/donationCartReducer';
 import styles from './styles';
 import { logAxiosError } from '../../utils';
 import { store } from '../../redux/store';
+import { RootState } from '../../redux/rootReducer';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 import { GeneralModal } from '..';
+import LoadingScreen from '../../screens/LoadingScreen';
 
-// eslint-disable-next-line react/no-unused-prop-types
+/**
+ * Dish Form component with the fields to submit or edit a Dish object
+ * Once a form is submitted:
+ *    1. Modal will prompt user if he/she wants to donate that dish
+ *        - if YES: the dish object will be sent to the database and Mongo will
+ *                  a dish object with the neccessary DishID that will be passed
+ *                  along with the dish info to a second modal that prompts the
+ *                  user for the quantity of that dish. That dish will then be added
+ *                  to the donation cart and user will be navigated based on prop.
+ *        - if NO: the dish object will just be sent to the database, update the user's
+ *                 redux auth state, and navigated based on the prop.
+ *
+ * @param dish A Dish Object to pre-populate the fields if needed
+ * @param onSuccessfulDishSubmit Navigation function direct to the corresponding screen on a successful form submission
+ * @returns DishForm React Component
+ */
 function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
   const [dishName, setDishName] = useState(props.dish?.dishName ?? '');
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
@@ -37,54 +55,13 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   const [favorite, setFavorite] = useState<boolean>(false);
 
   const DishObj = {
-    dishName,
+    dishName: dishName.trim(),
     cost: Number(cost),
     pounds: Number(pounds),
     allergens,
     imageLink: String(uploadImage), // link to azure image
     comments: String(comments),
     favorite
-  };
-
-  const handleModalSubmit = (yesPressed: boolean, noPressed: boolean) => {
-    if (isFormValid()) {
-      dispatch(setLoading({ loading: true }));
-      const formData = new FormData();
-      if (uploadImage) {
-        const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
-        setUploadImage(file.uri);
-        formData.append('dishImage', file as any);
-      }
-      formData.append('json', JSON.stringify(DishObj));
-      axios.post(`/api/dishes?id=${store.getState().auth._id}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${store.getState().auth.jwt}`
-        }
-      })
-        .then((res) => {
-          setDishResponse(res.data.dishForm);
-          dispatch(addDish(res.data.dishForm)); // backend returns object with name "dishForm" on successful response
-        })
-        .catch((err) => {
-          logAxiosError(err);
-          Alert.alert('Cannot Submit Dish', 'There was an error submitting your dish, please try again.');
-        }).finally(() => {
-          dispatch(setLoading({ loading: false, desination: 'DonateHomeScreen' }));
-        });
-    }
-    if (yesPressed) {
-      setModalVisible(!modalVisible);
-    } else if (noPressed) {
-      return props.onSuccessfulDishSubmit();
-    }
-  };
-
-  // Is called once quantity is specified after choosing to donate dishes, will add specified quantity to cart
-  const donateQuantityModalSubmit = (quantity: DonationDishes) => {
-    setQuantity(quantity);
-    dispatch(addToCart(quantity));
-    return props.onSuccessfulDishSubmit();
   };
 
   // Check that the required inputs are all filled, allergens only requires one to be checked.
@@ -94,6 +71,58 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
     || allergens.includes('peanuts') || allergens.includes('shellfish') || allergens.includes('egg')
     || allergens.includes('other') || allergens.includes('none'));
     return !(dishName === '' || cost === '' || pounds === '' || !containsAllergen);
+  };
+
+  const submitToServer = () => {
+    dispatch(setLoading({ loading: true }));
+
+    const formData = new FormData();
+    if (uploadImage) {
+      const file = { uri: uploadImage, name: 'image.jpg', type: 'image/jpeg' };
+      setUploadImage(file.uri);
+      formData.append('dishImage', file as any);
+    }
+    formData.append('json', JSON.stringify(DishObj));
+    axios.post(`/api/dishes?id=${store.getState().auth._id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${store.getState().auth.jwt}`
+      }
+    })
+      .then((res) => {
+        setDishResponse(res.data.dishForm);
+        batch(() => {
+          dispatch(addDish(res.data.dishForm)); // backend returns object with name "dishForm" on successful response
+          dispatch(setLoading({ loading: false }));
+        });
+      })
+      .catch((err) => {
+        logAxiosError(err);
+        Alert.alert('Cannot Submit Dish', 'There was an error submitting your dish, please try again.');
+      }).finally(() => {
+        dispatch(setLoading({ loading: false }));
+      });
+    dispatch(setLoading({ loading: false }));
+  };
+
+  const handleModalSubmit = (yesPressed: boolean, noPressed: boolean) => {
+    if (isFormValid()) {
+      submitToServer();
+      if (yesPressed) {
+        return setModalVisible(!modalVisible);
+      }
+      return props.onSuccessfulDishSubmit();
+    }
+    return null; // button is disabled is form is not valid
+  };
+
+  // Is called once quantity is specified after choosing to donate dishes, will add specified quantity to cart
+  // Will use the DishID obatined in the dishResponse object after form submission as it needs to fetch the DishID mongo
+  // that mongo assigns to the Dish Object
+  const donateQuantityModalSubmit = (quantity: DonationDishes) => {
+    setQuantity(quantity);
+    dispatch(addToCart(quantity));
+    return props.onSuccessfulDishSubmit();
   };
 
   const pickImage = async () => {
@@ -116,270 +145,275 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   };
 
   return (
-    <View style={styles.container}>
-      <GeneralModal
-        title="Donate Dish?"
-        subtitle="Would you like to donate this dish today?"
-        numButtons={2}
-        buttonOneTitle="Yes"
-        buttonTwoTitle="No"
-        visible={donateModalVisible}
-        closeModal={closeDonateModal}
-        modalSubmit={handleModalSubmit}
-      />
-      <DonateQuantityModal
-        visible={modalVisible}
-        dishObj={dishResponse}
-        closeModal={closeModal}
-        modalSubmit={donateQuantityModalSubmit}
-      />
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.dishContainer}>
-          <Text style={styles.title}>Create a new dish</Text>
-          <Text style={styles.description}>Provide the following information about the dish to added to your dish inventory</Text>
-          <View style={styles.boxInput}>
-            <Input
-              value={dishName}
-              placeholder="Dish Name (required)"
-              onChangeText={(name: string) => setDishName(name)}
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 15 }}
-              multiline
-            />
-          </View>
-          <View style={styles.boxInput}>
-            <Input
-              value={cost.toString()}
-              placeholder="Cost of serving in dollars (required)"
-              onChangeText={(cost: string) => setCost(Number.isFinite(+cost) && cost !== '' ? +cost : '')}
-              keyboardType="numeric"
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 15 }}
-              multiline
-            />
-          </View>
-          <View style={styles.boxInput}>
-            <Input
-              value={pounds.toString()}
-              placeholder="Weight of serving in pounds (required)"
-              onChangeText={(weight: string) => setPounds(Number.isFinite(+weight) && weight !== '' ? +weight : '')}
-              keyboardType="numeric"
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 16 }}
-              multiline
-            />
-          </View>
-          <CheckBox
-            containerStyle={styles.checkbox}
-            textStyle={{ fontWeight: 'normal' }}
-            title="Favorite Dish"
-            checkedColor="#F37B36"
-            checked={favorite}
-            onPress={() => {
-              setFavorite(!favorite);
-            }}
-          />
-          <Text style={styles.subsection}>This dish may contain (required):</Text>
-          <View style={styles.checkboxContainer}>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Dairy"
-                checkedColor="#F37B36"
-                          // checked={this.state.checked}
-                checked={allergens.indexOf('dairy') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('dairy') === -1) {
-                    setAllergens((allergens) => [...allergens, 'dairy']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'dairy'));
-                  }
-                }}
+    loadingState ? (
+      <LoadingScreen />
+    ) : (
+      <View style={styles.container}>
+        <GeneralModal
+          title="Donate Dish?"
+          subtitle="Would you like to donate this dish today?"
+          numButtons={2}
+          buttonOneTitle="Yes"
+          buttonTwoTitle="No"
+          visible={donateModalVisible}
+          closeModal={closeDonateModal}
+          modalSubmit={handleModalSubmit}
+        />
+        <DonateQuantityModal
+          visible={modalVisible}
+          dishObj={dishResponse}
+          closeModal={closeModal}
+          modalSubmit={donateQuantityModalSubmit}
+          modalCancel={props.onSuccessfulDishSubmit}
+        />
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.dishContainer}>
+            <Text style={styles.title}>Create a new dish</Text>
+            <Text style={styles.description}>Provide the following information about the dish to added to your dish inventory</Text>
+            <View style={styles.boxInput}>
+              <Input
+                value={dishName}
+                placeholder="Dish Name (required)"
+                onChangeText={(name: string) => setDishName(name)}
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                style={{ fontSize: 15 }}
+                multiline
               />
             </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Gluten"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('gluten') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('gluten') === -1) {
-                    setAllergens((allergens) => [...allergens, 'gluten']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'gluten'));
-                  }
-                }}
+            <View style={styles.boxInput}>
+              <Input
+                value={cost.toString()}
+                placeholder="Cost of serving in dollars (required)"
+                onChangeText={(cost: string) => setCost(Number.isFinite(+cost) && cost !== '' ? +cost : '')}
+                keyboardType="numeric"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                style={{ fontSize: 15 }}
+                multiline
               />
             </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Soy"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('soy') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('soy') === -1) {
-                    setAllergens((allergens) => [...allergens, 'soy']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'soy'));
-                  }
-                }}
+            <View style={styles.boxInput}>
+              <Input
+                value={pounds.toString()}
+                placeholder="Weight of serving in pounds (required)"
+                onChangeText={(weight: string) => setPounds(Number.isFinite(+weight) && weight !== '' ? +weight : '')}
+                keyboardType="numeric"
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                style={{ fontSize: 16 }}
+                multiline
               />
             </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Tree nuts"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('tree nuts') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('tree nuts') === -1) {
-                    setAllergens((allergens) => [...allergens, 'tree nuts']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'tree nuts'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Fish"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('fish') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('fish') === -1) {
-                    setAllergens((allergens) => [...allergens, 'fish']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'fish'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Peanut"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('peanuts') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('peanuts') === -1) {
-                    setAllergens((allergens) => [...allergens, 'peanuts']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'peanuts'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Shellfish"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('shellfish') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('shellfish') === -1) {
-                    setAllergens((allergens) => [...allergens, 'shellfish']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'shellfish'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Egg"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('egg') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('egg') === -1) {
-                    setAllergens((allergens) => [...allergens, 'egg']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'egg'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="Other"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('other') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('other') === -1) {
-                    setAllergens((allergens) => [...allergens, 'other']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'other'));
-                  }
-                }}
-              />
-            </View>
-            <View style={styles.item}>
-              <CheckBox
-                containerStyle={styles.checkbox}
-                textStyle={{ fontWeight: 'normal' }}
-                title="None"
-                checkedColor="#F37B36"
-                checked={allergens.indexOf('none') > -1}
-                onPress={() => {
-                  if (allergens.indexOf('none') === -1) {
-                    setAllergens((allergens) => [...allergens, 'none']);
-                  } else {
-                    setAllergens((allergens) => allergens.filter((str) => str !== 'none'));
-                  }
-                }}
-              />
-            </View>
-          </View>
-          <Text style={styles.subsection}>Add a picture of your dish (optional)</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
-            <Pressable
-              style={styles.pictureButton}
-              onPress={pickImage}
-            >
-              <Text style={styles.pictureButtonText}> <AntDesign name="plus" size={20} color="#F37B36" />Upload Image</Text>
-            </Pressable>
-          </View>
-          <View style={{ alignItems: 'center' }}>
-            {uploadImage && <Image source={{ uri: uploadImage }} style={{ width: 327, height: 222 }} />}
-          </View>
-          <Text style={styles.subsection}>Additional comments (optional)</Text>
-          <View style={styles.commentInput}>
-            <Input
-              value={comments}
-              placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
-              onChangeText={(comment: string) => setComments(comment)}
-              inputContainerStyle={{ borderBottomWidth: 0 }}
-              style={{ fontSize: 15, width: 325, height: 174, textAlignVertical: 'top' }}
-              multiline
-            />
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
-            <Pressable
-              disabled={!isFormValid()}
-              style={isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
+            <CheckBox
+              containerStyle={styles.checkbox}
+              textStyle={{ fontWeight: 'normal' }}
+              title="Favorite Dish"
+              checkedColor="#F37B36"
+              checked={favorite}
               onPress={() => {
-                setDonateModalVisible(!donateModalVisible);
+                setFavorite(!favorite);
               }}
-            >
-              <Text style={styles.submitText}>Create dish</Text>
-            </Pressable>
+            />
+            <Text style={styles.subsection}>This dish may contain (required):</Text>
+            <View style={styles.checkboxContainer}>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Dairy"
+                  checkedColor="#F37B36"
+                          // checked={this.state.checked}
+                  checked={allergens.indexOf('dairy') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('dairy') === -1) {
+                      setAllergens((allergens) => [...allergens, 'dairy']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'dairy'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Gluten"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('gluten') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('gluten') === -1) {
+                      setAllergens((allergens) => [...allergens, 'gluten']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'gluten'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Soy"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('soy') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('soy') === -1) {
+                      setAllergens((allergens) => [...allergens, 'soy']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'soy'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Tree nuts"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('tree nuts') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('tree nuts') === -1) {
+                      setAllergens((allergens) => [...allergens, 'tree nuts']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'tree nuts'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Fish"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('fish') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('fish') === -1) {
+                      setAllergens((allergens) => [...allergens, 'fish']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'fish'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Peanut"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('peanuts') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('peanuts') === -1) {
+                      setAllergens((allergens) => [...allergens, 'peanuts']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'peanuts'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Shellfish"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('shellfish') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('shellfish') === -1) {
+                      setAllergens((allergens) => [...allergens, 'shellfish']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'shellfish'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Egg"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('egg') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('egg') === -1) {
+                      setAllergens((allergens) => [...allergens, 'egg']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'egg'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="Other"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('other') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('other') === -1) {
+                      setAllergens((allergens) => [...allergens, 'other']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'other'));
+                    }
+                  }}
+                />
+              </View>
+              <View style={styles.item}>
+                <CheckBox
+                  containerStyle={styles.checkbox}
+                  textStyle={{ fontWeight: 'normal' }}
+                  title="None"
+                  checkedColor="#F37B36"
+                  checked={allergens.indexOf('none') > -1}
+                  onPress={() => {
+                    if (allergens.indexOf('none') === -1) {
+                      setAllergens((allergens) => [...allergens, 'none']);
+                    } else {
+                      setAllergens((allergens) => allergens.filter((str) => str !== 'none'));
+                    }
+                  }}
+                />
+              </View>
+            </View>
+            <Text style={styles.subsection}>Add a picture of your dish (optional)</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
+              <Pressable
+                style={styles.pictureButton}
+                onPress={pickImage}
+              >
+                <Text style={styles.pictureButtonText}> <AntDesign name="plus" size={20} color="#F37B36" />Upload Image</Text>
+              </Pressable>
+            </View>
+            <View style={{ alignItems: 'center' }}>
+              {uploadImage && <Image source={{ uri: uploadImage }} style={{ width: 327, height: 222 }} />}
+            </View>
+            <Text style={styles.subsection}>Additional comments (optional)</Text>
+            <View style={styles.commentInput}>
+              <Input
+                value={comments}
+                placeholder="If you have any additional comments to mention about this dish (including allergen information), type here."
+                onChangeText={(comment: string) => setComments(comment)}
+                inputContainerStyle={{ borderBottomWidth: 0 }}
+                style={{ fontSize: 15, width: 325, height: 174, textAlignVertical: 'top' }}
+                multiline
+              />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
+              <Pressable
+                disabled={!isFormValid()}
+                style={isFormValid() ? styles.submitButton : styles.submitButtonDisabled}
+                onPress={() => {
+                  setDonateModalVisible(!donateModalVisible);
+                }}
+              >
+                <Text style={styles.submitText}>Create Dish</Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    )
   );
 }
 

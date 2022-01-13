@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { ThemeColor } from '../../constants/Colors';
+
+export const orangeColor = '#F37B36';
 
 const styles = StyleSheet.create({
   button: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
     overflow: 'visible'
   },
   filledButton: {
-    backgroundColor: ThemeColor,
+    backgroundColor: orangeColor,
     paddingVertical: 16,
     marginVertical: 10,
   },
@@ -22,12 +23,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   outlinedButton: {
-    borderColor: ThemeColor,
+    borderColor: orangeColor,
     borderWidth: 2,
     paddingVertical: 14, // less padding to account for larger border
   },
   outlinedButtonText: {
-    color: ThemeColor,
+    color: orangeColor,
     fontWeight: '700',
     textAlign: 'center'
   },

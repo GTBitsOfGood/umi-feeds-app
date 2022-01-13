@@ -9,7 +9,7 @@ import * as Auth0 from '../../constants/Auth0';
 
 import { logout } from '../../redux/reducers/authReducer';
 import { resetCart } from '../../redux/reducers/donationCartReducer';
-import { setLoading } from '../../redux/reducers/loadingReducer';
+import { setLoading } from '../../redux/reducers/loadingReducer/index';
 
 const useProxy = Platform.select({ web: false, default: true });
 const redirectUri = AuthSession.makeRedirectUri({ useProxy });
@@ -25,6 +25,7 @@ function LogoutButton() {
 
   useEffect(() => {
     if (logoutResult) {
+      dispatch(setLoading({ loading: true }));
       // Although logout functionality works, it receives an error from Auth0,
       // so we only check for canceling logout rather than successful logout
       if (logoutResult.type !== 'cancel') {
@@ -33,6 +34,7 @@ function LogoutButton() {
           dispatch(resetCart());
         });
       }
+      dispatch(setLoading({ loading: false }));
     }
   }, [logoutResult]);
 
@@ -41,7 +43,6 @@ function LogoutButton() {
       buttonStyle={{ backgroundColor: '#F37B36', height: 50, marginBottom: 20 }}
       title="Log Out"
       onPress={() => {
-        console.log('logging out');
         promptAsyncLogout({ useProxy });
       }}
     />

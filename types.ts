@@ -38,10 +38,10 @@ export type DonationForm = {
   pickupInstructions: string;
   pickupStartTime: number;
   pickupEndTime: number;
-  volunteerLockTime: number; // time when volunteer agrees to pick it up
+  volunteerLockTime?: number; // time when volunteer agrees to pick it up
   lockedByVolunteer: boolean; // whether the donation has been locked by a volunteer
-  confirmPickUpTime: number; // time when donation has been picked up by volunteer
-  confirmDropOffTime: number; // time when donation has been dropped off by volunteer
+  confirmPickUpTime?: number; // time when donation has been picked up by volunteer
+  confirmDropOffTime?: number; // time when donation has been dropped off by volunteer
 }
 
 export type User = {

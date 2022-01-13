@@ -7,14 +7,14 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Text, View } from '../../../style/Themed';
 import { ChevronButton } from '../../../components';
-import { DonationScreenParamList } from '../../../navigation/DonorStack/DonationForm/types';
+import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import NoImageAvailable from '../../../assets/images/NoImageAvailable.jpeg';
 
 import { moderateScale } from '../../../util/index';
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<DonationScreenParamList, 'DonationScreen'>,
+  StackNavigationProp<DonateTabParamList, 'DishProfile'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 

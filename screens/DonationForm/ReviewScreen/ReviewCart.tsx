@@ -17,18 +17,6 @@ type ReviewCartScreenProp = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
 >;
 
-const MockDonationObj1: DonationDishes = {
-  _id: '12365778678678',
-  dishID: 'Avocado Tofu Salad',
-  quantity: 10
-};
-
-const MockDonationObj2: DonationDishes = {
-  _id: '1236577867834238',
-  dishID: 'Watercress Black Bean Sauce',
-  quantity: 7
-};
-
 function ReviewDonationCart() {
   const navigation = useNavigation<ReviewCartScreenProp>();
 

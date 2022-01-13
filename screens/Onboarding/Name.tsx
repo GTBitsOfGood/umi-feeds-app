@@ -48,6 +48,37 @@ export default function OnboardingNameForm() {
     }
   }, [logoutResult]);
 
+  const formSubmit = () => {
+    let rolesArr: Roles[];
+    // eslint-disable-next-line prefer-const
+    rolesArr = [];
+    const numberPhone = parseInt(phoneNumber, 10);
+    if (businessName.trim().length === 0) {
+      Alert.alert('Company Name is Blank');
+    } else if (Number.isNaN(numberPhone)) {
+      Alert.alert('Entered Phone Number as 10 Digits');
+    } else {
+      if (donorRoleForm) {
+        rolesArr.push('donor');
+      }
+
+      if (volunteerRoleForm) {
+        rolesArr.push('volunteer');
+      }
+
+      if (recipientRoleForm) {
+        rolesArr.push('recipient');
+      }
+
+      dispatch(saveNameAndRoles({
+        businessName: businessName.trim(),
+        phoneNumber: numberPhone,
+        roles: rolesArr,
+      }));
+      navigation.navigate('OnboardingAddressForm');
+    }
+  };
+
   return (
     <HideKeyboardUtility>
       <View style={{
@@ -121,34 +152,7 @@ export default function OnboardingNameForm() {
           <Button
             title="Next"
             buttonStyle={{ backgroundColor: '#F37B36', height: '100%' }}
-            onPress={() => {
-              let rolesArr: Roles[];
-              // eslint-disable-next-line prefer-const
-              rolesArr = [];
-              const numberPhone = parseInt(phoneNumber, 10);
-              if (Number.isNaN(numberPhone)) {
-                Alert.alert('Entered Phone Number as 10 Digits');
-              } else {
-                if (donorRoleForm) {
-                  rolesArr.push('donor');
-                }
-
-                if (volunteerRoleForm) {
-                  rolesArr.push('volunteer');
-                }
-
-                if (recipientRoleForm) {
-                  rolesArr.push('recipient');
-                }
-
-                dispatch(saveNameAndRoles({
-                  businessName,
-                  phoneNumber: numberPhone,
-                  roles: rolesArr,
-                }));
-                navigation.navigate('OnboardingAddressForm');
-              }
-            }}
+            onPress={formSubmit}
           />
         </View>
       </View>

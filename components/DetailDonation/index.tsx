@@ -1,33 +1,27 @@
-import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { useRoute, RouteProp } from '@react-navigation/native';
 
-import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { DonationDishes } from '../../../types';
-import { RootState } from '../../../redux/rootReducer';
+import { RootState } from '../../redux/rootReducer';
 
-import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { DonationForm } from '../../types';
-import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 
-type DetailDonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<HomeScreenParamList>,
-  BottomTabNavigationProp<BottomTabParamList>
->;
+type ParamList = {
+  DetailDonation: {
+    donation: DonationForm
+  }
+}
 
-function DetailDonationScreen(donation: DonationForm) {
-  const navigation = useNavigation<DetailDonationScreenProp>();
+function DetailDonationScreen() {
+  const route = useRoute<RouteProp<ParamList, 'DetailDonation'>>();
 
   let buildingNumberStr = '';
-  if (typeof donation.route.params.donation.pickupAddress.buildingNumber !== 'undefined') {
-    buildingNumberStr = `#${donation.route.params.donation.pickupAddress.buildingNumber}`;
+  if (typeof route.params.donation.pickupAddress.buildingNumber !== 'undefined') {
+    buildingNumberStr = `#${route.params.donation.pickupAddress.buildingNumber}`;
   }
 
-  const pickupStartTimeDate = new Date(donation.route.params.donation.pickupStartTime);
+  const pickupStartTimeDate = new Date(route.params.donation.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
   const startAmPm = pickupStartHour >= 12 ? 'PM' : 'AM';
   pickupStartHour %= 12;
@@ -36,7 +30,7 @@ function DetailDonationScreen(donation: DonationForm) {
   const pickupStartMinuteStr = pickupStartMinute < 10 ? `0${pickupStartMinute}` : pickupStartMinute;
   const formattedStartTime = `${pickupStartHour}:${pickupStartMinuteStr} ${startAmPm}`;
 
-  const pickupEndTimeDate = new Date(donation.route.params.donation.pickupEndTime);
+  const pickupEndTimeDate = new Date(route.params.donation.pickupEndTime);
   let pickupEndHour = pickupEndTimeDate.getHours();
   const endAmPm = pickupEndHour >= 12 ? 'PM' : 'AM';
   pickupEndHour %= 12;
@@ -50,18 +44,18 @@ function DetailDonationScreen(donation: DonationForm) {
   const authState = useSelector((state: RootState) => state.auth);
 
   const donationDish = [];
-  for (let i = 0; i < donation.route.params.donation.dishes.length; i += 1) {
-    let dishName = donation.route.params.donation.dishes[i].dishID;
+  for (let i = 0; i < route.params.donation.donationDishes.length; i += 1) {
+    let dishName = route.params.donation.donationDishes[i].dishID;
     for (let j = 0; j < authState.dishes.length; j += 1) {
-      if (authState.dishes[j]._id === donation.route.params.donation.dishes[i].dishID) {
+      if (authState.dishes[j]._id === route.params.donation.donationDishes[i].dishID) {
         dishName = authState.dishes[i].dishName;
       }
     }
     donationDish.push(
-      <View key={donation.route.params.donation.dishes[i].dishID}>
+      <View key={route.params.donation.donationDishes[i].dishID}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{dishName}</Text>
-          <Text>{donation.route.params.donation.dishes[i].quantity}</Text>
+          <Text>{route.params.donation.donationDishes[i].quantity}</Text>
         </View>
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
       </View>
@@ -73,22 +67,15 @@ function DetailDonationScreen(donation: DonationForm) {
       <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
         <View style={styles.container}>
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
-            <Pressable
-              onPress={() => navigation.navigate('DonationsList')}
-              style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start', marginTop: 30 }}
-            >
-              <AntDesign name="left" size={21} color="rgba(243, 123, 54, 1)" />
-              <Text style={{ fontSize: 15, color: 'rgba(243, 123, 54, 1)' }}>Donations</Text>
-            </Pressable>
             <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{formattedDate}</Text>
             <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-              Status: <Text style={{ fontSize: 21, fontWeight: '400', marginVertical: 24 }}>{donation.route.params.donation.status}</Text>
+              Status: <Text style={{ fontSize: 21, fontWeight: '400', marginVertical: 24 }}>{route.params.donation.status}</Text>
             </Text>
             <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 8 }}>Pickup details</Text>
             <Text style={styles.detailsHeader}>Address</Text>
             <Text style={styles.details}>
-              {donation.route.params.donation.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
-              {donation.route.params.donation.pickupAddress.city}, {donation.route.params.donation.pickupAddress.state}, {donation.route.params.donation.pickupAddress.zipCode}
+              {route.params.donation.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
+              {route.params.donation.pickupAddress.city}, {route.params.donation.pickupAddress.state}, {route.params.donation.pickupAddress.zipCode}
             </Text>
             <Text style={styles.detailsHeader}>Scheduled time</Text>
             <Text style={styles.details}>
@@ -96,7 +83,7 @@ function DetailDonationScreen(donation: DonationForm) {
               Time: {formattedStartTime} - {formattedEndTime}
             </Text>
             <Text style={styles.detailsHeader}>Pickup instructions</Text>
-            <Text style={styles.details}>{donation.route.params.donation.pickupInstructions}</Text>
+            <Text style={styles.details}>{route.params.donation.pickupInstructions}</Text>
           </View>
           <View style={{ width: '100%', justifyContent: 'flex-start' }}>
             <View style={[styles.spacedContainer, { marginBottom: 20 }]}>

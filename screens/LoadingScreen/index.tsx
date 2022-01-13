@@ -1,26 +1,10 @@
-import { StackScreenProps } from '@react-navigation/stack';
 import * as React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ActivityIndicator } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
-import { RootStackParamList } from '../../navigation/types';
-import { setLoading } from '../../redux/reducers/loadingReducer';
-
-export default function LoadingScreen({
-  navigation,
-}: StackScreenProps<RootStackParamList, 'Loading'>) {
-  const dispatch = useDispatch();
-
+export default function LoadingScreen() {
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Loading</Text> */}
-      <ActivityIndicator />
-      <TouchableOpacity onPress={() => {
-        dispatch(setLoading({ loading: true }));
-      }}
-      >
-        <Text style={{ color: '#eee', marginTop: 20 }}>Set loading</Text>
-      </TouchableOpacity>
+      <ActivityIndicator size="large" color="#F37B36" />
     </View>
   );
 }
@@ -32,17 +16,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  link: {
-    marginTop: 15,
-    paddingVertical: 15,
-  },
-  linkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  }
 });

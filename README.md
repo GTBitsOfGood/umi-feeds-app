@@ -2,17 +2,18 @@
 
 React Native app :iphone: for [Umi Feeds](https://umifeeds.org/), an Atlanta-based food rescue organization. The Umi Feeds app allows for local businesses to fill out a form to post a food donation. Volunteers (as well as admins) :raising_hand: can view any active donations through a map or list view, and mark a donation as picked up and delivered :red_car: to Umi Feeds for later redistribution to the food-insecure. Admins are notified whenever a food donation is made. 
 
-Video demo from April 2021: https://www.youtube.com/watch?v=8e0UJiaCidI.  
-And the same demo but presented by the entire team (though the app looks a bit choppy in this BlueJeans recording for some reason): https://www.youtube.com/watch?v=NXKwIf-QI3s.
+Video demo from Fall 2022 Bits of Good Demo Day [here](https://screenrec.com/share/9NqM3JGpXE).  
 
 Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
 
 ## Getting Started 	:computer:
+**[IMPORTANT FOR DEVELOPERS]Environment**
+> **Nodev16.6.2 | Expo SDK 44**
 
 - Clone this repository to your computer.
-- Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the MongoDB Community Server.
+- Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the Bitwarden-CLI.
 - Install dependencies: `npm install`
-- On Linux, run `npm run secrets` to download development secrets from Bitwarden and save them to the `.env` file locally. Contact a leadership member for the Bitwarden password.
+- On Linux, run `npm run secrets` to download development secrets from Bitwarden and save them to the `.env` file locally. Contact a leadership member for the Bitwarden password. You can also just login to bitwarden and copy the secrets from the .env file from the web. 
   - **Note**: If you are using the Windows command prompt or a Mac, enter `npm run secrets:login` (logging in only needs to be done once) and then `npm run secrets:sync`. You may have to enter the Bitwarden password multiple times. You should re-run this whenever the secrets in Bitwarden changes.
 - Start project: `npm start`
 
@@ -32,7 +33,7 @@ Expo Go has Fast Refresh, so when you save changes to your code and your develop
 Expo also provides a beta web version; after you run `npm start` and your browser opens Expo Developer Tools in `localhost:19002`, you could click "Run in web browser" to see the app in your browser. Some Expo features don't work in the browser, however. 
 
 ## Development Environment 
-There will be 3 different development environments that developers will be working in depending on the tickets that they're assigned. Please note that a common Mongo Atlas Database and Azure Image Storage account will be shared by all the devs. 
+There will be 2 different development environments that developers will be working in depending on the tickets that they're assigned. Please note that a common Mongo Atlas Database and Azure Image Storage account will be shared by all the devs. You're free to create your own free Mongo Atlas account for your own testing purposes.
 
 #### Dev Environment #1 
 
@@ -48,15 +49,7 @@ This is desired environment for developers working on just native app features l
 <img src="https://user-images.githubusercontent.com/55326650/131024364-573b69a9-fa16-490b-ad57-4093c9eda169.JPG" align="center" width="80% alt="Project icon">
 </div>
 
-This is the desired environment for developers working on the backend REST-API server. Therefore the backend server will be running on their local machines. If the developer is working on integration features between the front and backend, they'll likely need to have both instances running at once. 
-
-#### Dev Environment #3 
-
-<div align="center">
-<img src="https://user-images.githubusercontent.com/55326650/131024795-a2231f02-c9f0-40b7-9762-12b941aefc6c.JPG" align="center" width="80% alt="Project icon">
-</div>
-
-This is the desired environment for developers making any changes to the database schema. They will need to have a local MongoDB instance running on their local machines. 
+This is the desired environment for developers working on the backend REST-API server or making changes to the database schema. Therefore the backend server will be running on their local machines. If the developer is working on integration features between the front and backend, they'll likely need to have both instances running at once. 
 
 ## Code Structure 
     
@@ -67,6 +60,9 @@ This is the desired environment for developers making any changes to the databas
 * `\redux`        Defines the redux store, reducers, and thunks used by the components 
 
 Currently components in both the `\screens` and `\components` directory are connected to the redux state. Ideally we would want to start shifting our codebase so that the react components in the `\components` are stateless and all the "smart components" connected to the redux state are the screens in the `\screens`
+
+## Code Template
+We'll be more strict with our documentation going forward so all developers MUST follow the documentation template when coding. It will save future developers ALOT of time. Your PR will not be accepted if the documentation template is not followed
 
 ## Code/PR Workflow :nerd_face:
 

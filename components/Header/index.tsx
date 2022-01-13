@@ -3,7 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { Text, View } from '../../style/Themed';
-import styles, { orangeColor } from './styles';
+import styles from './styles';
+import { ThemeColor } from '../../constants/Colors';
 
 import CartButton from '../CartButton';
 import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
@@ -17,7 +18,7 @@ export default function Header(props: { title: string, showCartButton?: boolean 
       <View style={{ alignSelf: 'center' }}>
         <Text style={styles.title}>{props.title}</Text>
       </View>
-      {(props.showCartButton !== false) && <CartButton onPress={() => navigation.navigate('DonateListScreen')} color={orangeColor} />}
+      {(props.showCartButton !== false) && <CartButton onPress={() => navigation.navigate('DonateListScreen')} color={ThemeColor} />}
     </View>
   );
 }

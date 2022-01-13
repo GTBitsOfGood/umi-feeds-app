@@ -11,7 +11,7 @@ import DishQuantityPreview from '../../../components/DishPreview';
 import { Text, View } from '../../../style/Themed';
 import Header from '../../../components/Header';
 import ChevronButton from '../../../components/ChevronButton';
-import styles from '../../../components/DonationForm/styles';
+import styles from './styles';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { Dish, DonationDishes } from '../../../types';

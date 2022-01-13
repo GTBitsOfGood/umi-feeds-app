@@ -1,12 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import HomeScreen from '../../../screens/HomeScreen';
-import NewDonorName from '../../../screens/NewDonor[DEPRECATED]/NewDonorName';
-import NewDonorNumber from '../../../screens/NewDonor[DEPRECATED]/NewDonorNumber';
-import NewDonorLocation from '../../../screens/NewDonor[DEPRECATED]/NewDonorLocation';
-import AllDonations from '../../../screens/AllDonations';
-import DonationView from '../../../screens/DetailDonation';
-import DonationsList from '../../../components/DonationsList';
+import AllDonations from '../../../screens/AllDonationsScreen';
 import DetailDonationScreen from '../../../components/DetailDonation';
 
 import {
@@ -24,39 +19,28 @@ function HomeScreenNavigator() {
         options={{ headerTitle: 'Home', headerShown: false }}
       />
       <HomeScreenStack.Screen
-        name="NewDonorName"
-        component={NewDonorName}
-        options={{ headerShown: false }}
-      />
-      <HomeScreenStack.Screen
-        name="NewDonorNumber"
-        component={NewDonorNumber}
-        options={{ headerShown: false }}
-      />
-      <HomeScreenStack.Screen
-        name="NewDonorLocation"
-        component={NewDonorLocation}
-        options={{ headerShown: false }}
-      />
-      <HomeScreenStack.Screen
-        name="DonationView"
-        component={DonationView}
-        options={{ headerShown: false, headerTitle: 'DonationView' }}
-      />
-      <HomeScreenStack.Screen
         name="AllDonations"
         component={AllDonations}
-        options={{ headerShown: false, headerTitle: 'AllDonations' }}
+        options={{
+          headerShown: true,
+          headerTitle: 'All Donations',
+          headerTintColor: '#F37B36',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
       <HomeScreenStack.Screen
         name="DetailDonation"
         component={DetailDonationScreen}
-        options={{ headerShown: false, headerTitle: 'DetailDonation' }}
-      />
-      <HomeScreenStack.Screen
-        name="DonationsList"
-        component={DonationsList}
-        options={{ headerShown: false, headerTitle: 'DonationsList' }}
+        options={{
+          headerShown: true,
+          headerTitle: '',
+          headerTintColor: '#F37B36',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
     </HomeScreenStack.Navigator>
   );

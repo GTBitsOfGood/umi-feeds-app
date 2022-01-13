@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleProp, StyleSheet, TouchableHighlight, ViewStyle } from 'react-native';
 
 import { Text, View } from '../../style/Themed';
+import { ThemeColor } from '../../constants/Colors';
 
 export default function DishQuantityPreview(props: { text: JSX.Element, onPress: () => void, quantityAdded: number, customStyle?: StyleProp<ViewStyle> }) {
   return (
@@ -15,7 +16,7 @@ export default function DishQuantityPreview(props: { text: JSX.Element, onPress:
         underlayColor="transparent"
       >
         {props.quantityAdded > 0 ? (
-          <View style={{ ...styles.addButton, backgroundColor: orangeColor }}>
+          <View style={{ ...styles.addButton, backgroundColor: ThemeColor }}>
             <Text style={{ ...styles.outlinedButtonText, color: 'white' }}>{props.quantityAdded === 0 ? 'Add to list' : `Added (${props.quantityAdded >= 99 ? '99+' : props.quantityAdded})`}</Text>
           </View>
         ) : (
@@ -27,8 +28,6 @@ export default function DishQuantityPreview(props: { text: JSX.Element, onPress:
     </View>
   );
 }
-
-const orangeColor = '#F37B36';
 
 const styles = StyleSheet.create({
   favoriteDish: {
@@ -47,14 +46,14 @@ const styles = StyleSheet.create({
   },
   addButton: {
     borderWidth: 1,
-    borderColor: orangeColor,
+    borderColor: ThemeColor,
     paddingVertical: 8,
     paddingHorizontal: 8,
     borderRadius: 8,
     minWidth: '40%'
   },
   outlinedButtonText: {
-    color: orangeColor,
+    color: ThemeColor,
     fontWeight: '700',
     textAlign: 'center'
   }

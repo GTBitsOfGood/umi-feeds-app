@@ -37,13 +37,13 @@ export default function EditAddresScreen({ route }: { route: { params: { address
     alert('This address could not be saved. Please try again later');
     dispatch(setLoading({ loading: false }));
   };
-  
+
   return (
     <AddressForm
       goBack={navigation.goBack}
       onSubmit={(address) => {
         if (address) {
-          dispatch(setLoading({ loading: true }));
+          // dispatch(setLoading({ loading: true }));
           if (oldAddress) {
             axios.put(`api/user/pickupAddress/${authState._id}`, {
               _id: oldAddress._id, // preserve id
