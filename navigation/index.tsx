@@ -14,6 +14,9 @@ import LoginStack from './LoginStack';
 
 import { navigationRef } from './RootNavigation';
 
+// FOR TEMPLATING AND TESTING
+import Main from '../templates/screens/ScreenTemplate/index';
+
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -42,8 +45,6 @@ function RootNavigator() {
   } else {
     TabComponent = DonorTabs;
   }
-
-  console.log(loadingState);
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {authState.authenticated ? (
@@ -52,7 +53,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginStack} />
+        <Stack.Screen name="Login" component={Main} />
       )
       }
     </Stack.Navigator>

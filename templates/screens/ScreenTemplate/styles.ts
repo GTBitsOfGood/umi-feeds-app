@@ -8,17 +8,17 @@ const styles = StyleSheet.create({
   },
   box1: {
     flex: 1,
-    height: 200,
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
+    height: 0,
   },
   box2: {
     flex: 1,
-    height: 200,
-    backgroundColor: 'purple'
+    backgroundColor: 'purple',
+    height: 0
   },
   headerContainer: {
-    marginBottom: 20,
-    marginTop: 30,
+    marginBottom: '5%',
+    marginTop: '5%',
     flexDirection: 'row',
     justifyContent: 'space-around',
   },

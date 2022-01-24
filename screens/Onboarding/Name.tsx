@@ -28,7 +28,6 @@ export default function OnboardingNameForm() {
 
   const [donorRoleForm, onSelectDonor] = useState<boolean>(false);
   const [volunteerRoleForm, onSelectVolunteer] = useState<boolean>(false);
-  const [recipientRoleForm, onSelectRecipient] = useState<boolean>(false);
 
   const [, logoutResult, promptAsyncLogout] = AuthSession.useAuthRequest({
     redirectUri,
@@ -64,10 +63,6 @@ export default function OnboardingNameForm() {
 
       if (volunteerRoleForm) {
         rolesArr.push('volunteer');
-      }
-
-      if (recipientRoleForm) {
-        rolesArr.push('recipient');
       }
 
       dispatch(saveNameAndRoles({
@@ -133,14 +128,6 @@ export default function OnboardingNameForm() {
               title="Volunteer"
               checked={volunteerRoleForm}
               onPress={() => onSelectVolunteer(!volunteerRoleForm)}
-              checkedColor="#F37B36"
-            />
-            <CheckBox
-              containerStyle={styles.checkbox}
-              textStyle={{ fontWeight: 'normal' }}
-              title="Recipient"
-              checked={recipientRoleForm}
-              onPress={() => onSelectRecipient(!recipientRoleForm)}
               checkedColor="#F37B36"
             />
           </View>
