@@ -7,12 +7,16 @@ assignees: ''
 
 ---
 
-### Problem Description 
-* sample text
+## Problem Description 
 
-### Task at Hand
 
-### When you're done this is what the app should look like/do:
+## Task at Hand
+
+### Requirements
+
+**IMPORTANT NOTES**
+
+## When you're done this is what the app should look like/do:
 
 ### Hints 
 * sample text
