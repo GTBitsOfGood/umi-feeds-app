@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: Dimensions.get('screen').width,
-    marginBottom: 0
+    marginBottom: 0,
+    backgroundColor: 'white'
   },
   title: {
     fontSize: 30,

@@ -131,7 +131,8 @@ export default function ReviewContactScreen(props: ThemeProps) {
                 const formdata = new FormData();
                 formdata.append('data', JSON.stringify({
                   ongoing: true,
-                  status: 'pending pickup',
+                  businessName: authState.businessName,
+                  status: 'Pending',
                   imageLink: cartState.imageLink,
                   donationDishes: cartState.donationDishes,
                   pickupAddress: cartState.pickupAddress,

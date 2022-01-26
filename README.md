@@ -8,7 +8,7 @@ Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
 
 ## Getting Started 	:computer:
 **[IMPORTANT FOR DEVELOPERS]Environment**
-> **Nodev16.6.2 | Expo SDK 44**
+> **Nodev16.6.2 | Expo SDK 44 | expo-cli 4.10.0** 
 
 - Clone this repository to your computer.
 - Follow the instructions [here](https://www.notion.so/gtbitsofgood/Getting-Started-56106473076a47eaa8c863741becbf34) to install Git, Node.js (v12.X LTS at least) and the Bitwarden-CLI.

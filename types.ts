@@ -30,6 +30,7 @@ export type DonationDishes = {
 
 export type DonationForm = {
   _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  businessName?: string; // not required for donors but is specified for admins and volunteers
   ongoing: boolean;
   status: string;
   imageLink: string;

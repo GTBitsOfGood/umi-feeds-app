@@ -104,7 +104,7 @@ function DonateSchedulePickupScreen() {
           />
         </KeyboardAvoidingView>
       </View>
-      <View style={{ flex: 3, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20) }}>
+      <View style={{ flex: 5, flexDirection: 'row', justifyContent: 'center', paddingTop: moderateScale(20) }}>
         <Pressable
           disabled={isFormValid()}
           style={isFormValid() ? styles.unfilledButton : styles.filledButton}
