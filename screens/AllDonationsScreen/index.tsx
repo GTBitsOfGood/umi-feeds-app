@@ -36,7 +36,7 @@ export default function AllDonations() {
     setRefreshing(true);
     axios.get<{ donation: Donation[] }>(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => {
-        //setDonations(res.data.donation);
+        // setDonations(res.data.donation);
         setRefreshing(false);
       })
       .catch((error) => logAxiosError(error))
