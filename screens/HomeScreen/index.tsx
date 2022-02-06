@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, Linking } from 'react-native';
-import React from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView, Linking, RefreshControl } from 'react-native';
+import React, { useState } from 'react';
 
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -7,7 +7,8 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
-import { DonationForm } from '../../types';
+import axios from 'axios';
+import { Donation, DonationForm } from '../../types';
 import { Header } from '../../components';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 
@@ -16,6 +17,9 @@ import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
 import { RootState } from '../../redux/rootReducer';
 import { moderateScale } from '../../util/index';
+import { store } from '../../redux/store';
+import { logAxiosError } from '../../utils';
+import { setLoading } from '../../redux/reducers/loadingReducer';
 
 type HomeScreenProp = CompositeNavigationProp<
   StackNavigationProp<HomeScreenParamList, 'Home'>,
@@ -24,8 +28,21 @@ type HomeScreenProp = CompositeNavigationProp<
 
 function HomeScreen() {
   const userDonations = useSelector((state: RootState) => state.auth.donations);
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<HomeScreenProp>();
+  const authState = useSelector((state: RootState) => state.auth);
   let counter = 0;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    axios.get<{ donation: Donation[] }>(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
+      .then((res) => {
+        //setDonations(res.data.donation);
+        setRefreshing(false);
+      })
+      .catch((error) => logAxiosError(error))
+      .finally(() => setLoading({ loading: false }));
+  }, [authState]);
 
   return (
     <ScrollView
@@ -34,6 +51,7 @@ function HomeScreen() {
         flexGrow: 1,
         justifyContent: 'space-between'
       }}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       <View style={styles.topContainer}>
         <Header title="Welcome Back" showCartButton={false} />
