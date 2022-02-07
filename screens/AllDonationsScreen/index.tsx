@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { Text } from '../../style/Themed';
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
@@ -15,6 +15,7 @@ import { logAxiosError } from '../../utils';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 import { Donation } from '../../types';
 import { store } from '../../redux/store';
+import { addDonation } from '../../redux/reducers/authReducer';
 
 type HomeScreenProps = StackNavigationProp<HomeScreenParamList, 'Home'>
 
@@ -24,7 +25,7 @@ export default function AllDonations() {
 
   const [selectedList, setSelectedList] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  // const [donation, setDonations] = useState<Donation[]>([]);
+  const dispatch = useDispatch();
 
   const setId = (id?: string) => {
     if (id) {
@@ -36,12 +37,20 @@ export default function AllDonations() {
     setRefreshing(true);
     axios.get<{ donation: Donation[] }>(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => {
-        // setDonations(res.data.donation);
         setRefreshing(false);
       })
       .catch((error) => logAxiosError(error))
       .finally(() => setLoading({ loading: false }));
-  }, [authState]);
+
+    axios.post(`/api/user/businessName/${authState.businessName}`).then((res) => {
+      dispatch(addDonation(res.data.donation));
+      dispatch(setLoading({ loading: false }));
+    }).catch((err) => {
+      console.error(err);
+    }).finally(() => {
+      dispatch(setLoading({ loading: false }));
+    });
+  }, [dispatch, authState]);
 
   return (
     <View style={mainStyles.container}>

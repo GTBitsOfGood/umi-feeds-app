@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
@@ -20,6 +20,7 @@ import { moderateScale } from '../../util/index';
 import { store } from '../../redux/store';
 import { logAxiosError } from '../../utils';
 import { setLoading } from '../../redux/reducers/loadingReducer';
+import { addDonation } from '../../redux/reducers/authReducer';
 
 type HomeScreenProp = CompositeNavigationProp<
   StackNavigationProp<HomeScreenParamList, 'Home'>,
@@ -31,18 +32,27 @@ function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation<HomeScreenProp>();
   const authState = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
   let counter = 0;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     axios.get<{ donation: Donation[] }>(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => {
-        // setDonations(res.data.donation);
         setRefreshing(false);
       })
       .catch((error) => logAxiosError(error))
       .finally(() => setLoading({ loading: false }));
-  }, [authState]);
+
+    axios.post(`/api/user/businessName/${authState.businessName}`).then((res) => {
+      dispatch(addDonation(res.data.donation));
+      dispatch(setLoading({ loading: false }));
+    }).catch((err) => {
+      console.error(err);
+    }).finally(() => {
+      dispatch(setLoading({ loading: false }));
+    });
+  }, [dispatch, authState]);
 
   return (
     <ScrollView
