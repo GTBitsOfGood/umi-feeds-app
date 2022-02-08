@@ -15,6 +15,7 @@
       }
     },
     "production": {
+      "node":"16.9.1",
       "env": {
         "AXIOS_BASEURL": "https://umi-feeds-backend.herokuapp.com"
       }

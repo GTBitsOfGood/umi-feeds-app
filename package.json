@@ -36,6 +36,7 @@
     "@types/luxon": "^1.26.1",
     "@types/react-redux": "^7.1.16",
     "axios": "^0.21.1",
+    "body-parser": "^1.19.1",
     "dotenv": "^8.2.0",
     "expo": "^44.0.0",
     "expo-asset": "~8.4.6",
@@ -52,13 +53,13 @@
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "expo-web-browser": "~10.1.0",
+    "express": "^4.17.2",
     "husky-run": "^0.0.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "luxon": "^1.26.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-44.0.0.tar.gz",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
     "react-native-elements": "^3.2.0",
     "react-native-geolocation-service": "^5.2.0",
     "react-native-gesture-handler": "~2.1.0",
@@ -73,11 +74,12 @@
     "react-native-web": "0.17.1",
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
-    "redux-persist": "^6.0.0"
+    "redux-persist": "^6.0.0",
+    "safe-compare": "^1.1.4",
+    "react-native": "0.64.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@bitwarden/cli": "^1.14.0",
     "@types/lodash": "^4.14.168",
     "@types/react": "~17.0.21",
     "@types/react-native": "~0.64.12",
@@ -95,7 +97,6 @@
     "husky": "^4.3.8",
     "jest-expo": "^44.0.0",
     "react-native-svg-transformer": "^1.0.0",
-    "react-test-renderer": "^17.0.1",
     "typescript": "~4.3.5"
   },
   "private": true
