@@ -34,7 +34,7 @@ function MonthYearPicker(props: {
 
   if (Platform.OS === 'ios') {
     return (
-      <View style={{ backgroundColor: 'transparent'}}>
+      <View style={{ backgroundColor: 'transparent' }}>
         <RNDateTimePicker
           value={props.datetime}
           mode="date"

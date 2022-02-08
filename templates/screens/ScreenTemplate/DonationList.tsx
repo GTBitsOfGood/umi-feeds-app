@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Pressable
 } from 'react-native';
-import { useSelector } from 'react-redux';
 import { Provider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Entypo';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
@@ -18,7 +17,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
-import { RootState } from '../../../redux/rootReducer';
 
 import MonthYearPicker from '../../../components/DateTimePicker/MonthYearPicker';
 import { ChevronButton, Header } from '../../../components';
@@ -133,7 +131,6 @@ const DonationListScreen = () => {
     'July', 'August', 'September', 'October', 'November', 'December'];
   // extract all pickupEndTimeDate from completed, no repeats. e.g. February 2022
 
-  const [selectedMonth, setSelectedMonth] = React.useState('');
   const [completedDates, setCompletedDates] = React.useState<string[]>([]);
 
   const setMonth = (currDate: Date) => {
