@@ -25,5 +25,10 @@ jobs:
       - name: Build on EAS
         run: echo "::set-output name=ARTIFACT_URL::$(eas build --platform ios --profile preview --non-interactive | grep 'https://expo.dev/artifacts/')"
         id: eas-build
-      - name: Verify Url
-        run: echo "The url is ${{ steps.eas-build.outputs.ARTIFACT_URL }}"
+      - name: Download Artifact
+        run: cd ci; python download.py ${{ steps.eas-build.outputs.ARTIFACT_URL }}
+      - name: Commit Artifact
+        run: |
+          git add .
+          git commit -m "Automatic Artifact Build"
+          git push
