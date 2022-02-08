@@ -30,5 +30,7 @@ jobs:
       - name: Commit Artifact
         run: |
           git add .
+          git config --global user.name 'Michael Ryan'
+          git config --global user.email 'xenonmolecule@users.noreply.github.com'
           git commit -m "Automatic Artifact Build"
           git push
