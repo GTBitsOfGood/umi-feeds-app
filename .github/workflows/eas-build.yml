@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - michael/149-eas-ci
+      - staging
 jobs:
   build:
     name: Install and build
@@ -32,5 +32,5 @@ jobs:
           git add .
           git config --global user.name 'Michael Ryan'
           git config --global user.email 'xenonmolecule@users.noreply.github.com'
-          git commit -m "Automatic Artifact Build"
+          git commit -am "Automatic Artifact Build"
           git push
