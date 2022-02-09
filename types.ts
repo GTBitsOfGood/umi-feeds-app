@@ -24,6 +24,9 @@ export type Dish = {
 
 export type DonationDishes = {
   _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
+  name?: string; // ADDED, the name of the dish
+  cost?: string; // ADDED, the cost per serving of the dish.
+  pounds?: number;
   dishID: string; // points to the _id field of the Dish Schema
   quantity: number;
 }
@@ -31,6 +34,8 @@ export type DonationDishes = {
 export type DonationForm = {
   _id?: string; // the unqiue id assigned to a dish. Let Mongo create this when you insert a document without any _id attribute
   businessName?: string; // not required for donors but is specified for admins and volunteers
+  name?: string; // not required for donors but is specified for admins and volunteers
+  phone?: number; // not required for donors but is specified for admins and volunteers
   ongoing: boolean;
   status: string;
   imageLink: string;

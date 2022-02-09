@@ -74,7 +74,7 @@ function DetailDonationScreen() {
             <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 8 }}>Pickup details</Text>
             <Text style={styles.detailsHeader}>Address</Text>
             <Text style={styles.details}>
-              {route.params.donation.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
+              {route.params.donation.pickupAddress.streetAddress} {buildingNumberStr}{'\n'};
               {route.params.donation.pickupAddress.city}, {route.params.donation.pickupAddress.state}, {route.params.donation.pickupAddress.zipCode}
             </Text>
             <Text style={styles.detailsHeader}>Scheduled time</Text>
