@@ -12,6 +12,7 @@ import { Provider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Entypo';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { ButtonGroup } from 'react-native-elements/dist/buttons/ButtonGroup';
+import { SearchBar } from 'react-native-elements';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -80,7 +81,7 @@ const DonationListScreen = () => {
     _id: '2',
     businessName: 'John Doe',
     ongoing: true,
-    status: 'Unclaimed',
+    status: 'Unclaim',
     imageLink: '',
     donationDishes: [],
     pickupAddress: dummyAddress,
@@ -138,15 +139,19 @@ const DonationListScreen = () => {
   };
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [dateSearch, searchData] = React.useState<string>('');
 
   const selectedView = () => {
     if (selectedIndex === 1) {
       return (
         <View>
-          <MonthYearPicker
-            datetime={filterDate}
-            setDatetime={setFilterDate}
-            filterHandler={setMonth}
+          <SearchBar
+            placeholder="Month/Year"
+            value={dateSearch}
+            platform="ios"
+            onChangeText={searchData}
+            lightTheme
+            showLoading
           />
           <Text style={{ fontSize: scale(5) }}>Do not worry about the date when selecting a month and year</Text>
           {// replace with actual filter logic
@@ -174,11 +179,11 @@ const DonationListScreen = () => {
               </Text>
             </View>
           </View>
-          <ScrollView>
+          <View>
             {ongoing.filter((item: DonationForm) => item.status === 'Pending').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
-          </ScrollView>
+          </View>
           <View style={styles.tableTitle}>
             <View style={styles.tableH1}>
               <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
@@ -186,11 +191,11 @@ const DonationListScreen = () => {
               </Text>
             </View>
           </View>
-          <ScrollView>
+          <View style={{ marginBottom: 50 }}>
             {ongoing.filter((item: DonationForm) => item.status !== 'Pending').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
-          </ScrollView>
+          </View>
         </View>
       );
     }
@@ -198,9 +203,9 @@ const DonationListScreen = () => {
 
   return (
     <Provider>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
-          <ChevronButton text="Home" onPress={() => navigation.navigate('Home')} />
+          <ChevronButton text="Home" onPress={() => console.log('Back Button')} />
         </View>
         <Header title="Donation List" showCartButton={false} />
         <View>
@@ -217,7 +222,7 @@ const DonationListScreen = () => {
           />
         </View>
         {selectedView()}
-      </View>
+      </ScrollView>
     </Provider>
   );
 };
@@ -265,10 +270,10 @@ function Row({ donationForm }: RowInfo) {
           alignItems: 'center'
         }}
         >
-          <Text style={{ fontSize: 12, color: '#5D5D5D', fontWeight: 'bold' }}>Pending</Text>
+          <Text style={{ fontSize: 11, color: '#5D5D5D', fontWeight: 'bold' }}>Pending</Text>
         </Pressable>
       );
-    } else if (donationForm.status === 'Unclaimed') {
+    } else if (donationForm.status === 'Unclaim') {
       return (
         <Pressable style={{
           width: '18%',
@@ -281,7 +286,7 @@ function Row({ donationForm }: RowInfo) {
           alignItems: 'center'
         }}
         >
-          <Text style={{ fontSize: 12, color: '#007FA7', fontWeight: 'bold' }}>Unclaimed</Text>
+          <Text style={{ fontSize: 10, color: '#007FA7', fontWeight: 'bold' }}>Unclaimed</Text>
         </Pressable>
       );
     } else if (donationForm.status === 'Claimed') {
@@ -297,7 +302,7 @@ function Row({ donationForm }: RowInfo) {
           alignItems: 'center'
         }}
         >
-          <Text style={{ fontSize: 12, color: '#00883F', fontWeight: 'bold' }}>Claimed</Text>
+          <Text style={{ fontSize: 11, color: '#00883F', fontWeight: 'bold' }}>Claimed</Text>
         </Pressable>
       );
     } else {
@@ -314,7 +319,7 @@ function Row({ donationForm }: RowInfo) {
           backgroundColor: '#00883F'
         }}
         >
-          <Text style={{ fontSize: 12, color: '#FFFFFF', fontWeight: 'bold' }}>Delivered</Text>
+          <Text style={{ fontSize: 11, color: '#FFFFFF', fontWeight: 'bold' }}>Delivered</Text>
         </Pressable>
       );
     }
@@ -358,6 +363,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: 'white'
   },
   header: {
     flexDirection: 'row',
