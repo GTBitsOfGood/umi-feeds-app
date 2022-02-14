@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { Alert, ScrollView, View, StyleSheet, RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { Text } from '../../style/Themed';
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { RootState } from '../../redux/rootReducer';
 import { moderateScale } from '../../util/index';
 import { DonationListBox } from '../../components';
+
+import { store } from '../../redux/store';
+import { refreshDonations } from '../../redux/reducers/authReducer';
 
 import styles from './styles';
 
@@ -16,8 +20,10 @@ type HomeScreenProps = StackNavigationProp<HomeScreenParamList, 'Home'>
 export default function AllDonations() {
   const navigation = useNavigation<HomeScreenProps>();
   const authState = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
 
   const [selectedList, setSelectedList] = useState('');
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
 
   const setId = (id?: string) => {
     if (id) {
@@ -25,11 +31,27 @@ export default function AllDonations() {
     }
   };
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    axios.get(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
+      .then((res) => {
+        if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
+          const { user } = res.data; // res.data.user is of type User
+          return dispatch(refreshDonations(user.donations));
+        } else {
+          return Alert.alert('Authentication error!');
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setRefreshing(false));
+  }, []);
+
   return (
     <View style={mainStyles.container}>
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scrollView}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         >
           <Text style={styles.title}>My Donations</Text>
           <Text style={styles.subtitle}>Ongoing Donations</Text>

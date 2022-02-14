@@ -59,10 +59,13 @@ const authReducer = createSlice({
     },
     addDonation(state, action: PayloadAction<DonationForm>) {
       state.donations.push(action.payload);
+    },
+    refreshDonations(state, action: PayloadAction<DonationForm[]>) {
+      state.donations = action.payload;
     }
   }
 });
 
-export const { login, logout, addDish, setPickupAddresses, addDonation } = authReducer.actions;
+export const { login, logout, addDish, setPickupAddresses, addDonation, refreshDonations } = authReducer.actions;
 
 export default authReducer.reducer;

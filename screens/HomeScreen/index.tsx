@@ -1,12 +1,13 @@
-import { View, Text, StyleSheet, Pressable, ScrollView, Linking } from 'react-native';
+import { Alert, View, Text, StyleSheet, Pressable, ScrollView, Linking, RefreshControl } from 'react-native';
 import React from 'react';
 
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios';
 import { DonationForm } from '../../types';
 import { Header } from '../../components';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
@@ -14,6 +15,8 @@ import Logo from '../../assets/images/umi-feeds-logo.svg';
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
 import { BottomTabParamList } from '../../navigation/MainNavBar/types';
 
+import { store } from '../../redux/store';
+import { refreshDonations } from '../../redux/reducers/authReducer';
 import { RootState } from '../../redux/rootReducer';
 import { moderateScale } from '../../util/index';
 
@@ -24,8 +27,28 @@ type HomeScreenProp = CompositeNavigationProp<
 
 function HomeScreen() {
   const userDonations = useSelector((state: RootState) => state.auth.donations);
+  const authState = useSelector((state: RootState) => state.auth);
+
+  const dispatch = useDispatch();
   const navigation = useNavigation<HomeScreenProp>();
+
+  const [refreshing, setRefreshing] = React.useState<boolean>(false);
   let counter = 0;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    axios.get(`/api/user/businessName/${authState.businessName}`, { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
+      .then((res) => {
+        if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
+          const { user } = res.data; // res.data.user is of type User
+          return dispatch(refreshDonations(user.donations));
+        } else {
+          return Alert.alert('Authentication error!');
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setRefreshing(false));
+  }, []);
 
   return (
     <ScrollView
@@ -34,6 +57,7 @@ function HomeScreen() {
         flexGrow: 1,
         justifyContent: 'space-between'
       }}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
     >
       <View style={styles.topContainer}>
         <Header title="Welcome Back" showCartButton={false} />
@@ -69,7 +93,7 @@ function HomeScreen() {
             counter++;
             if (counter === userDonations.length) {
               return (
-                <View style={styles.donationHeader}>
+                <View style={styles.donationHeader} key={1}>
                   <Text>You currently have no ongoing donations.</Text>
                 </View>
               );
