@@ -46,8 +46,8 @@ type DonationScreenProp = CompositeNavigationProp<
  */
 const DonationListScreen = () => {
   // get current month - not number but actual word
-  const navigation = useNavigation<DonationScreenProp>();
-  const [filterDate, setFilterDate] = React.useState(new Date());
+  // const navigation = useNavigation<DonationScreenProp>();
+  // const [filterDate, setFilterDate] = React.useState(new Date());
   const [overdueView, setOverdueView] = React.useState(false);
 
   // TODO: get ongoing and completed arrays from the list of donations in authState
@@ -140,9 +140,9 @@ const DonationListScreen = () => {
 
   const [completedDates, setCompletedDates] = React.useState<string[]>([]);
 
-  const setMonth = (currDate: Date) => {
-    console.log('set the filtered month here');
-  };
+  // const setMonth = (currDate: Date) => {
+  //   console.log('set the filtered month here');
+  // };
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const [dateSearch, searchData] = React.useState<string>('');
