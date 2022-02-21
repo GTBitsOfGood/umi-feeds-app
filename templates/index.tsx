@@ -14,12 +14,12 @@ export default function TestStack() {
       <TestingStack.Screen
         name="DonationQueue"
         component={DonationQueue}
-        options={{ headerTitle: 'Login', headerShown: false }}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
       <TestingStack.Screen
         name="DetailDonationOnQueue"
         component={DetailDonationOnQueue}
-        options={{ headerTitle: 'Login', headerShown: false }}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
     </TestingStack.Navigator>
   );

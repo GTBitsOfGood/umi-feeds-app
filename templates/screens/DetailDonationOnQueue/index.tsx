@@ -70,6 +70,7 @@ function DetailDonationOnQueue() {
       <View key={donationForm.donationDishes[i].dishID}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{dishName}</Text>
+          <Text>{donationForm.donationDishes[i].cost}</Text>
           <Text>{donationForm.donationDishes[i].quantity}</Text>
         </View>
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
@@ -83,31 +84,53 @@ function DetailDonationOnQueue() {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#5D5D5D' }}>{donationForm.status}</Text>
+            Status: <Text style={{ fontSize: 21, marginVertical: 24 }}>{donationForm.status}</Text>
           </Text>
-          <Pressable
-            style={{
-              height: 52,
-              borderRadius: 4,
-              borderColor: '#5D5D5D',
-              borderWidth: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#5D5D5D'
-            }}
-            onPress={() => console.log('pending more like never ending')}
-          >
-            <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Set Address</Text>
-          </Pressable>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+            <Pressable
+              style={{
+                marginRight: 5,
+                flex: 4,
+                height: 52,
+                borderRadius: 4,
+                borderColor: '#F33636',
+                borderWidth: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#F33636'
+              }}
+              onPress={() => console.log('pending more like never ending')}
+            >
+              <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Accept</Text>
+            </Pressable>
+            <Pressable
+              style={{
+                marginLeft: 5,
+                flex: 4,
+                height: 52,
+                borderRadius: 4,
+                borderColor: '#11B25B',
+                borderWidth: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#11B25B'
+              }}
+              onPress={() => console.log('pending more like never ending')}
+            >
+              <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Deny</Text>
+            </Pressable>
+          </View>
         </View>
       );
     } else if (donationForm.status === 'Unclaim') {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#007FA7' }}>Unclaimed</Text>
+            Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#007FA7' }}>Unclaimed</Text>
           </Text>
           <Pressable
             style={{
@@ -131,7 +154,7 @@ function DetailDonationOnQueue() {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#00883F' }}>{donationForm.status}</Text>
+            Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#00883F' }}>{donationForm.status}</Text>
           </Text>
           <Pressable
             style={{
@@ -156,7 +179,7 @@ function DetailDonationOnQueue() {
         // Overdue
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#E90000' }}>{donationForm.status}</Text>
+            Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#E90000' }}>{donationForm.status}</Text>
           </Text>
           <Pressable
             style={{

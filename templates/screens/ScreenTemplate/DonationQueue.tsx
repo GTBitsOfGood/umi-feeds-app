@@ -65,11 +65,19 @@ const DonationListScreen = () => {
 
   const pendingItem: DonationForm = {
     _id: '1',
-    businessName: 'Fod Terminal',
+    businessName: 'Food Terminal',
     ongoing: true,
     status: 'Pending',
     imageLink: '',
-    donationDishes: [],
+    donationDishes: [
+      {
+        name: 'Hot Pot',
+        cost: '90',
+        pounds: 90,
+        dishID: 'ruurvurvn',
+        quantity: 10,
+      }
+    ],
     pickupAddress: dummyAddress,
     pickupInstructions: 'whateve',
     pickupStartTime: Number(new Date()),
@@ -151,10 +159,7 @@ const DonationListScreen = () => {
     if (selectedIndex === 1 && !overdueView) {
       return (
         <View>
-          <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
-            <ChevronButton text="Home" onPress={() => console.log('Back Button')} />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
             <Header title="Donation List" showCartButton={false} />
             <Pressable
               style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
@@ -203,7 +208,7 @@ const DonationListScreen = () => {
     } else if (selectedIndex === 0 && !overdueView) {
       return (
         <View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
             <Header title="Donation List" showCartButton={false} />
             <Pressable
               style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
@@ -443,7 +448,8 @@ function Row({ donationForm }: RowInfo) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 25,
+    padding: 20,
+    paddingTop: 0,
     backgroundColor: 'white'
   },
   header: {
