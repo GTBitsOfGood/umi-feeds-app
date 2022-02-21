@@ -5,7 +5,6 @@ import DetailDonationOnQueue from './screens/DetailDonationOnQueue';
 
 import { TemplateNavParamList } from './NavTypes';
 
-
 const TestingStack = createStackNavigator<TemplateNavParamList>();
 
 // // Create your stack with the separate screens
@@ -17,7 +16,7 @@ export default function TestStack() {
         component={DonationQueue}
         options={{ headerTitle: 'Login', headerShown: false }}
       />
-       <TestingStack.Screen
+      <TestingStack.Screen
         name="DetailDonationOnQueue"
         component={DetailDonationOnQueue}
         options={{ headerTitle: 'Login', headerShown: false }}

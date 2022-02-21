@@ -1,4 +1,4 @@
-import { DonationForm } from "../types";
+import { DonationForm } from '../types';
 
 export type TemplateNavParamList = {
   DonationQueue: undefined,

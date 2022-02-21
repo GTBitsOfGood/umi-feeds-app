@@ -249,6 +249,7 @@ function Subsection({ dataDate }: TableSubsection) {
 
 function Row({ donationForm }: RowInfo) {
   let { businessName } = donationForm;
+  const navigation = useNavigation<DonationScreenProp>();
   const currDate = new Date(donationForm.pickupEndTime);
   const endDate = currDate.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -350,7 +351,10 @@ function Row({ donationForm }: RowInfo) {
         <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{endDate}</Text>
         {statusLabel()}
         <TouchableOpacity
-          onPress={() => console.log('you pressed a donation')}
+          // onPress={() => console.log('you pressed a donation')}
+          onPress={() => navigation.navigate('DetailDonationOnQueue', {
+            donationForm
+          })}
         >
           <Icon name="chevron-thin-right" size={15} style={{ color: '#5D5D5D', marginLeft: scale(25) }} />
         </TouchableOpacity>
