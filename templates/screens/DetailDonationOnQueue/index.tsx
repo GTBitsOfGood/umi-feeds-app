@@ -82,8 +82,8 @@ function DetailDonationOnQueue() {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-              Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: "#5D5D5D" }}>{donationForm.status}</Text>
-            </Text>
+            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#5D5D5D' }}>{donationForm.status}</Text>
+          </Text>
           <Pressable
             style={{
               height: 52,
@@ -94,7 +94,7 @@ function DetailDonationOnQueue() {
               justifyContent: 'center',
               alignContent: 'center',
               alignItems: 'center',
-              backgroundColor: "#5D5D5D"
+              backgroundColor: '#5D5D5D'
             }}
             onPress={() => console.log('pending more like never ending')}
           >
@@ -106,8 +106,8 @@ function DetailDonationOnQueue() {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-              Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: "#007FA7" }}>{donationForm.status}</Text>
-            </Text>
+            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#007FA7' }}>Unclaimed</Text>
+          </Text>
           <Pressable
             style={{
               height: 52,
@@ -118,7 +118,7 @@ function DetailDonationOnQueue() {
               justifyContent: 'center',
               alignContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#007FA7'
+              backgroundColor: '#007FA7',
             }}
             onPress={() => console.log('unclaimed more like long forgotten idk')}
           >
@@ -130,8 +130,8 @@ function DetailDonationOnQueue() {
       return (
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-              Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: "#00883F" }}>{donationForm.status}</Text>
-            </Text>
+            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#00883F' }}>{donationForm.status}</Text>
+          </Text>
           <Pressable
             style={{
               height: 52,
@@ -152,11 +152,11 @@ function DetailDonationOnQueue() {
       );
     } else {
       return (
-        //Overdue
+        // Overdue
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
-              Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: "#E90000" }}>{donationForm.status}</Text>
-            </Text>
+            Status: <Text style={{ fontSize: 21, fontWeight: 'bold', marginVertical: 24, color: '#E90000' }}>{donationForm.status}</Text>
+          </Text>
           <Pressable
             style={{
               height: 52,
@@ -184,9 +184,21 @@ function DetailDonationOnQueue() {
       <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
         <View style={styles.container}>
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
-            <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{formattedDate}</Text>
+            <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{donationForm.businessName}</Text>
+            <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
+            
             {status()}
-            <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 8 }}>Pickup details</Text>
+            <View style={{marginTop: 30 }}>
+              <Text style={styles.subHeader}>Delivery details</Text>
+              <Text style={styles.detailsHeader}>Address</Text>
+              <Text style={styles.details}>---</Text>
+              <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
+              <Text style={styles.details}>---</Text>
+              
+            </View>
+            <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }}></Text>
+            
+            <Text style={styles.subHeader}>Pickup details</Text>
             <Text style={styles.detailsHeader}>Address</Text>
             <Text style={styles.details}>
               {donationForm.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
@@ -215,15 +227,17 @@ function DetailDonationOnQueue() {
               </View>
               {donationDish}
               {donationTotalCost > 0 && (
-                <View>
-                  <View style={styles.spacedContainer}>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
-                  </View>
-                  <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
+                <View style={styles.spacedContainer}>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
                 </View>
               )}
-
+              <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
+              <Text style={styles.subHeader}>Contact Info</Text>
+              <Text style={styles.detailsHeader}>Name</Text>
+              <Text style={styles.details}>{donationForm.name? donationForm.name : "---"}</Text>
+              <Text style={styles.detailsHeader}>Phone Number</Text>
+              <Text style={styles.details}>{donationForm.phone? donationForm.phone : "---"}</Text>
             </View>
           </View>
         </View>
