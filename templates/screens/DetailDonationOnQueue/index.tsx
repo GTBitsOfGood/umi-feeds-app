@@ -17,7 +17,8 @@ type ParamList = {
  * info.
  *
  * IMPORTANT NOTES:
- *
+ * This screen is a WIP in context of the whole app. Fields such as Delivery details, Meal list, total donation cost and 
+ * Contact info have conditional renders if the data is populated in DonationForm but atm have placeholder dashes ("---").
  *
  * KNOWN BUGS:
  *  N/A
@@ -186,18 +187,18 @@ function DetailDonationOnQueue() {
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
             <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{donationForm.businessName}</Text>
             <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
-            
+
             {status()}
-            <View style={{marginTop: 30 }}>
+            <View style={{ marginTop: 30 }}>
               <Text style={styles.subHeader}>Delivery details</Text>
               <Text style={styles.detailsHeader}>Address</Text>
               <Text style={styles.details}>---</Text>
               <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
               <Text style={styles.details}>---</Text>
-              
+
             </View>
-            <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }}></Text>
-            
+            <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
+
             <Text style={styles.subHeader}>Pickup details</Text>
             <Text style={styles.detailsHeader}>Address</Text>
             <Text style={styles.details}>
@@ -235,9 +236,9 @@ function DetailDonationOnQueue() {
               <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
               <Text style={styles.subHeader}>Contact Info</Text>
               <Text style={styles.detailsHeader}>Name</Text>
-              <Text style={styles.details}>{donationForm.name? donationForm.name : "---"}</Text>
+              <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
               <Text style={styles.detailsHeader}>Phone Number</Text>
-              <Text style={styles.details}>{donationForm.phone? donationForm.phone : "---"}</Text>
+              <Text style={styles.details}>{donationForm.phone ? donationForm.phone : '---'}</Text>
             </View>
           </View>
         </View>
