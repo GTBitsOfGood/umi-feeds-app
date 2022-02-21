@@ -65,7 +65,7 @@ const DonationListScreen = () => {
 
   const pendingItem: DonationForm = {
     _id: '1',
-    businessName: 'Food Terminal',
+    businessName: 'Fod Terminal',
     ongoing: true,
     status: 'Pending',
     imageLink: '',
@@ -81,11 +81,11 @@ const DonationListScreen = () => {
     _id: '2',
     businessName: 'John Doe',
     ongoing: true,
-    status: 'Unclaim',
+    status: 'Overdue',
     imageLink: '',
     donationDishes: [],
     pickupAddress: dummyAddress,
-    pickupInstructions: 'whateve',
+    pickupInstructions: 'whatever',
     pickupStartTime: Number(new Date()),
     pickupEndTime: Number(new Date('February 11, 2022 03:24:00')),
     lockedByVolunteer: false
@@ -101,7 +101,7 @@ const DonationListScreen = () => {
     pickupAddress: dummyAddress,
     pickupInstructions: 'whateve',
     pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date('February 20, 2022 03:24:00')),
+    pickupEndTime: Number(new Date()),
     lockedByVolunteer: false
   };
 
@@ -109,7 +109,7 @@ const DonationListScreen = () => {
     _id: '4',
     businessName: 'Test Restauraunt',
     ongoing: true,
-    status: 'Delivered',
+    status: 'Pending',
     imageLink: '',
     donationDishes: [],
     pickupAddress: dummyAddress,
@@ -123,13 +123,13 @@ const DonationListScreen = () => {
     pendingItem,
     unclaimedItem,
     claimedItem
-  ].filter((item) => item.pickupEndTime > Number(new Date()));
+  ];
 
   const overdue = [
     pendingItem,
     unclaimedItem,
     claimedItem
-  ].filter((item) => item.pickupEndTime < Number(new Date()));
+  ].filter((item) => item.status === 'Overdue');
 
   // create a donationForm object
   const completed: DonationForm[] = [deliveredItem];
@@ -203,10 +203,7 @@ const DonationListScreen = () => {
     } else if (selectedIndex === 0 && !overdueView) {
       return (
         <View>
-          <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
-            <ChevronButton text="Home" onPress={() => console.log('Back Button')} />
-          </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
             <Header title="Donation List" showCartButton={false} />
             <Pressable
               style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
@@ -248,7 +245,7 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {ongoing.filter((item: DonationForm) => item.status !== 'Pending').map(
+            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
           </View>
@@ -321,7 +318,7 @@ function Row({ donationForm }: RowInfo) {
   });
 
   const statusLabel = () => {
-    if (donationForm.pickupEndTime < Number(new Date())) {
+    if (donationForm.status === 'Overdue') {
       return (
         <Pressable style={{
           width: '18%',
@@ -442,7 +439,7 @@ function Row({ donationForm }: RowInfo) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 25,
     backgroundColor: 'white'
   },
   header: {
