@@ -17,7 +17,7 @@ type ParamList = {
  * info.
  *
  * IMPORTANT NOTES:
- * This screen is a WIP in context of the whole app. Fields such as Delivery details, Meal list, total donation cost and 
+ * This screen is a WIP in context of the whole app. Fields such as Delivery details, Meal list, total donation cost and
  * Contact info have conditional renders if the data is populated in DonationForm but atm have placeholder dashes ("---").
  *
  * KNOWN BUGS:
