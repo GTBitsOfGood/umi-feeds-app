@@ -120,7 +120,7 @@ function FloatingTitleTextInputField(props: {
       </Animated.Text>
       <Input
         value={props.value}
-        style={[Styles.textInput, {marginRight: props.img ? '15%' : '0%' }]}
+        style={[Styles.textInput, { marginRight: props.img ? '15%' : '0%' }]}
         underlineColorAndroid="transparent"
         onFocus={handleFocus}
         onBlur={handleBlur}
