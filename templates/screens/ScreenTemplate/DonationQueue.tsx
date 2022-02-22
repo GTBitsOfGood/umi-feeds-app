@@ -47,12 +47,15 @@ type DonationScreenProp = CompositeNavigationProp<
  */
 const DonationListScreen = () => {
   // get current month - not number but actual word
-  const navigation = useNavigation<DonationScreenProp>();
+  // const navigation = useNavigation<DonationScreenProp>();
   const [ongoing, setOngoing] = React.useState<DonationForm[]>([]);
   const [completed, setCompleted] = React.useState<DonationForm[]>([]);
   const [dateSearch, updateDateSearch] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  // const [filterDate, setFilterDate] = React.useState(new Date());
+  const [overdueView, setOverdueView] = React.useState(false);
 
   // get ongoing and completed arrays from the list of donations in database
 
@@ -107,11 +110,19 @@ const DonationListScreen = () => {
     ongoing: true,
     status: 'Pending',
     imageLink: '',
-    donationDishes: [],
+    donationDishes: [
+      {
+        name: 'Hot Pot',
+        cost: '90',
+        pounds: 90,
+        dishID: 'ruurvurvn',
+        quantity: 10,
+      }
+    ],
     pickupAddress: dummyAddress,
     pickupInstructions: 'whateve',
     pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date()),
+    pickupEndTime: Number(new Date('February 20, 2022 03:24:00')),
     lockedByVolunteer: false
   };
 
@@ -119,13 +130,13 @@ const DonationListScreen = () => {
     _id: '2',
     businessName: 'John Doe',
     ongoing: true,
-    status: 'Unclaim',
+    status: 'Overdue',
     imageLink: '',
     donationDishes: [],
     pickupAddress: dummyAddress,
-    pickupInstructions: 'whateve',
+    pickupInstructions: 'whatever',
     pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date()),
+    pickupEndTime: Number(new Date('February 11, 2022 03:24:00')),
     lockedByVolunteer: false
   };
 
@@ -147,7 +158,7 @@ const DonationListScreen = () => {
     _id: '4',
     businessName: 'Test Restauraunt',
     ongoing: true,
-    status: 'Delivered',
+    status: 'Pending',
     imageLink: '',
     donationDishes: [],
     pickupAddress: dummyAddress,
@@ -163,6 +174,12 @@ const DonationListScreen = () => {
     claimedItem
   ];
 
+  const overdue = [
+    pendingItem,
+    unclaimedItem,
+    claimedItem
+  ].filter((item) => item.status === 'Overdue');
+
   // create a donationForm object
   const dummyCompleted = [deliveredItem];
 
@@ -170,10 +187,38 @@ const DonationListScreen = () => {
     'July', 'August', 'September', 'October', 'November', 'December'];
   // extract all pickupEndTimeDate from completed, no repeats. e.g. February 2022
 
+  const [completedDates, setCompletedDates] = React.useState<string[]>([]);
+
+  // const setMonth = (currDate: Date) => {
+  //   console.log('set the filtered month here');
+  // };
+
   const selectedView = () => {
-    if (selectedIndex === 1) {
+    if (selectedIndex === 1 && !overdueView) {
       return (
         <View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
+            <Header title="Donation List" showCartButton={false} />
+            <Pressable
+              style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+              onPress={() => setOverdueView(!overdueView)}
+            >
+              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({overdue.length})</Text>
+            </Pressable>
+          </View>
+          <View>
+            <ButtonGroup
+              buttons={['Ongoing', 'Completed']}
+              selectedIndex={selectedIndex}
+              onPress={(value) => {
+                setSelectedIndex(value); // 0 index for completed, 1 index for Ongoing
+              }}
+              textStyle={{ fontSize: verticalScale(17), fontWeight: '700', color: '#5D5D5D' }}
+              selectedButtonStyle={{ backgroundColor: '#F37B36', borderColor: '#F37B36' }}
+              selectedTextStyle={{ color: 'white', fontWeight: '700' }}
+              containerStyle={{ borderColor: '#F37B36', borderWidth: 1, borderRadius: 5, backgroundColor: 'transparent' }}
+            />
+          </View>
           <SearchBar
             placeholder="Month/Year"
             value={dateSearch}
@@ -188,9 +233,31 @@ const DonationListScreen = () => {
           </ScrollView>
         </View>
       );
-    } else {
+    } else if (selectedIndex === 0 && !overdueView) {
       return (
         <View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
+            <Header title="Donation List" showCartButton={false} />
+            <Pressable
+              style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+              onPress={() => setOverdueView(!overdueView)}
+            >
+              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({overdue.length})</Text>
+            </Pressable>
+          </View>
+          <View>
+            <ButtonGroup
+              buttons={['Ongoing', 'Completed']}
+              selectedIndex={selectedIndex}
+              onPress={(value) => {
+                setSelectedIndex(value); // 0 index for completed, 1 index for Ongoing
+              }}
+              textStyle={{ fontSize: verticalScale(17), fontWeight: '700', color: '#5D5D5D' }}
+              selectedButtonStyle={{ backgroundColor: '#F37B36', borderColor: '#F37B36' }}
+              selectedTextStyle={{ color: 'white', fontWeight: '700' }}
+              containerStyle={{ borderColor: '#F37B36', borderWidth: 1, borderRadius: 5, backgroundColor: 'transparent' }}
+            />
+          </View>
           <View style={styles.tableTitle}>
             <View style={styles.tableH1}>
               <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
@@ -211,11 +278,36 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {ongoing.filter((item: DonationForm) => item.status !== 'Pending').map(
+            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
           </View>
         </View>
+      );
+    } else {
+      return (
+        <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
+          <ChevronButton
+            text="Donation List"
+            onPress={() => {
+              setSelectedIndex(0);
+              setOverdueView(false);
+            }}
+          />
+          <View style={styles.tableTitle}>
+            <View style={styles.tableH1}>
+              <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
+                Overdue Donations
+              </Text>
+            </View>
+          </View>
+          <View style={{ marginBottom: 50 }}>
+            {overdue.map(
+              (item: DonationForm) => <Row key={item._id} donationForm={item} />
+            )}
+          </View>
+        </View>
+
       );
     }
   };
@@ -223,23 +315,6 @@ const DonationListScreen = () => {
   return (
     <Provider>
       <ScrollView style={styles.container}>
-        <View style={{ marginTop: moderateScale(25), marginLeft: 15 }}>
-          <ChevronButton text="Home" onPress={() => console.log('Back Button')} />
-        </View>
-        <Header title="Donation List" showCartButton={false} />
-        <View>
-          <ButtonGroup
-            buttons={['Ongoing', 'Completed']}
-            selectedIndex={selectedIndex}
-            onPress={(value) => {
-              setSelectedIndex(value); // 0 index for completed, 1 index for Ongoing
-            }}
-            textStyle={{ fontSize: verticalScale(17), fontWeight: '700', color: '#5D5D5D' }}
-            selectedButtonStyle={{ backgroundColor: '#F37B36', borderColor: '#F37B36' }}
-            selectedTextStyle={{ color: 'white', fontWeight: '700' }}
-            containerStyle={{ borderColor: '#F37B36', borderWidth: 1, borderRadius: 5, backgroundColor: 'transparent' }}
-          />
-        </View>
         {selectedView()}
       </ScrollView>
     </Provider>
@@ -268,6 +343,7 @@ function Subsection({ dataDate }: TableSubsection) {
 
 function Row({ donationForm }: RowInfo) {
   let { businessName } = donationForm;
+  const navigation = useNavigation<DonationScreenProp>();
   const currDate = new Date(donationForm.pickupEndTime);
   const endDate = currDate.toLocaleDateString('en-US', {
     month: '2-digit',
@@ -276,7 +352,23 @@ function Row({ donationForm }: RowInfo) {
   });
 
   const statusLabel = () => {
-    if (donationForm.status === 'Pending') {
+    if (donationForm.status === 'Overdue') {
+      return (
+        <Pressable style={{
+          width: '18%',
+          borderRadius: 4,
+          borderColor: '#E90000',
+          borderWidth: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignContent: 'center',
+          alignItems: 'center'
+        }}
+        >
+          <Text style={{ fontSize: 11, color: '#E90000', fontWeight: 'bold' }}>Overdue</Text>
+        </Pressable>
+      );
+    } else if (donationForm.status === 'Pending') {
       return (
         <Pressable style={{
           width: '18%',
@@ -369,7 +461,10 @@ function Row({ donationForm }: RowInfo) {
         <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{endDate}</Text>
         {statusLabel()}
         <TouchableOpacity
-          onPress={() => console.log('you pressed a donation')}
+          // onPress={() => console.log('you pressed a donation')}
+          onPress={() => navigation.navigate('DetailDonationOnQueue', {
+            donationForm
+          })}
         >
           <Icon name="chevron-thin-right" size={15} style={{ color: '#5D5D5D', marginLeft: scale(25) }} />
         </TouchableOpacity>
@@ -382,6 +477,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop: 0,
     backgroundColor: 'white'
   },
   header: {

@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import DonationQueue from './screens/ScreenTemplate/DonationQueue';
+import DetailDonationOnQueue from './screens/DetailDonationOnQueue';
 
 import { TemplateNavParamList } from './NavTypes';
 
@@ -13,7 +14,12 @@ export default function TestStack() {
       <TestingStack.Screen
         name="DonationQueue"
         component={DonationQueue}
-        options={{ headerTitle: 'Login', headerShown: false }}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
+      />
+      <TestingStack.Screen
+        name="DetailDonationOnQueue"
+        component={DetailDonationOnQueue}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
     </TestingStack.Navigator>
   );
