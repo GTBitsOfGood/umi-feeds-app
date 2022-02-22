@@ -76,7 +76,6 @@ const DonationListScreen = () => {
         .then((res) => setCompleted(res.data.donations))
         .catch((error) => console.error(error))
         .finally(() => setIsLoading(false));
-      console.log(completed);
     }
   }, [dateSearch]); // this method is called whenever dateSearch is updated
 
