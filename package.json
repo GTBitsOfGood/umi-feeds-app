@@ -59,6 +59,7 @@
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
     "luxon": "^1.26.0",
+    "prop-types": "^15.8.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
