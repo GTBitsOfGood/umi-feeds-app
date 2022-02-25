@@ -17,7 +17,7 @@ import { RootState } from '../../redux/rootReducer';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 import { GeneralModal } from '..';
 import LoadingScreen from '../../screens/LoadingScreen';
-import FloatingTitleTextInputField from '../Input/FloatingTitleTextInputField';
+import FloatingTitleTextInputField from '../TextInput';
 
 // @ts-ignore image does not need typescript definition
 import Dollar from '../../assets/images/dollarsign.jpeg';
@@ -203,7 +203,7 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
               roundToPlaces={2}
             />
             <FloatingTitleTextInputField
-              title="Weight of serving in pounds (optional)"
+              title="Weight of serving in pounds"
               value={poundsString}
               onChangeText={(weight: string) => {
                 if (Number.isFinite(+weight) && ((weight.match(/\./g) || []).length <= 1)) {
