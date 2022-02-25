@@ -29,6 +29,7 @@ type ParamList = {
 function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
   const { donationForm } = route.params;
+  console.log(donationForm);
 
   let buildingNumberStr = '';
   if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
@@ -55,21 +56,13 @@ function DetailDonationOnQueue() {
 
   const formattedDate = `${pickupEndTimeDate.getMonth() + 1}/${pickupEndTimeDate.getDate()}/${pickupEndTimeDate.getFullYear()}`;
 
-  const authState = useSelector((state: RootState) => state.auth);
-
   const donationDish = [];
   let donationTotalCost:any;
   for (let i = 0; i < donationForm.donationDishes.length; i += 1) {
-    let dishName = donationForm.donationDishes[i].dishID;
-    for (let j = 0; j < authState.dishes.length; j += 1) {
-      if (authState.dishes[j]._id === donationForm.donationDishes[i].dishID) {
-        dishName = authState.dishes[i].dishName;
-      }
-    }
     donationDish.push(
       <View key={donationForm.donationDishes[i].dishID}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{dishName}</Text>
+          <Text>{donationForm.donationDishes[i].dishName}</Text>
           <Text>{donationForm.donationDishes[i].cost}</Text>
           <Text>{donationForm.donationDishes[i].quantity}</Text>
         </View>
@@ -261,7 +254,7 @@ function DetailDonationOnQueue() {
               <Text style={styles.detailsHeader}>Name</Text>
               <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
               <Text style={styles.detailsHeader}>Phone Number</Text>
-              <Text style={styles.details}>{donationForm.phone ? donationForm.phone : '---'}</Text>
+              <Text style={styles.details}>{donationForm.phoneNumber ? donationForm.phoneNumber : '---'}</Text>
             </View>
           </View>
         </View>

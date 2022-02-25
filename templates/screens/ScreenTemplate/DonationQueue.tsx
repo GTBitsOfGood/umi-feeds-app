@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import { SearchBar } from 'react-native-elements';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import axios from 'axios';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
@@ -47,10 +48,56 @@ type DonationScreenProp = CompositeNavigationProp<
 const DonationListScreen = () => {
   // get current month - not number but actual word
   // const navigation = useNavigation<DonationScreenProp>();
+  const [ongoing, setOngoing] = React.useState<DonationForm[]>([]);
+  const [completed, setCompleted] = React.useState<DonationForm[]>([]);
+  const [dateSearch, updateDateSearch] = React.useState<string>('');
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
   // const [filterDate, setFilterDate] = React.useState(new Date());
   const [overdueView, setOverdueView] = React.useState(false);
 
-  // TODO: get ongoing and completed arrays from the list of donations in authState
+  // get ongoing and completed arrays from the list of donations in database
+
+  // gets ongoing donations
+  useEffect(() => {
+    axios.get('/api/ongoingdonations')
+      .then((res) => {
+        setOngoing(res.data['Ongoing Donations']);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
+  // gets completed donations based on month/year filter
+  useEffect(() => {
+    console.log('Calling search');
+    if (isValidMonthYearDate(dateSearch)) {
+      console.log('searching');
+      setIsLoading(true);
+      const newDate = dateSearch.split('/');
+      const dateURL = `/api/search/donations/${newDate[0]}/${newDate[1]}`;
+      axios.get(dateURL)
+        .then((res) => {
+          console.log(res.data);
+          setCompleted(res.data.donations);
+        })
+        .catch((error) => console.error(error))
+        .finally(() => setIsLoading(false));
+    }
+  }, [dateSearch]); // this method is called whenever dateSearch is updated
+
+  // ensures that date is in valid "month/year" format before query to backend
+  const isValidMonthYearDate = (dateString: string) => {
+    const newDate = dateString.split('/');
+    if (newDate.length !== 0 && newDate.length <= 2) {
+      if (parseInt(newDate[0], 10) > 0 && parseInt(newDate[0], 10) <= 31) {
+        if (parseInt(newDate[1], 10) >= 1970 && parseInt(newDate[1], 10) <= new Date().getFullYear()) {
+          return true;
+        }
+      }
+    }
+    return false;
+  };
 
   // create dummy DonationForm
   const dummyAddress: Address = {
@@ -127,7 +174,7 @@ const DonationListScreen = () => {
     lockedByVolunteer: false
   };
 
-  const ongoing = [
+  const dummyOngoing = [
     pendingItem,
     unclaimedItem,
     claimedItem
@@ -140,7 +187,7 @@ const DonationListScreen = () => {
   ].filter((item) => item.status === 'Overdue');
 
   // create a donationForm object
-  const completed: DonationForm[] = [deliveredItem];
+  const dummyCompleted = [deliveredItem];
 
   const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'];
@@ -151,9 +198,6 @@ const DonationListScreen = () => {
   // const setMonth = (currDate: Date) => {
   //   console.log('set the filtered month here');
   // };
-
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const [dateSearch, searchData] = React.useState<string>('');
 
   const selectedView = () => {
     if (selectedIndex === 1 && !overdueView) {
@@ -185,24 +229,14 @@ const DonationListScreen = () => {
             placeholder="Month/Year"
             value={dateSearch}
             platform="ios"
-            onChangeText={searchData}
+            onChangeText={updateDateSearch}
             lightTheme
-            showLoading
+            showLoading={isLoading}
           />
           <Text style={{ fontSize: scale(5) }}>Do not worry about the date when selecting a month and year</Text>
-          {// replace with actual filter logic
-          completedDates.map((date) => (
-            <View>
-              <Subsection key={Number(new Date(date))} dataDate={date} />
-              <ScrollView>
-                {completed.filter((item: DonationForm) => {
-                  const completedDate = `${monthNames[new Date(item.pickupEndTime).getMonth()]} ${new Date(item.pickupEndTime).getFullYear()}`;
-                  return completedDate === date;
-                }).map((item: DonationForm) => <Row key={item._id} donationForm={item} />)}
-              </ScrollView>
-            </View>
-          ))}
-
+          <ScrollView>
+            {completed.map((item: DonationForm) => <Row key={item._id} donationForm={item} />)}
+          </ScrollView>
         </View>
       );
     } else if (selectedIndex === 0 && !overdueView) {
@@ -250,7 +284,7 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue').map(
+            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
           </View>
