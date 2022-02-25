@@ -5,14 +5,13 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Pressable
 } from 'react-native';
 import { Provider } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Entypo';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { ButtonGroup } from 'react-native-elements/dist/buttons/ButtonGroup';
 import { SearchBar } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
@@ -20,10 +19,13 @@ import axios from 'axios';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 
-import { ChevronButton, Header } from '../../../components';
+import { ChevronButton, Header, DonationQueueRow } from '../../../components';
 
 import { moderateScale, verticalScale, scale } from '../../../util';
 import { DonationForm, Address } from '../../../types';
+
+import { RootState } from '../../../redux/rootReducer';
+import { loadDonations, searchDonations } from '../../../redux/reducers/donationQueue';
 
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
@@ -46,10 +48,13 @@ type DonationScreenProp = CompositeNavigationProp<
  * @returns {TSX.Element}
  */
 const DonationListScreen = () => {
-  // get current month - not number but actual word
-  // const navigation = useNavigation<DonationScreenProp>();
-  const [ongoing, setOngoing] = React.useState<DonationForm[]>([]);
-  const [completed, setCompleted] = React.useState<DonationForm[]>([]);
+  const navigation = useNavigation<DonationScreenProp>();
+
+  // get ongoing and completed arrays from the list of donations in database
+  const dispatch = useDispatch();
+  const donationQueue = useSelector((state: RootState) => state.donationQueueReducer.donationQueue);
+  const donationSearch = useSelector((state: RootState) => state.donationQueueReducer.donationSearch);
+
   const [dateSearch, updateDateSearch] = React.useState<string>('');
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -57,29 +62,42 @@ const DonationListScreen = () => {
   // const [filterDate, setFilterDate] = React.useState(new Date());
   const [overdueView, setOverdueView] = React.useState(false);
 
-  // get ongoing and completed arrays from the list of donations in database
-
+  // dropOffAddress: {
+  //   streetAddress:"Hemphill Ave NW",
+  //   buildingNumber:900,
+  //   city:"Atlanta",
+  //   state:"GA",
+  //   zipCode:30332,
+  //   longitude:33.7799102,
+  //   latitude: -84.4053848
+  // },
   // gets ongoing donations
   useEffect(() => {
+    // USE THIS AS REFERENCE ONLY
+    // const formdata = new FormData();
+    // formdata.append('json', JSON.stringify({
+    //   status: 'Unclaim'
+    // }));
+    // axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
+    //   .then((res) => console.log(res))
+    //   .catch((error) => console.error(error));
+
     axios.get('/api/ongoingdonations')
       .then((res) => {
-        setOngoing(res.data['Ongoing Donations']);
+        dispatch(loadDonations(res.data['Ongoing Donations']));
       })
       .catch((error) => console.error(error));
   }, []);
 
   // gets completed donations based on month/year filter
   useEffect(() => {
-    console.log('Calling search');
     if (isValidMonthYearDate(dateSearch)) {
-      console.log('searching');
       setIsLoading(true);
       const newDate = dateSearch.split('/');
       const dateURL = `/api/search/donations/${newDate[0]}/${newDate[1]}`;
       axios.get(dateURL)
         .then((res) => {
-          console.log(res.data);
-          setCompleted(res.data.donations);
+          dispatch(searchDonations(res.data.donations));
         })
         .catch((error) => console.error(error))
         .finally(() => setIsLoading(false));
@@ -99,106 +117,6 @@ const DonationListScreen = () => {
     return false;
   };
 
-  // create dummy DonationForm
-  const dummyAddress: Address = {
-    streetAddress: 'North Ave NW',
-    buildingNumber: 0,
-    city: 'Atlanta',
-    state: 'GA',
-    zipCode: 30332,
-    longitude: 10,
-    latitude: 100,
-  };
-
-  const pendingItem: DonationForm = {
-    _id: '1',
-    businessName: 'Food Terminal',
-    ongoing: true,
-    status: 'Pending',
-    imageLink: '',
-    donationDishes: [
-      {
-        name: 'Hot Pot',
-        cost: '90',
-        pounds: 90,
-        dishID: 'ruurvurvn',
-        quantity: 10,
-      }
-    ],
-    pickupAddress: dummyAddress,
-    pickupInstructions: 'whateve',
-    pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date('February 20, 2022 03:24:00')),
-    lockedByVolunteer: false
-  };
-
-  const unclaimedItem: DonationForm = {
-    _id: '2',
-    businessName: 'John Doe',
-    ongoing: true,
-    status: 'Overdue',
-    imageLink: '',
-    donationDishes: [],
-    pickupAddress: dummyAddress,
-    pickupInstructions: 'whatever',
-    pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date('February 11, 2022 03:24:00')),
-    lockedByVolunteer: false
-  };
-
-  const claimedItem: DonationForm = {
-    _id: '3',
-    businessName: 'Test Restauraunt',
-    ongoing: true,
-    status: 'Claimed',
-    imageLink: '',
-    donationDishes: [],
-    pickupAddress: dummyAddress,
-    pickupInstructions: 'whateve',
-    pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date()),
-    lockedByVolunteer: false
-  };
-
-  const deliveredItem: DonationForm = {
-    _id: '4',
-    businessName: 'Test Restauraunt',
-    ongoing: true,
-    status: 'Pending',
-    imageLink: '',
-    donationDishes: [],
-    pickupAddress: dummyAddress,
-    pickupInstructions: 'whateve',
-    pickupStartTime: Number(new Date()),
-    pickupEndTime: Number(new Date()),
-    lockedByVolunteer: false
-  };
-
-  const dummyOngoing = [
-    pendingItem,
-    unclaimedItem,
-    claimedItem
-  ];
-
-  const overdue = [
-    pendingItem,
-    unclaimedItem,
-    claimedItem
-  ].filter((item) => item.status === 'Overdue');
-
-  // create a donationForm object
-  const dummyCompleted = [deliveredItem];
-
-  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'];
-  // extract all pickupEndTimeDate from completed, no repeats. e.g. February 2022
-
-  const [completedDates, setCompletedDates] = React.useState<string[]>([]);
-
-  // const setMonth = (currDate: Date) => {
-  //   console.log('set the filtered month here');
-  // };
-
   const selectedView = () => {
     if (selectedIndex === 1 && !overdueView) {
       return (
@@ -209,7 +127,7 @@ const DonationListScreen = () => {
               style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
               onPress={() => setOverdueView(!overdueView)}
             >
-              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({overdue.length})</Text>
+              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
             </Pressable>
           </View>
           <View>
@@ -233,9 +151,8 @@ const DonationListScreen = () => {
             lightTheme
             showLoading={isLoading}
           />
-          <Text style={{ fontSize: scale(5) }}>Do not worry about the date when selecting a month and year</Text>
           <ScrollView>
-            {completed.map((item: DonationForm) => <Row key={item._id} donationForm={item} />)}
+            {donationSearch.map((item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />)}
           </ScrollView>
         </View>
       );
@@ -248,7 +165,7 @@ const DonationListScreen = () => {
               style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
               onPress={() => setOverdueView(!overdueView)}
             >
-              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({overdue.length})</Text>
+              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
             </Pressable>
           </View>
           <View>
@@ -272,8 +189,8 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View>
-            {ongoing.filter((item: DonationForm) => item.status === 'Pending').map(
-              (item: DonationForm) => <Row key={item._id} donationForm={item} />
+            {donationQueue.filter((item: DonationForm) => item.status === 'Pending').map(
+              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
             )}
           </View>
           <View style={styles.tableTitle}>
@@ -284,8 +201,8 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete').map(
-              (item: DonationForm) => <Row key={item._id} donationForm={item} />
+            {donationQueue.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete').map(
+              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
             )}
           </View>
         </View>
@@ -308,8 +225,8 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {overdue.map(
-              (item: DonationForm) => <Row key={item._id} donationForm={item} />
+            {donationQueue.filter((item: DonationForm) => item.status === 'Overdue').map(
+              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
             )}
           </View>
         </View>
@@ -327,157 +244,7 @@ const DonationListScreen = () => {
   );
 };
 
-type TableSubsection = {
-  dataDate: string;
-}
-
-type RowInfo = {
-    donationForm: DonationForm
-}
-
 export default DonationListScreen;
-
-function Subsection({ dataDate }: TableSubsection) {
-  return (
-    <View style={styles.tableTitle}>
-      <View style={styles.tableH1}>
-        <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>{dataDate}</Text>
-      </View>
-    </View>
-  );
-}
-
-function Row({ donationForm }: RowInfo) {
-  let { businessName } = donationForm;
-  const navigation = useNavigation<DonationScreenProp>();
-  const currDate = new Date(donationForm.pickupEndTime);
-  const endDate = currDate.toLocaleDateString('en-US', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric'
-  });
-
-  const statusLabel = () => {
-    if (donationForm.status === 'Overdue') {
-      return (
-        <Pressable style={{
-          width: '18%',
-          borderRadius: 4,
-          borderColor: '#E90000',
-          borderWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center'
-        }}
-        >
-          <Text style={{ fontSize: 11, color: '#E90000', fontWeight: 'bold' }}>Overdue</Text>
-        </Pressable>
-      );
-    } else if (donationForm.status === 'Pending') {
-      return (
-        <Pressable style={{
-          width: '18%',
-          borderRadius: 4,
-          borderColor: '#5D5D5D',
-          borderWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center'
-        }}
-        >
-          <Text style={{ fontSize: 11, color: '#5D5D5D', fontWeight: 'bold' }}>Pending</Text>
-        </Pressable>
-      );
-    } else if (donationForm.status === 'Unclaim') {
-      return (
-        <Pressable style={{
-          width: '18%',
-          borderRadius: 4,
-          borderColor: '#007FA7',
-          borderWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center'
-        }}
-        >
-          <Text style={{ fontSize: 10, color: '#007FA7', fontWeight: 'bold' }}>Unclaimed</Text>
-        </Pressable>
-      );
-    } else if (donationForm.status === 'Claimed') {
-      return (
-        <Pressable style={{
-          width: '18%',
-          borderRadius: 4,
-          borderColor: '#00883F',
-          borderWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center'
-        }}
-        >
-          <Text style={{ fontSize: 11, color: '#00883F', fontWeight: 'bold' }}>Claimed</Text>
-        </Pressable>
-      );
-    } else {
-      return (
-        <Pressable style={{
-          width: '18%',
-          borderRadius: 4,
-          borderColor: '#00883F',
-          borderWidth: 1,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignContent: 'center',
-          alignItems: 'center',
-          backgroundColor: '#00883F'
-        }}
-        >
-          <Text style={{ fontSize: 11, color: '#FFFFFF', fontWeight: 'bold' }}>Delivered</Text>
-        </Pressable>
-      );
-    }
-  };
-
-  // check if donationForm is undefined
-  if (donationForm.businessName !== undefined && donationForm.businessName.length > 10) {
-    businessName = `${donationForm.businessName.slice(0, 10)}...`;
-  }
-
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        height: 50,
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'gray',
-      }}
-    >
-      <View style={{
-        flex: 8,
-        flexDirection: 'row' }}
-      >
-        <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{businessName}</Text>
-        <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{endDate}</Text>
-        {statusLabel()}
-        <TouchableOpacity
-          // onPress={() => console.log('you pressed a donation')}
-          onPress={() => navigation.navigate('DetailDonationOnQueue', {
-            donationForm
-          })}
-        >
-          <Icon name="chevron-thin-right" size={15} style={{ color: '#5D5D5D', marginLeft: scale(25) }} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {

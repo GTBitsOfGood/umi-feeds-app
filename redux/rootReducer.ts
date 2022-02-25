@@ -8,6 +8,7 @@ import donorReducer from './reducers/donorReducer';
 import donationCartReducer from './reducers/donationCartReducer';
 import loadingReducer from './reducers/loadingReducer';
 import OnboardingReducer from './reducers/OnboardingReducer';
+import donationQueueReducer from './reducers/donationQueue';
 
 const persistConfig = {
   key: 'root',
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   donor: persistReducer(persistConfig, donorReducer),
   donationCart: persistReducer(persistConfig, donationCartReducer),
   onboarding: persistReducer(persistConfig, OnboardingReducer),
-  loading: persistReducer(persistConfig, loadingReducer)
+  loading: persistReducer(persistConfig, loadingReducer),
+  donationQueueReducer: persistReducer(persistConfig, donationQueueReducer)
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -202,7 +202,7 @@ function DetailDonationOnQueue() {
         <View style={styles.container}>
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
             <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{donationForm.businessName}</Text>
-            <Text style={{ fontSize: 21, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
 
             {status()}
             <View style={{ marginTop: 30 }}>
