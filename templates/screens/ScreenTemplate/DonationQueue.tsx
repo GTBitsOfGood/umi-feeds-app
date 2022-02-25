@@ -62,18 +62,25 @@ const DonationListScreen = () => {
   // gets ongoing donations
   useEffect(() => {
     axios.get('/api/ongoingdonations')
-      .then((res) => setOngoing(res.data['Ongoing Donations']))
+      .then((res) => {
+        setOngoing(res.data['Ongoing Donations']);
+      })
       .catch((error) => console.error(error));
   }, []);
 
   // gets completed donations based on month/year filter
   useEffect(() => {
+    console.log('Calling search');
     if (isValidMonthYearDate(dateSearch)) {
+      console.log('searching');
       setIsLoading(true);
       const newDate = dateSearch.split('/');
       const dateURL = `/api/search/donations/${newDate[0]}/${newDate[1]}`;
       axios.get(dateURL)
-        .then((res) => setCompleted(res.data.donations))
+        .then((res) => {
+          console.log(res.data);
+          setCompleted(res.data.donations);
+        })
         .catch((error) => console.error(error))
         .finally(() => setIsLoading(false));
     }
@@ -277,7 +284,7 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue').map(
+            {ongoing.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete').map(
               (item: DonationForm) => <Row key={item._id} donationForm={item} />
             )}
           </View>
