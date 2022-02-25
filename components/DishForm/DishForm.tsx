@@ -17,6 +17,15 @@ import { RootState } from '../../redux/rootReducer';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 import { GeneralModal } from '..';
 import LoadingScreen from '../../screens/LoadingScreen';
+import FloatingTitleTextInputField from '../TextInput';
+
+// @ts-ignore image does not need typescript definition
+import Dollar from '../../assets/images/dollarsign.jpeg';
+
+// @ts-ignore image does not need typescript definition
+import Pounds from '../../assets/images/lbs.png';
+
+const currencyRegex = /^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
 
 /**
  * Dish Form component with the fields to submit or edit a Dish object
@@ -40,7 +49,9 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
   const [uploadImage, setUploadImage] = useState<string | null>(null); // uri of image taken by camera
   const [dishName, setDishName] = useState(props.dish?.dishName ?? '');
   const [cost, setCost] = useState<number | ''>(props.dish?.cost ?? '');
+  const [costString, setCostString] = useState(props.dish?.cost.toString() ?? ''); // enables typing decimal cost amounts
   const [pounds, setPounds] = useState<number | ''>(props.dish?.pounds ?? '');
+  const [poundsString, setPoundsString] = useState(props.dish?.pounds.toString() ?? '');
 
   const [comments, setComments] = useState(props.dish?.comments ?? '');
   const [allergens, setAllergens] = useState<string[]>([]);
@@ -170,38 +181,40 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
           <View style={styles.dishContainer}>
             <Text style={styles.title}>Create a new dish</Text>
             <Text style={styles.description}>Provide the following information about the dish to added to your dish inventory</Text>
-            <View style={styles.boxInput}>
-              <Input
-                value={dishName}
-                placeholder="Dish Name (required)"
-                onChangeText={(name: string) => setDishName(name)}
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                style={{ fontSize: 15 }}
-                multiline
-              />
-            </View>
-            <View style={styles.boxInput}>
-              <Input
-                value={cost.toString()}
-                placeholder="Cost of serving in dollars (required)"
-                onChangeText={(cost: string) => setCost(Number.isFinite(+cost) && cost !== '' ? +cost : '')}
-                keyboardType="numeric"
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                style={{ fontSize: 15 }}
-                multiline
-              />
-            </View>
-            <View style={styles.boxInput}>
-              <Input
-                value={pounds.toString()}
-                placeholder="Weight of serving in pounds (required)"
-                onChangeText={(weight: string) => setPounds(Number.isFinite(+weight) && weight !== '' ? +weight : '')}
-                keyboardType="numeric"
-                inputContainerStyle={{ borderBottomWidth: 0 }}
-                style={{ fontSize: 16 }}
-                multiline
-              />
-            </View>
+            <FloatingTitleTextInputField
+              title="Dish Name (required)"
+              value={dishName}
+              onChangeText={(name: string) => setDishName(name)}
+              keyboardType="default"
+              required
+            />
+            <FloatingTitleTextInputField
+              title="Cost of serving in dollars (required)"
+              value={costString}
+              onChangeText={(costStr: string) => {
+                if (Number.isFinite(+costStr) && (currencyRegex.test(costStr) || !costStr)) {
+                  setCost(Number.isFinite(+costStr) && costStr !== '' ? +costStr : '');
+                  setCostString(costStr);
+                }
+              }}
+              keyboardType="numeric"
+              required
+              img={Dollar}
+              roundToPlaces={2}
+            />
+            <FloatingTitleTextInputField
+              title="Weight of serving in pounds"
+              value={poundsString}
+              onChangeText={(weight: string) => {
+                if (Number.isFinite(+weight) && ((weight.match(/\./g) || []).length <= 1)) {
+                  setPounds(Number.isFinite(+weight) && weight !== '' ? +weight : '');
+                  setPoundsString(weight);
+                }
+              }}
+              keyboardType="numeric"
+              required={false}
+              img={Pounds}
+            />
             <CheckBox
               containerStyle={styles.checkbox}
               textStyle={{ fontWeight: 'normal' }}
