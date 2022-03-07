@@ -1,7 +1,8 @@
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Colors from '../../constants/Colors';
 import useColorScheme from '../../hooks/useColorScheme';
 import ProfileNavigator from '../../navigation/SharedStack/UserProfile';
@@ -15,8 +16,12 @@ const BottomTab = createBottomTabNavigator<AdminBottomTabParamList>();
 
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
+function IonTabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string; iconSize:number}) {
+  return <Ionicons size={props.iconSize} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function MaterialTabBarIcon(props: { name: React.ComponentProps<typeof MaterialCommunityIcons>['name']; color: string; iconSize:number}) {
+  return <MaterialCommunityIcons size={props.iconSize} style={{ marginBottom: -3 }} {...props} />;
 }
 
 function AdminTabs() {
@@ -31,21 +36,21 @@ function AdminTabs() {
         name="My Donations"
         component={MyDonationScreen}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialTabBarIcon name="hand-heart" iconSize={30} color={color} />
         }}
       />
       <BottomTab.Screen
         name="Donation List"
         component={DonationList}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
+          tabBarIcon: ({ color }) => <MaterialTabBarIcon name="view-list" iconSize={39} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Profile"
         component={ProfileNavigator}
         options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
+          tabBarIcon: ({ color }) => <IonTabBarIcon name="person" iconSize={30} color={color} />,
         }}
       />
     </BottomTab.Navigator>
