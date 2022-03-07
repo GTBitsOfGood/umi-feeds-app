@@ -15,7 +15,7 @@ import MyDonationScreen from '../screens/ScreenTemplate/MyDonations';
 /**
  * Styling and implementation of the bottom navigation bar in the Admin view.
  * Includes: My Donations, Donation List, and Profile.
- * 
+ *
  * Uses the two icon libraries Ionicons and MaterialCommunityIcons
  *
  * IMPORTANT NOTES:
