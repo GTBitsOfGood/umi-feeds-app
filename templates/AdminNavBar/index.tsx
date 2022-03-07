@@ -12,10 +12,22 @@ import {
 import DonationList from '../screens/DonationList';
 import MyDonationScreen from '../screens/ScreenTemplate/MyDonations';
 
+/**
+ * Styling and implementation of the bottom navigation bar in the Admin view.
+ * Includes: My Donations, Donation List, and Profile.
+ * 
+ * Uses the two icon libraries Ionicons and MaterialCommunityIcons
+ *
+ * IMPORTANT NOTES:
+ * You can explore the built-in icon families and icons on the web at:
+ * https://icons.expo.fyi/
+ *
+ * KNOWN BUGS: None
+ *
+ */
+
 const BottomTab = createBottomTabNavigator<AdminBottomTabParamList>();
 
-// You can explore the built-in icon families and icons on the web at:
-// https://icons.expo.fyi/
 function IonTabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string; iconSize:number}) {
   return <Ionicons size={props.iconSize} style={{ marginBottom: -3 }} {...props} />;
 }
