@@ -2,7 +2,7 @@ import React from 'react';
 import { CompositeNavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios, { AxiosResponse } from 'axios';
-import { useSelector, useDispatch, batch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Alert } from 'react-native';
 import { Address, Donation, DonationForm } from '../../../types';
@@ -10,6 +10,9 @@ import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { AddressForm } from '../../../components';
 import { TemplateNavParamList } from '../../NavTypes';
 import { updateDonation } from '../../../redux/reducers/donationQueue';
+import { setLoading } from '../../../redux/reducers/loadingReducer';
+import { RootState } from '../../../redux/rootReducer';
+import LoadingScreen from "../../../screens/LoadingScreen";
 
 type ParamList = {
   DropoffDetailsEditScreen: {
@@ -34,6 +37,8 @@ export default function DropoffDetailsEditScreen() {
   const navigation = useNavigation<DonationScreenProp>();
   const dispatch = useDispatch();
 
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
   const onSubmit = (address:Address | null, instructions: string | null) => {
     let addr = address;
     let instr = instructions;
@@ -43,6 +48,7 @@ export default function DropoffDetailsEditScreen() {
     if (!instr) {
       instr = '';
     }
+    dispatch(setLoading({ loading: true }));
     const formdata = new FormData();
     // Update the donation address and instructions
     formdata.append('json', JSON.stringify({
@@ -64,10 +70,14 @@ export default function DropoffDetailsEditScreen() {
       .catch((error) => {
         Alert.alert('There was a problem updating the donation.  Please try again');
         console.error(error);
+      }).finally(()=> {
+        dispatch(setLoading({ loading: false }));
       });
   };
 
-  return (
+  return loadingState ? (
+    <LoadingScreen />
+  ) : (
     <AddressForm
       UserAddress={donationForm.dropOffAddress}
       ButtonTitle="Update Donation"

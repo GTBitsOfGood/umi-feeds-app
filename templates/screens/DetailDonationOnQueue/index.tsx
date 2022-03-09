@@ -12,14 +12,16 @@ import { Entypo, AntDesign, Foundation, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../DetailDonationOnQueue/styles';
-import { Address, DonationForm } from '../../../types';
-import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
+import { DonationForm } from '../../../types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { updateDonation, deleteDonation } from '../../../redux/reducers/donationQueue';
 import { TemplateNavParamList } from '../../NavTypes';
 import { GeneralModal } from '../../../components';
+import { RootState } from '../../../redux/rootReducer';
+import LoadingScreen from '../../../screens/LoadingScreen';
+import { setLoading } from '../../../redux/reducers/loadingReducer';
 
 type ParamList = {
   DetailDonationOnQueue: {
@@ -57,6 +59,8 @@ function DetailDonationOnQueue() {
 
   const dispatch = useDispatch();
   const navigation = useNavigation<DonationScreenProp>();
+
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
 
   let buildingNumberStr = '';
   if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
@@ -242,6 +246,7 @@ function DetailDonationOnQueue() {
           {
             (donationForm.status === 'Claimed' || donationForm.status === 'Unclaim') && (
               <MenuOption onSelect={() => {
+                dispatch(setLoading({ loading: true }));
                 const formdata = new FormData();
                 // Mark the donation as overdue
                 formdata.append('json', JSON.stringify({
@@ -257,6 +262,8 @@ function DetailDonationOnQueue() {
                   .catch((error) => {
                     Alert.alert('There was a problem marking the donation as overdue.  Please try again');
                     console.error(error);
+                  }).finally(() => {
+                    dispatch(setLoading({ loading: false }));
                   });
               }}
               >
@@ -272,6 +279,7 @@ function DetailDonationOnQueue() {
           {
             donationForm.status === 'Claimed' && (
               <MenuOption onSelect={() => {
+                dispatch(setLoading({ loading: true }));
                 const formdata = new FormData();
                 // Mark the donation as unclaimed
                 formdata.append('json', JSON.stringify({
@@ -290,6 +298,8 @@ function DetailDonationOnQueue() {
                   .catch((error) => {
                     Alert.alert('There was a problem marking the donation as unclaimed.  Please try again');
                     console.error(error);
+                  }).finally(() => {
+                    dispatch(setLoading({ loading: false }));
                   });
               }}
               >
@@ -338,6 +348,7 @@ function DetailDonationOnQueue() {
   const deleteModalSubmit = (deleteButton:boolean, cancelButton: boolean) => {
     setDeleteModalOpen(false);
     if (deleteButton) {
+      dispatch(setLoading({ loading: true }));
       axios.delete(`/api/ongoingdonations/${donationForm._id}`)
         .then((res) => {
           // Update this in the frontend central state
@@ -348,11 +359,15 @@ function DetailDonationOnQueue() {
         .catch((error) => {
           Alert.alert('There was a problem deleting the donation.  Please try again');
           console.error(error);
+        }).finally(() => {
+          dispatch(setLoading({ loading: false }));
         });
     }
   };
 
-  return (
+  return loadingState ? (
+    <LoadingScreen />
+  ) : (
     <View style={{ backgroundColor: 'white', width: '100%', height: '100%' }} onTouchStart={() => setEditMenuOpen(false)}>
       <GeneralModal
         title="Delete donation"
