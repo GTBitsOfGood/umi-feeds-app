@@ -95,7 +95,7 @@ export default function DropoffDetailsEditScreen() {
       UserAddress={donationForm.dropOffAddress}
       ButtonTitle="Update Donation"
       goBack={navigation.goBack}
-      onSubmit={(address) => console.log(address)}
+      onSubmit={(address) => console.log(address)} // use the other submission handler. This one is specified for donors and onboardings
       hideBack
       formTitle="Destination address"
       formDescription="Fill out the destination address information below, as well as any additional directions."

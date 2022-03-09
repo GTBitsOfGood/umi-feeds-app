@@ -126,13 +126,13 @@ function DetailDonationOnQueue() {
                 flex: 4,
                 height: 52,
                 borderRadius: 4,
-                borderColor: '#F33636',
+                borderColor: '#11B25B',
                 borderWidth: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#F33636'
+                backgroundColor: '#11B25B',
               }}
               onPress={() => console.log('pending more like never ending')}
             >
@@ -144,13 +144,13 @@ function DetailDonationOnQueue() {
                 flex: 4,
                 height: 52,
                 borderRadius: 4,
-                borderColor: '#11B25B',
                 borderWidth: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#11B25B'
+                backgroundColor: '#F33636',
+                borderColor: '#F33636'
               }}
               onPress={() => console.log('pending more like never ending')}
             >
@@ -398,7 +398,7 @@ function DetailDonationOnQueue() {
             <View style={{ marginTop: 30 }}>
               <Text style={styles.subHeader}>Delivery details</Text>
               <Text style={styles.detailsHeader}>Address</Text>
-              <Text style={styles.details}>{donationForm.dropOffAddress ? `${donationForm.dropOffAddress.streetAddress} ${dropoffBuildingNumberStr}\n${
+              <Text style={styles.details}>{donationForm.dropOffAddress ? `${donationForm.dropOffAddress.streetAddress}\n${
                 donationForm.dropOffAddress.city} ${donationForm.dropOffAddress.state} ${donationForm.dropOffAddress.zipCode}` : '---'}
               </Text>
               <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
