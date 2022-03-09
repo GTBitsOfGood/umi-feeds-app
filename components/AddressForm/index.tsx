@@ -13,11 +13,12 @@ import PrimaryButton from '../Button/PrimaryButton';
 type AddressFormProps = {
   ButtonTitle: string,
   UserAddress?: Address,
+  backButton?: boolean,
   goBack: () => void,
   onSubmit: (addressObj: Address | null) => void,
 }
 
-const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressFormProps) => {
+const AddressForm = ({ ButtonTitle, UserAddress, backButton, goBack, onSubmit }: AddressFormProps) => {
   const [address, setAddress] = useState<string>(UserAddress ? UserAddress.streetAddress : '');
   const [city, setCity] = useState<string>(UserAddress ? UserAddress?.city : '');
   const [zipCode, onZipCodeChange] = useState<string>(UserAddress ? UserAddress.zipCode.toString : '');
@@ -43,7 +44,11 @@ const AddressForm = ({ ButtonTitle, UserAddress, goBack, onSubmit }: AddressForm
           keyboardShouldPersistTaps="handled"
         >
           <View style={{}} />
-          <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />
+          {
+            !backButton ? (
+              <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />
+            ) : null
+          }
           <View style={{}}>
             <View style={{}}>
               <View style={{}} />

@@ -81,12 +81,12 @@ const GeneralModal = ({
 
   if (numButtons === 1) {
     modalHeight = '60%';
-    flexTitle = 1;
+    flexTitle = 2;
     flexSubtitle = 3;
     flexButton = 4;
   } else {
     modalHeight = '80%';
-    flexTitle = 1;
+    flexTitle = 2;
     flexSubtitle = 3;
     flexButton = 7;
   }

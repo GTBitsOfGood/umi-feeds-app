@@ -12,3 +12,4 @@ export { default as DonationListBox } from './DonationsListBox';
 export { default as PrimaryButton } from './Button/PrimaryButton';
 export { default as SecondaryButton } from './Button/SecondaryButton';
 export { default as DonationQueueRow } from './DonationQueueRow';
+export { default as AddressSelection } from './AddressSelectionForm';
