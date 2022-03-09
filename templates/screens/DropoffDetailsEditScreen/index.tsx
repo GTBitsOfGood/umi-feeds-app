@@ -30,6 +30,19 @@ type DonationScreenProp = CompositeNavigationProp<
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
   >;
 
+/**
+ * Screen to edit the drop off location and instructions for an ongoing donation
+ *
+ * IMPORTANT NOTES:
+ *  If using the version of the Address form without instructions this screen is not setup to update the backend,
+ *  however it currently is using the version of the address form with a textbox for instructions, so this won't come up
+ *  as an issue unless changed by a developer.
+ *
+ * KNOWN BUGS:
+ *  NA
+ *
+ * @returns {TSX.Element}
+ */
 export default function DropoffDetailsEditScreen() {
   const route = useRoute<RouteProp<ParamList, 'DropoffDetailsEditScreen'>>();
   const { donationForm } = route.params;
