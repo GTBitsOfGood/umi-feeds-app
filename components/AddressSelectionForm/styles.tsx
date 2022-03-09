@@ -2,19 +2,20 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   scrollView: {
+    backgroundColor: 'white',
     marginHorizontal: 0,
     width: '100%',
   },
   contentContainer: {
+    backgroundColor: 'white',
     width: '85%',
     marginHorizontal: '7.5%',
-    marginTop: '10%',
   },
   addressCard: {
     borderWidth: 1,

@@ -27,7 +27,6 @@ type AdminScreenProp = StackNavigationProp<TemplateNavParamList>;
 
 function AdminAcceptAddressScreen() {
   const route = useRoute<RouteProp<ParamList, 'AddressScreen'>>();
-  const state = useSelector((state: RootState) => state);
   const navigation = useNavigation<AdminScreenProp>();
   const dispatch = useDispatch();
 
@@ -44,9 +43,9 @@ function AdminAcceptAddressScreen() {
         dropOffAddress: address,
         status: 'Unclaim'
       }));
-      axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
+      axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
         .then((res) => {
-          dispatch(updateStatus({ donationForm, status: 'Unclaim' }));
+          dispatch(updateStatus({ donationForm, status: 'Unclaim', dropoffAddr: address }));
           navigation.navigate('DonationQueue');
         })
         .catch((err) => {
@@ -62,11 +61,9 @@ function AdminAcceptAddressScreen() {
     loadingState ? (
       <LoadingScreen />
     ) : (
-      <View style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-          <AddressSelection title="Destination Address" subtitle="Select a destination address for this donation below, or add a new address." navigation={navigation} buttonTitle="Accept Donation" handleSubmit={setAddress} backButton={false} />
-        </ScrollView>
-      </View>
+      <ScrollView style={styles.scrollView}>
+        <AddressSelection title="Destination Address" subtitle="Select a destination address for this donation below, or add a new address." navigation={navigation} buttonTitle="Accept Donation" handleSubmit={setAddress} backButton={false} />
+      </ScrollView>
     )
   );
 }

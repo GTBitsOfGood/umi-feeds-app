@@ -1,20 +1,17 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
-import { useRoute, RouteProp, CompositeNavigationProp, useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import styles from '../DetailDonationOnQueue/styles';
-import { Address, Donation, DonationForm } from '../../../types';
 import { RootState } from '../../../redux/rootReducer';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { updateStatus } from '../../../redux/reducers/donationQueue';
 import GeneralModal from '../../../components/GeneralModal';
 
-import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { TemplateNavParamList } from '../../NavTypes';
+import { DonationForm } from '../../../types';
 import LoadingScreen from '../../../screens/LoadingScreen';
 
 type ParamList = {
@@ -40,16 +37,9 @@ type DonationScreenProp = StackNavigationProp<TemplateNavParamList>;
 
 function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
-  const state = useSelector((state: RootState) => state);
   const dispatch = useDispatch();
   const { donationForm } = route.params;
   const navigation = useNavigation<DonationScreenProp>();
-  console.log(donationForm);
-
-  let buildingNumberStr = '';
-  if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
-    buildingNumberStr = `#${donationForm.pickupAddress.buildingNumber}`;
-  }
 
   const pickupStartTimeDate = new Date(donationForm.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
@@ -72,6 +62,8 @@ function DetailDonationOnQueue() {
   const formattedDate = `${pickupEndTimeDate.getMonth() + 1}/${pickupEndTimeDate.getDate()}/${pickupEndTimeDate.getFullYear()}`;
 
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
+  // Styling and logic related to the Deny Confirmation Modal
   const [denyModalVisible, setDenyModalVisible] = React.useState<boolean>(false);
   const closeDenyModal = () => setDenyModalVisible(false);
   const handleModalSubmit = (denyPressed: boolean, cancelPressed: boolean) => {
@@ -82,14 +74,12 @@ function DetailDonationOnQueue() {
         status: 'Denied',
         ongoing: false
       }));
-      axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
+      axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
         .then((res) => {
-          console.log(res);
           dispatch(updateStatus({ donationForm, status: 'Denied' }));
           navigation.goBack();
         })
         .catch((err) => {
-          console.log(err);
           Alert.alert('Error denying this donation.', err.message);
         })
         .finally(() => {
@@ -149,7 +139,6 @@ function DetailDonationOnQueue() {
                 backgroundColor: '#11B25B'
               }}
               onPress={() => {
-                // const donationObject = state.donationQueueReducer.donationQueue.find((donation) => donation._id === donationForm._id);
                 navigation.navigate('AddressScreen', { donationForm });
               }}
             >
@@ -268,9 +257,16 @@ function DetailDonationOnQueue() {
               <View style={{ marginTop: 30 }}>
                 <Text style={styles.subHeader}>Delivery details</Text>
                 <Text style={styles.detailsHeader}>Address</Text>
-                <Text style={styles.details}>---</Text>
+                <Text style={styles.details}>
+                  {donationForm.dropOffAddress
+                    ? (`${donationForm.dropOffAddress.streetAddress} \n${donationForm.dropOffAddress.city}, ${donationForm.dropOffAddress.state}, ${donationForm.dropOffAddress.zipCode}`) : '---'}
+                </Text>
                 <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
-                <Text style={styles.details}>---</Text>
+                <Text style={styles.details}>
+                  {
+                    donationForm.dropOffInstructions ?? '---'
+                  }
+                </Text>
 
               </View>
               <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
@@ -278,7 +274,7 @@ function DetailDonationOnQueue() {
               <Text style={styles.subHeader}>Pickup details</Text>
               <Text style={styles.detailsHeader}>Address</Text>
               <Text style={styles.details}>
-                {donationForm.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
+                {donationForm.pickupAddress.streetAddress}{'\n'}
                 {donationForm.pickupAddress.city}, {donationForm.pickupAddress.state}, {donationForm.pickupAddress.zipCode}
               </Text>
               <Text style={styles.detailsHeader}>Scheduled time</Text>

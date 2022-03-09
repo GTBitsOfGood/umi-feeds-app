@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Alert, View, Modal, Text, Pressable, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { Alert, View, Text, Pressable, KeyboardAvoidingView, TouchableHighlight, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -10,10 +8,14 @@ import axios from 'axios';
 import styles from './styles';
 import { RootState } from '../../redux/rootReducer';
 import { Address, DonationForm } from '../../types';
-import { Header, ChevronButton, PrimaryButton, SecondaryButton } from '../../components';
-import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
 import { setPickupAddresses } from '../../redux/reducers/authReducer';
 import { ThemeColor } from '../../constants/Colors';
+
+// Components
+import ChevronButton from '../ChevronButton';
+import Header from '../Header';
+import PrimaryButton from '../Button/PrimaryButton';
+import SecondaryButton from '../Button/SecondaryButton';
 
 type AddressSelectionParams = {
     title: string,
@@ -68,9 +70,9 @@ const AddressFormScreen = ({
           {pickupAddresses.map((address: Address) => (
             <AddressCard
               selected={selectedAddress?._id === address._id}
-              key={address._id}
+              key={address.longitude}
               address={address}
-              businessName={authState.businessName}
+              businessName="Test Business Name"
               onPress={() => setSelectedAddress(address)}
               onEdit={() => {
                 navigation.navigate('EditAddressScreen' as any, { address });

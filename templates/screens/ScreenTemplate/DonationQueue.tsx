@@ -62,15 +62,6 @@ const DonationListScreen = () => {
   // const [filterDate, setFilterDate] = React.useState(new Date());
   const [overdueView, setOverdueView] = React.useState(false);
 
-  // dropOffAddress: {
-  //   streetAddress:"Hemphill Ave NW",
-  //   buildingNumber:900,
-  //   city:"Atlanta",
-  //   state:"GA",
-  //   zipCode:30332,
-  //   longitude:33.7799102,
-  //   latitude: -84.4053848
-  // },
   // gets ongoing donations
   useEffect(() => {
     // USE THIS AS REFERENCE ONLY

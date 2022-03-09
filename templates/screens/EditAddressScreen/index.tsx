@@ -5,7 +5,6 @@ import axios, { AxiosResponse } from 'axios';
 import { useSelector, useDispatch, batch } from 'react-redux';
 
 import { AddressForm } from '../../../components';
-import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { Address } from '../../../types';
 import { RootState } from '../../../redux/rootReducer';
 import { setPickupAddresses } from '../../../redux/reducers/authReducer';
@@ -58,6 +57,7 @@ export default function EditAddresScreen({ route }: { route: { params: { address
         }
       }}
       ButtonTitle="Save address"
+      backButton
     />
   );
 }
