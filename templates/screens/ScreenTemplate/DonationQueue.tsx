@@ -26,7 +26,7 @@ import { DonationForm, Address } from '../../../types';
 
 import { RootState } from '../../../redux/rootReducer';
 import { loadDonations, searchDonations } from '../../../redux/reducers/donationQueue';
-import {TemplateNavParamList} from "../../NavTypes";
+import { TemplateNavParamList } from '../../NavTypes';
 
 // type DonationScreenProp = CompositeNavigationProp<
 //   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,

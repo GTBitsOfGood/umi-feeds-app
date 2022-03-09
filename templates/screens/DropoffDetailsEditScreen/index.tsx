@@ -4,12 +4,12 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import axios, { AxiosResponse } from 'axios';
 import { useSelector, useDispatch, batch } from 'react-redux';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { Alert } from 'react-native';
 import { Address, Donation, DonationForm } from '../../../types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
 import { AddressForm } from '../../../components';
 import { TemplateNavParamList } from '../../NavTypes';
 import { updateDonation } from '../../../redux/reducers/donationQueue';
-import {Alert} from "react-native";
 
 type ParamList = {
   DropoffDetailsEditScreen: {

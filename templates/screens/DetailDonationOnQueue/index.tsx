@@ -350,7 +350,7 @@ function DetailDonationOnQueue() {
           console.error(error);
         });
     }
-  }
+  };
 
   return (
     <View style={{ backgroundColor: 'white', width: '100%', height: '100%' }} onTouchStart={() => setEditMenuOpen(false)}>
