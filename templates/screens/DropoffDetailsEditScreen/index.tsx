@@ -12,7 +12,7 @@ import { TemplateNavParamList } from '../../NavTypes';
 import { updateDonation } from '../../../redux/reducers/donationQueue';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { RootState } from '../../../redux/rootReducer';
-import LoadingScreen from "../../../screens/LoadingScreen";
+import LoadingScreen from '../../../screens/LoadingScreen';
 
 type ParamList = {
   DropoffDetailsEditScreen: {
@@ -70,7 +70,7 @@ export default function DropoffDetailsEditScreen() {
       .catch((error) => {
         Alert.alert('There was a problem updating the donation.  Please try again');
         console.error(error);
-      }).finally(()=> {
+      }).finally(() => {
         dispatch(setLoading({ loading: false }));
       });
   };
