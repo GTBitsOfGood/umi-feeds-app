@@ -4,6 +4,7 @@ import DonationQueue from './screens/ScreenTemplate/DonationQueue';
 import DetailDonationOnQueue from './screens/DetailDonationOnQueue';
 
 import { TemplateNavParamList } from './NavTypes';
+import DropoffDetailsEditScreen from './screens/DropoffDetailsEditScreen';
 
 const TestingStack = createStackNavigator<TemplateNavParamList>();
 
@@ -19,6 +20,11 @@ export default function TestStack() {
       <TestingStack.Screen
         name="DetailDonationOnQueue"
         component={DetailDonationOnQueue}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
+      />
+      <TestingStack.Screen
+        name="DropoffDetailsEditScreen"
+        component={DropoffDetailsEditScreen}
         options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
     </TestingStack.Navigator>

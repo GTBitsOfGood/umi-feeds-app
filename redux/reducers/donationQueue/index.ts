@@ -1,11 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DonationForm } from '../../../types';
+import { Address, DonationDishes, DonationForm } from '../../../types';
 import { DonationQueue } from './types';
 
 const initialState = {
   donationQueue: [],
   donationSearch: [],
 } as DonationQueue;
+
+function updateDonationState(state:DonationQueue, newDonation:DonationForm) {
+  const ref = state.donationQueue.find((donation) => donation._id === newDonation._id);
+  if (ref === undefined) return;
+  ref.businessName = newDonation.businessName;
+  ref.name = newDonation.name;
+  ref.phoneNumber = newDonation.phoneNumber;
+  ref.ongoing = newDonation.ongoing;
+  ref.status = newDonation.status;
+  ref.imageLink = newDonation.imageLink;
+  ref.donationDishes = newDonation.donationDishes;
+  ref.pickupAddress = newDonation.pickupAddress;
+  ref.pickupInstructions = newDonation.pickupInstructions;
+  ref.dropOffAddress = newDonation.dropOffAddress;
+  ref.dropOffInstructions = newDonation.dropOffInstructions;
+  ref.pickupStartTime = newDonation.pickupStartTime;
+  ref.pickupEndTime = newDonation.pickupEndTime;
+  ref.volunteerLockTime = newDonation.volunteerLockTime;
+  ref.lockedByVolunteer = newDonation.lockedByVolunteer;
+  ref.confirmPickUpTime = newDonation.confirmPickUpTime;
+  ref.confirmDropOffTime = newDonation.confirmDropOffTime;
+}
 
 const donationQueueReducer = createSlice({
   name: 'donationQueue',
@@ -16,9 +38,15 @@ const donationQueueReducer = createSlice({
     },
     searchDonations(state, action: PayloadAction<DonationForm[]>) {
       state.donationSearch = action.payload;
+    },
+    updateDonation(state, action:PayloadAction<DonationForm>) {
+      updateDonationState(state, action.payload);
+    },
+    deleteDonation(state, action:PayloadAction<DonationForm>) {
+      state.donationQueue = state.donationQueue.filter((item:DonationForm) => item._id !== action.payload._id);
     }
   }
 });
 
-export const { loadDonations, searchDonations } = donationQueueReducer.actions;
+export const { loadDonations, searchDonations, updateDonation, deleteDonation } = donationQueueReducer.actions;
 export default donationQueueReducer.reducer;
