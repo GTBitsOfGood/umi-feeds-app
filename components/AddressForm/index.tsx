@@ -16,14 +16,29 @@ type AddressFormProps = {
   backButton?: boolean,
   goBack: () => void,
   onSubmit: (addressObj: Address | null) => void,
+  onSubmitWithInstructions?: (addressObj: Address | null, instructions: string | null) => void
+  hideBack?: boolean,
+  formTitle?: string,
+  formDescription?: string,
+  includeInstructions?: boolean,
+  priorInstructions?: string,
 }
 
-const AddressForm = ({ ButtonTitle, UserAddress, backButton, goBack, onSubmit }: AddressFormProps) => {
+const AddressForm = (
+  { ButtonTitle, UserAddress, goBack, onSubmit, onSubmitWithInstructions,
+    hideBack, formTitle, formDescription,
+    includeInstructions, priorInstructions
+  }: AddressFormProps
+) => {
   const [address, setAddress] = useState<string>(UserAddress ? UserAddress.streetAddress : '');
   const [city, setCity] = useState<string>(UserAddress ? UserAddress?.city : '');
-  const [zipCode, onZipCodeChange] = useState<string>(UserAddress ? UserAddress.zipCode.toString : '');
+  const [zipCode, onZipCodeChange] = useState<string>(UserAddress ? UserAddress.zipCode.toString() : '');
   const [latitude, onLatitudeChange] = useState<number>(0);
   const [longitude, onLongitudeChange] = useState<number>(0);
+  const [instructions, setInstructions] = useState<string>(priorInstructions ?? '');
+
+  const title = formTitle ?? 'Enter address';
+  const description = formDescription ?? 'Fill out the address information below. We’ll share this with your assigned driver for pickup.';
 
   const handleAutofillAddress = (data, detail) => {
     setAddress(`${data.terms[0].value} ${data.terms[1].value}`);
@@ -44,21 +59,17 @@ const AddressForm = ({ ButtonTitle, UserAddress, backButton, goBack, onSubmit }:
           keyboardShouldPersistTaps="handled"
         >
           <View style={{}} />
-          {
-            !backButton ? (
-              <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />
-            ) : null
-          }
+          {!hideBack && <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />}
           <View style={{}}>
             <View style={{}}>
               <View style={{}} />
               <View style={{}}>
-                <Header title="Enter address" showCartButton={false} />
+                <Header title={title} showCartButton={false} />
                 {/* <Text style={styles.title}>Enter address</Text> */}
               </View>
               <View style={{}}>
                 <Text style={styles.description}>
-                  Fill out the address information below. We’ll share this with your assigned driver for pickup.
+                  {description}
                 </Text>
               </View>
               <View style={{}}>
@@ -97,13 +108,29 @@ const AddressForm = ({ ButtonTitle, UserAddress, backButton, goBack, onSubmit }:
                   textContentType="postalCode"
                   editable
                 />
+                {includeInstructions
+                && (
+                <TextInput
+                  style={[styles.input, { height: moderateScale(110) }]}
+                  onChangeText={setInstructions}
+                  placeholder="Additional Directions"
+                  value={instructions}
+                  multiline
+                  editable
+                />
+                )}
+
               </View>
             </View>
             <PrimaryButton
               onPress={() => {
                 if (address.trim().length === 0) {
-                  onSubmit(null);
-                } else {
+                  if (includeInstructions && onSubmitWithInstructions) {
+                    onSubmitWithInstructions(null, instructions);
+                  } else {
+                    onSubmit(null);
+                  }
+                } else if (!includeInstructions || !onSubmitWithInstructions) {
                   onSubmit({
                     streetAddress: address,
                     buildingNumber: 0,
@@ -113,6 +140,16 @@ const AddressForm = ({ ButtonTitle, UserAddress, backButton, goBack, onSubmit }:
                     longitude,
                     latitude,
                   });
+                } else {
+                  onSubmitWithInstructions({
+                    streetAddress: address,
+                    buildingNumber: 0,
+                    city: 'Atlanta',
+                    state: 'GA',
+                    zipCode: parseInt(zipCode, 10),
+                    longitude,
+                    latitude,
+                  }, instructions);
                 }
               }}
             >
@@ -154,7 +191,7 @@ const styles = StyleSheet.create({
     color: 'black',
     borderColor: '#b8b8b8',
     borderRadius: 4,
-    width: 330,
+    width: '100%',
     padding: 10,
   },
   title: {

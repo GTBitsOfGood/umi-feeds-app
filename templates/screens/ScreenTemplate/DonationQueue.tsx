@@ -26,11 +26,17 @@ import { DonationForm, Address } from '../../../types';
 
 import { RootState } from '../../../redux/rootReducer';
 import { loadDonations, searchDonations } from '../../../redux/reducers/donationQueue';
+import { TemplateNavParamList } from '../../NavTypes';
+
+// type DonationScreenProp = CompositeNavigationProp<
+//   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+//   BottomTabNavigationProp<BottomTabParamList, 'Home'>
+//   >;
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+  StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
->;
+  >;
 /**
  * Admin view of donation list screen. Currently contains dummy date to see what pending and approved ongoing donations
  * should look like when the app is live. Can choose to view ongoing or completed donations.

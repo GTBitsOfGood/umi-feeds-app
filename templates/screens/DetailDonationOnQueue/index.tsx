@@ -1,18 +1,27 @@
-import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { useNavigation, useRoute, RouteProp, CompositeNavigationProp } from '@react-navigation/native';
+import Menu, {
+  MenuProvider,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  renderers
+} from 'react-native-popup-menu';
+import { Entypo, AntDesign, Foundation, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../DetailDonationOnQueue/styles';
-import { RootState } from '../../../redux/rootReducer';
-import { setLoading } from '../../../redux/reducers/loadingReducer';
-import { updateStatus } from '../../../redux/reducers/donationQueue';
-import GeneralModal from '../../../components/GeneralModal';
-
-import { TemplateNavParamList } from '../../NavTypes';
 import { DonationForm } from '../../../types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { updateDonation, deleteDonation } from '../../../redux/reducers/donationQueue';
+import { TemplateNavParamList } from '../../NavTypes';
+import { GeneralModal } from '../../../components';
+import { RootState } from '../../../redux/rootReducer';
 import LoadingScreen from '../../../screens/LoadingScreen';
+import { setLoading } from '../../../redux/reducers/loadingReducer';
 
 type ParamList = {
   DetailDonationOnQueue: {
@@ -20,7 +29,15 @@ type ParamList = {
   }
 }
 
-type DonationScreenProp = StackNavigationProp<TemplateNavParamList>;
+// type DonationScreenProp = CompositeNavigationProp<
+//   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+//   BottomTabNavigationProp<BottomTabParamList, 'Home'>
+//   >;
+
+type DonationScreenProp = CompositeNavigationProp<
+  StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
+  BottomTabNavigationProp<BottomTabParamList, 'Home'>
+  >;
 /**
  * Admin view of donation details. Can view Restaurant Name, Deliverary Details, Pickup Details, Meal List, and Contact
  * info.
@@ -30,7 +47,9 @@ type DonationScreenProp = StackNavigationProp<TemplateNavParamList>;
  * Contact info have conditional renders if the data is populated in DonationForm but atm have placeholder dashes ("---").
  *
  * KNOWN BUGS:
- *  N/A
+ *  If the dropdown menu is too long it won't show up entirely.  This is because it is bound by the size of the view it is
+ *  placed within.  So far the lists only have 2-3 elements so it isn't a problem at the moment, but this should be considered
+ *  in the future and perhaps checked at different screen sizes.
  *
  * @returns {TSX.Element}
  */
@@ -39,7 +58,20 @@ function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
   const dispatch = useDispatch();
   const { donationForm } = route.params;
+
+  const dispatch = useDispatch();
   const navigation = useNavigation<DonationScreenProp>();
+
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
+  let buildingNumberStr = '';
+  if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
+    buildingNumberStr = `#${donationForm.pickupAddress.buildingNumber}`;
+  }
+  let dropoffBuildingNumberStr = '';
+  if (donationForm.dropOffAddress && typeof donationForm.dropOffAddress.buildingNumber !== 'undefined') {
+    dropoffBuildingNumberStr = `#${donationForm.dropOffAddress.buildingNumber}`;
+  }
 
   const pickupStartTimeDate = new Date(donationForm.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
@@ -61,6 +93,8 @@ function DetailDonationOnQueue() {
 
   const formattedDate = `${pickupEndTimeDate.getMonth() + 1}/${pickupEndTimeDate.getDate()}/${pickupEndTimeDate.getFullYear()}`;
 
+  const [editMenuOpen, setEditMenuOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
 
   // Styling and logic related to the Deny Confirmation Modal
@@ -110,7 +144,7 @@ function DetailDonationOnQueue() {
     if (donationForm.status === 'Pending') {
       return (
         <View>
-          <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
+          <Text style={{ fontSize: 21, fontWeight: '500', marginBottom: 24 }}>
             Status: <Text style={{ fontSize: 21, marginVertical: 24 }}>{donationForm.status}</Text>
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
@@ -150,13 +184,13 @@ function DetailDonationOnQueue() {
                 flex: 4,
                 height: 52,
                 borderRadius: 4,
-                borderColor: '#F33636',
                 borderWidth: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
                 alignContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#F33636'
+                backgroundColor: '#F33636',
+                borderColor: '#F33636'
               }}
               onPress={() => setDenyModalVisible(true)}
             >
@@ -168,7 +202,7 @@ function DetailDonationOnQueue() {
     } else if (donationForm.status === 'Unclaim') {
       return (
         <View>
-          <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
+          <Text style={{ fontSize: 21, fontWeight: '500', marginBottom: 24 }}>
             Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#007FA7' }}>Unclaimed</Text>
           </Text>
           <Pressable
@@ -192,7 +226,7 @@ function DetailDonationOnQueue() {
     } else if (donationForm.status === 'Claimed') {
       return (
         <View>
-          <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
+          <Text style={{ fontSize: 21, fontWeight: '500', marginBottom: 24 }}>
             Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#00883F' }}>{donationForm.status}</Text>
           </Text>
           <Pressable
@@ -217,7 +251,7 @@ function DetailDonationOnQueue() {
       return (
         // Overdue
         <View>
-          <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
+          <Text style={{ fontSize: 21, fontWeight: '500', marginBottom: 24 }}>
             Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#E90000' }}>{donationForm.status}</Text>
           </Text>
           <Pressable
@@ -242,32 +276,173 @@ function DetailDonationOnQueue() {
     }
   };
 
-  return (
-    loadingState ? (
-      <LoadingScreen />
-    ) : (
-      <View style={{ backgroundColor: 'white', width: '100%', height: '100%' }}>
-        <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
-          <View style={styles.container}>
-            <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
-              <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{donationForm.businessName}</Text>
-              <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
+  const getEditMenuView = () => (
+    <MenuProvider style={{ flexDirection: 'column', overflow: 'visible' }}>
+      {/* @ts-ignore Menu type defined in react-native-popup-menu library */}
+      <Menu opened={editMenuOpen} style={{ alignSelf: 'flex-end' }}>
+        <MenuTrigger>
+          <Entypo name="dots-three-vertical" size={24} color="black" onPress={() => setEditMenuOpen(true)} />
+        </MenuTrigger>
 
-              {status()}
-              <View style={{ marginTop: 30 }}>
-                <Text style={styles.subHeader}>Delivery details</Text>
-                <Text style={styles.detailsHeader}>Address</Text>
-                <Text style={styles.details}>
-                  {donationForm.dropOffAddress
-                    ? (`${donationForm.dropOffAddress.streetAddress} \n${donationForm.dropOffAddress.city}, ${donationForm.dropOffAddress.state}, ${donationForm.dropOffAddress.zipCode}`) : '---'}
-                </Text>
-                <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
-                <Text style={styles.details}>
-                  {
-                    donationForm.dropOffInstructions ?? '---'
-                  }
-                </Text>
+        <MenuOptions>
+          {
+            (donationForm.status === 'Claimed' || donationForm.status === 'Unclaim') && (
+              <MenuOption onSelect={() => {
+                dispatch(setLoading({ loading: true }));
+                const formdata = new FormData();
+                // Mark the donation as overdue
+                formdata.append('json', JSON.stringify({
+                  status: 'Overdue'
+                }));
+                // Push this change to the backend
+                axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+                  .then((res) => {
+                    // Push this change to the central frontend state
+                    dispatch(updateDonation(res.data.donationform));
+                    navigation.goBack();
+                  })
+                  .catch((error) => {
+                    Alert.alert('There was a problem marking the donation as overdue.  Please try again');
+                    console.error(error);
+                  }).finally(() => {
+                    dispatch(setLoading({ loading: false }));
+                  });
+              }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ width: 16, alignItems: 'center' }}>
+                    <AntDesign name="warning" size={16} color="black" />
+                  </View>
+                  <Text> Set as overdue </Text>
+                </View>
+              </MenuOption>
+            )
+          }
+          {
+            donationForm.status === 'Claimed' && (
+              <MenuOption onSelect={() => {
+                dispatch(setLoading({ loading: true }));
+                const formdata = new FormData();
+                // Mark the donation as unclaimed
+                formdata.append('json', JSON.stringify({
+                  status: 'Unclaim'
+                }));
+                // Update this in the backend
+                axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+                  .then((res) => {
+                    // Update this in the frontend central state
+                    dispatch(updateDonation(res.data.donationform));
+                    // Update this in the local route state
+                    navigation.setParams({
+                      donationForm: res.data.donationform,
+                    });
+                  })
+                  .catch((error) => {
+                    Alert.alert('There was a problem marking the donation as unclaimed.  Please try again');
+                    console.error(error);
+                  }).finally(() => {
+                    dispatch(setLoading({ loading: false }));
+                  });
+              }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ width: 16, alignItems: 'center' }}>
+                    <Foundation name="trash" size={16} color="black" />
+                  </View>
+                  <Text> Remove volunteer </Text>
+                </View>
+              </MenuOption>
+            )
+          }
+          {
+            donationForm.status === 'Overdue' && (
+              <MenuOption onSelect={() => {
+                setDeleteModalOpen(true);
+              }}
+              >
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ width: 16, alignItems: 'center' }}>
+                    <Foundation name="trash" size={16} color="black" />
+                  </View>
+                  <Text> Delete donation </Text>
+                </View>
+              </MenuOption>
+            )
+          }
 
+          <MenuOption onSelect={() => {
+            // @ts-ignore donationForm is the correct parameter for this route
+            navigation.navigate('DropoffDetailsEditScreen', { donationForm });
+          }}
+          >
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ width: 16, alignItems: 'center' }}>
+                <Ionicons name="pencil" size={16} color="black" />
+              </View>
+              <Text> Edit delivery details </Text>
+            </View>
+          </MenuOption>
+        </MenuOptions>
+      </Menu>
+    </MenuProvider>
+  );
+
+  const deleteModalSubmit = (deleteButton:boolean, cancelButton: boolean) => {
+    setDeleteModalOpen(false);
+    if (deleteButton) {
+      dispatch(setLoading({ loading: true }));
+      axios.delete(`/api/ongoingdonations/${donationForm._id}`)
+        .then((res) => {
+          // Update this in the frontend central state
+          dispatch(deleteDonation(res.data.donationForm));
+          // Update this in the local route state
+          navigation.goBack();
+        })
+        .catch((error) => {
+          Alert.alert('There was a problem deleting the donation.  Please try again');
+          console.error(error);
+        }).finally(() => {
+          dispatch(setLoading({ loading: false }));
+        });
+    }
+  };
+
+  return loadingState ? (
+    <LoadingScreen />
+  ) : (
+    <View style={{ backgroundColor: 'white', width: '100%', height: '100%' }} onTouchStart={() => setEditMenuOpen(false)}>
+      <GeneralModal
+        title="Delete donation"
+        subtitle="Are you sure you want to permanently delete this donation? You will not be able to access this information again."
+        visible={deleteModalOpen}
+        closeModal={() => { setDeleteModalOpen(!deleteModalOpen); }}
+        numButtons={2}
+        buttonOneTitle="Delete Donation"
+        buttonTwoTitle="Cancel"
+        modalSubmit={deleteModalSubmit}
+      />
+      <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
+        <View style={styles.container}>
+          <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
+            <View style={{ width: '100%', flexDirection: 'row', marginTop: 28 }}>
+              <View style={{ width: '50%', marginBottom: 24 }}>
+                <Text style={[styles.title, { marginBottom: 8 }]}>{donationForm.businessName}</Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
+              </View>
+              <View style={{ width: '50%', marginTop: 6 }}>
+                { donationForm.status !== 'Pending' && getEditMenuView() }
+              </View>
+            </View>
+
+            {status()}
+            <View style={{ marginTop: 30 }}>
+              <Text style={styles.subHeader}>Delivery details</Text>
+              <Text style={styles.detailsHeader}>Address</Text>
+              <Text style={styles.details}>{donationForm.dropOffAddress ? `${donationForm.dropOffAddress.streetAddress}\n${
+                donationForm.dropOffAddress.city} ${donationForm.dropOffAddress.state} ${donationForm.dropOffAddress.zipCode}` : '---'}
+              </Text>
+              <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
+              <Text style={styles.details}>{donationForm.dropOffInstructions ?? '---'}</Text>
               </View>
               <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
 

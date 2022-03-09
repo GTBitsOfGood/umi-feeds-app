@@ -7,6 +7,7 @@ import AddressScreen from './screens/AddressScreen/index';
 import EditAddressScreen from './screens/EditAddressScreen/index';
 
 import { TemplateNavParamList } from './NavTypes';
+import DropoffDetailsEditScreen from './screens/DropoffDetailsEditScreen';
 import { AdminTabs } from './AdminNavBar';
 
 const TestingStack = createStackNavigator<TemplateNavParamList>();
@@ -28,6 +29,8 @@ export default function TestStack() {
         options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
       <TestingStack.Screen
+        name="DropoffDetailsEditScreen"
+        component={DropoffDetailsEditScreen}
         name="AddressScreen"
         component={AddressScreen}
         options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
