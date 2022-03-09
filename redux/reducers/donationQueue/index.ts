@@ -47,6 +47,22 @@ const donationQueueReducer = createSlice({
     }
   }
 });
+    updateStatus(state, action: PayloadAction<{donationForm:DonationForm, status: string, dropoffAddr?: Address}>) {
+      const donation = state.donationQueue.filter((f: any) => f._id === action.payload.donationForm._id)[0];
+      const list = state.donationQueue;
+      for (let index = 0; index < list.length; index += 1) {
+        if (list[index]._id === donation._id) {
+          list[index].status = action.payload.status;
+          console.log(action.payload.dropoffAddr);
+          if (action.payload.dropoffAddr) {
+            list[index].dropOffAddress = action.payload.dropoffAddr;
+          }
+        }
+      }
+      state.donationQueue = list;
+    },
+  }
+});
 
-export const { loadDonations, searchDonations, updateDonation, deleteDonation } = donationQueueReducer.actions;
+export const { loadDonations, searchDonations, updateStatus, updateDonation, deleteDonation } = donationQueueReducer.actions;
 export default donationQueueReducer.reducer;

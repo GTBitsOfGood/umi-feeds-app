@@ -13,6 +13,7 @@ import PrimaryButton from '../Button/PrimaryButton';
 type AddressFormProps = {
   ButtonTitle: string,
   UserAddress?: Address,
+  backButton?: boolean,
   goBack: () => void,
   onSubmit: (addressObj: Address | null) => void,
   onSubmitWithInstructions?: (addressObj: Address | null, instructions: string | null) => void

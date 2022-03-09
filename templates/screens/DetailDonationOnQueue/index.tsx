@@ -38,7 +38,6 @@ type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
   >;
-
 /**
  * Admin view of donation details. Can view Restaurant Name, Deliverary Details, Pickup Details, Meal List, and Contact
  * info.
@@ -57,6 +56,7 @@ type DonationScreenProp = CompositeNavigationProp<
 
 function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
+  const dispatch = useDispatch();
   const { donationForm } = route.params;
 
   const dispatch = useDispatch();
@@ -95,6 +95,34 @@ function DetailDonationOnQueue() {
 
   const [editMenuOpen, setEditMenuOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
+  // Styling and logic related to the Deny Confirmation Modal
+  const [denyModalVisible, setDenyModalVisible] = React.useState<boolean>(false);
+  const closeDenyModal = () => setDenyModalVisible(false);
+  const handleModalSubmit = (denyPressed: boolean, cancelPressed: boolean) => {
+    if (denyPressed) {
+      dispatch(setLoading({ loading: true }));
+      const formdata = new FormData();
+      formdata.append('json', JSON.stringify({
+        status: 'Denied',
+        ongoing: false
+      }));
+      axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+        .then((res) => {
+          dispatch(updateStatus({ donationForm, status: 'Denied' }));
+          navigation.goBack();
+        })
+        .catch((err) => {
+          Alert.alert('Error denying this donation.', err.message);
+        })
+        .finally(() => {
+          dispatch(setLoading({ loading: false }));
+        });
+    } else if (cancelPressed) {
+      setDenyModalVisible(false);
+    }
+  };
 
   const donationDish = [];
   let donationTotalCost:any;
@@ -120,6 +148,16 @@ function DetailDonationOnQueue() {
             Status: <Text style={{ fontSize: 21, marginVertical: 24 }}>{donationForm.status}</Text>
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+            <GeneralModal
+              title="Deny Donation"
+              subtitle="Are you sure you want to deny this donation? It will be removed from the donation list."
+              numButtons={2}
+              buttonOneTitle="Deny"
+              buttonTwoTitle="Cancel"
+              visible={denyModalVisible}
+              closeModal={closeDenyModal}
+              modalSubmit={handleModalSubmit}
+            />
             <Pressable
               style={{
                 marginRight: 5,
@@ -132,9 +170,11 @@ function DetailDonationOnQueue() {
                 justifyContent: 'center',
                 alignContent: 'center',
                 alignItems: 'center',
-                backgroundColor: '#11B25B',
+                backgroundColor: '#11B25B'
               }}
-              onPress={() => console.log('pending more like never ending')}
+              onPress={() => {
+                navigation.navigate('AddressScreen', { donationForm });
+              }}
             >
               <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Accept</Text>
             </Pressable>
@@ -152,7 +192,7 @@ function DetailDonationOnQueue() {
                 backgroundColor: '#F33636',
                 borderColor: '#F33636'
               }}
-              onPress={() => console.log('pending more like never ending')}
+              onPress={() => setDenyModalVisible(true)}
             >
               <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Deny</Text>
             </Pressable>
@@ -403,55 +443,55 @@ function DetailDonationOnQueue() {
               </Text>
               <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
               <Text style={styles.details}>{donationForm.dropOffInstructions ?? '---'}</Text>
-
-            </View>
-            <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
-
-            <Text style={styles.subHeader}>Pickup details</Text>
-            <Text style={styles.detailsHeader}>Address</Text>
-            <Text style={styles.details}>
-              {donationForm.pickupAddress.streetAddress} {buildingNumberStr}{'\n'}
-              {donationForm.pickupAddress.city}, {donationForm.pickupAddress.state}, {donationForm.pickupAddress.zipCode}
-            </Text>
-            <Text style={styles.detailsHeader}>Scheduled time</Text>
-            <Text style={styles.details}>
-              Date: {formattedDate}{'\n'}
-              Time: {formattedStartTime} - {formattedEndTime}
-            </Text>
-            <Text style={styles.detailsHeader}>Pickup instructions</Text>
-            <Text style={styles.details}>{donationForm.pickupInstructions}</Text>
-          </View>
-          <View style={{ width: '100%', justifyContent: 'flex-start' }}>
-            <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
-              <Text style={styles.subHeader}>Meal list</Text>
-            </View>
-            <View style={{ width: '100%', justifyContent: 'space-around' }}>
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <View style={styles.spacedContainer}>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Dish item</Text>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Qty</Text>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Cost</Text>
-                </View>
-                <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
               </View>
-              {donationDish}
-              {donationTotalCost > 0 && (
-                <View style={styles.spacedContainer}>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
+              <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
+
+              <Text style={styles.subHeader}>Pickup details</Text>
+              <Text style={styles.detailsHeader}>Address</Text>
+              <Text style={styles.details}>
+                {donationForm.pickupAddress.streetAddress}{'\n'}
+                {donationForm.pickupAddress.city}, {donationForm.pickupAddress.state}, {donationForm.pickupAddress.zipCode}
+              </Text>
+              <Text style={styles.detailsHeader}>Scheduled time</Text>
+              <Text style={styles.details}>
+                Date: {formattedDate}{'\n'}
+                Time: {formattedStartTime} - {formattedEndTime}
+              </Text>
+              <Text style={styles.detailsHeader}>Pickup instructions</Text>
+              <Text style={styles.details}>{donationForm.pickupInstructions}</Text>
+            </View>
+            <View style={{ width: '100%', justifyContent: 'flex-start' }}>
+              <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
+                <Text style={styles.subHeader}>Meal list</Text>
+              </View>
+              <View style={{ width: '100%', justifyContent: 'space-around' }}>
+                <View style={{ width: '100%', alignItems: 'center' }}>
+                  <View style={styles.spacedContainer}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Dish item</Text>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Qty</Text>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Cost</Text>
+                  </View>
+                  <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
                 </View>
-              )}
-              <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
-              <Text style={styles.subHeader}>Contact Info</Text>
-              <Text style={styles.detailsHeader}>Name</Text>
-              <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
-              <Text style={styles.detailsHeader}>Phone Number</Text>
-              <Text style={styles.details}>{donationForm.phoneNumber ? donationForm.phoneNumber : '---'}</Text>
+                {donationDish}
+                {donationTotalCost > 0 && (
+                  <View style={styles.spacedContainer}>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
+                  </View>
+                )}
+                <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
+                <Text style={styles.subHeader}>Contact Info</Text>
+                <Text style={styles.detailsHeader}>Name</Text>
+                <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
+                <Text style={styles.detailsHeader}>Phone Number</Text>
+                <Text style={styles.details}>{donationForm.phoneNumber ? donationForm.phoneNumber : '---'}</Text>
+              </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    )
   );
 }
 
