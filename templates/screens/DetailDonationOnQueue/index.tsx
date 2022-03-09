@@ -9,6 +9,7 @@ import styles from '../DetailDonationOnQueue/styles';
 import { Address, Donation, DonationForm } from '../../../types';
 import { RootState } from '../../../redux/rootReducer';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
+import { updateStatus } from '../../../redux/reducers/donationQueue';
 import GeneralModal from '../../../components/GeneralModal';
 
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
@@ -74,7 +75,6 @@ function DetailDonationOnQueue() {
   const [denyModalVisible, setDenyModalVisible] = React.useState<boolean>(false);
   const closeDenyModal = () => setDenyModalVisible(false);
   const handleModalSubmit = (denyPressed: boolean, cancelPressed: boolean) => {
-    // setDenyModalVisible(false);
     if (denyPressed) {
       dispatch(setLoading({ loading: true }));
       const formdata = new FormData();
@@ -85,6 +85,7 @@ function DetailDonationOnQueue() {
       axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
         .then((res) => {
           console.log(res);
+          dispatch(updateStatus({ donationForm, status: 'Denied' }));
           navigation.goBack();
         })
         .catch((err) => {
@@ -148,8 +149,8 @@ function DetailDonationOnQueue() {
                 backgroundColor: '#11B25B'
               }}
               onPress={() => {
-                const donationObject = state.donationQueueReducer.donationQueue.find((donation) => donation._id === donationForm._id);
-                navigation.navigate('AddressScreen', donationObject as DonationForm);
+                // const donationObject = state.donationQueueReducer.donationQueue.find((donation) => donation._id === donationForm._id);
+                navigation.navigate('AddressScreen', { donationForm });
               }}
             >
               <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Accept</Text>

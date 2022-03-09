@@ -18,16 +18,15 @@ import { TemplateNavParamList } from '../../NavTypes';
 import LoadingScreen from '../../../screens/LoadingScreen';
 
 type ParamList = {
-  AddressDropoffScreen: {
+  AddressScreen: {
     donationForm: DonationForm,
-    navigation: any,
   }
 }
 
 type AdminScreenProp = StackNavigationProp<TemplateNavParamList>;
 
 function AdminAcceptAddressScreen() {
-  const route = useRoute<RouteProp<ParamList, 'AddressDropoffScreen'>>();
+  const route = useRoute<RouteProp<ParamList, 'AddressScreen'>>();
   const state = useSelector((state: RootState) => state);
   const navigation = useNavigation<AdminScreenProp>();
   const dispatch = useDispatch();
@@ -35,9 +34,9 @@ function AdminAcceptAddressScreen() {
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
 
   // destructure route.params
-  const { donationForm } = route.params;
 
   const setAddress = (address: Address) => {
+    const { donationForm } = route.params;
     if (donationForm) {
       dispatch(setLoading({ loading: true }));
       const formdata = new FormData();
@@ -48,11 +47,7 @@ function AdminAcceptAddressScreen() {
       axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
         .then((res) => {
           dispatch(updateStatus({ donationForm, status: 'Unclaim' }));
-          const donation = state.donationQueueReducer.donationQueue.find((donation) => donation._id === donationForm._id);
-          if (donation) {
-            console.log(donation);
-            navigation.navigate('DetailDonationOnQueue', donation);
-          }
+          navigation.navigate('DonationQueue');
         })
         .catch((err) => {
           Alert.alert('Error accepting this donation.', err.message);
