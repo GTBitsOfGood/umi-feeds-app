@@ -48,7 +48,9 @@ type DonationScreenProp = CompositeNavigationProp<
  * Contact info have conditional renders if the data is populated in DonationForm but atm have placeholder dashes ("---").
  *
  * KNOWN BUGS:
- *  N/A
+ *  If the dropdown menu is too long it won't show up entirely.  This is because it is bound by the size of the view it is
+ *  placed within.  So far the lists only have 2-3 elements so it isn't a problem at the moment, but this should be considered
+ *  in the future and perhaps checked at different screen sizes.
  *
  * @returns {TSX.Element}
  */
