@@ -5,4 +5,5 @@ export type TemplateNavParamList = {
   DetailDonationOnQueue: DonationForm, // this will need to change so that it doesn't take in undefined params
   AddressScreen: DonationForm,
   EditAddressScreen: undefined,
+  Root: undefined,
 };
