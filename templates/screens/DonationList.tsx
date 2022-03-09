@@ -1,9 +1,12 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import DetailDonationOnQueue from './DetailDonationOnQueue';
-import DonationQueue from './ScreenTemplate/DonationQueue';
-import { TemplateNavParamList } from '../NavTypes';
+import DonationQueue from './DonationQueue';
+import DropoffDetailsEditScreen from './DropoffDetailsEditScreen';
+import AddressScreen from './AddressScreen';
+import EditAddressScreen from './EditAddressScreen';
+
+import { TemplateNavParamList } from './DonationListNavParams';
 
 const DonationList = createStackNavigator<TemplateNavParamList>();
 
@@ -19,6 +22,21 @@ export default function TestStack() {
       <DonationList.Screen
         name="DetailDonationOnQueue"
         component={DetailDonationOnQueue}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
+      />
+      <DonationList.Screen
+        name="DropoffDetailsEditScreen"
+        component={DropoffDetailsEditScreen}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
+      />
+      <DonationList.Screen
+        name="AddressScreen"
+        component={AddressScreen}
+        options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
+      />
+      <DonationList.Screen
+        name="EditAddressScreen"
+        component={EditAddressScreen}
         options={{ headerTitle: '', headerShown: true, headerTintColor: '#F37B36' }}
       />
 

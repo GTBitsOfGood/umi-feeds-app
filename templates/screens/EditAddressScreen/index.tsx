@@ -57,7 +57,7 @@ export default function EditAddresScreen({ route }: { route: { params: { address
         }
       }}
       ButtonTitle="Save address"
-      backButton
+      hideBack
     />
   );
 }

@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableHighlight, Alert } from 'react-native';
+import React from 'react';
+import { ScrollView, Alert } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/Entypo';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import styles from './styles';
 import { RootState } from '../../../redux/rootReducer';
 import { Address, DonationForm } from '../../../types';
-import { Header, ChevronButton, PrimaryButton, SecondaryButton, AddressSelection } from '../../../components';
+import { AddressSelection } from '../../../components';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
-import donationQueue, { updateStatus } from '../../../redux/reducers/donationQueue';
-import { ThemeColor } from '../../../constants/Colors';
+import { updateStatus } from '../../../redux/reducers/donationQueue';
 import { TemplateNavParamList } from '../../NavTypes';
 import LoadingScreen from '../../../screens/LoadingScreen';
 

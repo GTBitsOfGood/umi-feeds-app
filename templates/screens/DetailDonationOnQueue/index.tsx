@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+/* eslint-disable max-len */
+import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation, useRoute, RouteProp, CompositeNavigationProp } from '@react-navigation/native';
 import Menu, {
@@ -6,7 +7,6 @@ import Menu, {
   MenuOptions,
   MenuOption,
   MenuTrigger,
-  renderers
 } from 'react-native-popup-menu';
 import { Entypo, AntDesign, Foundation, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styles from '../DetailDonationOnQueue/styles';
 import { DonationForm } from '../../../types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
-import { updateDonation, deleteDonation } from '../../../redux/reducers/donationQueue';
+import { updateDonation, deleteDonation, updateStatus } from '../../../redux/reducers/donationQueue';
 import { TemplateNavParamList } from '../../NavTypes';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
@@ -58,20 +58,8 @@ function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
   const dispatch = useDispatch();
   const { donationForm } = route.params;
-
-  const dispatch = useDispatch();
   const navigation = useNavigation<DonationScreenProp>();
-
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
-
-  let buildingNumberStr = '';
-  if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
-    buildingNumberStr = `#${donationForm.pickupAddress.buildingNumber}`;
-  }
-  let dropoffBuildingNumberStr = '';
-  if (donationForm.dropOffAddress && typeof donationForm.dropOffAddress.buildingNumber !== 'undefined') {
-    dropoffBuildingNumberStr = `#${donationForm.dropOffAddress.buildingNumber}`;
-  }
 
   const pickupStartTimeDate = new Date(donationForm.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
@@ -95,7 +83,6 @@ function DetailDonationOnQueue() {
 
   const [editMenuOpen, setEditMenuOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
 
   // Styling and logic related to the Deny Confirmation Modal
   const [denyModalVisible, setDenyModalVisible] = React.useState<boolean>(false);
@@ -443,55 +430,54 @@ function DetailDonationOnQueue() {
               </Text>
               <Text style={styles.detailsHeader}>Dropoff Instructions</Text>
               <Text style={styles.details}>{donationForm.dropOffInstructions ?? '---'}</Text>
-              </View>
-              <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
-
-              <Text style={styles.subHeader}>Pickup details</Text>
-              <Text style={styles.detailsHeader}>Address</Text>
-              <Text style={styles.details}>
-                {donationForm.pickupAddress.streetAddress}{'\n'}
-                {donationForm.pickupAddress.city}, {donationForm.pickupAddress.state}, {donationForm.pickupAddress.zipCode}
-              </Text>
-              <Text style={styles.detailsHeader}>Scheduled time</Text>
-              <Text style={styles.details}>
-                Date: {formattedDate}{'\n'}
-                Time: {formattedStartTime} - {formattedEndTime}
-              </Text>
-              <Text style={styles.detailsHeader}>Pickup instructions</Text>
-              <Text style={styles.details}>{donationForm.pickupInstructions}</Text>
             </View>
-            <View style={{ width: '100%', justifyContent: 'flex-start' }}>
-              <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
-                <Text style={styles.subHeader}>Meal list</Text>
-              </View>
-              <View style={{ width: '100%', justifyContent: 'space-around' }}>
-                <View style={{ width: '100%', alignItems: 'center' }}>
-                  <View style={styles.spacedContainer}>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Dish item</Text>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Qty</Text>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Cost</Text>
-                  </View>
-                  <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
+            <Text style={{ width: '100%', borderTopColor: '#5D5D5D', borderTopWidth: 1, marginTop: 20, marginBottom: 7 }} />
+
+            <Text style={styles.subHeader}>Pickup details</Text>
+            <Text style={styles.detailsHeader}>Address</Text>
+            <Text style={styles.details}>
+              {donationForm.pickupAddress.streetAddress}{'\n'}
+              {donationForm.pickupAddress.city}, {donationForm.pickupAddress.state}, {donationForm.pickupAddress.zipCode}
+            </Text>
+            <Text style={styles.detailsHeader}>Scheduled time</Text>
+            <Text style={styles.details}>
+              Date: {formattedDate}{'\n'}
+              Time: {formattedStartTime} - {formattedEndTime}
+            </Text>
+            <Text style={styles.detailsHeader}>Pickup instructions</Text>
+            <Text style={styles.details}>{donationForm.pickupInstructions}</Text>
+          </View>
+          <View style={{ width: '100%', justifyContent: 'flex-start' }}>
+            <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
+              <Text style={styles.subHeader}>Meal list</Text>
+            </View>
+            <View style={{ width: '100%', justifyContent: 'space-around' }}>
+              <View style={{ width: '100%', alignItems: 'center' }}>
+                <View style={styles.spacedContainer}>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Dish item</Text>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Qty</Text>
+                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Cost</Text>
                 </View>
-                {donationDish}
-                {donationTotalCost > 0 && (
-                  <View style={styles.spacedContainer}>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
-                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
-                  </View>
-                )}
-                <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
-                <Text style={styles.subHeader}>Contact Info</Text>
-                <Text style={styles.detailsHeader}>Name</Text>
-                <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
-                <Text style={styles.detailsHeader}>Phone Number</Text>
-                <Text style={styles.details}>{donationForm.phoneNumber ? donationForm.phoneNumber : '---'}</Text>
+                <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
               </View>
+              {donationDish}
+              {donationTotalCost > 0 && (
+              <View style={styles.spacedContainer}>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Total Cost of Donation</Text>
+                <Text style={{ fontSize: 15, fontWeight: 'bold' }}>$ {donationTotalCost}</Text>
+              </View>
+              )}
+              <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 8, marginBottom: 20 }} />
+              <Text style={styles.subHeader}>Contact Info</Text>
+              <Text style={styles.detailsHeader}>Name</Text>
+              <Text style={styles.details}>{donationForm.name ? donationForm.name : '---'}</Text>
+              <Text style={styles.detailsHeader}>Phone Number</Text>
+              <Text style={styles.details}>{donationForm.phoneNumber ? donationForm.phoneNumber : '---'}</Text>
             </View>
           </View>
-        </ScrollView>
-      </View>
-    )
+        </View>
+      </ScrollView>
+    </View>
   );
 }
 

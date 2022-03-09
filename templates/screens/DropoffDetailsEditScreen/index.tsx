@@ -20,11 +20,6 @@ type ParamList = {
   },
 }
 
-// type DonationScreenProp = CompositeNavigationProp<
-//   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
-//   BottomTabNavigationProp<BottomTabParamList, 'Home'>
-//   >;
-
 type DonationScreenProp = CompositeNavigationProp<
   StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
@@ -73,12 +68,16 @@ export default function DropoffDetailsEditScreen() {
       .then((res) => {
         // Update this in the frontend central state
         dispatch(updateDonation(res.data.donationform));
-        // Update this in the local route state
-        navigation.setParams({
-          donationForm: res.data.donationform,
-        });
+
+        // Update this in the local route state if navigating back to DetailDonationOnQueueScreen
+        // But currently there is a bug with the navigation stack since DetailDonationOnQueueScreen has a back
+        // button which goes back to this address screen and user is prompted to fill out address again
+        // navigation.setParams({
+        //   donationForm: res.data.donationform,
+        // });
+        // navigation.navigate('DetailDonationOnQueue', { donationForm: res.data.donationform });
         // @ts-ignore donationForm is the correct parameter for this route
-        navigation.navigate('DetailDonationOnQueue', { donationForm: res.data.donationform });
+        navigation.navigate('DonationQueue');
       })
       .catch((error) => {
         Alert.alert('There was a problem updating the donation.  Please try again');

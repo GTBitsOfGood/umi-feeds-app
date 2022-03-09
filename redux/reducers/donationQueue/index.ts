@@ -44,16 +44,13 @@ const donationQueueReducer = createSlice({
     },
     deleteDonation(state, action:PayloadAction<DonationForm>) {
       state.donationQueue = state.donationQueue.filter((item:DonationForm) => item._id !== action.payload._id);
-    }
-  }
-});
+    },
     updateStatus(state, action: PayloadAction<{donationForm:DonationForm, status: string, dropoffAddr?: Address}>) {
       const donation = state.donationQueue.filter((f: any) => f._id === action.payload.donationForm._id)[0];
       const list = state.donationQueue;
       for (let index = 0; index < list.length; index += 1) {
         if (list[index]._id === donation._id) {
           list[index].status = action.payload.status;
-          console.log(action.payload.dropoffAddr);
           if (action.payload.dropoffAddr) {
             list[index].dropOffAddress = action.payload.dropoffAddr;
           }
