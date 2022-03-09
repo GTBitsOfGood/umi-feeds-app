@@ -341,7 +341,7 @@ function DetailDonationOnQueue() {
       axios.delete(`/api/ongoingdonations/${donationForm._id}`)
         .then((res) => {
           // Update this in the frontend central state
-          dispatch(deleteDonation(res.data.donationform));
+          dispatch(deleteDonation(res.data.donationForm));
           // Update this in the local route state
           navigation.goBack();
         })
