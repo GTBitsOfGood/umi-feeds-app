@@ -147,7 +147,6 @@ function DetailDonationOnQueue() {
     }));
     axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
       .then((res) => {
-        console.log(res);
         navigationRef.current?.setParams({ donationForm: res.data.donationform });
       })
       .catch((error) => {
@@ -169,7 +168,6 @@ function DetailDonationOnQueue() {
       }));
       axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
         .then((res) => {
-          console.log(res);
           navigationRef.current?.setParams({ donationForm: res.data.donationform });
         })
         .catch((error) => {
