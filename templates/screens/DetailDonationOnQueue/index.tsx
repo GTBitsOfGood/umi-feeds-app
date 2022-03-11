@@ -1,4 +1,3 @@
-
 /* eslint-disable max-len */
 import { View, Text, ScrollView, Pressable, Alert } from 'react-native';
 import React, { useState } from 'react';
