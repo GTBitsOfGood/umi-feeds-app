@@ -22,6 +22,8 @@ import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
 import LoadingScreen from '../../../screens/LoadingScreen';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
+import { navigationRef } from '../../../navigation/RootNavigation';
+import { logAxiosError } from '../../../utils';
 
 type ParamList = {
   DetailDonationOnQueue: {
@@ -58,8 +60,17 @@ function DetailDonationOnQueue() {
   const route = useRoute<RouteProp<ParamList, 'DetailDonationOnQueue'>>();
   const dispatch = useDispatch();
   const { donationForm } = route.params;
-  const navigation = useNavigation<DonationScreenProp>();
+
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+
+  const closeCompleteModal = () => setCompleteModalVisible(false);
+  const [completeModalVisible, setCompleteModalVisible] = useState<boolean>(false);
+
+  let buildingNumberStr = '';
+  if (typeof donationForm.pickupAddress.buildingNumber !== 'undefined') {
+    buildingNumberStr = `#${donationForm.pickupAddress.buildingNumber}`;
+  }
+  const navigation = useNavigation<DonationScreenProp>();
 
   const pickupStartTimeDate = new Date(donationForm.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
@@ -126,6 +137,49 @@ function DetailDonationOnQueue() {
     );
     donationTotalCost += Number(donationForm.donationDishes[i].cost ?? '0');
   }
+
+  const claimDonation = () => {
+    dispatch(setLoading({ loading: true }));
+    const formdata = new FormData();
+    formdata.append('json', JSON.stringify({
+      status: 'Claimed',
+      lockedByVolunteer: true
+    }));
+    axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+      .then((res) => {
+        navigationRef.current?.setParams({ donationForm: res.data.donationform });
+      })
+      .catch((error) => {
+        logAxiosError(error);
+        Alert.alert('Cannot Update Donation', 'There was an error updating your donation status, please refresh and try again.');
+      })
+      .finally(() => {
+        dispatch(setLoading({ loading: false }));
+      });
+  };
+
+  const completeDonation = (completePressed: boolean, cancelPressed: boolean) => {
+    if (completePressed) {
+      dispatch(setLoading({ loading: true }));
+      const formdata = new FormData();
+      formdata.append('json', JSON.stringify({
+        status: 'Complete',
+        lockedByVolunteer: true
+      }));
+      axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+        .then((res) => {
+          navigationRef.current?.setParams({ donationForm: res.data.donationform });
+        })
+        .catch((error) => {
+          logAxiosError(error);
+          Alert.alert('Cannot Update Donation', 'There was an error updating your donation status, please refresh and try again.');
+        })
+        .finally(() => {
+          dispatch(setLoading({ loading: false }));
+          navigationRef.current?.goBack();
+        });
+    }
+  };
 
   const status = () => {
     if (donationForm.status === 'Pending') {
@@ -204,7 +258,7 @@ function DetailDonationOnQueue() {
               alignItems: 'center',
               backgroundColor: '#007FA7',
             }}
-            onPress={() => console.log('unclaimed more like long forgotten idk')}
+            onPress={claimDonation}
           >
             <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Claim this Donation</Text>
           </Pressable>
@@ -228,7 +282,9 @@ function DetailDonationOnQueue() {
               alignItems: 'center',
               backgroundColor: '#00883F'
             }}
-            onPress={() => console.log('complete more like deplete')}
+            onPress={() => {
+              setCompleteModalVisible(!completeModalVisible);
+            }}
           >
             <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Complete Donation</Text>
           </Pressable>
@@ -408,6 +464,16 @@ function DetailDonationOnQueue() {
         buttonTwoTitle="Cancel"
         modalSubmit={deleteModalSubmit}
       />
+      <GeneralModal
+        title="Complete Donation"
+        subtitle="Have you delivered this donation to the appropriate address?"
+        numButtons={2}
+        buttonOneTitle="Set as delivered"
+        buttonTwoTitle="Cancel"
+        visible={completeModalVisible}
+        closeModal={closeCompleteModal}
+        modalSubmit={completeDonation}
+      />
       <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
         <View style={styles.container}>
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
@@ -451,14 +517,9 @@ function DetailDonationOnQueue() {
             <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
               <Text style={styles.subHeader}>Meal list</Text>
             </View>
-            <View style={{ width: '100%', justifyContent: 'space-around' }}>
-              <View style={{ width: '100%', alignItems: 'center' }}>
-                <View style={styles.spacedContainer}>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Dish item</Text>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Qty</Text>
-                  <Text style={{ fontSize: 15, fontWeight: 'bold' }}>Cost</Text>
-                </View>
-                <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginTop: 7, marginBottom: 16 }} />
+            <View style={{ width: '100%', justifyContent: 'flex-start' }}>
+              <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
+                <Text style={styles.subHeader}>Meal list</Text>
               </View>
               {donationDish}
               {donationTotalCost > 0 && (

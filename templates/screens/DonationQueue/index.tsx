@@ -8,7 +8,7 @@ import {
   Pressable
 } from 'react-native';
 import { Provider } from 'react-native-paper';
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp, useIsFocused } from '@react-navigation/native';
 import { ButtonGroup } from 'react-native-elements/dist/buttons/ButtonGroup';
 import { SearchBar } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -68,6 +68,9 @@ const DonationListScreen = () => {
   // const [filterDate, setFilterDate] = React.useState(new Date());
   const [overdueView, setOverdueView] = React.useState(false);
 
+  // will change every time user comes back to screen, causes screen to update data
+  const isFocused = useIsFocused();
+
   // gets ongoing donations
   useEffect(() => {
     // USE THIS AS REFERENCE ONLY
@@ -84,7 +87,7 @@ const DonationListScreen = () => {
         dispatch(loadDonations(res.data['Ongoing Donations']));
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [isFocused]); // this method is called whenever user navigates to screen
 
   // gets completed donations based on month/year filter
   useEffect(() => {
