@@ -13,6 +13,7 @@ type DonationScreenProp = StackNavigationProp<DonateTabParamList, 'DonateHomeScr
 
 export default function Header(props: { title: string, showCartButton?: boolean }) {
   const navigation = useNavigation<DonationScreenProp>();
+
   return (
     <View style={styles.headerContainer}>
       <View style={{ alignSelf: 'center' }}>

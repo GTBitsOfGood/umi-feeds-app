@@ -26,11 +26,17 @@ import { DonationForm, Address } from '../../../types';
 
 import { RootState } from '../../../redux/rootReducer';
 import { loadDonations, searchDonations } from '../../../redux/reducers/donationQueue';
+import { TemplateNavParamList } from '../../NavTypes';
+
+// type DonationScreenProp = CompositeNavigationProp<
+//   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+//   BottomTabNavigationProp<BottomTabParamList, 'Home'>
+//   >;
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
+  StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
->;
+  >;
 /**
  * Admin view of donation list screen. Currently contains dummy date to see what pending and approved ongoing donations
  * should look like when the app is live. Can choose to view ongoing or completed donations.
@@ -65,15 +71,6 @@ const DonationListScreen = () => {
   // will change every time user comes back to screen, causes screen to update data
   const isFocused = useIsFocused();
 
-  // dropOffAddress: {
-  //   streetAddress:"Hemphill Ave NW",
-  //   buildingNumber:900,
-  //   city:"Atlanta",
-  //   state:"GA",
-  //   zipCode:30332,
-  //   longitude:33.7799102,
-  //   latitude: -84.4053848
-  // },
   // gets ongoing donations
   useEffect(() => {
     // USE THIS AS REFERENCE ONLY
