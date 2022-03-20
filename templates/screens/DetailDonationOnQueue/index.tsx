@@ -60,6 +60,7 @@ function DetailDonationOnQueue() {
   const { donationForm } = route.params;
   const navigation = useNavigation<DonationScreenProp>();
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+  const authState = useSelector((state: RootState) => state.auth);
 
   const pickupStartTimeDate = new Date(donationForm.pickupStartTime);
   let pickupStartHour = pickupStartTimeDate.getHours();
@@ -417,7 +418,7 @@ function DetailDonationOnQueue() {
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
               </View>
               <View style={{ width: '50%', marginTop: 6 }}>
-                { donationForm.status !== 'Pending' && getEditMenuView() }
+                { donationForm.status !== 'Pending' && getEditMenuView() && authState.isAdmin }
               </View>
             </View>
 

@@ -55,6 +55,7 @@ type DonationScreenProp = CompositeNavigationProp<
  */
 const DonationListScreen = () => {
   const navigation = useNavigation<DonationScreenProp>();
+  const authState = useSelector((state: RootState) => state.auth);
 
   // get ongoing and completed arrays from the list of donations in database
   const dispatch = useDispatch();
@@ -118,14 +119,16 @@ const DonationListScreen = () => {
     if (selectedIndex === 1 && !overdueView) {
       return (
         <View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20) }}>
             <Header title="Donation List" showCartButton={false} />
-            <Pressable
-              style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
-              onPress={() => setOverdueView(!overdueView)}
-            >
-              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
-            </Pressable>
+            {authState.isAdmin ?? (
+              <Pressable
+                style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+                onPress={() => setOverdueView(!overdueView)}
+              >
+                <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
+              </Pressable>
+            )}
           </View>
           <View>
             <ButtonGroup
@@ -156,14 +159,16 @@ const DonationListScreen = () => {
     } else if (selectedIndex === 0 && !overdueView) {
       return (
         <View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: moderateScale(20) }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginLeft: moderateScale(5) }}>
             <Header title="Donation List" showCartButton={false} />
-            <Pressable
-              style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
-              onPress={() => setOverdueView(!overdueView)}
-            >
-              <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
-            </Pressable>
+            {authState.isAdmin ?? (
+              <Pressable
+                style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+                onPress={() => setOverdueView(!overdueView)}
+              >
+                <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
+              </Pressable>
+            )}
           </View>
           <View>
             <ButtonGroup
@@ -178,18 +183,22 @@ const DonationListScreen = () => {
               containerStyle={{ borderColor: '#F37B36', borderWidth: 1, borderRadius: 5, backgroundColor: 'transparent' }}
             />
           </View>
-          <View style={styles.tableTitle}>
-            <View style={styles.tableH1}>
-              <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
-                Pending Donations
-              </Text>
+          {authState.isAdmin ?? (
+            <View>
+              <View style={styles.tableTitle}>
+                <View style={styles.tableH1}>
+                  <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
+                    Pending Donations
+                  </Text>
+                </View>
+              </View>
+              <View>
+                {donationQueue.filter((item: DonationForm) => item.status === 'Pending').map(
+                  (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
+                )}
+              </View>
             </View>
-          </View>
-          <View>
-            {donationQueue.filter((item: DonationForm) => item.status === 'Pending').map(
-              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
-            )}
-          </View>
+          )}
           <View style={styles.tableTitle}>
             <View style={styles.tableH1}>
               <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>
