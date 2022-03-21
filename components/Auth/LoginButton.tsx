@@ -76,7 +76,7 @@ function LoginButton(props: { onUserNotFound: () => void }) {
             const onboardingUser: BeginOnboardingUser = {
               name: `${userInfo.given_name} ${userInfo.family_name}`,
               auth0AccessToken: userInfo.sub,
-              email: userInfo.name, // name field is email
+              email: userInfo.nickname, // nickname field is email.  Had to make this change because otherwise users with same name could not both have accounts
               jwt: receivedToken,
             };
 

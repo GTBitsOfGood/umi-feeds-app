@@ -56,6 +56,8 @@ export default function OnboardingNameForm() {
       Alert.alert('Company Name is Blank');
     } else if (Number.isNaN(numberPhone)) {
       Alert.alert('Entered Phone Number as 10 Digits');
+    } else if (!donorRoleForm && !volunteerRoleForm) {
+      Alert.alert('Please select one role: donor or volunteer');
     } else {
       if (donorRoleForm) {
         rolesArr.push('donor');
@@ -119,7 +121,12 @@ export default function OnboardingNameForm() {
               textStyle={{ fontWeight: 'normal' }}
               title="Donor"
               checked={donorRoleForm}
-              onPress={() => onSelectDonor(!donorRoleForm)}
+              onPress={() => {
+                if (!donorRoleForm) {
+                  onSelectVolunteer(false);
+                }
+                onSelectDonor(!donorRoleForm);
+              }}
               checkedColor="#F37B36"
             />
             <CheckBox
@@ -127,7 +134,12 @@ export default function OnboardingNameForm() {
               textStyle={{ fontWeight: 'normal' }}
               title="Volunteer"
               checked={volunteerRoleForm}
-              onPress={() => onSelectVolunteer(!volunteerRoleForm)}
+              onPress={() => {
+                if (!volunteerRoleForm) {
+                  onSelectDonor(false);
+                }
+                onSelectVolunteer(!volunteerRoleForm);
+              }}
               checkedColor="#F37B36"
             />
           </View>
