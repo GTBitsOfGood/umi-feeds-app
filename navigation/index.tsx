@@ -7,7 +7,8 @@ import { ColorSchemeName } from 'react-native';
 import { useSelector } from 'react-redux';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from './types';
-import { AdminTabs, DonorTabs } from './MainNavBar/index';
+import { DonorTabs } from './MainNavBar';
+import { AdminTabs } from '../templates/AdminNavBar';
 
 import { RootState } from '../redux/rootReducer';
 import LoginStack from './LoginStack';
@@ -40,7 +41,7 @@ function RootNavigator() {
   const [loading, setLoading] = React.useState<boolean>(false);
   const authState = useSelector((state: RootState) => state.auth);
   let TabComponent;
-  if (authState.isAdmin) {
+  if (authState.isAdmin || authState.roles.includes('volunteer')) {
     TabComponent = AdminTabs;
   } else {
     TabComponent = DonorTabs;
@@ -53,7 +54,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={TestStack} />
+        <Stack.Screen name="Login" component={LoginStack} />
       )
       }
     </Stack.Navigator>
