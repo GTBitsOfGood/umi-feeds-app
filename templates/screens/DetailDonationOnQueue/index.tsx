@@ -62,6 +62,7 @@ function DetailDonationOnQueue() {
   const { donationForm } = route.params;
 
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
+  const authState = useSelector((state: RootState) => state.auth);
 
   const closeCompleteModal = () => setCompleteModalVisible(false);
   const [completeModalVisible, setCompleteModalVisible] = useState<boolean>(false);
@@ -483,7 +484,7 @@ function DetailDonationOnQueue() {
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
               </View>
               <View style={{ width: '50%', marginTop: 6 }}>
-                { donationForm.status !== 'Pending' && getEditMenuView() }
+                { donationForm.status !== 'Pending' && getEditMenuView() && authState.isAdmin }
               </View>
             </View>
 
