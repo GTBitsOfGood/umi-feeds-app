@@ -51,7 +51,7 @@ function AdminAcceptAddressScreen() {
         .catch((err) => {
           dispatch(setLoading({ loading: false }));
           Alert.alert('Error accepting this donation.', err.message);
-        })
+        });
     }
   };
 

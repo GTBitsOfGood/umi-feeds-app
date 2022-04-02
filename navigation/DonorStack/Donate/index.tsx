@@ -76,12 +76,12 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="ReviewCartScreen"
         component={DonateReviewDonationCart}
-        options={{ headerTitle: '',  headerTintColor: '#F37B36', headerBackTitle: 'Schedule Pickup' }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Schedule Pickup' }}
       />
       <DonationScreenStack.Screen
         name="ReviewContactScreen"
         component={ReviewContactScreen}
-        options={{ headerTitle: '',  headerTintColor: '#F37B36', headerBackTitle: 'Review Cart' }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Review Cart' }}
       />
     </DonationScreenStack.Navigator>
   );
