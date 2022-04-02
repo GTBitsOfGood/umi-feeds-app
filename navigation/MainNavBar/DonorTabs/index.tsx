@@ -2,18 +2,16 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
-import Colors from '../../constants/Colors';
-import useColorScheme from '../../hooks/useColorScheme';
+import Colors from '../../../constants/Colors';
+import useColorScheme from '../../../hooks/useColorScheme';
 
-import HomeScreenNavigator from '../SharedStack/Home';
-import MapScreenNavigator from '../AdminStack/Map';
-import DonateTab from '../DonorStack/Donate';
-import ProfileNavigator from '../SharedStack/UserProfile';
+import HomeScreenNavigator from '../../SharedStack/Home';
+import DonateTab from '../../DonorStack/Donate';
+import ProfileNavigator from '../../SharedStack/UserProfile';
 
 import {
   BottomTabParamList,
 } from './types';
-import DonationsList from '../../components/DonationsListBox';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -58,42 +56,8 @@ function DonorTabs() {
   );
 }
 
-function AdminTabs() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <BottomTab.Navigator
-      initialRouteName="Home"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: styles.container }}
-    >
-      <BottomTab.Screen
-        name="Home"
-        component={HomeScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Map"
-        component={MapScreenNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="map" color={color} />,
-        }}
-      />
-      <BottomTab.Screen
-        name="Me"
-        component={ProfileNavigator}
-        options={{
-          tabBarIcon: ({ color }) => <TabBarIcon name="person" color={color} />,
-        }}
-      />
-    </BottomTab.Navigator>
-  );
-}
-
 export {
-  DonorTabs,
-  AdminTabs
+  DonorTabs
 };
 
 const styles = StyleSheet.create({

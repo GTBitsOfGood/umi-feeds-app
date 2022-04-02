@@ -12,7 +12,7 @@ import { Text } from '../../../style/Themed';
 import { RootState } from '../../../redux/rootReducer';
 
 import { UserProfileScreenParamList } from '../../../navigation/SharedStack/UserProfile/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { LogoutButton } from '../../../components';
 import LoadingScreen from '../../LoadingScreen';
 

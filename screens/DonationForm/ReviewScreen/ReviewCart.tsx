@@ -10,7 +10,7 @@ import { DonationDishes } from '../../../types';
 import { RootState } from '../../../redux/rootReducer';
 
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 
 type ReviewCartScreenProp = CompositeNavigationProp<
   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
@@ -26,10 +26,10 @@ function ReviewDonationCart() {
   return (
     <View style={styles.container}>
       <View style={{ flex: 2, width: '100%', justifyContent: 'space-around', marginBottom: 20 }}>
-        <Pressable onPress={() => navigation.goBack()} style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
+        {/* <Pressable onPress={() => navigation.goBack()} style={{ width: '100%', flexDirection: 'row', alignItems: 'flex-start' }}>
           <AntDesign name="left" size={21} color="rgba(243, 123, 54, 1)" />
           <Text style={{ fontSize: 15, color: 'rgba(243, 123, 54, 1)' }}>Schedule Pickup</Text>
-        </Pressable>
+        </Pressable> */}
         <View style={styles.topContainer}>
           <Text style={[styles.title, { marginBottom: 8 }]}>Review details</Text>
           <Text style={styles.standardText}>Confirm that your donation list is correct</Text>
@@ -84,7 +84,7 @@ export default ReviewDonationCart;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    paddingHorizontal: '7.5%',
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: 'white'

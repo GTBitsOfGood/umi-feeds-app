@@ -9,7 +9,7 @@ import { Address } from '../../../types';
 import { RootState } from '../../../redux/rootReducer';
 import { setPickupAddresses } from '../../../redux/reducers/authReducer';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
-import { TemplateNavParamList } from '../../NavTypes';
+import { TemplateNavParamList } from '../../../templates/NavTypes';
 
 type AdminScreenProp = StackNavigationProp<TemplateNavParamList>;
 

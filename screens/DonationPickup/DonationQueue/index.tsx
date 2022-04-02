@@ -16,27 +16,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import axios from 'axios';
-import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 
 import { ChevronButton, Header, DonationQueueRow } from '../../../components';
 
 import { moderateScale, verticalScale, scale } from '../../../util';
-import { DonationForm, Address } from '../../../types';
+import { DonationForm } from '../../../types';
 
 import { RootState } from '../../../redux/rootReducer';
 import { loadDonations, searchDonations } from '../../../redux/reducers/donationQueue';
-import { TemplateNavParamList } from '../../NavTypes';
-
-// type DonationScreenProp = CompositeNavigationProp<
-//   StackNavigationProp<DonateTabParamList, 'DonateHomeScreen'>,
-//   BottomTabNavigationProp<BottomTabParamList, 'Home'>
-//   >;
+import { DonationQueueParamList } from '../../../navigation/AdminStack/DonationQueue/types';
 
 type DonationScreenProp = CompositeNavigationProp<
-  StackNavigationProp<TemplateNavParamList, 'DonationQueue'>,
+  StackNavigationProp<DonationQueueParamList, 'DonationQueue'>,
   BottomTabNavigationProp<BottomTabParamList, 'Home'>
   >;
+
 /**
  * Admin view of donation list screen. Currently contains dummy date to see what pending and approved ongoing donations
  * should look like when the app is live. Can choose to view ongoing or completed donations.
@@ -82,7 +77,6 @@ const DonationListScreen = () => {
     // axios.put('/api/ongoingdonations/62185e29d8b2650022fadd1a', formdata)
     //   .then((res) => console.log(res))
     //   .catch((error) => console.error(error));
-
     axios.get('/api/ongoingdonations')
       .then((res) => {
         dispatch(loadDonations(res.data['Ongoing Donations']));
@@ -122,16 +116,16 @@ const DonationListScreen = () => {
     if (selectedIndex === 1 && !overdueView) {
       return (
         <View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20) }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginLeft: moderateScale(5) }}>
             <Header title="Donation List" showCartButton={false} />
-            {authState.isAdmin ?? (
+            {authState.isAdmin ? (
               <Pressable
-                style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+                style={{ marginLeft: '25%', marginTop: moderateScale(25) }}
                 onPress={() => setOverdueView(!overdueView)}
               >
                 <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
               </Pressable>
-            )}
+            ) : null}
           </View>
           <View>
             <ButtonGroup
@@ -164,18 +158,24 @@ const DonationListScreen = () => {
         <View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: moderateScale(20), marginLeft: moderateScale(5) }}>
             <Header title="Donation List" showCartButton={false} />
-            {authState.isAdmin ?? (
+            {authState.isAdmin ? (
               <Pressable
-                style={{ marginLeft: scale(110), marginTop: moderateScale(25) }}
+                style={{ marginLeft: '25%', marginTop: moderateScale(25) }}
                 onPress={() => setOverdueView(!overdueView)}
               >
                 <Text style={{ fontSize: moderateScale(15), color: '#E90000', fontWeight: 'bold' }}> Overdue ({donationQueue.filter((item: DonationForm) => item.status === 'Overdue').length})</Text>
               </Pressable>
-            )}
+            ) : null}
           </View>
           <View>
             <ButtonGroup
               buttons={['Ongoing', 'Completed']}
+              disabled={(() => {
+                if (!authState.isAdmin) {
+                  return [1];
+                }
+                return [];
+              })()}
               selectedIndex={selectedIndex}
               onPress={(value) => {
                 setSelectedIndex(value); // 0 index for completed, 1 index for Ongoing
@@ -186,7 +186,7 @@ const DonationListScreen = () => {
               containerStyle={{ borderColor: '#F37B36', borderWidth: 1, borderRadius: 5, backgroundColor: 'transparent' }}
             />
           </View>
-          {authState.isAdmin ?? (
+          {authState.isAdmin ? (
             <View>
               <View style={styles.tableTitle}>
                 <View style={styles.tableH1}>
@@ -201,7 +201,7 @@ const DonationListScreen = () => {
                 )}
               </View>
             </View>
-          )}
+          ) : null}
           <View style={styles.tableTitle}>
             <View style={styles.tableH1}>
               <Text style={{ fontSize: verticalScale(12), fontWeight: 'bold', color: '#202020' }}>

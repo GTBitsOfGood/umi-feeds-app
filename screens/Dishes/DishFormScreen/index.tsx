@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 
 import DishForm from '../../../components/DishForm/DishForm';

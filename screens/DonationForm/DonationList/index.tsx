@@ -17,7 +17,7 @@ import { useNavigation, CompositeNavigationProp } from '@react-navigation/native
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { RootState } from '../../../redux/rootReducer';
 
 import {

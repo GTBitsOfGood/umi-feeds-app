@@ -11,8 +11,8 @@ import { Address, DonationForm } from '../../../types';
 import { AddressSelection } from '../../../components';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { updateStatus } from '../../../redux/reducers/donationQueue';
-import { TemplateNavParamList } from '../../NavTypes';
-import LoadingScreen from '../../../screens/LoadingScreen';
+import { TemplateNavParamList } from '../../../templates/NavTypes';
+import LoadingScreen from '../../LoadingScreen';
 
 type ParamList = {
   AddressScreen: {
@@ -43,14 +43,15 @@ function AdminAcceptAddressScreen() {
       axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
         .then((res) => {
           dispatch(updateStatus({ donationForm, status: 'Unclaim', dropoffAddr: address }));
+          // need to put loading here before navigation or else the screen will unmount
+          // because of the navigation while updating the screen's state
+          dispatch(setLoading({ loading: false }));
           navigation.navigate('DonationQueue');
         })
         .catch((err) => {
+          dispatch(setLoading({ loading: false }));
           Alert.alert('Error accepting this donation.', err.message);
         })
-        .finally(() => {
-          dispatch(setLoading({ loading: false }));
-        });
     }
   };
 

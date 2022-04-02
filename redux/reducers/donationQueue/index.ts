@@ -45,6 +45,9 @@ const donationQueueReducer = createSlice({
     deleteDonation(state, action:PayloadAction<DonationForm>) {
       state.donationQueue = state.donationQueue.filter((item:DonationForm) => item._id !== action.payload._id);
     },
+    deleteDonationByID(state, action:PayloadAction<string>) {
+      state.donationQueue = state.donationQueue.filter((item:DonationForm) => item._id !== action.payload);
+    },
     updateStatus(state, action: PayloadAction<{donationForm:DonationForm, status: string, dropoffAddr?: Address}>) {
       const donation = state.donationQueue.filter((f: any) => f._id === action.payload.donationForm._id)[0];
       const list = state.donationQueue;
@@ -61,5 +64,5 @@ const donationQueueReducer = createSlice({
   }
 });
 
-export const { loadDonations, searchDonations, updateStatus, updateDonation, deleteDonation } = donationQueueReducer.actions;
+export const { loadDonations, searchDonations, updateStatus, updateDonation, deleteDonation, deleteDonationByID } = donationQueueReducer.actions;
 export default donationQueueReducer.reducer;

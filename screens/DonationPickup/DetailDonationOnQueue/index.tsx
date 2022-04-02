@@ -13,14 +13,14 @@ import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../DetailDonationOnQueue/styles';
+import styles from './styles';
 import { DonationForm } from '../../../types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
-import { updateDonation, deleteDonation, updateStatus } from '../../../redux/reducers/donationQueue';
-import { TemplateNavParamList } from '../../NavTypes';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
+import { updateDonation, deleteDonation, updateStatus, deleteDonationByID } from '../../../redux/reducers/donationQueue';
+import { TemplateNavParamList } from '../../../templates/NavTypes';
 import { GeneralModal } from '../../../components';
 import { RootState } from '../../../redux/rootReducer';
-import LoadingScreen from '../../../screens/LoadingScreen';
+import LoadingScreen from '../../LoadingScreen';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { navigationRef } from '../../../navigation/RootNavigation';
 import { logAxiosError } from '../../../utils';
@@ -124,19 +124,29 @@ function DetailDonationOnQueue() {
   };
 
   const donationDish = [];
-  let donationTotalCost:any;
+  let donationTotalCost = 0;
+  donationDish.push(
+    <View key={-1}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={{ fontWeight: 'bold' }}>Dish Item</Text>
+        <Text style={{ fontWeight: 'bold' }}>Qty</Text>
+        <Text style={{ fontWeight: 'bold' }}>  Cost</Text>
+      </View>
+      <View style={{ width: '100%', borderTopColor: 'rgba(93, 93, 93, 1)', borderTopWidth: 1, marginVertical: 8 }} />
+    </View>
+  );
   for (let i = 0; i < donationForm.donationDishes.length; i += 1) {
     donationDish.push(
       <View key={donationForm.donationDishes[i].dishID}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Text>{donationForm.donationDishes[i].dishName}</Text>
-          <Text>{donationForm.donationDishes[i].cost}</Text>
           <Text>{donationForm.donationDishes[i].quantity}</Text>
+          <Text>$ {donationForm.donationDishes[i].cost}</Text>
         </View>
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
       </View>
     );
-    donationTotalCost += Number(donationForm.donationDishes[i].cost ?? '0');
+    donationTotalCost += Number(donationForm.donationDishes[i].cost ?? 0);
   }
 
   const claimDonation = () => {
@@ -162,14 +172,13 @@ function DetailDonationOnQueue() {
   const completeDonation = (completePressed: boolean, cancelPressed: boolean) => {
     if (completePressed) {
       dispatch(setLoading({ loading: true }));
-      const formdata = new FormData();
-      formdata.append('json', JSON.stringify({
-        status: 'Complete',
-        lockedByVolunteer: true
-      }));
-      axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
+      axios.delete(`/api/ongoingdonations/${donationForm._id}`)
         .then((res) => {
-          navigationRef.current?.setParams({ donationForm: res.data.donationform });
+          if (donationForm._id) {
+            dispatch(deleteDonationByID(donationForm._id));
+          }
+          // this will set the parameters for the current navigation screen but we'll simply just delete it from the queue
+          // navigationRef.current?.setParams({ donationForm: res.data.donationform });
         })
         .catch((error) => {
           logAxiosError(error);
@@ -512,12 +521,9 @@ function DetailDonationOnQueue() {
               Time: {formattedStartTime} - {formattedEndTime}
             </Text>
             <Text style={styles.detailsHeader}>Pickup instructions</Text>
-            <Text style={styles.details}>{donationForm.pickupInstructions}</Text>
+            <Text style={styles.details}>{donationForm.pickupInstructions.trim().length === 0 ? 'None' : donationForm.pickupInstructions}</Text>
           </View>
           <View style={{ width: '100%', justifyContent: 'flex-start' }}>
-            <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
-              <Text style={styles.subHeader}>Meal list</Text>
-            </View>
             <View style={{ width: '100%', justifyContent: 'flex-start' }}>
               <View style={[styles.spacedContainer, { marginBottom: 20 }]}>
                 <Text style={styles.subHeader}>Meal list</Text>

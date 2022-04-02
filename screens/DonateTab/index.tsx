@@ -10,7 +10,7 @@ import { RootState } from '../../redux/rootReducer';
 import { addToCart, removeDishFromCart } from '../../redux/reducers/donationCartReducer';
 
 import { DonateTabParamList } from '../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../navigation/MainNavBar/DonorTabs/types';
 
 import styles from './styles';
 import { Text, View } from '../../style/Themed';

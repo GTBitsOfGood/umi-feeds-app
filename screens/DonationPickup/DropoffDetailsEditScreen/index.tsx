@@ -6,13 +6,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Alert } from 'react-native';
 import { Address, Donation, DonationForm } from '../../../types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { AddressForm } from '../../../components';
-import { TemplateNavParamList } from '../../NavTypes';
+import { TemplateNavParamList } from '../../../templates/NavTypes';
 import { updateDonation } from '../../../redux/reducers/donationQueue';
 import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { RootState } from '../../../redux/rootReducer';
-import LoadingScreen from '../../../screens/LoadingScreen';
+import LoadingScreen from '../../LoadingScreen';
 
 type ParamList = {
   DropoffDetailsEditScreen: {

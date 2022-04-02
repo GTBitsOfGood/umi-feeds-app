@@ -40,7 +40,7 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="NewDishForm"
         component={NewDishFormScreen}
-        options={{ headerTitle: 'New Dish', headerTintColor: '#F37B36' }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36' }}
       />
       <DonationScreenStack.Screen
         name="DishProfile"
@@ -61,27 +61,27 @@ function DonateTab() {
       <DonationScreenStack.Screen
         name="AddressScreen"
         component={DonateAddressScreen}
-        options={{ headerTitle: 'Donate', headerShown: false }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Donation Cart' }}
       />
       <DonationScreenStack.Screen
         name="EditAddressScreen"
         component={EditAddressScreen}
-        options={{ headerTitle: 'Donate', headerShown: false }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Go Back' }}
       />
       <DonationScreenStack.Screen
         name="SchedulePickupScreen"
         component={SchedulePickupScreen}
-        options={{ headerTitle: 'Donate', headerShown: false }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Set Pickup Address' }}
       />
       <DonationScreenStack.Screen
         name="ReviewCartScreen"
         component={DonateReviewDonationCart}
-        options={{ headerTitle: 'Donate', headerShown: false }}
+        options={{ headerTitle: '',  headerTintColor: '#F37B36', headerBackTitle: 'Schedule Pickup' }}
       />
       <DonationScreenStack.Screen
         name="ReviewContactScreen"
         component={ReviewContactScreen}
-        options={{ headerTitle: 'Donate', headerShown: false }}
+        options={{ headerTitle: '',  headerTintColor: '#F37B36', headerBackTitle: 'Review Cart' }}
       />
     </DonationScreenStack.Navigator>
   );

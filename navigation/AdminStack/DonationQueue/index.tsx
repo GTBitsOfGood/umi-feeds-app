@@ -1,19 +1,19 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import DetailDonationOnQueue from './DetailDonationOnQueue';
-import DonationQueue from './DonationQueue';
-import DropoffDetailsEditScreen from './DropoffDetailsEditScreen';
-import AddressScreen from './AddressScreen';
-import EditAddressScreen from './EditAddressScreen';
+import DetailDonationOnQueue from '../../../screens/DonationPickup/DetailDonationOnQueue';
+import DonationQueue from '../../../screens/DonationPickup/DonationQueue';
+import DropoffDetailsEditScreen from '../../../screens/DonationPickup/DropoffDetailsEditScreen';
+import AddressScreen from '../../../screens/DonationPickup/AddressScreen';
+import EditAddressScreen from '../../../screens/DonationPickup/EditAddressScreen';
 
-import { TemplateNavParamList } from './DonationListNavParams';
+import { DonationQueueParamList } from './types';
 
-const DonationList = createStackNavigator<TemplateNavParamList>();
+const DonationList = createStackNavigator<DonationQueueParamList>();
 
 // Donation List Stack
-export default function TestStack() {
+export default function DonationQueueStack() {
   return (
-    <DonationList.Navigator screenOptions={{ headerShown: false }}>
+    <DonationList.Navigator>
       <DonationList.Screen
         name="DonationQueue"
         component={DonationQueue}

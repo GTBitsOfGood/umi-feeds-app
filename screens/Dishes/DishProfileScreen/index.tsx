@@ -8,7 +8,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { Text, View } from '../../../style/Themed';
 import { ChevronButton } from '../../../components';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import NoImageAvailable from '../../../assets/images/NoImageAvailable.jpeg';
 
 import { moderateScale } from '../../../util/index';

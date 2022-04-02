@@ -189,7 +189,7 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
               required
             />
             <FloatingTitleTextInputField
-              title="Cost of serving in dollars (required)"
+              title="Cost of dish in dollars (required)"
               value={costString}
               onChangeText={(costStr: string) => {
                 if (Number.isFinite(+costStr) && (currencyRegex.test(costStr) || !costStr)) {

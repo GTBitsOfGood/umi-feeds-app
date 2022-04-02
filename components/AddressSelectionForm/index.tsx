@@ -51,13 +51,13 @@ const AddressFormScreen = ({
     longitude: 10,
     latitude: 100,
   };
-  const pickupAddresses = [dummyAddress, ...authState.pickupAddresses];
+  const { pickupAddresses } = authState;
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.contentContainer}>
-          {(backButton !== false) && <ChevronButton onPress={navigation.goBack} text="Donation Cart" />}
+          {/* {(backButton !== false) && <ChevronButton onPress={navigation.goBack} text="Donation Cart" />} */}
           <Header title={title} showCartButton={false} />
           <Text style={{ marginBottom: 20, marginTop: -10 }}>{subtitle}</Text>
           <SecondaryButton onPress={() => navigation.navigate('EditAddressScreen')}>
@@ -72,7 +72,7 @@ const AddressFormScreen = ({
               selected={selectedAddress?._id === address._id}
               key={address.longitude}
               address={address}
-              businessName="Test Business Name"
+              businessName={authState.businessName}
               onPress={() => setSelectedAddress(address)}
               onEdit={() => {
                 navigation.navigate('EditAddressScreen' as any, { address });

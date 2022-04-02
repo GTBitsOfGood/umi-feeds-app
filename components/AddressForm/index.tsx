@@ -58,7 +58,7 @@ const AddressForm = (
           keyboardShouldPersistTaps="handled"
         >
           <View style={{}} />
-          {!hideBack && <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />}
+          {/* {!hideBack && <HeaderBackButton tintColor="#F37B36" style={styles.backButton} onPress={() => goBack()} />} */}
           <View style={{}}>
             <View style={{}}>
               <View style={{}} />

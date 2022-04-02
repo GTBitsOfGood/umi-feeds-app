@@ -13,7 +13,7 @@ import Header from '../../../components/Header';
 import ChevronButton from '../../../components/ChevronButton';
 import styles from './styles';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { Dish, DonationDishes } from '../../../types';
 import { addToCart, removeDishFromCart } from '../../../redux/reducers/donationCartReducer';
 import DonateQuantityModal from '../../../components/DonateQuantityModal';

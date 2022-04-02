@@ -9,7 +9,7 @@ import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
 import ChevronButton from '../../../components/ChevronButton';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
-import { BottomTabParamList } from '../../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import Pencil from '../../../assets/images/pencil.svg';
 import { GeneralModal } from '../../../components';
 import LoadingScreen from '../../LoadingScreen';
@@ -75,9 +75,9 @@ export default function ReviewContactScreen(props: ThemeProps) {
           modalSubmit={modalSubmit}
         />
         <View style={styles.contentContainer}>
-          <View style={styles.backContainer}>
+          {/* <View style={styles.backContainer}>
             <ChevronButton onPress={() => navigation.goBack()} text="Donation cart" />
-          </View>
+          </View> */}
           <View style={styles.headerContainer}>
             <Text style={styles.header}> Review details </Text>
             <View style={{ marginTop: 8, marginLeft: 6 }}>

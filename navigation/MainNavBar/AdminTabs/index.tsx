@@ -3,14 +3,14 @@ import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Colors from '../../constants/Colors';
-import useColorScheme from '../../hooks/useColorScheme';
-import ProfileNavigator from '../../navigation/SharedStack/UserProfile';
+import Colors from '../../../constants/Colors';
+import useColorScheme from '../../../hooks/useColorScheme';
+import ProfileNavigator from '../../SharedStack/UserProfile';
 import {
   AdminBottomTabParamList,
 } from './types';
-import DonationList from '../screens/DonationList';
-import MyDonationScreen from '../screens/ScreenTemplate/MyDonations';
+import DonationQueueStack from '../../AdminStack/DonationQueue';
+import MyDonationsStack from '../../AdminStack/MyDonations';
 
 /**
  * Styling and implementation of the bottom navigation bar in the Admin view.
@@ -46,14 +46,14 @@ function AdminTabs() {
     >
       <BottomTab.Screen
         name="My Donations"
-        component={MyDonationScreen}
+        component={MyDonationsStack}
         options={{
           tabBarIcon: ({ color }) => <MaterialTabBarIcon name="hand-heart" iconSize={30} color={color} />
         }}
       />
       <BottomTab.Screen
         name="Donation List"
-        component={DonationList}
+        component={DonationQueueStack}
         options={{
           tabBarIcon: ({ color }) => <MaterialTabBarIcon name="view-list" iconSize={39} color={color} />,
         }}

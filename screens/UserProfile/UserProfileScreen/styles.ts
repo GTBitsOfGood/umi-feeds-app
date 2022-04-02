@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     width: '80%',
-    margin: '10%',
+    marginHorizontal: '7.5%',
     paddingBottom: 35,
   },
   container: {
@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   title: {
-    fontSize: 30,
-    fontWeight: 'bold',
+    fontSize: 28,
+    fontWeight: '500',
     color: '#202020',
     paddingVertical: 10,
     marginBottom: 20

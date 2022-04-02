@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { Alert, Platform, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, batch } from 'react-redux';
 
 import jwtDecode from 'jwt-decode';
 import axios, { AxiosError } from 'axios';
@@ -11,6 +11,7 @@ import * as Auth0 from '../../constants/Auth0';
 
 import { login } from '../../redux/reducers/authReducer';
 import { beginOnboarding } from '../../redux/reducers/OnboardingReducer';
+import { loadDonations } from '../../redux/reducers/donationQueue';
 import { decodedJwtToken } from '../../types';
 import { BeginOnboardingUser } from '../../redux/reducers/OnboardingReducer/types';
 import { setLoading } from '../../redux/reducers/loadingReducer/index';
@@ -58,13 +59,25 @@ function LoginButton(props: { onUserNotFound: () => void }) {
         dispatch(setLoading({ loading: true }));
 
         // Now that we have the user access token we can request the user information from the backend
-        axios.post(`/login/${userInfo.sub}`, {}).then((res) => {
-          // This is the success condition: we have found the user based on the accesstoken
-          if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
-            const { user } = res.data; // res.data.user is of type User
+        const loginUser = axios.post(`/login/${userInfo.sub}`, {});
+        const getDonationQueue = axios.get('/api/ongoingdonations');
+
+        Promise.all([loginUser, getDonationQueue]).then((values) => {
+          const loginResponse = values[0];
+          const donationQueueResponse = values[1];
+
+          if (loginResponse.status === 200 && loginResponse.data !== null && loginResponse.data !== undefined && loginResponse.data.user !== null) {
+            const { user } = loginResponse.data; // res.data.user is of type User
             user.jwt = receivedToken; // add jwt and authenticated to make it an AuthUser
             user.authenticated = true;
-            return dispatch(login(user));
+            if (user.isAdmin || user.roles.includes('volunteer')) {
+              return batch(() => {
+                dispatch(login(user));
+                dispatch(loadDonations(donationQueueResponse.data['Ongoing Donations']));
+              });
+            } else {
+              return dispatch(login(user));
+            }
           } else {
             return Alert.alert('Authentication error!');
           }
@@ -84,7 +97,7 @@ function LoginButton(props: { onUserNotFound: () => void }) {
             return onUserNotFound();
           } else {
             // In this case it was actually an unexpected error
-            return Alert.alert(`Authentication error! ${err.message}`);
+            return Alert.alert('Authentication error! Please Try Again Later');
           }
         })
           .finally(() => {

@@ -45,14 +45,14 @@ function DonateSchedulePickupScreen() {
 
   return (
     <KeyboardAwareScrollView contentContainerStyle={styles.container} style={{ backgroundColor: 'white' }} resetScrollToCoords={{ x: 0, y: 0 }} keyboardOpeningTime={0} extraHeight={150}>
-      <Pressable onPress={() => navigation.goBack()}>
+      {/* <Pressable onPress={() => navigation.goBack()}>
         <View style={{ flexDirection: 'row', marginTop: '5%' }}>
           <Icon name="chevron-thin-left" size={20} style={{ color: '#F37B36' }} />
           <Text style={{ fontSize: 16, color: '#F37B36', fontWeight: '400', marginLeft: 4 }}>
             Your Address
           </Text>
         </View>
-      </Pressable>
+      </Pressable> */}
       <Header title="Pickup time" showCartButton={false} />
       <Text style={styles.description}>
         Schedule the date and time for your donation pickup.
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    margin: '5%',
+    marginHorizontal: '7.5%',
   },
   title: {
     fontSize: 32,

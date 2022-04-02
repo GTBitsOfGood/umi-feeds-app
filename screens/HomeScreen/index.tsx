@@ -13,7 +13,7 @@ import { Header } from '../../components';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 
 import { HomeScreenParamList } from '../../navigation/SharedStack/Home/types';
-import { BottomTabParamList } from '../../navigation/MainNavBar/types';
+import { BottomTabParamList } from '../../navigation/MainNavBar/DonorTabs/types';
 
 import { store } from '../../redux/store';
 import { refreshDonations } from '../../redux/reducers/authReducer';
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
   topContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: moderateScale(20),
     marginBottom: moderateScale(0),
     marginHorizontal: 30,
   },

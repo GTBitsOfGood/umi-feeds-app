@@ -7,8 +7,8 @@ import { ColorSchemeName } from 'react-native';
 import { useSelector } from 'react-redux';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from './types';
-import { DonorTabs } from './MainNavBar';
-import { AdminTabs } from '../templates/AdminNavBar';
+import { DonorTabs } from './MainNavBar/DonorTabs';
+import { AdminTabs } from './MainNavBar/AdminTabs';
 
 import { RootState } from '../redux/rootReducer';
 import LoginStack from './LoginStack';

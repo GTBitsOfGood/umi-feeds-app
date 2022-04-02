@@ -67,14 +67,14 @@ function DetailDonationScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1, width: '100%', justifyContent: 'space-around' }}>
         <View style={styles.container}>
           <View style={{ width: '100%', justifyContent: 'space-between', marginBottom: 20 }}>
-            <Text style={[styles.title, { marginBottom: 8, marginTop: 28 }]}>{formattedDate}</Text>
+            <Text style={[styles.title, { marginBottom: 8 }]}>{formattedDate}</Text>
             <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 24 }}>
               Status: <Text style={{ fontSize: 21, fontWeight: '400', marginVertical: 24 }}>{route.params.donation.status}</Text>
             </Text>
             <Text style={{ fontSize: 21, fontWeight: '500', marginVertical: 8 }}>Pickup details</Text>
             <Text style={styles.detailsHeader}>Address</Text>
             <Text style={styles.details}>
-              {route.params.donation.pickupAddress.streetAddress} {buildingNumberStr}{'\n'};
+              {route.params.donation.pickupAddress.streetAddress} {'\n'}
               {route.params.donation.pickupAddress.city}, {route.params.donation.pickupAddress.state}, {route.params.donation.pickupAddress.zipCode}
             </Text>
             <Text style={styles.detailsHeader}>Scheduled time</Text>
