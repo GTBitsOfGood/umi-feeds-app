@@ -26,7 +26,7 @@ export default function LoginStack() {
       <OnboardingStack.Screen
         name="OnboardingAddressForm"
         component={AddressOnboardingForm}
-        options={{ headerShown: false }}
+        options={{ headerShown: true, headerTitle: '' }}
       />
     </OnboardingStack.Navigator>
   );
