@@ -62,8 +62,8 @@ export {
 
 const styles = StyleSheet.create({
   container: {
-    height: '9%',
-    paddingBottom: 5,
+    height: '11%',
+    paddingBottom: 30,
     borderTopLeftRadius: 4,
     borderTopRightRadius: 4,
     shadowColor: 'rgba(144, 144, 144, 1)',
