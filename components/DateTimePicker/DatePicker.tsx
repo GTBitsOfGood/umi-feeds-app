@@ -6,7 +6,7 @@ import { View } from '../../style/Themed';
 
 function PlatformDatePicker(props: {
   datetime: Date,
-  setDatetime: Dispatch<SetStateAction<Date>>
+  setDatetime: (Dispatch<SetStateAction<Date>>) | ((date:Date) => void)
 }) {
   const [mode, setMode] = useState<'date' | 'time'>('date');
   const [show, setShow] = useState(false);

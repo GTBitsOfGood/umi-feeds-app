@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Input } from 'react-native-elements';
@@ -36,6 +36,20 @@ function DonateSchedulePickupScreen() {
     }
   };
 
+  const setDayMonthYear = (newPickupDate:Date, oldTime:Date, setMethod:Dispatch<SetStateAction<Date>>) => {
+    const newTime = oldTime;
+    newTime.setDate(newPickupDate.getDate());
+    newTime.setFullYear(newPickupDate.getFullYear());
+    newTime.setMonth(newPickupDate.getMonth());
+    setMethod(newTime);
+  };
+
+  const updateDate = (newPickupDate:Date) => {
+    setPickupDate(newPickupDate);
+    setDayMonthYear(newPickupDate, startTime, setStartTime);
+    setDayMonthYear(newPickupDate, endTime, setEndTime);
+  };
+
   /* Check that the pickup date is valid and not in the past */
   const isFormValid = () => {
     const validStartTime = startTime > new Date();
@@ -63,7 +77,7 @@ function DonateSchedulePickupScreen() {
       <View style={styles.dateInput}>
         <PlatformDatePicker
           datetime={pickupDate}
-          setDatetime={setPickupDate}
+          setDatetime={updateDate}
         />
       </View>
       <Text style={styles.subsection}>

@@ -23,7 +23,7 @@ export default function VerifyVolunteer() {
   const formSubmit = () => {
     let passwordAttempt = volunteerPass;
     if (volunteerPass === '') {
-      passwordAttempt = 'NONE';
+      passwordAttempt = '45efdfad-dcdd-4d71-95bb-104a1ec960b9'; // I don't think erica will ever make the password this random uuid I generated
     }
     axios.get(`/admin/passcode/${passwordAttempt}`).then((res) => {
       if (res.data && res.data.message && res.data.message === 'match') {
