@@ -67,7 +67,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
       <View style={styles.container}>
         <GeneralModal
           title="Thank you!"
-          subtitle="A confirmation receipt has been sent to your email."
+          subtitle="Response received! Thank you."
           visible={modalVisible}
           closeModal={toggleModal}
           numButtons={1}
