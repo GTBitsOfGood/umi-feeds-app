@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Input } from 'react-native-elements';
