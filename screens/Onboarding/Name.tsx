@@ -72,7 +72,12 @@ export default function OnboardingNameForm() {
         phoneNumber: numberPhone,
         roles: rolesArr,
       }));
-      navigation.navigate('OnboardingAddressForm');
+      if (donorRoleForm) {
+        navigation.navigate('OnboardingAddressForm');
+      }
+      if (volunteerRoleForm) {
+        navigation.navigate('VerifyVolunteer');
+      }
     }
   };
 
