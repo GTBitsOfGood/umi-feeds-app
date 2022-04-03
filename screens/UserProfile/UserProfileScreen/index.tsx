@@ -47,7 +47,7 @@ export default function UserProfile() {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.heading}>Personal Identification </Text>
-            {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
+            <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
           </View>
 
           <Text style={styles.body}>Phone Number</Text>
@@ -57,7 +57,7 @@ export default function UserProfile() {
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.heading}>Business Information</Text>
-            {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
+            <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
           </View>
           <Text style={styles.body}>Name</Text>
           <Text style={styles.description}>{authState.businessName || 'No Business Name'}</Text>

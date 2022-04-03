@@ -17,6 +17,8 @@ import { navigationRef } from './RootNavigation';
 
 // FOR TEMPLATING AND TESTING
 import TestStack from '../templates/index';
+import UserGuides from '../screens/UserGuideScreens/GuideOne';
+import UserGuideStack from './UserGuidesStack';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -54,7 +56,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={LoginStack} />
+        <Stack.Screen name="Login" component={UserGuideStack} />
       )
       }
     </Stack.Navigator>
