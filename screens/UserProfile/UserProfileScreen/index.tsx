@@ -2,7 +2,7 @@ import { ScrollView, View, TouchableHighlight } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
@@ -29,6 +29,7 @@ export default function UserProfile() {
   const authState = useSelector((state: RootState) => state.auth);
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
   const navigation = useNavigation<ProfileScreenProp>();
+  const isFocused = useIsFocused();
 
   const fullAddress = authState.pickupAddresses.map((businessAddress) => `${businessAddress.buildingNumber === 0 ? '' : businessAddress.buildingNumber} ${businessAddress.streetAddress} \n${businessAddress.city}, ${businessAddress.state} ${businessAddress.zipCode}`).join('\n\n') || 'No Address';
 
@@ -47,7 +48,7 @@ export default function UserProfile() {
           </View>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.heading}>Personal Identification </Text>
-            {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
+            <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
           </View>
 
           <Text style={styles.body}>Phone Number</Text>
@@ -57,7 +58,6 @@ export default function UserProfile() {
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.heading}>Business Information</Text>
-            {/* <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} /> */}
           </View>
           <Text style={styles.body}>Name</Text>
           <Text style={styles.description}>{authState.businessName || 'No Business Name'}</Text>
@@ -82,11 +82,11 @@ function EditButton(props: { onEdit: () => void }) {
         onPress={props.onEdit}
         underlayColor="transparent"
       >
-        <View style={{ flexGrow: 1, flexDirection: 'row', alignContent: 'center' }}>
+        <View style={{ flexGrow: 1, flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
+          <Icon name="pencil" size={25} style={styles.icon} />
           <Text style={styles.button}>
             Edit
           </Text>
-          <Icon name="chevron-thin-right" size={20} style={styles.icon} />
         </View>
       </TouchableHighlight>
     </View>
