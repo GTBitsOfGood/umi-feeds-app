@@ -5,7 +5,8 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  Pressable
+  Pressable,
+  Linking
 } from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -15,6 +16,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/rootReducer';
 import { Header, DonationQueueRow } from '../../components';
 import { moderateScale, verticalScale, scale } from '../../util';
+import Logo from '../../assets/images/umi-feeds-logo.svg';
 import { DonationForm } from '../../types';
 import { MyDonationParamList } from '../../navigation/AdminStack/MyDonations/types';
 
@@ -70,6 +72,34 @@ const MyDonationScreen = () => {
         </View>
       </View>
       {display()}
+      <View style={styles.contact}>
+        <View>
+          <Text style={[styles.standardText, { marginBottom: 10 }]}>Umi Feeds contact
+          </Text>
+          <Text style={styles.field}>
+            Phone
+          </Text>
+          <Text onPress={() => {
+            Linking.openURL('tel:6787185864');
+          }}
+          >
+            678-718-5864
+          </Text>
+          <Text style={styles.field}>
+            Email
+          </Text>
+          <Text onPress={() => {
+            Linking.openURL('mailto:umi@umifeeds.org');
+          }}
+          >
+            umi@umifeeds.org
+          </Text>
+        </View>
+        <Logo style={{
+          flexShrink: 1
+        }}
+        />
+      </View>
     </ScrollView>
   );
 };
@@ -178,5 +208,22 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(21),
     width: '50%',
     textAlign: 'center'
+  },
+  contact: {
+    marginHorizontal: 30,
+    marginVertical: '40%',
+    flexDirection: 'row',
+    overflow: 'hidden'
+  },
+  field: {
+    fontWeight: '700',
+    color: 'gray',
+    fontSize: 11,
+    marginVertical: 5
+  },
+  standardText: {
+    fontSize: 20,
+    fontWeight: '500',
+    color: 'rgba(62, 62, 62, 1)',
   }
 });
