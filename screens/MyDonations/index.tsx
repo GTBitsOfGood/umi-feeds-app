@@ -14,16 +14,15 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { RootState } from '../../redux/rootReducer';
 import { Header, DonationQueueRow } from '../../components';
 import { moderateScale, verticalScale, scale } from '../../util';
 import { Donation, DonationForm } from '../../types';
 import { MyDonationParamList } from '../../navigation/AdminStack/MyDonations/types';
-import axios from 'axios';
 import { refreshDonations } from '../../redux/reducers/authReducer';
 import { store } from '../../redux/store';
 import { loadDonations } from '../../redux/reducers/donationQueue';
-
 
 /**
  * Screen for any donations the Admin has claimed. If the Admin has not claimed any dishes, an icon will be displayed
@@ -44,9 +43,9 @@ const MyDonationScreen = () => {
   const authState = useSelector((state: RootState) => state.auth);
   const [refreshing, setRefreshing] = useState(false);
   const dispatch = useDispatch();
-  
+
   const myDonations = useSelector(
-    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.status === "Claimed"))
+    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.status === 'Claimed'))
   );
 
   const display = () => {
@@ -75,7 +74,7 @@ const MyDonationScreen = () => {
         if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
           const { user } = res.data; // res.data.user is of type User
           console.log(res.data['Ongoing Donations']);
-          console.log("//////////////////")
+          console.log('//////////////////');
           return dispatch(loadDonations(res.data['Ongoing Donations']));
         } else {
           return Alert.alert('Authentication error!');
@@ -86,9 +85,10 @@ const MyDonationScreen = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}
+    <ScrollView
+      style={styles.container}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
+    >
       <View>
         <Header title="My Donations" showCartButton={false} />
       </View>
