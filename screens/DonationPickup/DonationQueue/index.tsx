@@ -112,6 +112,29 @@ const DonationListScreen = () => {
     return false;
   };
 
+  const overdueDonations = useSelector(
+    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item: DonationForm) => item.status === 'Overdue')
+  );
+
+  // Display overdue donations
+  const displayOverdue = () => {
+    if (overdueDonations.length === 0) {
+      return (
+        <View style={styles.noDonations}>
+          <Text style={styles.emptyText}>There are no overdue donations</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ marginBottom: 50 }}>
+          {overdueDonations.map(
+            (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
+          )}
+        </View>
+      );
+    }
+  };
+
   const selectedView = () => {
     if (selectedIndex === 1 && !overdueView) {
       return (
@@ -233,13 +256,8 @@ const DonationListScreen = () => {
               </Text>
             </View>
           </View>
-          <View style={{ marginBottom: 50 }}>
-            {donationQueue.filter((item: DonationForm) => item.status === 'Overdue').map(
-              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
-            )}
-          </View>
+          {displayOverdue()}
         </View>
-
       );
     }
   };
@@ -338,5 +356,18 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(11),
     fontWeight: '500',
     color: '#5D5D5D',
-  }
+  },
+  emptyText: {
+    paddingTop: moderateScale(20),
+    color: '#B8B8B8',
+    fontSize: moderateScale(21),
+    width: '50%',
+    textAlign: 'center'
+  },
+  noDonations: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: moderateScale(50),
+  },
 });

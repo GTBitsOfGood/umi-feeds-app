@@ -146,7 +146,7 @@ function DetailDonationOnQueue() {
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
       </View>
     );
-    donationTotalCost += Number(donationForm.donationDishes[i].cost ?? 0);
+    donationTotalCost += (Number(donationForm.donationDishes[i].cost ?? 0) * Number(donationForm.donationDishes[i].quantity ?? 0));
   }
 
   const claimDonation = () => {
