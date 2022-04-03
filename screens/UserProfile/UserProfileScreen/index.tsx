@@ -1,4 +1,4 @@
-import { ScrollView, View, TouchableHighlight } from 'react-native';
+import { ScrollView, View, TouchableHighlight, Pressable } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -15,10 +15,12 @@ import { UserProfileScreenParamList } from '../../../navigation/SharedStack/User
 import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import { LogoutButton } from '../../../components';
 import LoadingScreen from '../../LoadingScreen';
+import { moderateScale } from '../../../util';
 
 type ProfileScreenProp = CompositeNavigationProp<
     StackNavigationProp<UserProfileScreenParamList, 'UserProfileScreen'>,
     BottomTabNavigationProp<BottomTabParamList, 'Home'>
+
 >;
 
 /**
@@ -30,6 +32,8 @@ export default function UserProfile() {
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
   const navigation = useNavigation<ProfileScreenProp>();
 
+  const isDonor = authState.roles.indexOf('donor') !== -1;
+
   const fullAddress = authState.pickupAddresses.map((businessAddress) => `${businessAddress.buildingNumber === 0 ? '' : businessAddress.buildingNumber} ${businessAddress.streetAddress} \n${businessAddress.city}, ${businessAddress.state} ${businessAddress.zipCode}`).join('\n\n') || 'No Address';
 
   return (
@@ -40,7 +44,15 @@ export default function UserProfile() {
         <ScrollView
           contentContainerStyle={styles.scrollView}
         >
-          <Text style={styles.title}>Profile</Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center', marginBottom: 20, marginTop: 20 }}>
+            <Text style={styles.title}>Profile</Text>
+            {isDonor ? (
+              <Pressable style={{ paddingTop: 12 }} onPress={() => navigation.navigate('HelpScreen')}>
+                <Icon name="help-with-circle" size={moderateScale(20)} color="#5D5D5D" />
+                <Text style={{ fontSize: moderateScale(12), color: '#5D5D5D' }}>Help</Text>
+              </Pressable>
+            ) : null}
+          </View>
           <View style={{ marginBottom: 40, alignItems: 'center', justifyContent: 'center' }}>
             <View style={styles.profilePicture} />
             <Text style={styles.info}>{`${authState.name}`}</Text>

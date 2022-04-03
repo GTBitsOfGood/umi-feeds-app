@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 
-import { UserGuideOne, UserGuideTwo, UserGuideThree, UserGuideFour, UserGuideFive, FAQ } from '../../screens/UserGuideScreens';
+import { UserGuideOne, UserGuideTwo, UserGuideThree, UserGuideFour, UserGuideFive, FAQ, Help } from '../../screens/UserGuideScreens';
 import {
   UserGuideParamList
 } from './types';
@@ -65,6 +65,13 @@ export default function UserGuideStack() {
       <UserGuidesStack.Screen
         name="FAQScreen"
         component={FAQ}
+        options={{ headerTitle: '',
+          headerTintColor: '#F37B36'
+        }}
+      />
+      <UserGuidesStack.Screen
+        name="HelpScreen"
+        component={Help}
         options={{ headerTitle: '',
           headerTintColor: '#F37B36'
         }}

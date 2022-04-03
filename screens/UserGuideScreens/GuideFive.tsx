@@ -36,9 +36,9 @@ export default function GuideScreensFive() {
             Make sure everything looks correct and confirm your donation!
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
-            <Pressable style={styles.button} onPress={() => navigation.navigate('FAQScreen')}>
+            <Pressable style={styles.button} onPress={() => navigation.navigate('HelpScreen')}>
               <Text style={styles.buttonText}>
-                Next
+                Finish
               </Text>
             </Pressable>
           </View>

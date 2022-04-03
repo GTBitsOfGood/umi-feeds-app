@@ -5,4 +5,5 @@ export type UserGuideParamList = {
   UserGuideFour: undefined;
   UserGuideFive: undefined;
   FAQScreen: undefined;
+  HelpScreen: undefined;
 };

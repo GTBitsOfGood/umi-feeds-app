@@ -56,7 +56,7 @@ function RootNavigator() {
           <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={UserGuideStack} />
+        <Stack.Screen name="Login" component={LoginStack} />
       )
       }
     </Stack.Navigator>
