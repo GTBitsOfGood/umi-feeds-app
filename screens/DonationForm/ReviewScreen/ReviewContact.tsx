@@ -67,7 +67,7 @@ export default function ReviewContactScreen(props: ThemeProps) {
       <View style={styles.container}>
         <GeneralModal
           title="Thank you!"
-          subtitle="Response received! Thank you."
+          subtitle="Donation request received! Thank you. You have no further action at this time."
           visible={modalVisible}
           closeModal={toggleModal}
           numButtons={1}
