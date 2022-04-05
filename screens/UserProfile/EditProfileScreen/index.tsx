@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Alert, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { batch, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -12,7 +12,6 @@ import { HideKeyboardUtility } from '../../../util';
 import { login } from '../../../redux/reducers/authReducer';
 import { UserProfileScreenParamList } from '../../../navigation/SharedStack/UserProfile/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
-import { reset } from '../../../redux/reducers/OnboardingReducer';
 
 type ProfileScreenProp = CompositeNavigationProp<
     StackNavigationProp<UserProfileScreenParamList, 'EditUserProfileScreen'>,
@@ -38,14 +37,16 @@ export default function EditProfileScreen() {
       Alert.alert('Email Cannot Be Blank');
     }
 
-    const updatedProfile = authState;
+    /* copying with JSON creates a deep copy! updated profile is now a different object with a
+       different reference but same values */
+    const updatedProfile = JSON.parse(JSON.stringify(authState));
     updatedProfile.businessName = businessName;
     updatedProfile.phoneNumber = parsedPhoneNumber;
     updatedProfile.email = email;
 
     axios.put(`/api/user/${authState._id}`, updatedProfile)
       .then((res) => {
-        dispatch(login(updatedProfile));
+        dispatch(login(updatedProfile)); // causes authState to point to a new object, retroactively updating all authState rendered components
         console.log(res);
         navigation.goBack();
       })

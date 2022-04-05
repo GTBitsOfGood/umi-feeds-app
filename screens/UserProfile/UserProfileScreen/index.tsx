@@ -1,5 +1,5 @@
 import { ScrollView, View, TouchableHighlight } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import { useNavigation, CompositeNavigationProp, useIsFocused } from '@react-navigation/native';
@@ -29,7 +29,6 @@ export default function UserProfile() {
   const authState = useSelector((state: RootState) => state.auth);
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
   const navigation = useNavigation<ProfileScreenProp>();
-  const isFocused = useIsFocused();
 
   const fullAddress = authState.pickupAddresses.map((businessAddress) => `${businessAddress.buildingNumber === 0 ? '' : businessAddress.buildingNumber} ${businessAddress.streetAddress} \n${businessAddress.city}, ${businessAddress.state} ${businessAddress.zipCode}`).join('\n\n') || 'No Address';
 
