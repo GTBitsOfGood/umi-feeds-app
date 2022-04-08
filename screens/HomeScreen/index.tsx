@@ -181,7 +181,9 @@ const styles = StyleSheet.create({
   donationHeader: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    marginHorizontal: 30
+    marginHorizontal: 30,
+    marginTop: '1%',
+    marginBottom: '4%'
   },
   donationContainer: {
     flex: 1,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,25 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
-  Linking
+  Linking,
+  RefreshControl,
+  Alert
 } from 'react-native';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import { RootState } from '../../redux/rootReducer';
 import { Header, DonationQueueRow } from '../../components';
 import { moderateScale, verticalScale, scale } from '../../util';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
 import { DonationForm } from '../../types';
 import { MyDonationParamList } from '../../navigation/AdminStack/MyDonations/types';
+import { refreshDonations } from '../../redux/reducers/authReducer';
+import { store } from '../../redux/store';
+import { loadDonations } from '../../redux/reducers/donationQueue';
 
 /**
  * Screen for any donations the Admin has claimed. If the Admin has not claimed any dishes, an icon will be displayed
@@ -37,8 +43,11 @@ type MyDonationProp = StackNavigationProp<MyDonationParamList, 'MyDonations'>
 const MyDonationScreen = () => {
   const navigation = useNavigation<MyDonationProp>();
   const authState = useSelector((state: RootState) => state.auth);
+  const [refreshing, setRefreshing] = useState(false);
+  const dispatch = useDispatch();
+
   const myDonations = useSelector(
-    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.businessName === authState.businessName))
+    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.status === 'Claimed'))
   );
 
   const display = () => {
@@ -59,8 +68,29 @@ const MyDonationScreen = () => {
       );
     }
   };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    axios.get('/api/ongoingdonations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
+      .then((res) => {
+        if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
+          const { user } = res.data; // res.data.user is of type User
+          console.log(res.data['Ongoing Donations']);
+          console.log('//////////////////');
+          return dispatch(loadDonations(res.data['Ongoing Donations']));
+        } else {
+          return Alert.alert('Authentication error!');
+        }
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setRefreshing(false));
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+    >
       <View>
         <Header title="My Donations" showCartButton={false} />
       </View>
