@@ -64,7 +64,7 @@ export default function VerifyVolunteer() {
             }}
           />
         </View>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 2 }}>
           <Text style={styles.title}>Enter Password</Text>
           <Text style={styles.subtitle}>Enter the password that Erica provided to you.</Text>
         </View>
@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#202020',
     fontSize: 16,
-    paddingTop: 10,
+    paddingTop: 10
   }
 });

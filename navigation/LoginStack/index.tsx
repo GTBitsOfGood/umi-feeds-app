@@ -32,7 +32,7 @@ export default function LoginStack() {
       <OnboardingStack.Screen
         name="OnboardingAddressForm"
         component={AddressOnboardingForm}
-        options={{ headerShown: false }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Verify Address' }}
       />
     </OnboardingStack.Navigator>
   );
