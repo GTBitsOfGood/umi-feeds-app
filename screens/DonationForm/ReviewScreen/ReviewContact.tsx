@@ -7,7 +7,6 @@ import { useFonts } from 'expo-font';
 import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { View, Text, useThemeColor, ThemeProps } from '../../../style/Themed';
-import ChevronButton from '../../../components/ChevronButton';
 import { DonateTabParamList } from '../../../navigation/DonorStack/Donate/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
 import Pencil from '../../../assets/images/pencil.svg';

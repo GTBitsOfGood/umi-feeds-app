@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-const lightBlueColor = '#007bff';
+const lightGray = '#5D5D5D';
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   },
   button: {
     fontSize: 14,
-    color: lightBlueColor,
+    color: lightGray,
     marginRight: 2,
-    marginTop: 12
+    marginTop: 4
   },
   icon: {
     marginTop: 10,
-    color: lightBlueColor,
+    color: lightGray,
   },
   info: {
     fontSize: 18,

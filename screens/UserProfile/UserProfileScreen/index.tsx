@@ -1,8 +1,8 @@
-import { ScrollView, View, TouchableHighlight, Pressable } from 'react-native';
-import React from 'react';
+import { ScrollView, View, TouchableHighlight } from 'react-native';
+import React, { useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp, useIsFocused } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
@@ -94,11 +94,11 @@ function EditButton(props: { onEdit: () => void }) {
         onPress={props.onEdit}
         underlayColor="transparent"
       >
-        <View style={{ flexGrow: 1, flexDirection: 'row', alignContent: 'center' }}>
+        <View style={{ flexGrow: 1, flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
+          <Icon name="pencil" size={25} style={styles.icon} />
           <Text style={styles.button}>
             Edit
           </Text>
-          <Icon name="chevron-thin-right" size={20} style={styles.icon} />
         </View>
       </TouchableHighlight>
     </View>
