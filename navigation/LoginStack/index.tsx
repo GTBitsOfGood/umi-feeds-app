@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import LoginScreen from '../../screens/LoginScreen';
 import OnboardingNameForm from '../../screens/Onboarding/Name';
+import VerifyVolunteer from '../../screens/Onboarding/VerifyVolunteer';
 import AddressOnboardingForm from '../../screens/Onboarding/Address';
 import {
   LoginStackParamList
@@ -24,9 +25,14 @@ export default function LoginStack() {
         options={{ headerShown: false }}
       />
       <OnboardingStack.Screen
+        name="VerifyVolunteer"
+        component={VerifyVolunteer}
+        options={{ headerShown: false }}
+      />
+      <OnboardingStack.Screen
         name="OnboardingAddressForm"
         component={AddressOnboardingForm}
-        options={{ headerShown: false }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36', headerBackTitle: 'Verify Address' }}
       />
     </OnboardingStack.Navigator>
   );

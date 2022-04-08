@@ -19,6 +19,7 @@ import Styles from './styles';
  * @param {boolean} required Is this a required text entry?  If so turn red if the user taps it and then ignores it
  * @param {ImageSourcePropType} img An optional image to include on the left side of the text box
  * @param {number} roundToPlaces An optional integer specifying how many places to round a decimal input to onBlur
+ * @param {boolean} inputError A boolean specifying if the textbox should be highlighted red due to some input error
  * @returns {TSX.Element}
  */
 function FloatingTitleTextInputField(props: {
@@ -28,7 +29,8 @@ function FloatingTitleTextInputField(props: {
                                          keyboardType:KeyboardTypeOptions,
                                          required:boolean,
                                          img?:ImageSourcePropType,
-                                         roundToPlaces?:number
+                                         roundToPlaces?:number,
+                                         inputError?:boolean,
                                        }) {
   const [isFieldActive, setFieldActive] = useState(false);
   const [hasUserSkipped, setHasUserSkipped] = useState(false);
@@ -69,12 +71,12 @@ function FloatingTitleTextInputField(props: {
       outputRange: [18, 5],
     }),
     fontSize: isFieldActive ? 11.5 : 15,
-    color: hasUserSkipped && props.required ? '#FF3131' : '#5D5D5D',
+    color: (hasUserSkipped && props.required) || props.inputError ? '#FF3131' : '#5D5D5D',
     marginLeft: props.img ? 56 : 15,
   });
 
   return (
-    <View style={[Styles.container, { borderColor: hasUserSkipped && props.required ? '#FF3131' : '#B8B8B8' }]}>
+    <View style={[Styles.container, { borderColor: (hasUserSkipped && props.required) || props.inputError ? '#FF3131' : '#B8B8B8' }]}>
       {props.img && (
       <Image
         source={props.img}
