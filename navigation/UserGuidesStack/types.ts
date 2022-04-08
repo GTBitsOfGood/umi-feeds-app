@@ -1,11 +1,9 @@
-export type UserProfileScreenParamList = {
-  UserProfileScreen: undefined;
-  EditUserProfileScreen: undefined;
-  HelpScreen: undefined;
+export type UserGuideParamList = {
   UserGuideOne: undefined;
   UserGuideTwo: undefined;
   UserGuideThree: undefined;
   UserGuideFour: undefined;
   UserGuideFive: undefined;
   FAQScreen: undefined;
+  HelpScreen: undefined;
 };
