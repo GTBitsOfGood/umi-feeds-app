@@ -17,7 +17,7 @@ export default function UserProfileScreenNavigator() {
       <UserProfileScreenStack.Screen
         name="EditUserProfileScreen"
         component={EditUserProfileScreen}
-        options={{ headerTitle: '' }}
+        options={{ headerTitle: '', headerTintColor: '#F37B36' }}
       />
     </UserProfileScreenStack.Navigator>
   );

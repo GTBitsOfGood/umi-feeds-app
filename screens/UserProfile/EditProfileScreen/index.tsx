@@ -3,15 +3,17 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Alert, Dimensions, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, batch } from 'react-redux';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootState } from '../../../redux/rootReducer';
 import { HideKeyboardUtility } from '../../../util';
 import { login } from '../../../redux/reducers/authReducer';
+import { setLoading } from '../../../redux/reducers/loadingReducer';
 import { UserProfileScreenParamList } from '../../../navigation/SharedStack/UserProfile/types';
 import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/types';
+import LoadingScreen from '../../LoadingScreen';
 
 type ProfileScreenProp = CompositeNavigationProp<
     StackNavigationProp<UserProfileScreenParamList, 'EditUserProfileScreen'>,
@@ -20,6 +22,7 @@ type ProfileScreenProp = CompositeNavigationProp<
 
 export default function EditProfileScreen() {
   const authState = useSelector((state: RootState) => state.auth);
+  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
   const navigation = useNavigation<ProfileScreenProp>();
   const dispatch = useDispatch();
 
@@ -39,6 +42,7 @@ export default function EditProfileScreen() {
 
     /* copying with JSON creates a deep copy! updated profile is now a different object with a
        different reference but same values */
+    dispatch(setLoading({ loading: true }));
     const updatedProfile = JSON.parse(JSON.stringify(authState));
     updatedProfile.businessName = businessName;
     updatedProfile.phoneNumber = parsedPhoneNumber;
@@ -46,57 +50,63 @@ export default function EditProfileScreen() {
 
     axios.put(`/api/user/${authState._id}`, updatedProfile)
       .then((res) => {
-        dispatch(login(updatedProfile)); // causes authState to point to a new object, retroactively updating all authState rendered components
-        console.log(res);
+        batch(() => {
+          dispatch(login(updatedProfile)); // causes authState to point to a new object, retroactively updating all authState rendered components
+          dispatch(setLoading({ loading: false }));
+        });
         navigation.goBack();
       })
       .catch((error) => console.error(error));
   };
 
   return (
-    <HideKeyboardUtility>
-      <View style={styles.container}>
-        <Text style={styles.title}>Edit Profile</Text>
-        <View style={[styles.inputs, { flex: 7 }]}>
-          <Text style={styles.inputTitle}>Business Name</Text>
-          <TextInput
-            value={businessName}
-            onChangeText={onChangeBusinessName}
-            style={styles.input}
-            placeholder="Business Name"
-            enablesReturnKeyAutomatically
-          />
-          <Text style={styles.inputTitle}>Phone Number</Text>
-          <TextInput
-            style={styles.input}
-            value={phoneNumber}
-            onChangeText={onChangeNumber}
-            placeholder="Phone Number"
-            enablesReturnKeyAutomatically
-            keyboardType="numeric"
-            textContentType="telephoneNumber"
-          />
-          <Text style={styles.inputTitle}>Email</Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={onChangeEmail}
-            placeholder="Email"
-            enablesReturnKeyAutomatically
-          />
+    loadingState ? (
+      <LoadingScreen />
+    ) : (
+      <HideKeyboardUtility>
+        <View style={styles.container}>
+          <Text style={styles.title}>Edit Profile</Text>
+          <View style={[styles.inputs, { flex: 7 }]}>
+            <Text style={styles.inputTitle}>Business Name</Text>
+            <TextInput
+              value={businessName}
+              onChangeText={onChangeBusinessName}
+              style={styles.input}
+              placeholder="Business Name"
+              enablesReturnKeyAutomatically
+            />
+            <Text style={styles.inputTitle}>Phone Number</Text>
+            <TextInput
+              style={styles.input}
+              value={phoneNumber}
+              onChangeText={onChangeNumber}
+              placeholder="Phone Number"
+              enablesReturnKeyAutomatically
+              keyboardType="numeric"
+              textContentType="telephoneNumber"
+            />
+            <Text style={styles.inputTitle}>Email</Text>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={onChangeEmail}
+              placeholder="Email"
+              enablesReturnKeyAutomatically
+            />
+          </View>
+          <View style={[{ flex: 0.8,
+            width: '100%',
+            justifyContent: 'center' }]}
+          >
+            <Button
+              title="Save Changes"
+              buttonStyle={{ backgroundColor: '#F37B36', height: '100%' }}
+              onPress={saveChanges}
+            />
+          </View>
         </View>
-        <View style={[{ flex: 0.8,
-          width: '100%',
-          justifyContent: 'center' }]}
-        >
-          <Button
-            title="Save Changes"
-            buttonStyle={{ backgroundColor: '#F37B36', height: '100%' }}
-            onPress={saveChanges}
-          />
-        </View>
-      </View>
-    </HideKeyboardUtility>
+      </HideKeyboardUtility>
+    )
   );
 }
 
