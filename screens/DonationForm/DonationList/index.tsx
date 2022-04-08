@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -101,7 +102,13 @@ const DonationListScreen = () => {
           </Text>
         </Pressable>
         <Pressable
-          onPress={() => navigation.navigate('AddressScreen')}
+          onPress={() => {
+            if (state.donationCart.donationDishes.length === 0) {
+              Alert.alert('Please Select at least one dish to donate!');
+            } else {
+              navigation.navigate('AddressScreen');
+            }
+          }}
           style={{
             marginTop: 20,
             justifyContent: 'center',

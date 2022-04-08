@@ -146,7 +146,7 @@ function DetailDonationOnQueue() {
         <View style={{ width: '100%', borderTopColor: '#E6E6E6', borderTopWidth: 1, marginVertical: 16 }} />
       </View>
     );
-    donationTotalCost += Number(donationForm.donationDishes[i].cost ?? 0);
+    donationTotalCost += (Number(donationForm.donationDishes[i].cost ?? 0) * Number(donationForm.donationDishes[i].quantity ?? 0));
   }
 
   const claimDonation = () => {
@@ -154,6 +154,7 @@ function DetailDonationOnQueue() {
     const formdata = new FormData();
     formdata.append('json', JSON.stringify({
       status: 'Claimed',
+      volunteerUserID: authState._id,
       lockedByVolunteer: true
     }));
     axios.put(`/api/ongoingdonations/${donationForm._id}`, formdata)
@@ -337,7 +338,7 @@ function DetailDonationOnQueue() {
           <Entypo name="dots-three-vertical" size={24} color="black" onPress={() => setEditMenuOpen(true)} />
         </MenuTrigger>
 
-        <MenuOptions>
+        <MenuOptions style={{ backgroundColor: '#ededed' }}>
           {
             (donationForm.status === 'Claimed' || donationForm.status === 'Unclaim') && (
               <MenuOption onSelect={() => {
@@ -493,7 +494,7 @@ function DetailDonationOnQueue() {
                 <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#000000' }}>{formattedDate}</Text>
               </View>
               <View style={{ width: '50%', marginTop: 6 }}>
-                { donationForm.status !== 'Pending' && getEditMenuView() && authState.isAdmin }
+                { (donationForm.status !== 'Pending' && authState.isAdmin) && getEditMenuView() }
               </View>
             </View>
 

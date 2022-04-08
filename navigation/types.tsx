@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Root: undefined;
   NotFound: undefined;
   Loading: undefined;
+  DonorFirstTimeGuides: undefined;
 };

@@ -55,6 +55,7 @@ export type DonationForm = {
   lockedByVolunteer: boolean; // whether the donation has been locked by a volunteer
   confirmPickUpTime?: number; // time when donation has been picked up by volunteer
   confirmDropOffTime?: number; // time when donation has been dropped off by volunteer
+  volunteerUserID?: string; // userid of the volunteer
 }
 
 export type User = {

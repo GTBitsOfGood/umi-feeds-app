@@ -1,9 +1,13 @@
 import { View, Text, Image, Pressable } from 'react-native';
 import React from 'react';
 
+import { useSelector, useDispatch } from 'react-redux';
+
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+import { RootState } from '../../redux/rootReducer';
+import { firstTimeLogin } from '../../redux/reducers/authReducer';
 import { UserGuideParamList } from '../../navigation/UserGuidesStack/types';
 import styles from './guideStyles';
 
@@ -14,7 +18,9 @@ type UserGuideOneProps = StackNavigationProp<UserGuideParamList, 'UserGuideFive'
  * @returns {JSX.Element}
  */
 export default function GuideScreensFive() {
+  const authState = useSelector((state: RootState) => state.auth);
   const navigation = useNavigation<UserGuideOneProps>();
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -36,7 +42,16 @@ export default function GuideScreensFive() {
             Make sure everything looks correct and confirm your donation!
           </Text>
           <View style={{ flexDirection: 'row', justifyContent: 'center', paddingVertical: 10 }}>
-            <Pressable style={styles.button} onPress={() => navigation.navigate('HelpScreen')}>
+            <Pressable
+              style={styles.button}
+              onPress={() => {
+                if (authState.firstTimeLogin) {
+                  return dispatch(firstTimeLogin(false));
+                } else {
+                  return navigation.navigate('HelpScreen');
+                }
+              }}
+            >
               <Text style={styles.buttonText}>
                 Finish
               </Text>

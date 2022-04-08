@@ -47,7 +47,7 @@ const MyDonationScreen = () => {
   const dispatch = useDispatch();
 
   const myDonations = useSelector(
-    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.status === 'Claimed'))
+    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item) => item.ongoing && (item.status === 'Claimed') && (item.volunteerUserID === authState._id))
   );
 
   const display = () => {
@@ -74,15 +74,12 @@ const MyDonationScreen = () => {
     axios.get('/api/ongoingdonations', { headers: { Authorization: `Bearer ${store.getState().auth.jwt}` } })
       .then((res) => {
         if (res.status === 200 && res.data !== null && res.data !== undefined && res.data.user !== null) {
-          const { user } = res.data; // res.data.user is of type User
-          console.log(res.data['Ongoing Donations']);
-          console.log('//////////////////');
           return dispatch(loadDonations(res.data['Ongoing Donations']));
         } else {
           return Alert.alert('Authentication error!');
         }
       })
-      .catch((error) => console.log(error))
+      .catch((error) => Alert.alert(error))
       .finally(() => setRefreshing(false));
   }, []);
 

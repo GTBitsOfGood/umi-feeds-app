@@ -10,7 +10,7 @@ import { AddressForm } from '../../components';
 import useNotifications from '../../hooks/useNotifications';
 import { RootState } from '../../redux/rootReducer';
 import { Address } from '../../types';
-import { login } from '../../redux/reducers/authReducer';
+import { login, firstTimeLogin } from '../../redux/reducers/authReducer';
 import { reset } from '../../redux/reducers/OnboardingReducer';
 import { setLoading } from '../../redux/reducers/loadingReducer';
 
@@ -44,11 +44,21 @@ export default function AddressOnboardingForm() {
       const user = res.data;
       user.jwt = onboardingState.jwt;
       user.authenticated = true;
-      batch(() => {
-        dispatch(reset());
-        dispatch(login(user));
-        dispatch(setLoading({ loading: false }));
-      });
+      if (onboardingState.roles.includes('donor')) {
+        batch(() => {
+          dispatch(reset());
+          dispatch(login(user));
+          dispatch(firstTimeLogin(true));
+          dispatch(setLoading({ loading: false }));
+        });
+      } else {
+        // no need to dispacth firstTimeLogin because not a donor
+        batch(() => {
+          dispatch(reset());
+          dispatch(login(user));
+          dispatch(setLoading({ loading: false }));
+        });
+      }
     }).catch((err: AxiosError) => {
       Alert.alert('Authentication error! Please try again at another time');
     });

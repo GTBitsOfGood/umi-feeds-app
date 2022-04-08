@@ -13,7 +13,7 @@ import { saveNameAndRoles } from '../../redux/reducers/OnboardingReducer';
 import { Roles } from '../../types';
 
 import { LoginStackParamList } from '../../navigation/LoginStack/types';
-import { HideKeyboardUtility } from '../../util/index';
+import { HideKeyboardUtility, moderateScale } from '../../util/index';
 
 type OnboardingNameFormProp = StackNavigationProp<LoginStackParamList, 'OnboardingNameForm'>
 
@@ -151,7 +151,9 @@ export default function OnboardingNameForm() {
         </View>
         <View style={[{ flex: 0.8,
           width: '100%',
-          justifyContent: 'center' }]}
+          justifyContent: 'center',
+          marginBottom: moderateScale(25)
+        }]}
         >
           <Button
             title="Next"

@@ -9,6 +9,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList } from './types';
 import { DonorTabs } from './MainNavBar/DonorTabs';
 import { AdminTabs } from './MainNavBar/AdminTabs';
+import DonorGuidesScreenNavigator from './DonorStack/DonorGuides';
 
 import { RootState } from '../redux/rootReducer';
 import LoginStack from './LoginStack';
@@ -17,8 +18,6 @@ import { navigationRef } from './RootNavigation';
 
 // FOR TEMPLATING AND TESTING
 import TestStack from '../templates/index';
-import UserGuides from '../screens/UserGuideScreens/GuideOne';
-import UserGuideStack from './UserGuidesStack';
 
 // If you are not familiar with React Navigation, we recommend going through the
 // "Fundamentals" guide: https://reactnavigation.org/docs/getting-started
@@ -39,8 +38,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
-  const [loading, setLoading] = React.useState<boolean>(false);
   const authState = useSelector((state: RootState) => state.auth);
   let TabComponent;
   if (authState.isAdmin || authState.roles.includes('volunteer')) {
@@ -50,13 +47,17 @@ function RootNavigator() {
   }
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {authState.authenticated ? (
-        <>
-          <Stack.Screen name="Root" component={TabComponent} />
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        </>
+      {authState.firstTimeLogin ? (
+        <Stack.Screen name="DonorFirstTimeGuides" component={DonorGuidesScreenNavigator} />
       ) : (
-        <Stack.Screen name="Login" component={LoginStack} />
+        authState.authenticated ? (
+          <>
+            <Stack.Screen name="Root" component={TabComponent} />
+            <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          </>
+        ) : (
+          <Stack.Screen name="Login" component={LoginStack} />
+        )
       )
       }
     </Stack.Navigator>

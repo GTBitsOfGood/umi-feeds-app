@@ -46,6 +46,52 @@ export default function AllDonations() {
       .finally(() => setRefreshing(false));
   }, []);
 
+  const ongoingDonations = ():JSX.Element[] | JSX.Element => {
+    let count = 0;
+    const returnDonations: JSX.Element[] = [];
+    authState.donations.forEach((donation) => {
+      if (donation.ongoing) {
+        count += 1;
+        returnDonations.push(
+          <DonationListBox
+            key={donation._id}
+            donation={donation}
+            selectedId={selectedList}
+            navigation={navigation}
+            setSelectedList={setId}
+          />
+        );
+      }
+    });
+    if (authState.donations.length === 0 || count === 0) {
+      return <Text>No Ongoing Donations</Text>;
+    }
+    return returnDonations;
+  };
+
+  const pendingDonations = ():JSX.Element[] | JSX.Element => {
+    let count = 0;
+    const returnDonations: JSX.Element[] = [];
+    authState.donations.forEach((donation) => {
+      if (!donation.ongoing) {
+        count += 1;
+        returnDonations.push(
+          <DonationListBox
+            key={donation._id}
+            donation={donation}
+            selectedId={selectedList}
+            navigation={navigation}
+            setSelectedList={setId}
+          />
+        );
+      }
+    });
+    if (authState.donations.length === 0 || count === 0) {
+      return <Text>No Ongoing Donations</Text>;
+    }
+    return returnDonations;
+  };
+
   return (
     <View style={mainStyles.container}>
       <View style={styles.container}>
@@ -56,39 +102,11 @@ export default function AllDonations() {
           <Text style={styles.title}>My Donations</Text>
           <Text style={styles.subtitle}>Ongoing Donations</Text>
           {
-            authState.donations.map((donation) => {
-              if (donation.ongoing) {
-                return (
-                  <DonationListBox
-                    key={donation._id}
-                    donation={donation}
-                    selectedId={selectedList}
-                    navigation={navigation}
-                    setSelectedList={setId}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })
+            ongoingDonations()
           }
           <Text style={styles.subtitle}>Past Donations</Text>
           {
-            authState.donations.map((donation) => {
-              if (!donation.ongoing) {
-                return (
-                  <DonationListBox
-                    key={donation._id}
-                    donation={donation}
-                    selectedId={selectedList}
-                    setSelectedList={setId}
-                    navigation={navigation}
-                  />
-                );
-              } else {
-                return null;
-              }
-            })
+            pendingDonations()
           }
         </ScrollView>
       </View>

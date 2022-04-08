@@ -1,8 +1,8 @@
-import { ScrollView, View, TouchableHighlight } from 'react-native';
-import React, { useEffect } from 'react';
+import { ScrollView, View, TouchableHighlight, Pressable } from 'react-native';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Entypo';
 
-import { useNavigation, CompositeNavigationProp, useIsFocused } from '@react-navigation/native';
+import { useNavigation, CompositeNavigationProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
@@ -20,7 +20,6 @@ import { moderateScale } from '../../../util';
 type ProfileScreenProp = CompositeNavigationProp<
     StackNavigationProp<UserProfileScreenParamList, 'UserProfileScreen'>,
     BottomTabNavigationProp<BottomTabParamList, 'Home'>
-
 >;
 
 /**
@@ -69,7 +68,6 @@ export default function UserProfile() {
 
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <Text style={styles.heading}>Business Information</Text>
-            <EditButton onEdit={() => navigation.navigate('EditUserProfileScreen')} />
           </View>
           <Text style={styles.body}>Name</Text>
           <Text style={styles.description}>{authState.businessName || 'No Business Name'}</Text>

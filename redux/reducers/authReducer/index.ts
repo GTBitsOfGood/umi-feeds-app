@@ -17,6 +17,7 @@ const initialState = {
   donations: [],
   authenticated: false,
   jwt: '',
+  firstTimeLogin: false
 } as AuthUser;
 
 // Helper function to copy all properties from newState over to the existing state
@@ -62,10 +63,13 @@ const authReducer = createSlice({
     },
     refreshDonations(state, action: PayloadAction<DonationForm[]>) {
       state.donations = action.payload;
+    },
+    firstTimeLogin(state, action: PayloadAction<boolean>) {
+      state.firstTimeLogin = action.payload;
     }
   }
 });
 
-export const { login, logout, addDish, setPickupAddresses, addDonation, refreshDonations } = authReducer.actions;
+export const { login, logout, addDish, setPickupAddresses, addDonation, refreshDonations, firstTimeLogin } = authReducer.actions;
 
 export default authReducer.reducer;

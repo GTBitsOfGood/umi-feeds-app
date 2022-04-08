@@ -20,7 +20,7 @@ import { BottomTabParamList } from '../../../navigation/MainNavBar/DonorTabs/typ
 
 import { ChevronButton, Header, DonationQueueRow } from '../../../components';
 
-import { moderateScale, verticalScale, scale } from '../../../util';
+import { moderateScale, verticalScale } from '../../../util';
 import { DonationForm } from '../../../types';
 
 import { RootState } from '../../../redux/rootReducer';
@@ -66,6 +66,29 @@ const DonationListScreen = () => {
 
   // will change every time user comes back to screen, causes screen to update data
   const isFocused = useIsFocused();
+
+  const overdueDonations = useSelector(
+    (state: RootState) => state.donationQueueReducer.donationQueue.filter((item: DonationForm) => item.status === 'Overdue')
+  );
+
+  // Display overdue donations
+  const displayOverdue = () => {
+    if (overdueDonations.length === 0) {
+      return (
+        <View style={styles.noDonations}>
+          <Text style={styles.emptyText}>There are no overdue donations</Text>
+        </View>
+      );
+    } else {
+      return (
+        <View style={{ marginBottom: 50 }}>
+          {overdueDonations.map(
+            (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
+          )}
+        </View>
+      );
+    }
+  };
 
   // gets ongoing donations
   useEffect(() => {
@@ -149,7 +172,12 @@ const DonationListScreen = () => {
             showLoading={isLoading}
           />
           <ScrollView>
-            {donationSearch.map((item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />)}
+            {donationSearch.length === 0 ? (
+              <Text> No matching Donations Found </Text>
+            ) : (
+              donationSearch.map((item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />)
+            )
+            }
           </ScrollView>
         </View>
       );
@@ -233,13 +261,8 @@ const DonationListScreen = () => {
               </Text>
             </View>
           </View>
-          <View style={{ marginBottom: 50 }}>
-            {donationQueue.filter((item: DonationForm) => item.status === 'Overdue').map(
-              (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
-            )}
-          </View>
+          {displayOverdue()}
         </View>
-
       );
     }
   };
@@ -338,5 +361,18 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(11),
     fontWeight: '500',
     color: '#5D5D5D',
-  }
+  },
+  emptyText: {
+    paddingTop: moderateScale(20),
+    color: '#B8B8B8',
+    fontSize: moderateScale(21),
+    width: '50%',
+    textAlign: 'center'
+  },
+  noDonations: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: moderateScale(50),
+  },
 });
