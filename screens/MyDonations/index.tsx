@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   contact: {
-    marginHorizontal: 30,
+    marginHorizontal: '5%',
     marginVertical: '40%',
     flexDirection: 'row',
     overflow: 'hidden'
