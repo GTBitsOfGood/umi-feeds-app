@@ -1,33 +1,18 @@
-import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { UserProfileScreen, EditUserProfileScreen } from '../../../screens/UserProfile';
-import { UserGuideOne, UserGuideTwo, UserGuideThree, UserGuideFour, UserGuideFive, FAQ, Help } from '../../../screens/UserGuideScreens';
+import * as React from 'react';
 
-import { UserProfileScreenParamList } from './types';
+import { UserGuideOne, UserGuideTwo, UserGuideThree, UserGuideFour, UserGuideFive, FAQ, Help } from '../../screens/UserGuideScreens';
+import {
+  UserGuideParamList
+} from './types';
 
-const UserProfileScreenStack = createStackNavigator<UserProfileScreenParamList>();
+const UserGuidesStack = createStackNavigator<UserGuideParamList>();
 
-export default function UserProfileScreenNavigator() {
+// // Create your stack with the separate screens
+export default function UserGuideStack() {
   return (
-    <UserProfileScreenStack.Navigator>
-      <UserProfileScreenStack.Screen
-        name="UserProfileScreen"
-        component={UserProfileScreen}
-        options={{ headerTitle: '' }}
-      />
-      <UserProfileScreenStack.Screen
-        name="EditUserProfileScreen"
-        component={EditUserProfileScreen}
-        options={{ headerTitle: '', headerTintColor: '#F37B36' }}
-      />
-      <UserProfileScreenStack.Screen
-        name="HelpScreen"
-        component={Help}
-        options={{ headerTitle: '',
-          headerTintColor: '#F37B36'
-        }}
-      />
-      <UserProfileScreenStack.Screen
+    <UserGuidesStack.Navigator>
+      <UserGuidesStack.Screen
         name="UserGuideOne"
         component={UserGuideOne}
         options={{ headerTitle: '',
@@ -37,7 +22,7 @@ export default function UserProfileScreenNavigator() {
           headerTintColor: '#fff'
         }}
       />
-      <UserProfileScreenStack.Screen
+      <UserGuidesStack.Screen
         name="UserGuideTwo"
         component={UserGuideTwo}
         options={{ headerTitle: '',
@@ -47,7 +32,7 @@ export default function UserProfileScreenNavigator() {
           headerTintColor: '#fff'
         }}
       />
-      <UserProfileScreenStack.Screen
+      <UserGuidesStack.Screen
         name="UserGuideThree"
         component={UserGuideThree}
         options={{ headerTitle: '',
@@ -57,7 +42,7 @@ export default function UserProfileScreenNavigator() {
           headerTintColor: '#fff'
         }}
       />
-      <UserProfileScreenStack.Screen
+      <UserGuidesStack.Screen
         name="UserGuideFour"
         component={UserGuideFour}
         options={{ headerTitle: '',
@@ -67,7 +52,7 @@ export default function UserProfileScreenNavigator() {
           headerTintColor: '#fff'
         }}
       />
-      <UserProfileScreenStack.Screen
+      <UserGuidesStack.Screen
         name="UserGuideFive"
         component={UserGuideFive}
         options={{ headerTitle: '',
@@ -77,13 +62,20 @@ export default function UserProfileScreenNavigator() {
           headerTintColor: '#fff'
         }}
       />
-      <UserProfileScreenStack.Screen
+      <UserGuidesStack.Screen
         name="FAQScreen"
         component={FAQ}
         options={{ headerTitle: '',
           headerTintColor: '#F37B36'
         }}
       />
-    </UserProfileScreenStack.Navigator>
+      <UserGuidesStack.Screen
+        name="HelpScreen"
+        component={Help}
+        options={{ headerTitle: '',
+          headerTintColor: '#F37B36'
+        }}
+      />
+    </UserGuidesStack.Navigator>
   );
 }

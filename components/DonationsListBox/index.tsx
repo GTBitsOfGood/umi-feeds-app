@@ -7,7 +7,8 @@ import { moderateScale } from '../../util/index';
 
 function DonationListBox(props: { donation: DonationForm, selectedId: string, navigation: any, setSelectedList: (param1?: string) => void }) {
   const { donation, navigation } = props;
-  const endTime = props.donation.pickupEndTime.toLocaleString().slice(0, 9);
+  const pickupEndTimeDate = new Date(props.donation.pickupEndTime);
+  const endTime = `${pickupEndTimeDate.getMonth() + 1}/${pickupEndTimeDate.getDate()}/${pickupEndTimeDate.getFullYear()}`;
   let pickupTime = 'TBA';
   let color = '#FC8834';
 
