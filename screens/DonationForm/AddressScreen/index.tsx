@@ -25,11 +25,13 @@ const DonateFormAddressScreen = () => {
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(authState.pickupAddresses.length === 1 ? authState.pickupAddresses[0] : null);
 
-  const handleSubmit = () => {
-    if (selectedAddress) {
-      dispatch(setAddress(selectedAddress));
+  const handleSubmit = (addr: Address) => {
+    if (addr) {
+      dispatch(setAddress(addr));
+      navigation.navigate('SchedulePickupScreen');
+    } else {
+      Alert.alert('Please Select an Address');
     }
-    navigation.navigate('SchedulePickupScreen');
   };
 
   return (

@@ -1,7 +1,6 @@
-import { View, Text, Image, Linking, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Linking, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Entypo';
 import Logo from '../../assets/images/umi-feeds-logo.svg';
@@ -15,32 +14,32 @@ const Questions = [
   {
     id: 1,
     question: 'What is Umi Feeds?',
-    answer: 'What is Umi Feeds? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'Umi Feeds is a non-profit devoted to eliminating food waste and helping those facing food insecurity in the Atlanta community. We collect food from generous donors like you and distribute these meals to people in need.'
   },
   {
     id: 2,
     question: 'How do I donate food?',
-    answer: 'How do I donate food? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'Using this mobile application, you can donate leftover food by creating and adding dishes to your donation cart. When your cart is ready, you can ‘checkout’ and schedule a pickup date and time window that works for your schedule. Once you submit the donation request, we’ll take it from there!'
   },
   {
     id: 3,
     question: 'How do I create a Dish?',
-    answer: 'How do I create a Dish? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'Select ‘Donate’ in the bottom navigation bar, and then select the orange ‘Create new dish’ button. A dish is a single serving, and you enter the number of servings for each dish when donating. Your dish info is saved for donating again or at a later time!'
   },
   {
     id: 4,
     question: 'How do I add a dish to my cart?',
-    answer: 'How do I add a dish to my cart? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'Look through your favorited dishes or select the ‘Search for dishes’ button to find a dish by name. Then, select ‘Add to cart’ on the dish and enter the number of servings you have to donate. Now, the dish and number of servings should be in your donation cart.'
   },
   {
     id: 5,
     question: 'How do I schedule a pickup for a donation?',
-    answer: 'How do I schedule a pickup for a donation? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'After adding all the dishes you wish to donate, select the cart icon in the top right. Review your cart contents and select ‘Schedule donation pickup’. Then, fill out the donation pickup details (date, time, address, etc.) and submit your donation request!'
   },
   {
     id: 6,
     question: 'How do I know if my donation will be picked up?',
-    answer: 'How do I know if my donation will be picked up? Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+    answer: 'You can see the status of your donation by selecting the current donation on the home screen. Pending means it has yet to be approved as a valid donation. Unclaimed means it has been approved but not yet claimed by a volunteer. Claimed means a volunteer has confirmed they are able to pick up your donation. You may receive a text or call with a more specific pickup time within your set time window.'
   },
 ];
 

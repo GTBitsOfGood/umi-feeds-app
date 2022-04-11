@@ -42,15 +42,7 @@ const AddressFormScreen = ({
   const dispatch = useDispatch();
 
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(authState.pickupAddresses.length === 1 ? authState.pickupAddresses[0] : null);
-  const dummyAddress: Address = {
-    streetAddress: 'North Ave NW',
-    buildingNumber: 0,
-    city: 'Atlanta',
-    state: 'GA',
-    zipCode: 30332,
-    longitude: 10,
-    latitude: 100,
-  };
+
   const { pickupAddresses } = authState;
 
   return (
@@ -70,7 +62,7 @@ const AddressFormScreen = ({
           {pickupAddresses.map((address: Address) => (
             <AddressCard
               selected={selectedAddress?._id === address._id}
-              key={address.longitude}
+              key={address._id}
               address={address}
               businessName={authState.businessName}
               onPress={() => setSelectedAddress(address)}
