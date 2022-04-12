@@ -7,12 +7,14 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     width: '80%',
     marginHorizontal: '7.5%',
+    paddingTop: 0,
     paddingBottom: 35,
   },
   container: {
     flex: 1,
     width: Dimensions.get('screen').width,
     marginBottom: 0,
+    paddingTop: 0,
     backgroundColor: 'white'
   },
   title: {

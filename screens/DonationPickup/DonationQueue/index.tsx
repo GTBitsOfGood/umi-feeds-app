@@ -238,7 +238,7 @@ const DonationListScreen = () => {
             </View>
           </View>
           <View style={{ marginBottom: 50 }}>
-            {donationQueue.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete').map(
+            {donationQueue.filter((item: DonationForm) => item.status !== 'Pending' && item.status !== 'Overdue' && item.status !== 'Complete' && item.status !== 'Denied').map(
               (item: DonationForm) => <DonationQueueRow key={item._id} donationForm={item} navigation={navigation} />
             )}
           </View>

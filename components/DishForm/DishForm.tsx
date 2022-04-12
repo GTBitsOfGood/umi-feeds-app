@@ -381,7 +381,7 @@ function DishForm(props: { dish?: Dish, onSuccessfulDishSubmit: () => void }) {
                   checked={allergens.indexOf('none') > -1}
                   onPress={() => {
                     if (allergens.indexOf('none') === -1) {
-                      setAllergens((allergens) => [...allergens, 'none']);
+                      setAllergens(() => ['none']);
                     } else {
                       setAllergens((allergens) => allergens.filter((str) => str !== 'none'));
                     }
