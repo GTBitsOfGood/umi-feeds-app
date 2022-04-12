@@ -104,7 +104,7 @@ const DonationListScreen = () => {
         <Pressable
           onPress={() => {
             if (state.donationCart.donationDishes.length === 0) {
-              Alert.alert('Please Select at least one dish to donate!');
+              Alert.alert('Please select at least one dish to donate!');
             } else {
               navigation.navigate('AddressScreen');
             }
