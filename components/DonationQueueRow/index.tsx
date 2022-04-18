@@ -116,34 +116,34 @@ function Row({ donationForm, navigation }: RowProps) {
   }
 
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        height: 50,
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderBottomWidth: 0.5,
-        borderBottomColor: 'gray',
-      }}
+    <TouchableOpacity
+    // onPress={() => console.log('you pressed a donation')}
+      onPress={() => navigation.navigate('DetailDonationOnQueue', {
+        donationForm
+      })}
     >
-      <View style={{
-        flex: 8,
-        flexDirection: 'row' }}
+      <View
+        style={{
+          flexDirection: 'row',
+          height: 50,
+          marginTop: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderBottomWidth: 0.5,
+          borderBottomColor: 'gray',
+        }}
       >
-        <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{businessName}</Text>
-        <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{endDate}</Text>
-        {statusLabel()}
-        <TouchableOpacity
-          // onPress={() => console.log('you pressed a donation')}
-          onPress={() => navigation.navigate('DetailDonationOnQueue', {
-            donationForm
-          })}
+        <View style={{
+          flex: 8,
+          flexDirection: 'row' }}
         >
+          <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{businessName}</Text>
+          <Text style={{ fontSize: 15, width: '35%', fontStyle: 'italic' }}>{endDate}</Text>
+          {statusLabel()}
           <Icon name="chevron-thin-right" size={15} style={{ color: '#5D5D5D', marginLeft: scale(25) }} />
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

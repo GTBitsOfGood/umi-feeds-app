@@ -306,21 +306,20 @@ function DetailDonationOnQueue() {
         // Overdue
         <View>
           <Text style={{ fontSize: 21, fontWeight: '500', marginBottom: 24 }}>
-            Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#E90000' }}>{donationForm.status}</Text>
+            Status: <Text style={{ fontSize: 21, marginVertical: 24, color: '#11B25B' }}>{donationForm.status}</Text>
           </Text>
           <Pressable
             style={{
               height: 52,
               borderRadius: 4,
-              borderColor: '#E90000',
+              borderColor: '#11B25B',
               borderWidth: 1,
               flexDirection: 'row',
               justifyContent: 'center',
               alignContent: 'center',
               alignItems: 'center',
-              backgroundColor: '#E90000'
+              backgroundColor: '#11B25B'
             }}
-            onPress={() => console.log('overdue delievery more like smellivery')}
           >
             <Text style={{ fontSize: 17, color: '#FFFFFF', fontWeight: 'bold' }}>Set as Delivered</Text>
 
