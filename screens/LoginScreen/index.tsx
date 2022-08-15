@@ -1,7 +1,7 @@
 // Navigation
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
+import * as Linking from 'expo-linking';
 import { useSelector } from 'react-redux';
 
 import React from 'react';
@@ -20,6 +20,10 @@ function LoginScreen() {
   const navigation = useNavigation<LoginScreenProp>();
   const loadingState = useSelector((state: RootState) => state.loading.loadingStatus);
 
+  const handlePress = () => {
+    Linking.openURL('https://www.termsfeed.com/live/ffd1e9b1-f039-4ba1-9ea9-68984aabf66c');
+  };
+
   return (
     loadingState ? (
       <LoadingScreen />
@@ -29,6 +33,9 @@ function LoginScreen() {
         <View style={{ margin: '5%' }}>
           <Text style={{ fontSize: 15, textAlign: 'center', paddingTop: 227 }}>
             A food rescue non-profit organization based in Atlanta dedicated to serving the hungry and homeless healthy and nutritious meals.
+          </Text>
+          <Text style={{ textAlign: 'center', color: '#3366BB' }} onPress={handlePress}>
+            View our Privacy Policy
           </Text>
         </View>
         <View>

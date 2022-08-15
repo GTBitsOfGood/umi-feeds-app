@@ -4,7 +4,7 @@ export default {
   expo: {
     name: 'umi-feeds-app',
     slug: 'umi-feeds-app',
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     icon: './assets/images/icon.png',
     scheme: 'umifeeds',
@@ -22,10 +22,12 @@ export default {
     ],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'org.bitsofgood.umifeeds'
+      bundleIdentifier: 'org.bitsofgood.umifeeds',
+      buildNumber: '1.0.1'
     },
     android: {
       package: 'org.bitsofgood.umifeeds',
+      versionCode: 2,
       adaptiveIcon: {
         foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#FFFFFF'

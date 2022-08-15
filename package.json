@@ -69,6 +69,7 @@
     "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "0.29.4",
+    "react-native-material-cards": "^1.0.16",
     "react-native-paper": "^4.9.2",
     "react-native-popup-menu": "^0.15.12",
     "react-native-safe-area-context": "3.3.2",
