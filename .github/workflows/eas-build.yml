@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
-        run: echo "::set-output name=ARTIFACT_URL::$(eas build --platform android --profile preview --non-interactive | grep 'https://expo.dev/artifacts/')"
+        run: echo "::set-output name=ARTIFACT_URL::$(eas build --platform ios --profile preview --non-interactive | grep 'https://expo.dev/artifacts/')"
         id: eas-build
       - name: Download Artifact
         run: cd ci; python download.py ${{ steps.eas-build.outputs.ARTIFACT_URL }}
