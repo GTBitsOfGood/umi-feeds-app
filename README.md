@@ -17,7 +17,9 @@ Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
   - **Note**: If you are using the Windows command prompt or a Mac, enter `npm run secrets:login` (logging in only needs to be done once) and then `npm run secrets:sync`. You may have to enter the Bitwarden password multiple times. You should re-run this whenever the secrets in Bitwarden changes.
 - Start project: `npm start`
 
-## Dockerized Builds
+## Dockerized Builds (Recommended for dev workflow)
+
+Running the dev environment in docker makes the build process more standardized for review and across different machines.
 
 1. Install docker and docker-compose
 
@@ -124,18 +126,18 @@ While you are encouraged to use TypeScript, you **don't** have to. Our codebase 
 This will require an Expo sign in. Contact leadership if you need the Bitwarden password for Expo account.
 
 ### Android
-- Run `NODE_COMMAND=build:android docker-compose up --build` or `expo build:android`
+- Run `expo build:android`
 - Select the "APK" option when asked
 
 ### iOS
-- Run `NODE_COMMAND=build:ios docker-compose up --build` or `expo build:ios`
+- Run `expo build:ios`
 - If asked for bundle identifer, type `org.bitsofgood.umifeeds`
 - Select the `simulator` option to be able to run this in Expo Go. (The other option requires an Apple Developer ID.)
 
 ### Web
 Expo Web is in beta so not all the features of the app will necessarily work correctly in the web version. We use it just to provide a convenient preview of the app.
 - Optional: `npx expo-optimize` to optimize the assets for speed
-- `NODE_COMMAND=build:web docker-compose up --build` or `expo build:web`. This makes a web-build/ directory.
+- `expo build:web`. This makes a web-build/ directory.
 - See more details at https://docs.expo.io/distribution/publishing-websites/.
 - We've set up Netlify with continuous deployment from our Git repository, with the build command `npm install -g expo-cli -y && expo build:web` and the publish directory `web-build`. https://umifeeds.netlify.app is automatically built from the `develop` branch.
 
