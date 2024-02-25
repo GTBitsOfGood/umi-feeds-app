@@ -17,16 +17,52 @@ Backend server repo at <https://github.com/GTBitsOfGood/umi-feeds-backend>.
   - **Note**: If you are using the Windows command prompt or a Mac, enter `npm run secrets:login` (logging in only needs to be done once) and then `npm run secrets:sync`. You may have to enter the Bitwarden password multiple times. You should re-run this whenever the secrets in Bitwarden changes.
 - Start project: `npm start`
 
+## Dockerized Builds (Recommended for dev workflow)
+
+Running the dev environment in docker makes the build process more standardized for review and across different machines.
+
+1. Install docker and docker-compose
+
+MacOS: [Docker Desktop for MacOS](https://docs.docker.com/desktop/install/mac-install/)
+
+Windows: [Docker Desktop for Windows](https://docs.docker.com/desktop/install/windows-install/)
+
+Linux: [Docker Desktop for Linux](https://docs.docker.com/desktop/install/linux-install/)
+
+2. Obtain your secrets -- **Linux or MacOS** (Skip if Windows); you will need to obtain a password from your Engineering Manager:
+
+First, install **BitWarden CLI** and **fx** with `npm install -g @bitwarden/cli fx`
+
+Or, if you're using Homebrew, run `brew install bitwarden-cli fx`
+
+Now fetch the secrets from BitWarden with `yarn secrets:linux`
+
+2. Obtain your secrets -- **Windows Machines** (Skip if MacOS or Linux); you will need to obtain a password from your Engineering Manager:
+
+First, install **BitWarden CLI** and **fx** with npm with `npm install -g @bitwarden/cli fx`
+
+Now fetch the secrets from BitWarden with `npm run secrets:login` and `npm run secrets:sync`
+
+3. Login to Expo in your local environment
+
+```
+expo login
+```
+
+4. This respository can be run inside of a Docker container. To run the development environment with Expo, run `docker-compose up --build`
+
+3. To run custom node commands, start with the NODE_COMMAND environment variable before your docker-compose command. Ex: `NODE_COMMAND=test docker-compose up --build`
+
 ### Expo Go 
 
-Install Expo Go on your Android or iPhone/iPad. Expo Go allows you to preview your app on your Android or iPhone/iPad. Please make sure you're on the same wifi network as your development computer that launched `npm start`
+Install Expo Go on your Android or iPhone/iPad. Expo Go allows you to preview your app on your Android or iPhone/iPad. Please make sure you're on the same wifi network as your development computer that launched `npm start` or `docker-compose up --build`
 - Google Play: https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en_US&gl=US
 - Apple App Store: https://apps.apple.com/us/app/expo-go/id982107779
 
 Log into Expo Go using the credentials found in [Bitwarden](https://bitwarden.com/). Log into Expo CLI on your computer
 > `expo login`
 
-Now, after you start your development server with `npm start`, your Expo Go app should show something like "umi-feeds-app on DESKTOP-sdfjij" under the section Recently in Development. So you can test out the app now!
+Now, after you start your development server with `npm start` or `docker-compose up --build`, your Expo Go app should show something like "umi-feeds-app on DESKTOP-sdfjij" under the section Recently in Development. So you can test out the app now!
 
 Expo Go has Fast Refresh, so when you save changes to your code and your development server is running, the app in Expo Go will automatically reflect those changes. To reload the app entirely, shake your device and a menu will pop up that lets you Reload or Go to Home.
 

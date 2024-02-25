@@ -1,0 +1,24 @@
+version: "3.8"
+services: 
+  mobile:
+    container_name: umi-feeds-app
+    build:
+      context: .
+    # restart: always
+    platform: linux/amd64
+    environment:
+      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
+      - NODE_COMMAND=${NODE_COMMAND:-dev}
+      - REACT_NATIVE_PACKAGER_HOSTNAME=192.168.1.1
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/app
+      - node_modules:/usr/app/node_modules
+    ports:
+      - 19000:19000
+      - 19001:19001
+      - 19002:19002
+      - 19006:19006
+volumes:
+  node_modules:
